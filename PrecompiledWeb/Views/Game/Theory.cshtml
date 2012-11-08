@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Theory";
+}
+@Html.BodyTagUpdate("gamedesc")
+<div id="page">
+    @Html.Partial("_GameNav")
+    <div class="generalText">
+    @Html.GameTheory()
+    </div>
+</div>
+@Html.HighLightSyntax()

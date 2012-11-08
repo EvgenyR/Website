@@ -1,0 +1,105 @@
+﻿@model Recipes.ViewModels.RecipeViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@Html.BodyTagUpdate("recipe")
+@Html.Partial("_RecipeNav")
+@Html.RecipeCaloricContent()
+
+<form>
+<fieldset>
+    <legend>Recipe</legend>
+
+    <ol>
+        <li class="styled">
+            <div class="display-label">Name</div>
+            <div class="display-field">@Model.Recipe.RecipeName</div>
+        </li>
+    </ol>
+
+    <ol>
+        <li class="styled">
+            <div class="display-label">Category</div>
+            <div class="display-field">@Html.ActionLink(Model.Recipe.Category.CategoryName, "../Category/Details", new { id = Model.Recipe.Category.CategoryID })</div>
+        </li>
+    </ol>
+
+    <ol>
+        <li class="styled">
+            <div class="display-label">Subcategory</div>
+            <div class="display-field">@Html.ActionLink(Model.Recipe.SubCategory.SubCategoryName, "../SubCategory/Details", new { id = Model.Recipe.SubCategory.SubCategoryID })</div>
+        </li>
+    </ol>
+</fieldset>
+
+<fieldset>
+    <legend>Ingredients</legend>
+
+    <ol>
+    @foreach (Recipes.Models.RecipeIngredient ingredient in Model.Recipe.RecipeIngredients)
+    {
+        <li class="styled">
+        <div>
+            <div class="display-field">@Html.ActionLink(ingredient.Ingredient.IngredientName, "../Ingredient/Details", new {id = ingredient.IngredientID})</div>
+            @Html.MeasureImageDiv(ingredient.Ingredient.Measure.MeasureID)
+            <div class="display-field">@ingredient.Quantity</div>
+            </div>
+        </li> 
+
+    }
+    </ol>
+</fieldset>
+
+<fieldset>
+    <legend>Caloric content</legend>
+
+    <ol>
+        <li class="styled">
+            <div class="display-label">Protein</div>
+            <div class="display-field">@Model.Recipe.TotalProteinCalories</div>
+        </li>
+    </ol>
+    <ol>
+        <li class="styled">
+            <div class="display-label">Fat</div>
+            <div class="display-field">@Model.Recipe.TotalFatCalories</div>
+        </li>
+    </ol>
+    <ol>
+        <li class="styled">
+            <div class="display-label">Carbs</div>
+            <div class="display-field">@Model.Recipe.TotalCarbCalories</div>
+        </li>
+    </ol>
+    <ol>
+        <li class="styled">
+            <div class="display-label">Total</div>
+            <div class="display-field">@Model.Recipe.TotalCalories</div>
+        </li>
+    </ol>
+    
+</fieldset>
+
+<fieldset>
+    <legend>How to Cook</legend>
+    <ol>
+        <li class="styled">
+            <!--<div class="display-label">Description</div>-->
+            <div class="display-textarea"> @MvcHtmlString.Create(Model.Recipe.Description)</div>
+        </li>
+    </ol>
+</fieldset>
+
+<fieldset>
+    <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.Recipe.RecipeID })</div>
+    <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
+</fieldset>
+
+<fieldset>
+    <legend>Caloric Content</legend>
+    <div id="chart_div" style="width: 400px; height: 200px;"></div>
+</fieldset>
+
+</form>

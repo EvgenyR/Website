@@ -1,0 +1,38 @@
+﻿@model Recipes.ViewModels.BlogViewModel
+<link href="@Url.Content("~/Content/blog.css")" rel="stylesheet" type="text/css" />
+@foreach (var post in Model.Posts)
+{
+    <div id="middlecolumn">
+    <!--
+        <div class="blogcontainer">
+            <h3 class="title">
+                <a href="http://justmycode.blogspot.com.au/2012/08/the-case-of-strangely-coloured.html">
+                    The Case of a Strangely Coloured ProgressBar </a>
+            </h3>
+            <div class="info">
+                <span class="submitted">Submitted on Sunday, August 5, 2012</span>
+            </div>
+            <ol>
+                <li>test</li>
+            </ol>
+            At first this bug report puzzled me a bit.
+            <p>
+                test</p>
+            Essentially it said "Progress bar fills with blue rectangles, status text nearly
+            impossible to read". That was a case of "works on my machine" because all I could
+            see was that:
+            <h4 class="title">
+                <a href="http://justmycode.blogspot.com.au/2012/08/the-case-of-strangely-coloured.html">
+                    Read More</a></h4>
+        </div>
+        -->
+        <div class="blogcontainer">
+            <h3 class="title">
+                <a href="#">@post.Title</a></h3>
+            <div class="info">
+                <span class="submitted">Submitted on @post.DateCreated</span>
+            </div>
+            @MvcHtmlString.Create(post.Content)
+        </div>
+    </div>
+}

@@ -1,0 +1,114 @@
+﻿/*dynamicdrive.com/style/blog/*/
+
+body{
+margin: 0;
+padding: 0;
+font: normal 90% "Lucida Grande", "Trebuchet MS", Verdana, Helvetica, sans-serif;
+/*background: #568150 url(http://www.dynamicdrive.com/eeincludes/burst.png) no-repeat center -100px;*/
+}
+
+div.blogcontainer ul
+{
+    list-style-type: circle;
+}
+
+div.blogcontainer li
+{
+    display: list-item;
+    list-style-type: inherit;
+}
+
+div.blogcontainer ol
+{
+    list-style-type: decimal;
+    margin: 1em;
+}
+
+div.blogcontainer a:link    { color: #aa2716}
+div.blogcontainer a:visited { color: #821F11}  
+div.blogcontainer a:hover, div.blogcontainer a:active  { color: red;}
+
+div.blogcontainer a:link    { color: #d82412}
+div.blogcontainer a:visited { color: #a12115}
+
+/* middle column */
+
+#middlecolumn
+{
+overflow:hidden;
+background-color: transparent;
+min-width: 497px;
+max-width: 800px;
+float: left;
+border-left: 1px solid #C3C3C3;
+padding-left: 10px;
+padding-right: 10px;
+margin-top: 1em;
+padding-bottom: 1em;
+}
+
+.headers{
+border: 1px solid #BBB;
+border-bottom:1px solid gray;
+width: 99%;
+background: url(chromebg.gif) center center repeat-x;
+margin-left: 0;
+padding: 2px 0 2px 5px;
+text-align: left;
+font-size: 120%;
+}
+
+.headers img{
+float: right;
+margin-right: 5px;
+padding-top: 5px;
+}
+
+.headers span, .headers a.bar{
+padding: 5px 0;
+padding-left: 0;
+}
+
+.headers a.bar{
+/*background: transparent url(arrowbullet2.gif) no-repeat center right;*/
+text-decoration: none;
+/*padding-right: 18px;*/
+color: #273565;
+}
+
+.headers a:visited, .headers a:active{
+color: #273565;
+}
+
+.headers a:hover{
+color: blue;
+}
+
+div.blogcontainer{
+font-size: 90%;
+border-bottom: 1px solid #D8D8D8;
+}
+
+div.blogcontainer .title{
+margin-top: 10px;
+margin-bottom: 0;
+padding: 0;
+}
+
+div.blogcontainer .info{
+color: gray;
+margin-top: 1px;
+}
+
+/*
+.blogcontainer p{
+margin: 8px 0;
+}*/
+
+/*
+div.info + p:first-letter{
+font-size:;
+float:left;
+font: bold 180% Arial;
+margin-right: 3px;
+}*/

@@ -1,0 +1,60 @@
+﻿/* Styles for the vertical pop out menu */
+/* ago.tanfa.co.uk/css/examples/menu/tutorial-v.html */
+/* www.devinrolsen.com/pure-css-vertical-menu */
+
+div.menu {
+    width: 12em;
+    background: #eee;
+}
+
+div.menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+div.menu a, div.menu h2 {
+    font: bold 11px/16px arial, helvetica, sans-serif;
+    display: block;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ccc #888 #555 #bbb;
+    margin: 0;
+    padding: 2px 3px;
+}
+
+div.menu h2 {
+    color: #fff;
+    background: #000;
+    text-transform: uppercase;
+}
+
+div.menu a {
+    color: #000;
+    background: #efefef;
+    text-decoration: none;
+}
+
+div.menu a:hover {
+    color: #a00;
+    background: #fff;
+}
+
+div.menu li {position: relative;}
+
+div.menu ul ul ul {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 100%;
+}
+
+div.menu ul ul ul,
+div.menu ul ul li:hover ul ul,
+div.menu ul ul li:hover ul ul ul
+{display: none;}
+
+div.menu ul ul li:hover ul,
+div.menu ul ul ul li:hover ul,
+div.menu ul ul ul ul li:hover ul
+{display: block;}

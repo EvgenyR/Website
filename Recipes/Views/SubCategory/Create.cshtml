@@ -1,0 +1,48 @@
+﻿@model Recipes.ViewModels.SubCategoryViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@Html.BodyTagUpdate("subcategory")
+@Html.Partial("_RecipeNav")
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>SubCategory</legend>
+
+        <ol>
+            <li class="styled">
+                @Html.LabelFor(model => model.SubCategory.CategoryID)
+                @Html.DropDownListFor(model => model.SubCategory.CategoryID, new SelectList(Model.Categories, "CategoryID", "CategoryName", Model.SubCategory.CategoryID))
+                @Html.ValidationMessageFor(model => model.SubCategory.CategoryID)
+            </li>
+        </ol>
+
+        <ol>
+            <li class="styled">
+                @Html.LabelFor(model => model.SubCategory.SubCategoryName)
+                @Html.EditorFor(model => model.SubCategory.SubCategoryName)
+                @Html.ValidationMessageFor(model => model.SubCategory.SubCategoryName)
+            </li>
+        </ol>
+
+        <ol>
+            <li class="styled">
+            @Html.LabelFor(model => model.SubCategory.Description)
+            @Html.EditorFor(model => model.SubCategory.Description)
+            @Html.ValidationMessageFor(model => model.SubCategory.Description)
+            </li>
+        </ol>
+
+    </fieldset>
+    
+    <fieldset>
+        <input class="buttonlink" type="submit" value="Create" />
+        <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
+    </fieldset>
+    
+}

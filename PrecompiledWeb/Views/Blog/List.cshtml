@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Recipes.Models.Blog>
+@{
+    ViewBag.Title = "List";
+}
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <div class="buttonlink">@Html.ActionLink("Create New", "Create")</div>
+        <div class="buttonlink" style="width: 150px">@Html.ActionLink("Blog Engine Home", "../Blog/Index")</div>
+    </fieldset>
+    
+    foreach (var item in Model)
+    {
+    <ol class="styled">
+        <li class="styled">
+            <div class="display-button">@Html.ActionLink("Edit", "Edit", new { id = item.BlogID })
+            </div>
+            <div class="display-button">@Html.ActionLink("Posts", "../Post/Index", new { id = item.BlogID })</div>
+            <div class="display-button">@Html.ActionLink("Details", "Details", new { id = item.BlogID })</div>
+            <div class="display-button">@Html.ActionLink("Delete", "Delete", new { id = item.BlogID })</div>
+            <div class="display-info">@item.Title</div>
+        </li>
+    </ol>
+    }
+}

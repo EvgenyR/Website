@@ -1,0 +1,49 @@
+﻿@model Recipes.ViewModels.CategoryViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+@Html.BodyTagUpdate("category")
+@Html.Partial("_RecipeNav")
+
+<form>
+<fieldset>
+    <legend>Category</legend>
+
+    <ol>
+        <li class="styled">
+            <div class="display-label">CategoryName</div>
+            <div class="display-field">@Model.Category.CategoryName</div>
+        </li>
+    </ol>
+
+    <ol>
+        <li class="styled">
+            <div class="display-label">Description</div>
+            <div class="display-field"> @Html.DisplayFor(model => model.Category.Description)</div>
+        </li>
+    </ol>
+</fieldset>
+
+@if (Model.Category.Recipes != null && Model.Category.Recipes.Count > 0)
+{
+<fieldset>
+    <legend>These Recipes Belong to the Category:</legend>
+    <ol>
+    @foreach (var item in Model.Category.Recipes)
+    {
+        <li class="styled">
+            <div class="display-label"></div>
+            <div class="display-field">@Html.ActionLink(item.RecipeName, "../Recipe/Details", new { id = item.RecipeID })</div>
+        </li>
+    }
+    </ol>
+</fieldset>
+}
+
+<fieldset>
+    <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.Category.CategoryID })</div>
+    <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
+</fieldset>
+</form>

@@ -1,0 +1,18 @@
+﻿@model Recipes.ViewModels.RecipeListViewModel
+           
+@{ Layout = null; }
+
+<div class="selectedRecipes">
+    @foreach (var item in Model.RecipesList)
+    {
+    <ol>
+        <li class="styled">
+            <div class="display-button">@Html.ActionLink("Edit", "Edit", new { id = item.RecipeID })
+            </div>
+            <div class="display-button">@Html.ActionLink("Details", "Details", new { id = item.RecipeID })</div>
+            <div class="display-button">@Html.ActionLink("Delete", "Delete", new { id = item.RecipeID })</div>
+            <div class="display-info">@item.RecipeName</div>
+        </li>
+    </ol>
+    }
+</div> 

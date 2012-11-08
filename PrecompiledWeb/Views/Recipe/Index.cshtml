@@ -1,0 +1,83 @@
+﻿@model Recipes.ViewModels.RecipeListViewModel
+@{
+    ViewBag.Title = "Index";
+}
+@Html.BodyTagUpdate("recipe")
+@Html.Partial("_RecipeNav")
+<script type="text/javascript">
+<!--
+    $(function () {
+
+        $('#SubCategoryID').change(function () {
+            var selectedSubCategoryID = $(this).val();
+
+            $('#update').load("/Recipe/UpdateSelected", { subcatid: selectedSubCategoryID });
+        });
+
+        $('#CategoryID').change(function () {
+            var selectedCategoryId = $(this).val();
+            //var selectedSubCategoryId = 0;
+            $.getJSON('@Url.Action("SelectCategory")', { categoryid: selectedCategoryId }, function (subcategories) {
+                var subsSelect = $('#SubCategoryID');
+                subsSelect.empty();
+                $.each(subcategories, function (index, subcat) {
+                    if (index == 0) {
+                        $('#update').load("/Recipe/UpdateSelected", { subcatid: subcat.SubCategoryID });
+                    }
+                    subsSelect.append(
+                        $('<option/>')
+                            .attr('value', subcat.SubCategoryID)
+                            .text(subcat.SubCategoryName)
+                    );
+                });
+            });
+        });
+    });
+-->
+</script>
+@using (Html.BeginForm())
+{
+    <br/>
+    <fieldset>
+        <legend>Recipe by Category/Subcategory</legend>
+        <ol>
+            <li class="styled">
+                @Html.LabelFor(model => model.CategoryID)
+                @Html.DropDownListFor(model => model.CategoryID, new SelectList(Model.Categories, "CategoryID", "CategoryName", Model.CategoryID))
+                @Html.ValidationMessageFor(model => model.CategoryID)
+            </li>
+        </ol>
+        <ol>
+            <li class="styled">
+                @Html.LabelFor(model => model.SubCategoryID)
+                @Html.DropDownListFor(model => model.SubCategoryID, new SelectList(Model.SubCategories, "SubCategoryID", "SubCategoryName", Model.SubCategoryID))
+                @Html.ValidationMessageFor(model => model.SubCategoryID)
+            </li>
+        </ol>
+    </fieldset>
+    
+    <div id="update">
+    @Html.Partial("_SelectedRecipes", Model)
+    </div>
+    
+    <fieldset>
+        <div class="buttonlink">@Html.ActionLink("Create New", "Create")</div>
+    </fieldset>
+    
+    <fieldset>
+        <legend>Full List of Recipes</legend>
+    </fieldset>
+    
+    foreach (var item in Model.Recipes)
+    {
+    <ol>
+        <li class="styled">
+            <div class="display-button">@Html.ActionLink("Edit", "Edit", new { id = item.RecipeID })
+            </div>
+            <div class="display-button">@Html.ActionLink("Details", "Details", new { id = item.RecipeID })</div>
+            <div class="display-button">@Html.ActionLink("Delete", "Delete", new { id = item.RecipeID })</div>
+            <div class="display-info">@item.RecipeName</div>
+        </li>
+    </ol>
+    }
+}

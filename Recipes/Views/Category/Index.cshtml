@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Recipes.Models.Category>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@Html.BodyTagUpdate("category")
+@Html.Partial("_RecipeNav")
+
+<form>
+    <fieldset>
+        <div class="buttonlink">@Html.ActionLink("Create New", "Create")</div>
+    </fieldset>
+
+@foreach (var item in Model) {
+       <ol>
+            <li class="styled">
+                <div class="display-button">@Html.ActionLink("Edit", "Edit", new { id=item.CategoryID }) </div>
+                <div class="display-button">@Html.ActionLink("Details", "Details", new { id=item.CategoryID }) </div>
+                <div class="display-button">@Html.ActionLink("Delete", "Delete", new { id = item.CategoryID })</div>
+                <div class="display-info">@Html.DisplayFor(modelItem => item.CategoryName)</div>
+                <div class="display-info">@Html.DisplayFor(modelItem => item.Description)</div>
+            </li>
+        </ol>
+}
+
+</form>

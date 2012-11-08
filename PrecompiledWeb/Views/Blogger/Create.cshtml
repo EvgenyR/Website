@@ -1,0 +1,24 @@
+﻿@model Recipes.Models.Blogger
+@{
+    ViewBag.Title = "Create";
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Blogger</legend>
+        <ol>
+            <li class="styled">
+                @Html.LabelFor(model => model.BloggerName)
+                @Html.EditorFor(model => model.BloggerName)
+                @Html.ValidationMessageFor(model => model.BloggerName)
+            </li>
+        </ol>
+    </fieldset>
+    
+    <fieldset>
+        <input class="buttonlink" type="submit" value="Create" />
+        <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
+    </fieldset>
+}

@@ -1,0 +1,25 @@
+﻿@model Recipes.Models.Blogger
+@{
+    ViewBag.Title = "Edit";
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Blogger</legend>
+        @Html.HiddenFor(model => model.BloggerID)
+        <ol>
+            <li class="styled">
+                @Html.LabelFor(model => model.BloggerName)
+                @Html.EditorFor(model => model.BloggerName)
+                @Html.ValidationMessageFor(model => model.BloggerName)
+            </li>
+        </ol>
+    </fieldset>
+    
+    <fieldset>
+        <input class="buttonlink" type="submit" value="Save" />
+        <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
+    </fieldset>
+}

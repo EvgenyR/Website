@@ -1,0 +1,66 @@
+﻿@model Recipes.ViewModels.IngredientViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+@Html.BodyTagUpdate("ingredient")
+@Html.Partial("_RecipeNav")
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Ingredient</legend>
+
+        @Html.HiddenFor(model => model.Ingredient.IngredientID)
+
+        <ol>
+            <li class="styled">
+                @Html.LabelFor(model => model.Ingredient.IngredientName)
+                @Html.EditorFor(model => model.Ingredient.IngredientName)
+                @Html.ValidationMessageFor(model => model.Ingredient.IngredientName)
+            </li>
+
+            <li class="styled">
+                @Html.LabelFor(model => model.Ingredient.MeasureID)
+                @Html.DropDownListFor(model => model.Ingredient.MeasureID, new SelectList(Model.Measures, "MeasureID", "MeasureName", Model.Ingredient.MeasureID))
+                @Html.ValidationMessageFor(model => model.Ingredient.MeasureID)
+            </li>
+        </ol>
+    </fieldset>
+    
+    <fieldset>
+    <legend>Nutritional Value</legend>
+
+        <ol>
+            <li class="styled">
+                @Html.LabelFor(model => model.Ingredient.Fat)
+                @Html.EditorFor(model => model.Ingredient.Fat)
+                @Html.ValidationMessageFor(model => model.Ingredient.Fat)
+            </li>
+
+            <li class="styled">
+                @Html.LabelFor(model => model.Ingredient.Carb)
+                @Html.EditorFor(model => model.Ingredient.Carb)
+                @Html.ValidationMessageFor(model => model.Ingredient.Carb)
+            </li>
+
+            <li class="styled">
+                @Html.LabelFor(model => model.Ingredient.Protein)
+                @Html.EditorFor(model => model.Ingredient.Protein)
+                @Html.ValidationMessageFor(model => model.Ingredient.Protein)
+            </li>
+
+
+        </ol>
+    </fieldset>
+    
+    <fieldset>
+        <input class="buttonlink" type="submit" value="Save" />
+        <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
+    </fieldset>
+}
+

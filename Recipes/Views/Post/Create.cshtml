@@ -1,0 +1,38 @@
+﻿@model Recipes.ViewModels.PostViewModel
+@{
+    ViewBag.Title = "Create";
+}
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Post</legend>
+        @Html.HiddenFor(model => model.Post.BlogID)
+        @Html.HiddenFor(model => model.Post.PostID)
+        @Html.HiddenFor(model => model.Post.DateCreated)
+        <ol>
+            <li class="styled">
+                @Html.LabelFor(model => model.Post.Title)
+                @Html.EditorFor(model => model.Post.Title)
+                @Html.ValidationMessageFor(model => model.Post.Title)
+            </li>
+            <li class="styled">
+                @Html.LabelFor(model => model.Post.BriefContent)
+                @Html.EditorFor(model => model.Post.BriefContent)
+                @Html.ValidationMessageFor(model => model.Post.BriefContent)
+            </li>
+            <li class="styled">
+                @Html.LabelFor(model => model.Post.RestOfContent)
+                @Html.EditorFor(model => model.Post.RestOfContent)
+                @Html.ValidationMessageFor(model => model.Post.RestOfContent)
+            </li>
+        </ol>
+    </fieldset>
+    
+    <fieldset>
+        <input class="buttonlink" type="submit" value="Create" />
+        <div class="buttonlink">@Html.ActionLink("Back to List", "../Post/Index", new { id = Model.BlogID })</div>
+    </fieldset>
+       
+}

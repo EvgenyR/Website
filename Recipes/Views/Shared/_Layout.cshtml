@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="@Url.Content("~/Content/Site.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.8.0.min.js")" type="text/javascript"></script>
+    <!-- Syntax Highlighter javascript -->
+    <script src="@Url.Content("~/Scripts/shCore.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/shBrushCSharp.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/shBrushXML.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/shBrushJScript.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/shBrushCss.js")" type="text/javascript"></script>
+    <!-- Syntax Highlighter css -->
+    <link href="@Url.Content("~/Content/shCore.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/shThemeDefault.css")" rel="stylesheet" type="text/css" />
+    <!--[if lt IE 7]>
+		<link rel="stylesheet" type="text/css" href="style-ie.css" />
+	<![endif]-->
+</head>
+<body>
+    <div id="page-wrap">
+        <div id="inside">
+            <div id="topside">
+                <header>
+                    <div id="header">
+                        <div id="title">
+                            <!--<h1></h1>-->
+                        </div>
+   			        </div>
+                </header>
+                <div id="left-sidebar">
+                    @Html.Action("MenuResult", "LeftMenu")
+                </div>
+                <content>
+                <div id="main-content" role="main">
+                    @RenderBody()
+                </div>
+                </content>
+                <div style="clear: both;">
+                </div>
+            </div> <!-- topside -->
+            <div id="footer">
+                <script type="text/javascript">
+                    ddg_k_title = '';
+                    ddg_k_bold_karma = '1';
+                    ddg_k_link_karma = '0';
+                    ddg_k_link_label = '0';
+                    ddg_k_show_username = '0';
+                    ddg_k_show_service_name = '0';
+                    ddg_k_paren_karma = '0';
+                    ddg_k_vertical_spacing = '5';
+                    ddg_k_column_width = '150';
+                    ddg_k_padding = '5';
+                    ddg_k_font_size = '9pt';
+                    ddg_k_font_color = 'black';
+                    ddg_k_font_family = '';
+                    ddg_k_border = '1px solid #AAA';
+                </script>
+                <div id="holder" style="position: relative; height: 76px; width: 50%; margin: 0px auto">
+                    <div id="ddg_k" style="width: 150px; height: 47px; font-size: 9pt; background: white;
+                        padding: 5px; text-align: left; float: left">
+                    </div>
+                    <script type="text/javascript" src="http://karma.duckduckgo.com/k.js?t=1,5&u=Evgeny,evgenyr"></script>
+                    <div id="so" style="width: 212px; font-size: 9pt; padding: 1px 1px 1px 10px; text-align: left; float: left">
+                        <a href="http://stackoverflow.com/users/26447/evgeny">
+                            <img src="http://stackoverflow.com/users/flair/26447.png?theme=clean" width="208"
+                                height="58" alt="Evgeny at Stack Overflow" title="Evgeny at Stack Overflow">
+                        </a> 
+                </div>
+            </div>
+            <!-- end footer -->
+        </div>
+        <div style="clear: both;">
+        </div><!-- inside -->
+    </div><!-- page wrap -->
+</body>
+</html>

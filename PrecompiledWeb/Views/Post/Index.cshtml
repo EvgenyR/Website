@@ -1,0 +1,29 @@
+﻿@model Recipes.ViewModels.PostViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<form>
+    <fieldset>
+        <div class="buttonlink">@Html.ActionLink("Create New", "Create", new {id=Model.Blog.BlogID})</div>
+        <div class="buttonlink" style="width: 150px">@Html.ActionLink("Blog Engine Home", "../Blog/Index")</div>
+    </fieldset>
+
+
+@foreach (var item in Model.Posts) 
+{
+    var subContent = item.Content;
+    if (subContent.Length > 50) { subContent = subContent.Substring(0, 50) + "..."; }
+    
+    <ol>
+        <li class="styled">
+            <div class="display-button">@Html.ActionLink("Edit", "Edit", new { id=item.PostID }) </div>
+            <div class="display-button">@Html.ActionLink("Details", "Details", new { id = item.PostID }) </div>
+            <div class="display-button">@Html.ActionLink("Delete", "Delete", new { id = item.PostID }) </div>
+            <div class = "display-info">@item.Title</div>
+            <div class="display-info">@subContent</div>
+        </li>
+    </ol>
+}
+</form>

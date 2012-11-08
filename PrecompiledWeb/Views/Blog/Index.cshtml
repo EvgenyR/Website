@@ -1,0 +1,29 @@
+﻿@model Recipes.ViewModels.BlogViewModel
+@{
+    ViewBag.Title = "Index";
+}
+<script type="text/javascript">
+    function Display() {
+        $('#update').load("/Blog/Update", { id: $("#Blog_BlogID").val() });
+    }
+</script>
+@using (Html.BeginForm())
+{
+    <div id="editorRows">
+        <ol>
+            <li class="styled">
+                @Html.ValidationMessageFor(model => model.Blog.BlogID)
+                <div class="display-label" style="width: 200px">
+                    Select a Blog to Display:
+                </div>@Html.DropDownListFor(model => model.Blog.BlogID, new SelectList(Model.Blogs, "BlogID", "Title", Model.Blog.BlogID))
+                <input class="buttonright" id="display" type="button" onclick="Display();" value="Display" />
+                <div class="buttonright" style="float: right">@Html.ActionLink("Manage Blogs", "List")</div>
+                <div class="buttonright" style="float: right">@Html.ActionLink("Manage Bloggers", "../Blogger/Index")</div>
+            </li>
+        </ol>
+    </div>
+    
+    <div id="update">
+        @Html.Partial("_BlogContent", Model)
+    </div>
+}

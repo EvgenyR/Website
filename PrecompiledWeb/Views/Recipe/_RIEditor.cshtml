@@ -1,0 +1,15 @@
+﻿@using Recipes.HtmlHelpers
+@model Recipes.Models.RecipeIngredient
+           
+@{ Layout = null; }
+
+<div class="editorRow">
+    @using (Html.BeginCollectionItem("Recipe.RecipeIngredients"))
+    {
+        <li class="styled">
+        <div class="display-label">Ingredient:</div>@Html.DropDownListFor(model => model.IngredientID, new SelectList(Model.AllIngredients, "IngredientID", "IngredientName", Model.IngredientID))
+        <div class="display-label-nofloat">Amount:</div>@Html.TextBoxFor(model => model.Quantity, new { size = 4 })
+        <div class="buttonright"><a href="#" class="deleteRow">Delete</a></div>
+        </li>
+    }
+</div> 

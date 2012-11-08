@@ -1,0 +1,38 @@
+﻿@model Recipes.Models.Category
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@Html.BodyTagUpdate("category")
+@Html.Partial("_RecipeNav")
+
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <legend>Category</legend>
+
+        <ol>
+            <li class="styled">
+                @Html.LabelFor(model => model.CategoryName)
+                @Html.EditorFor(model => model.CategoryName)
+                @Html.ValidationMessageFor(model => model.CategoryName)
+            </li>
+        </ol>
+
+        <ol>
+            <li class="styled">
+            @Html.LabelFor(model => model.Description)
+            @Html.EditorFor(model => model.Description)
+            @Html.ValidationMessageFor(model => model.Description)
+            </li>
+        </ol>
+    </fieldset>
+    
+    <fieldset>
+        <input class="buttonlink" type="submit" value="Create" />
+        <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
+    </fieldset>
+}

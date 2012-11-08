@@ -1,0 +1,27 @@
+﻿@model Recipes.ViewModels.YahooViewModel
+@Html.BodyTagUpdate("game")
+<div id="page" style="min-width:500px">
+    @Html.Partial("_YahooNav")
+</div>
+
+<style type="text/css">
+    .webGrid {margin: 4px; border-collapse: collapse; width: 500px;}
+    .header {background-color: #E8E8E8; font-weight: bold; color: #FFF;}
+    .webGrid th, .webGrid td { border: 1px solid #C0C0C0; padding: 5px;}
+    .alt {background-color: #E8E8E8; color: #000;}
+    .time {width: 200px; font-weight:bold;}
+</style>
+
+<li class="styled">
+        @Html.LabelFor(model => model.Symbol.YahooSymbolID)
+        @Html.DropDownListFor(model => model.Symbol.YahooSymbolID, new SelectList(Model.Symbols, "YahooSymbolID", "YahooSymbolName", Model.YahooSymbolID))
+        @Html.ValidationMessageFor(model => model.Symbol.YahooSymbolID)
+</li>
+
+@{ var grid = new WebGrid(Model.Datas, columnNames: new[] {"DataName", "Date", "LTP", "Time", "Volume", "Ask", "Bid", "High", "Low"});
+   @grid.GetHtml(columns: grid.Columns( 
+   grid.Column("DataName", header:"Company", format:@<text>@Html.ActionLink((string)item.DataName, "Details", "Company", new {id=item.SymbolId}, null)</text>),
+   grid.Column("DateTime", header:"Time", style:"time", format:@<text>@item.DateTime.ToString("dd/MM/yyyy hh:mm")</text>), 
+   grid.Column("LTP"), grid.Column("Volume"), grid.Column("Ask"), grid.Column("Bid"), grid.Column("High"), grid.Column("Low")),
+   tableStyle: "webGrid", headerStyle: "header", alternatingRowStyle: "alt");
+ }

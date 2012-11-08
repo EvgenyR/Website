@@ -1,0 +1,39 @@
+﻿@model Recipes.ViewModels.BloggerViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+<form>
+<fieldset>
+    <legend>Blogger</legend>
+
+        <ol>
+        <li class="styled">
+            <div class="display-label">@Html.LabelFor(model => model.Blogger.BloggerName)</div>
+            <div class="display-field">@Model.Blogger.BloggerName</div>
+        </li>
+    </ol>
+</fieldset>
+
+@if (Model.Blogs != null && Model.Blogs.Count > 0)
+{ 
+    <fieldset>
+        <legend>Has the following blogs</legend>
+        <ol>
+            @foreach (Recipes.Models.Blog b in Model.Blogs)
+            { 
+                <li class="styled">
+                    <div class="display-label">
+                    </div>
+                    <div class="display-field">@Html.ActionLink(b.Title, "../Blog/Details", new { id = b.BlogID })</div>
+                </li>
+            }
+        </ol>
+    </fieldset>
+}
+
+<fieldset>
+    <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.Blogger.BloggerID })</div>
+    <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
+</fieldset>
+</form>

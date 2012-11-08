@@ -1,0 +1,64 @@
+﻿@model Recipes.ViewModels.IngredientViewModel
+@{
+    ViewBag.Title = "Details";
+}
+@Html.BodyTagUpdate("ingredient")
+@Html.Partial("_RecipeNav")
+@Html.IngredientCaloricContent()
+<form>
+<fieldset>
+    <legend>Ingredient</legend>
+    <ol>
+        <li class="styled">
+            <div class="display-label">@Html.LabelFor(model => model.Ingredient.IngredientName)</div>
+            <div class="display-field">@Model.Ingredient.IngredientName</div>
+        </li>
+        <li class="styled">
+            <div class="display-label">@Html.LabelFor(model => model.Ingredient.MeasureID)</div>
+            <div class="display-field">@Model.Ingredient.Measure.MeasureName</div>
+        </li>
+    </ol>
+</fieldset>
+<fieldset>
+    <legend>Nutritional Value</legend>
+    <ol>
+        <li class="styled">
+            <div class="display-label">@Html.LabelFor(model => model.Ingredient.Fat)</div>
+            <div class="display-field">@Model.Ingredient.Fat.ToString()</div>
+        </li>
+        <li class="styled">
+            <div class="display-label">@Html.LabelFor(model => model.Ingredient.Carb)</div>
+            <div class="display-field">@Model.Ingredient.Carb.ToString()</div>
+        </li>
+        <li class="styled">
+            <div class="display-label">@Html.LabelFor(model => model.Ingredient.Protein)</div>
+            <div class="display-field">@Model.Ingredient.Protein.ToString()</div>
+        </li>
+    </ol>
+</fieldset>
+@if (Model.Ingredient.RecipeIngredients != null && Model.Ingredient.RecipeIngredients.Count > 0)
+{
+    <fieldset>
+        <legend>Is used in the following recipes</legend>
+        <ol>
+            @foreach (Recipes.Models.RecipeIngredient ri in Model.Ingredient.RecipeIngredients)
+            { 
+                <li class="styled">
+                    <div class="display-label">
+                    </div>
+                    <div class="display-field">@Html.ActionLink(ri.Recipe.RecipeName, "../Recipe/Details", new { id = ri.Recipe.RecipeID })</div>
+                </li>
+            }
+        </ol>
+    </fieldset>
+}
+<fieldset>
+    <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.Ingredient.IngredientID })</div>
+    <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
+</fieldset>
+<fieldset>
+    <legend>Caloric Content</legend>
+    <div id="chart_div" style="width: 400px; height: 200px;">
+    </div>
+</fieldset>
+</form>
