@@ -114,5 +114,1177 @@ namespace Recipes.Models.BlogContents
         +
         "width=\"320\" src=\"http://1.bp.blogspot.com/-zrsGWl30oDw/UCg8Eh58kbI/AAAAAAAABCo/AZl4DUFqe6w/s320/Untitled05.png\" /></a></div><p align=\"center\">Select User or Group</p><li>Click <b>OK</b>. Now the <b>Permissions Entry for Bob's Documents</b> window will pop up. Let's give Bob full control - click the checkbox across from <b>Full Control</b> under <b>Allow</b>. All other checkboxes under <b>Allow</b> will select automatically. Click <b>OK</b> to close this window.</li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://1.bp.blogspot.com/-KjhuD2ebT1k/UCg8EW-5UdI/AAAAAAAABCc/4ta4-IT-Zg4/s1600/Untitled06.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"320\" width=\"250\" src=\"http://1.bp.blogspot.com/-KjhuD2ebT1k/UCg8EW-5UdI/AAAAAAAABCc/4ta4-IT-Zg4/s320/Untitled06.png\" /></a></div><p align=\"center\">Permissions Entry for Bob's Documents</p><li>About done. Click <b>OK</b> in <b>Advanced Security Settings for Bob's Documents</b> to close it, and in another <b>Advanced Security Settings for Bob's Documents</b> to close it too, and <b>OK</b> in <b>Bob's Documents Properties</b>.</li><li>Try to browse to <b>Bob's Documents</b>. Even if you're on <b>Administrator</b> account, you should not be able to, but you should if you are logged in as Bob.</li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://4.bp.blogspot.com/-o6D7UJbi200/UCg8EKsNOdI/AAAAAAAABCQ/68g828PrdUk/s1600/Untitled07.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"155\" width=\"320\" src=\"http://4.bp.blogspot.com/-o6D7UJbi200/UCg8EKsNOdI/AAAAAAAABCQ/68g828PrdUk/s320/Untitled07.png\" /></a></div><p align=\"center\">Permissions are set</p></ol>"
         ;
+
+        public const string content_08112012_b = "";
+        public const string content_08112012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_25102012_b = "";
+        public const string content_25102012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_14102012_b = "";
+        public const string content_14102012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_07102012_b = "";
+        public const string content_07102012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_27092012_b = "";
+        public const string content_27092012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_13092012_b = "";
+        public const string content_13092012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_11092012_b = "";
+        public const string content_11092012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_09082012_b = "";
+        public const string content_09082012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_06082012_b = "";
+        public const string content_06082012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_05082012_b = "";
+        public const string content_05082012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_04082012_b = "";
+        public const string content_04082012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_31072012_b = "";
+        public const string content_31072012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_17072012_b = "";
+        public const string content_17072012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_05072012_b = "";
+        public const string content_05072012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_14062012_b = "";
+        public const string content_14062012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_12062012_b = "";
+        public const string content_12062012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_15052012_b = "";
+        public const string content_15052012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_13052012_b = "";
+        public const string content_13052012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_02052012_b = "";
+        public const string content_02052012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_04042012_b = "";
+        public const string content_04042012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_01042012_b = "";
+        public const string content_01042012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_29032012_b = "";
+        public const string content_29032012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_28032012_b = "";
+        public const string content_28032012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_26032012_b = "";
+        public const string content_26032012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_25032012_b = "";
+        public const string content_25032012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_20032012_b = "";
+        public const string content_20032012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_19032012_b = "";
+        public const string content_19032012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_18032012_b = "";
+        public const string content_18032012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_14032012_b = "";
+        public const string content_14032012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_08032012_b = "";
+        public const string content_08032012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_07032012_b = "";
+        public const string content_07032012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_06032012_b = "";
+        public const string content_06032012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_05032012_b = "";
+        public const string content_05032012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_04032012_b = "";
+        public const string content_04032012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_26022012_b = "";
+        public const string content_26022012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_23022012_b = "";
+        public const string content_23022012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_14022012_b = "";
+        public const string content_14022012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_12022012_b = "";
+        public const string content_12022012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_09022012_b = "";
+        public const string content_09022012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_06022012_b = "";
+        public const string content_06022012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_03022012_b = "";
+        public const string content_03022012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_02022012_b = "";
+        public const string content_02022012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_09012012_b = "";
+        public const string content_09012012_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_15122011_b = "";
+        public const string content_15122011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_09122011_b = "";
+        public const string content_09122011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_06122011_b = "";
+        public const string content_06122011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_03122011_b = "";
+        public const string content_03122011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_02122011_b = "";
+        public const string content_02122011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_01122011_b = "";
+        public const string content_01122011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_28112011_b = "";
+        public const string content_28112011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_27112011_b = "";
+        public const string content_27112011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_26112011_b = "";
+        public const string content_26112011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_23112011_b = "";
+        public const string content_23112011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_22112011_b = "";
+        public const string content_22112011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_18112011_b = "";
+        public const string content_18112011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_14112011_b = "";
+        public const string content_14112011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_11112011_b = "";
+        public const string content_11112011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_09112011_b = "";
+        public const string content_09112011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_05112011_b = "";
+        public const string content_05112011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_03112011_b = "";
+        public const string content_03112011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_02112011_b = "";
+        public const string content_02112011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_25102011_b = "";
+        public const string content_25102011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_24102011_b = "";
+        public const string content_24102011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_16102011_b = "";
+        public const string content_16102011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_13102011_b = "";
+        public const string content_13102011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_12102011_b = "";
+        public const string content_12102011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_11102011_b = "";
+        public const string content_11102011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_10102011_b = "";
+        public const string content_10102011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_04102011_b = "";
+        public const string content_04102011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_22082011_b = "";
+        public const string content_22082011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_15082011_b = "";
+        public const string content_15082011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_17072011_b = "";
+        public const string content_17072011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_28062011_b = "";
+        public const string content_28062011_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_10052010_b = "";
+        public const string content_10052010_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_11122009_b = "";
+        public const string content_11122009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_24112009_b = "";
+        public const string content_24112009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_19112009_b = "";
+        public const string content_19112009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_03102009_b = "";
+        public const string content_03102009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_01102009_b = "";
+        public const string content_01102009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_16092009_b = "";
+        public const string content_16092009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_10092009_b = "";
+        public const string content_10092009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_01092009_b = "";
+        public const string content_01092009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_24082009_b = "";
+        public const string content_24082009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_30072009_b = "";
+        public const string content_30072009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_29072009_b = "";
+        public const string content_29072009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_22072009_b = "";
+        public const string content_22072009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_19072009_b = "";
+        public const string content_19072009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_17072009_b = "";
+        public const string content_17072009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_15072009_b = "";
+        public const string content_15072009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_10072009_b = "";
+        public const string content_10072009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_07072009_b = "";
+        public const string content_07072009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_27062009_b = "";
+        public const string content_27062009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_23062009_b = "";
+        public const string content_23062009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_16062009_b = "";
+        public const string content_16062009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_09062009_b = "";
+        public const string content_09062009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_25052009_b = "";
+        public const string content_25052009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_15052009_b = "";
+        public const string content_15052009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_14052009_b = "";
+        public const string content_14052009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_10052009_b = "";
+        public const string content_10052009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_23042009_b = "";
+        public const string content_23042009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_21042009_b = "";
+        public const string content_21042009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_17042009_b = "";
+        public const string content_17042009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_15042009_b = "";
+        public const string content_15042009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_14042009_b = "";
+        public const string content_14042009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_10042009_b = "";
+        public const string content_10042009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_08042009_b = "";
+        public const string content_08042009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_07042009_b = "";
+        public const string content_07042009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_01042009_b = "";
+        public const string content_01042009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_22032009_b = "";
+        public const string content_22032009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_19032009_b = "";
+        public const string content_19032009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_15032009_b = "";
+        public const string content_15032009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_14032009_b = "";
+        public const string content_14032009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_06032009_b = "";
+        public const string content_06032009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_02032009_b = "";
+        public const string content_02032009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_23022009_b = "";
+        public const string content_23022009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_22022009_b = "";
+        public const string content_22022009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_18022009_b = "";
+        public const string content_18022009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_16022009_b = "";
+        public const string content_16022009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_12022009_b = "";
+        public const string content_12022009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_11022009_b = "";
+        public const string content_11022009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_10022009_b = "";
+        public const string content_10022009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_09022009_b = "";
+        public const string content_09022009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_05022009_b = "";
+        public const string content_05022009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_04022009_b = "";
+        public const string content_04022009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_26012009_b = "";
+        public const string content_26012009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_20012009_b = "";
+        public const string content_20012009_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_16122008_b = "";
+        public const string content_16122008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_15122008_b = "";
+        public const string content_15122008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_10122008_b = "";
+        public const string content_10122008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_13112008_b = "";
+        public const string content_13112008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_05112008_b = "";
+        public const string content_05112008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_28102008_b = "";
+        public const string content_28102008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_25102008_b = "";
+        public const string content_25102008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_23102008_b = "";
+        public const string content_23102008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_20102008_b = "";
+        public const string content_20102008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_15102008_b = "";
+        public const string content_15102008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_14102008_b = "";
+        public const string content_14102008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_09102008_b = "";
+        public const string content_09102008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_07102008_b = "";
+        public const string content_07102008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_06102008_b = "";
+        public const string content_06102008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_05102008_b = "";
+        public const string content_05102008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_04102008_b = "";
+        public const string content_04102008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_02102008_b = "";
+        public const string content_02102008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_01102008_b = "";
+        public const string content_01102008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_30092008_b = "";
+        public const string content_30092008_r = "";
+
+        /* 
+
+
+        */
+
+        public const string content_29092008_b = "";
+        public const string content_29092008_r = "";
+
+        /* 
+
+
+        */ 
+
+
+
+
     }
 }

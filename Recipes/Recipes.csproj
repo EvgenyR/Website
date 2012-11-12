@@ -149,6 +149,8 @@
     <Compile Include="HtmlHelpers\SearchHelpers.cs" />
     <Compile Include="HtmlHelpers\SteppingStoneHelpers.cs" />
     <Compile Include="HtmlHelpers\TextHelpers.cs" />
+    <Compile Include="HtmlHelpers\WebGrid.cs" />
+    <Compile Include="HtmlHelpers\WebGridExtensions.cs" />
     <Compile Include="Models\Blog.cs" />
     <Compile Include="Models\BlogContents\BlogPosts.cs" />
     <Compile Include="Models\BlogContents\BlogPosts2.cs" />

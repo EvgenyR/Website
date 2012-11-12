@@ -1,4 +1,5 @@
 ﻿@model Recipes.ViewModels.YahooViewModel
+@using Recipes.HtmlHelpers;
 @Html.BodyTagUpdate("game")
 <div id="page" style="min-width:500px">
     @Html.Partial("_YahooNav")
@@ -18,7 +19,8 @@
         @Html.ValidationMessageFor(model => model.Symbol.YahooSymbolID)
 </li>
 
-@{ var grid = new WebGrid(Model.Datas, columnNames: new[] {"DataName", "Date", "LTP", "Time", "Volume", "Ask", "Bid", "High", "Low"});
+@{ //var grid = new WebGrid(Model.Datas, columnNames: new[] {"DataName", "Date", "LTP", "Time", "Volume", "Ask", "Bid", "High", "Low"});
+   var grid = Html.Grid(Model.Datas);
    @grid.GetHtml(columns: grid.Columns( 
    grid.Column("DataName", header:"Company", format:@<text>@Html.ActionLink((string)item.DataName, "Details", "Company", new {id=item.SymbolId}, null)</text>),
    grid.Column("DateTime", header:"Time", style:"time", format:@<text>@item.DateTime.ToString("dd/MM/yyyy hh:mm")</text>), 
