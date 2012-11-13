@@ -17,7 +17,7 @@ namespace Recipes.Controllers
         //
         // GET: /Yahoo/
         
-        public ActionResult Index()
+        public ActionResult Index(int page=1)
         {
             //CookieContainer container = Authenticate();
             //CookieCollection cookies = container.GetCookies(new Uri("http://download.yahoo.com"));
@@ -31,17 +31,30 @@ namespace Recipes.Controllers
             //}
 
             //return View(new YahooViewModel(new List<string>{"one", "two", "three"}));
-            List<YahooData> datas = GetData();
-            
+            //List<YahooData> datas = GetData();
+            int totalRecords;
+            List<YahooData> datas = GetData(out totalRecords, pageSize: 5, pageIndex: page - 1);
+
             List<YahooSymbol> symbols = db.YahooSymbols.ToList();
             YahooSymbol symbol = symbols.First();
             int id = symbol.YahooSymbolID;
-            return View(new YahooViewModel(id, symbol, symbols, datas));
+            return View(new YahooViewModel(id, symbol, symbols, datas, totalRecords));
         }
 
         public ActionResult Theory()
         {
             return View();
+        }
+
+        public List<YahooData> GetData(out int totalRecords, int pageSize, int pageIndex)
+        {
+            List<YahooData> data = GetData();
+            totalRecords = data.Count;
+            if(pageSize > 0 && pageIndex >=0)
+            {
+                data = data.Skip(pageIndex*pageSize).Take(pageSize).ToList();
+            }
+            return data.ToList();
         }
 
         public List<YahooData> GetData()

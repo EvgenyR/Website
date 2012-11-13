@@ -13,13 +13,15 @@ namespace Recipes.ViewModels
         public List<YahooSymbol> Symbols { get; set; }
         public YahooSymbol Symbol { get; set; }
         public int YahooSymbolID { get; set; }
+        public int TotalRows { get; set; }
 
-        public YahooViewModel(int symbolid, YahooSymbol symbol, List<YahooSymbol> symbols, List<YahooData> datas)
+        public YahooViewModel(int symbolid, YahooSymbol symbol, List<YahooSymbol> symbols, List<YahooData> datas, int totalRows)
         {
             Symbol = symbol;
             YahooSymbolID = symbolid;
             Symbols = symbols;
             Datas = datas;
+            TotalRows = totalRows;
         }
 
         /*

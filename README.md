@@ -7,4 +7,4 @@ My website is built using the ASP.NET MVC and I'm updating it continuously, addi
 
   [this address]: http://www.ynegve.info
   
-![Alt text](/screen.png "Website front page")
+![Website front page](https://raw.github.com/EvgenyR/Website/master/screen.png)

@@ -1,9 +1,6 @@
 ﻿@model Recipes.ViewModels.YahooViewModel
 @using Recipes.HtmlHelpers;
 @Html.BodyTagUpdate("game")
-<div id="page" style="min-width:500px">
-    @Html.Partial("_YahooNav")
-</div>
 
 <style type="text/css">
     .webGrid {margin: 4px; border-collapse: collapse; width: 500px;}
@@ -13,17 +10,30 @@
     .time {width: 200px; font-weight:bold;}
 </style>
 
-<li class="styled">
-        @Html.LabelFor(model => model.Symbol.YahooSymbolID)
-        @Html.DropDownListFor(model => model.Symbol.YahooSymbolID, new SelectList(Model.Symbols, "YahooSymbolID", "YahooSymbolName", Model.YahooSymbolID))
-        @Html.ValidationMessageFor(model => model.Symbol.YahooSymbolID)
-</li>
+<div id="page" style="min-width:500px">
+    @Html.Partial("_YahooNav")
 
-@{ //var grid = new WebGrid(Model.Datas, columnNames: new[] {"DataName", "Date", "LTP", "Time", "Volume", "Ask", "Bid", "High", "Low"});
-   var grid = Html.Grid(Model.Datas);
-   @grid.GetHtml(columns: grid.Columns( 
-   grid.Column("DataName", header:"Company", format:@<text>@Html.ActionLink((string)item.DataName, "Details", "Company", new {id=item.SymbolId}, null)</text>),
-   grid.Column("DateTime", header:"Time", style:"time", format:@<text>@item.DateTime.ToString("dd/MM/yyyy hh:mm")</text>), 
-   grid.Column("LTP"), grid.Column("Volume"), grid.Column("Ask"), grid.Column("Bid"), grid.Column("High"), grid.Column("Low")),
-   tableStyle: "webGrid", headerStyle: "header", alternatingRowStyle: "alt");
- }
+    <div id="webgrid" style="float:left; min-width:500px;">
+        @{ //var grid = new WebGrid(Model.Datas, columnNames: new[] {"DataName", "Date", "LTP", "Time", "Volume", "Ask", "Bid", "High", "Low"});
+           //var grid = Html.Grid(Model.Datas);
+            var grid = new WebGrid<Recipes.Models.Yahoo.YahooData>(null, rowsPerPage: 5, defaultSort: "YahooSymbolName");
+           grid.Bind(Model.Datas, rowCount: Model.TotalRows, autoSortAndPage: false);
+           @grid.GetHtml(columns: grid.Columns( 
+           grid.Column("DataName", header:"Company", format:@<text>@Html.ActionLink((string)item.DataName, "Details", "Company", new {id=item.SymbolId}, null)</text>),
+           grid.Column("DateTime", header:"Time", style:"time", format:@<text>@item.DateTime.ToString("dd/MM/yyyy hh:mm")</text>), 
+           grid.Column("LTP"), grid.Column("Volume"), grid.Column("Ask"), grid.Column("Bid"), grid.Column("High"), grid.Column("Low")),
+           tableStyle: "webGrid", headerStyle: "header", alternatingRowStyle: "alt");
+         }
+    </div>
+    <div id="buttons" style="float:right; min-width:100px; padding:10px">
+        <li class="styled">
+                @Html.LabelFor(model => model.Symbol.YahooSymbolID)
+                @Html.DropDownListFor(model => model.Symbol.YahooSymbolID, new SelectList(Model.Symbols, "YahooSymbolID", "YahooSymbolName", Model.YahooSymbolID))
+                @Html.ValidationMessageFor(model => model.Symbol.YahooSymbolID)
+        </li>
+    </div>
+    <div id="stopstart" style="padding:10px; height: 25px; clear: both;">
+        <input id="stop" type="button" style="margin:3px" onclick="Stop();" value="Stop" /><input id="start"
+            type="button" style="margin:3px" onclick="Start();" value="Start" />
+    </div>
+</div>
