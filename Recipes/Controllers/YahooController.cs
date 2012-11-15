@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Web.Mvc;
 using System;
@@ -46,10 +47,40 @@ namespace Recipes.Controllers
             return View();
         }
 
-        public List<YahooData> GetData(out int totalRecords, int pageSize, int pageIndex)
+        // helpers that take an IQueryable<Product> and a bool to indicate ascending/descending
+        // and apply that ordering to the IQueryable and return the result
+        private readonly IDictionary<string, Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>>>
+            _productOrderings = new Dictionary<string, Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>>>
+                                    {
+                                        {"DataName", CreateOrderingFunc<YahooData, string>(p=>p.DataName)},
+                                        {"Ask", CreateOrderingFunc<YahooData, decimal?>(p=>p.Ask)}
+                                    };
+
+        /// <summary>
+        /// returns a Func that takes an IQueryable and a bool, and sorts the IQueryable (ascending or descending based on the bool).
+        /// The sort is performed on the property identified by the key selector.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TKey"></typeparam>
+        /// <param name="keySelector"></param>
+        /// <returns></returns>
+        private static Func<IQueryable<T>, bool, IOrderedQueryable<T>> CreateOrderingFunc<T, TKey>(Expression<Func<T, TKey>> keySelector)
+        {
+            return
+                (source, ascending) =>
+                ascending
+                    ? source.OrderBy(keySelector)
+                    : source.OrderByDescending(keySelector);
+        }
+
+        public List<YahooData> GetData(out int totalRecords, int pageSize, int pageIndex, string sort = "YahooSymbolName", SortDirection sortOrder = SortDirection.Ascending )
         {
             List<YahooData> data = GetData();
             totalRecords = data.Count;
+
+            //Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>> applyOrdering = _productOrderings[sort];
+            //data = applyOrdering(data, sortOrder == SortDirection.Ascending);
+
             if(pageSize > 0 && pageIndex >=0)
             {
                 data = data.Skip(pageIndex*pageSize).Take(pageSize).ToList();
@@ -172,5 +203,11 @@ namespace Recipes.Controllers
             }
             return _yahooContainer;
         }
+    }
+
+    public enum SortDirection
+    {
+        Ascending,
+        Descending
     }
 }
