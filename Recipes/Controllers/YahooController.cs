@@ -35,11 +35,15 @@ namespace Recipes.Controllers
             //List<YahooData> datas = GetData();
             int totalRecords;
             List<YahooData> datas = GetData(out totalRecords, pageSize: 5, pageIndex: page - 1);
+            return View(GetFullViewModel(datas, totalRecords));
+        }
 
+        private YahooViewModel GetFullViewModel(List<YahooData> datas, int totalRecords)
+        {
             List<YahooSymbol> symbols = db.YahooSymbols.ToList();
             YahooSymbol symbol = symbols.First();
             int id = symbol.YahooSymbolID;
-            return View(new YahooViewModel(id, symbol, symbols, datas, totalRecords));
+            return new YahooViewModel(id, symbol, symbols, datas, totalRecords);
         }
 
         public ActionResult Theory()
@@ -75,7 +79,7 @@ namespace Recipes.Controllers
 
         public List<YahooData> GetData(out int totalRecords, int pageSize, int pageIndex, string sort = "YahooSymbolName", SortDirection sortOrder = SortDirection.Ascending )
         {
-            List<YahooData> data = GetData();
+            List<YahooData> data = db.YahooData.ToList();
             totalRecords = data.Count;
 
             //Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>> applyOrdering = _productOrderings[sort];
@@ -88,7 +92,7 @@ namespace Recipes.Controllers
             return data.ToList();
         }
 
-        public List<YahooData> GetData()
+        public List<YahooData> GetSingleSet()
         {
             List<YahooData> datas = new List<YahooData>();
 
@@ -100,13 +104,25 @@ namespace Recipes.Controllers
             {
                 string t = streamReader.ReadToEnd();
                 string[] strings = t.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                datas = InsertData(strings);
+                datas = ParseData(strings);
             }
             
             return datas;
         }
 
-        private List<YahooData> InsertData(string[] lines)
+        public ActionResult AddDataToDB()
+        {
+            List<YahooData> datas = GetSingleSet();
+            datas.ForEach(d => db.YahooData.Add(d));
+            db.SaveChanges();
+
+            List<YahooData> newDatas = db.YahooData.ToList();
+            YahooViewModel model = GetFullViewModel(newDatas, newDatas.Count); 
+
+            return View("Index", model);
+        }
+
+        private List<YahooData> ParseData(string[] lines)
         {
             List<YahooData> datas = new List<YahooData>();
             try
@@ -116,14 +132,9 @@ namespace Recipes.Controllers
                     if (!String.IsNullOrEmpty(line))
                     {
                         YahooData datum = GetDatum(line);
-                        for (int i = 0; i < 5; i++ )
-                            datas.Add(datum);
-                        //_db.Data.AddObject(datum);
-                        //_db.SaveChanges();
+                        datas.Add(datum);
                     }
                 }
-                //_db.Refresh(RefreshMode.StoreWins, _db.Data);
-                //DataDownloaded(this, new EventArgs());
             }
             catch (Exception ex)
             {

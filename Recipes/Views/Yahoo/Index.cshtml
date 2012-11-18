@@ -10,7 +10,8 @@
 
     var timerID;
 
-    function GetSomeData(
+    function GetSomeData() {
+    }
 
     function Start() {
         timerID = setInterval("$('#update').load('/Yahoo/Update')", 1000);
@@ -51,7 +52,7 @@
         </li>
     </div>
     <div id="stopstart" style="padding:10px; height: 25px; clear: both;">
-    <input id="getsomedata" type="button" style="margin:3px" onclick="GetSomeData();" value="GetSomeData" />
+    <input id="getsomedata" type="button" style="margin:3px" onclick="location.href='@Url.Action("AddDataToDB", "Yahoo", null)'" value="GetSomeData" />
         <input id="stop" type="button" style="margin:3px" onclick="Stop();" value="Stop" /><input id="start"
             type="button" style="margin:3px" onclick="Start();" value="Start" />
     </div>
