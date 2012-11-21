@@ -2,58 +2,132 @@
 @using Recipes.HtmlHelpers;
 @Html.BodyTagUpdate("game")
 
-    <script src="@Url.Content("~/Scripts/jquery-1.4.4.min.js")" type="text/javascript"></script>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+ 
 
     <script type="text/javascript">
 
-    $.ajaxSetup({cache: false});
+        $.ajaxSetup({ cache: false });
 
-    var timerID;
+        var timerID;
 
-    function GetSomeData() {
-    }
+        function ShowDialog(msg) {
+            $('<div/>').dialog({ title: 'Retrieved the following data', width: 450, height: 250 }).html(msg);
+        }
 
-    function Start() {
-        timerID = setInterval("$('#update').load('/Yahoo/Update')", 1000);
-    }
+        function RetrieveData() {
+            alert("get some data");
 
-    function Stop() {
-        clearInterval(timerID);
-    }
+            $.post('@Url.Action("AddDataToDB","yahoo")',
+            function (d) {
+                ShowDialog(d.o);
+            });
+        }
 
-</script>
+        function RefreshView() {
+            alert("refresh view");
+
+            $.post('@Url.Action("RefreshView","yahoo")');
+        }
+
+        function GetSomeData() {
+            RetrieveData();
+            RefreshView();
+        }
+
+        function Start() {
+            timerID = setInterval("$('#update').load('/Yahoo/Update')", 1000);
+        }
+
+        function Stop() {
+            clearInterval(timerID);
+        }
+
+    </script>
 
 <style type="text/css">
-    .webGrid {margin: 4px; border-collapse: collapse; width: 500px;}
-    .header {background-color: #E8E8E8; font-weight: bold; color: #FFF;}
-    .webGrid th, .webGrid td { border: 1px solid #C0C0C0; padding: 5px;}
+    .webgrid
+    {
+        width: 100%;
+        border: 0px;
+        border-collapse: collapse;
+        font-size:13px;
+        color:#000000;
+
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        font-family: Verdana;
+        color: #000000;
+        line-height: 1.6em;
+        border-top: 1px solid #D6E8FF;
+        border-left: 1px solid #D6E8FF;
+        border-right: 1px solid #D6E8FF;
+    }
+    .webgrid-header
+    {
+        padding: 6px 5px;
+        text-align: left;
+        background-color: #3399FF; /*#D8D8D8;*/
+        border-bottom: 2px solid #3966A2;
+        height: 20px;
+        border-top: 1px solid #D6E8FF;
+        border-left: 1px solid #D6E8FF;
+        border-right: 1px solid #D6E8FF;
+    }
+    .webgrid-footer
+    {
+        padding: 6px 5px;
+        text-align: center;
+       /* background-color: #e8eef4;  */
+        background-color: #ffffff;
+        border-top: 2px solid #3966A2;
+        height: 30px;
+
+        border-bottom: 2px solid #D6E8FF;
+        border-left: 2px solid #D6E8FF;
+        border-right: 2px solid #D6E8FF;
+    }
+    .webgrid-alternating-row
+    {
+        height: 30px;
+        background-color: #f2f2f2;
+        border-bottom: 1px solid #d2d2d2;
+        border-left: 2px solid #D6E8FF;
+        border-right: 2px solid #D6E8FF;
+        border-top:1px solid #d2d2d2;
+    }
+    .webgrid-row-style
+    {
+        height: 30px;
+        border-bottom: 1px solid #d2d2d2;
+        border-top:1px solid #d2d2d2;
+        border-left: 1px solid #D6E8FF;
+        border-right: 1px solid #D6E8FF;
+    }
+    .webgrid-selected-row
+    {
+        font-weight: bold;
+    }    
     .alt {background-color: #E8E8E8; color: #000;}
     .time {width: 200px; font-weight:bold;}
+    .company{width: 140px;}
+    .volume{width: 100px;}
+    .ask{width: 70px;}
+
 </style>
 
 <div id="page" style="min-width:500px">
     @Html.Partial("_YahooNav")
 
-    <div id="grid" style="float:left; min-width:500px;">
-        @{ var grid = new WebGrid<Recipes.Models.Yahoo.YahooData>(null, rowsPerPage: 5, defaultSort: "YahooSymbolName", ajaxUpdateContainerId: "grid");
-           grid.Bind(Model.Datas, rowCount: Model.TotalRows, autoSortAndPage: false);
-           @grid.GetHtml(columns: grid.Columns( 
-           grid.Column("DataName", header:"Company", format:@<text>@Html.ActionLink((string)item.DataName, "Details", "Company", new {id=item.SymbolId}, null)</text>),
-           grid.Column("DateTime", header:"Time", style:"time", format:@<text>@item.DateTime.ToString("dd/MM/yyyy hh:mm")</text>), 
-           grid.Column("LTP"), grid.Column("Volume"), grid.Column("Ask"), grid.Column("Bid"), grid.Column("High"), grid.Column("Low")),
-           tableStyle: "webGrid", headerStyle: "header", alternatingRowStyle: "alt");
-         }
+    <div id="wbgrid" style="float:left; min-width:500px;">
+        @Html.Partial("_WebGrid", Model)
     </div>
-    <div id="buttons" style="float:right; min-width:100px; padding:10px">
-        <li class="styled">
-                @Html.LabelFor(model => model.Symbol.YahooSymbolID)
-                @Html.DropDownListFor(model => model.Symbol.YahooSymbolID, new SelectList(Model.Symbols, "YahooSymbolID", "YahooSymbolName", Model.YahooSymbolID))
-                @Html.ValidationMessageFor(model => model.Symbol.YahooSymbolID)
-        </li>
-    </div>
+    @Html.Partial("Doggy")
     <div id="stopstart" style="padding:10px; height: 25px; clear: both;">
-    <input id="getsomedata" type="button" style="margin:3px" onclick="location.href='@Url.Action("AddDataToDB", "Yahoo", null)'" value="GetSomeData" />
-        <input id="stop" type="button" style="margin:3px" onclick="Stop();" value="Stop" /><input id="start"
-            type="button" style="margin:3px" onclick="Start();" value="Start" />
+    <!-- <input id="getsomedata" type="button" style="margin:3px" onclick="location.href='@Url.Action("AddDataToDB", "Yahoo", null)'" value="GetSomeData" /> -->
+    <input id="getsomedata" type="button" style="margin:3px" onclick="GetSomeData();" value="GetSomeData" />
+        <input id="stop" type="button" style="margin:3px" onclick="Stop();" value="Stop" />
+        <input id="start" type="button" style="margin:3px" onclick="Start();" value="Start" />
+        <input id="dlg" type="button" style="margin:3px" onclick="ShowDialog();" value="Dialog" />
     </div>
-</div>

@@ -20,22 +20,9 @@ namespace Recipes.Controllers
         
         public ActionResult Index(int page=1)
         {
-            //CookieContainer container = Authenticate();
-            //CookieCollection cookies = container.GetCookies(new Uri("http://download.yahoo.com"));
-
-            //List<Cookie> modelCookies = new List<Cookie>();
-
-            //for (int i = 0; i < cookies.Count; i++ )
-            //{
-            //    Cookie cookie = cookies[i];
-            //    modelCookies.Add(cookie);
-            //}
-
-            //return View(new YahooViewModel(new List<string>{"one", "two", "three"}));
-            //List<YahooData> datas = GetData();
             int totalRecords;
             List<YahooData> datas = GetData(out totalRecords, pageSize: 5, pageIndex: page - 1);
-            return View(GetFullViewModel(datas, totalRecords));
+            return View("Index", GetFullViewModel(datas, totalRecords));
         }
 
         private YahooViewModel GetFullViewModel(List<YahooData> datas, int totalRecords)
@@ -56,8 +43,10 @@ namespace Recipes.Controllers
         private readonly IDictionary<string, Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>>>
             _productOrderings = new Dictionary<string, Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>>>
                                     {
+                                        {"YahooSymbolName", CreateOrderingFunc<YahooData, string>(p=>p.DataName)},
                                         {"DataName", CreateOrderingFunc<YahooData, string>(p=>p.DataName)},
-                                        {"Ask", CreateOrderingFunc<YahooData, decimal?>(p=>p.Ask)}
+                                        {"Ask", CreateOrderingFunc<YahooData, decimal?>(p=>p.Ask)},
+                                        {"Time", CreateOrderingFunc<YahooData, DateTime>(p=>p.DateTime)}
                                     };
 
         /// <summary>
@@ -79,17 +68,18 @@ namespace Recipes.Controllers
 
         public List<YahooData> GetData(out int totalRecords, int pageSize, int pageIndex, string sort = "YahooSymbolName", SortDirection sortOrder = SortDirection.Ascending )
         {
-            List<YahooData> data = db.YahooData.ToList();
-            totalRecords = data.Count;
+            IQueryable<YahooData> data = db.YahooData;
+            totalRecords = data.Count();
 
-            //Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>> applyOrdering = _productOrderings[sort];
-            //data = applyOrdering(data, sortOrder == SortDirection.Ascending);
+            Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>> applyOrdering = _productOrderings[sort];
+            data = applyOrdering(data, sortOrder == SortDirection.Ascending);
 
+            List<YahooData> result = data.ToList();
             if(pageSize > 0 && pageIndex >=0)
             {
-                data = data.Skip(pageIndex*pageSize).Take(pageSize).ToList();
+                result = result.Skip(pageIndex*pageSize).Take(pageSize).ToList();
             }
-            return data.ToList();
+            return result;
         }
 
         public List<YahooData> GetSingleSet()
@@ -116,8 +106,33 @@ namespace Recipes.Controllers
             datas.ForEach(d => db.YahooData.Add(d));
             db.SaveChanges();
 
+            string s = "<table><thead><tr class=\"webgrid-header\"><th>Company</th><th>Time</th><th>LTP</th><th>Volume</th><th>Ask</th><th>Bid</th><th>High</th><th>Low</th></tr></thead><tbody>";
+
+            foreach (var yahooData in datas)
+            {
+                s = s + "<tr class=\"webgrid-row-style\">" + 
+                    "<td class=\"company\">" + yahooData.DataName + "</td>" +
+                    "<td class=\"time\">" + yahooData.DateTime.ToString("dd/MM/yyyy hh:mm") + "</td>" +
+                    "<td class=\"ask\">" + yahooData.LTP + "</td>" +
+                    "<td class=\"volume\">" + yahooData.Volume + "</td>" +
+                    "<td class=\"ask\">" + yahooData.Ask + "</td>" +
+                    "<td class=\"ask\">" + yahooData.Bid + "</td>" +
+                    "<td class=\"ask\">" + yahooData.High + "</td>" +
+                    "<td class=\"ask\">" + yahooData.Low + "</td>" +
+                    "</tr>";
+            }
+
+            s = s + "</tbody></table>";
+
+            return Json(new { o = s });
+
+            //return View("Index", model);
+        }
+
+        public ActionResult RefreshView()
+        {
             List<YahooData> newDatas = db.YahooData.ToList();
-            YahooViewModel model = GetFullViewModel(newDatas, newDatas.Count); 
+            YahooViewModel model = GetFullViewModel(newDatas, newDatas.Count);
 
             return View("Index", model);
         }

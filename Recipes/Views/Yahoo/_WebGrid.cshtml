@@ -1,0 +1,22 @@
+﻿@model Recipes.ViewModels.YahooViewModel
+@using Recipes.HtmlHelpers;
+
+    @{ var grid = new WebGrid<Recipes.Models.Yahoo.YahooData>(null, rowsPerPage: 5, defaultSort: "YahooSymbolName", ajaxUpdateContainerId: "wbgrid");
+    grid.Bind(Model.Datas, rowCount: Model.TotalRows, autoSortAndPage: false);
+    }
+
+    @grid.GetHtml(columns: grid.Columns(
+    grid.Column("DataName", header: "Company", style: "company", format: @<text>@Html.ActionLink((string)item.DataName, "Details", "Company", new { id = item.SymbolId }, null)</text>),
+    grid.Column("DateTime", header: "Time", style: "time", format: @<text>@item.DateTime.ToString("dd/MM/yyyy hh:mm")</text>),
+    grid.Column("LTP", style: "ask"), 
+    grid.Column("Volume", style: "volume"), 
+    grid.Column("Ask", style: "ask"),
+    grid.Column("Bid", style: "ask"),
+    grid.Column("High", style: "ask"),
+    grid.Column("Low", style: "ask")),
+    tableStyle: "webgrid",
+    headerStyle: "webgrid-header",
+    footerStyle: "webgrid-footer",
+    selectedRowStyle: "webgrid-selected-row",
+    rowStyle: "webgrid-row-style" 
+        /*alternatingRowStyle: "alt"*/)
