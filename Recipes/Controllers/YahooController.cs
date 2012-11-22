@@ -18,10 +18,10 @@ namespace Recipes.Controllers
         //
         // GET: /Yahoo/
         
-        public ActionResult Index(int page=1)
+        public ActionResult Index(int page = 1, string sort = "YahooSymbolName", string sortDir = "Ascending")
         {
             int totalRecords;
-            List<YahooData> datas = GetData(out totalRecords, pageSize: 5, pageIndex: page - 1);
+            List<YahooData> datas = GetData(out totalRecords, pageSize: 5, pageIndex: page - 1, sort: sort, sortOrder: GetSortDirection(sortDir));
             return View("Index", GetFullViewModel(datas, totalRecords));
         }
 
@@ -129,14 +129,6 @@ namespace Recipes.Controllers
             //return View("Index", model);
         }
 
-        public ActionResult RefreshView()
-        {
-            List<YahooData> newDatas = db.YahooData.ToList();
-            YahooViewModel model = GetFullViewModel(newDatas, newDatas.Count);
-
-            return View("Index", model);
-        }
-
         private List<YahooData> ParseData(string[] lines)
         {
             List<YahooData> datas = new List<YahooData>();
@@ -228,6 +220,19 @@ namespace Recipes.Controllers
                 //Authenticated(this, new EventArgs());
             }
             return _yahooContainer;
+        }
+
+        private SortDirection GetSortDirection(string sortDirection)
+        {
+            if (sortDirection != null)
+            {
+                if (sortDirection.Equals("DESC", StringComparison.OrdinalIgnoreCase) ||
+                    sortDirection.Equals("DESCENDING", StringComparison.OrdinalIgnoreCase))
+                {
+                    return SortDirection.Descending;
+                }
+            }
+            return SortDirection.Ascending;
         }
     }
 

@@ -11,38 +11,19 @@
 
         $.ajaxSetup({ cache: false });
 
-        var timerID;
-
         function ShowDialog(msg) {
-            $('<div/>').dialog({ title: 'Retrieved the following data', width: 450, height: 250 }).html(msg);
+            $('<div/>').dialog({ title: 'Retrieved the following data', width: 450, height: 250, close: function(){ location.reload(); }}).html(msg);
         }
 
         function RetrieveData() {
-            alert("get some data");
-
             $.post('@Url.Action("AddDataToDB","yahoo")',
             function (d) {
                 ShowDialog(d.o);
             });
         }
 
-        function RefreshView() {
-            alert("refresh view");
-
-            $.post('@Url.Action("RefreshView","yahoo")');
-        }
-
         function GetSomeData() {
             RetrieveData();
-            RefreshView();
-        }
-
-        function Start() {
-            timerID = setInterval("$('#update').load('/Yahoo/Update')", 1000);
-        }
-
-        function Stop() {
-            clearInterval(timerID);
         }
 
     </script>
