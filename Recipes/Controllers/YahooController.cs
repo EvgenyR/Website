@@ -41,7 +41,7 @@ namespace Recipes.Controllers
         // helpers that take an IQueryable<Product> and a bool to indicate ascending/descending
         // and apply that ordering to the IQueryable and return the result
         private readonly IDictionary<string, Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>>>
-            _productOrderings = new Dictionary<string, Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>>>
+            _dataOrderings = new Dictionary<string, Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>>>
                                     {
                                         {"YahooSymbolName", CreateOrderingFunc<YahooData, string>(p=>p.DataName)},
                                         {"DataName", CreateOrderingFunc<YahooData, string>(p=>p.DataName)},
@@ -71,7 +71,7 @@ namespace Recipes.Controllers
             IQueryable<YahooData> data = db.YahooData;
             totalRecords = data.Count();
 
-            Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>> applyOrdering = _productOrderings[sort];
+            Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>> applyOrdering = _dataOrderings[sort];
             data = applyOrdering(data, sortOrder == SortDirection.Ascending);
 
             List<YahooData> result = data.ToList();

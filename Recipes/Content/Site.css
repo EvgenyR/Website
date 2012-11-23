@@ -88,10 +88,11 @@ div.generalText p
 	
 #header 
 {
-    /*background: url(images/topbg.gif) no-repeat left top;*/
+    /*background: url(images/Laptop_saver.jpg) repeat-x left top;*/
 	/*background: #00B2EE;*/
+	/*background-repeat:repeat-x;*/
 	text-align: center;
-	height: 50px;
+	height: 150px;
 }
 	
 #left-sidebar {
