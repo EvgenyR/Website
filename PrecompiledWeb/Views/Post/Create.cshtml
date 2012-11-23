@@ -18,17 +18,21 @@
                 @Html.ValidationMessageFor(model => model.Post.Title)
             </li>
             <li class="styled">
-                @Html.ValidationMessageFor(model => model.Post.Title)
-                @Html.LabelFor(model => model.Post.Content)
-                @Html.EditorFor(model => model.Post.Content)
-                @Html.ValidationMessageFor(model => model.Post.Content)
+                @Html.LabelFor(model => model.Post.BriefContent)
+                @Html.EditorFor(model => model.Post.BriefContent)
+                @Html.ValidationMessageFor(model => model.Post.BriefContent)
+            </li>
+            <li class="styled">
+                @Html.LabelFor(model => model.Post.RestOfContent)
+                @Html.EditorFor(model => model.Post.RestOfContent)
+                @Html.ValidationMessageFor(model => model.Post.RestOfContent)
             </li>
         </ol>
     </fieldset>
     
     <fieldset>
         <input class="buttonlink" type="submit" value="Create" />
-        <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
+        <div class="buttonlink">@Html.ActionLink("Back to List", "../Post/Index", new { id = Model.BlogID })</div>
     </fieldset>
        
 }

@@ -10,32 +10,26 @@
         <legend>Post</legend>
         <ol>
             <li class="styled">
-                <div class="display-label">
-                    @Html.DisplayNameFor(model => model.Title)
-                </div>
-                <div class="display-field">
-                    @Html.DisplayFor(model => model.Title)
-                </div>
+                <div class="display-label">@Html.DisplayNameFor(model => model.Title)</div><br/>
+                <div class="display-textarea">@Html.DisplayFor(model => model.Title)</div>
             </li>
         </ol>
         <ol>
             <li class="styled">
-                <div class="display-label">
-                    @Html.DisplayNameFor(model => model.DateCreated)
-                </div>
-                <div class="display-field">
-                    @Html.DisplayFor(model => model.DateCreated)
-                </div>
+                <div class="display-label">@Html.DisplayNameFor(model => model.DateCreated)</div>
+                <div class="display-field">@Html.DisplayFor(model => model.DateCreated)</div>
             </li>
         </ol>
         <ol>
             <li class="styled">
-                <div class="display-label">
-                    @Html.DisplayNameFor(model => model.Content)
-                </div>
-                <div class="display-field">
-                    @Html.DisplayFor(model => model.Content)
-                </div>
+                <div class="display-label">@Html.DisplayNameFor(model => model.BriefContent)</div><br/>
+                <div class="display-textarea">@Html.DisplayFor(model => model.BriefContent)</div>
+            </li>
+        </ol>
+        <ol>
+            <li class="styled">
+                <div class="display-label">@Html.DisplayNameFor(model => model.RestOfContent)</div><br/>
+                <div class="display-textarea">@Html.DisplayFor(model => model.RestOfContent)</div>
             </li>
         </ol>
     </fieldset>

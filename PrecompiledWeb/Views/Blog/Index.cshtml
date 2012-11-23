@@ -3,9 +3,25 @@
     ViewBag.Title = "Index";
 }
 <script type="text/javascript">
+<!--
     function Display() {
         $('#update').load("/Blog/Update", { id: $("#Blog_BlogID").val() });
-    }
+    };
+
+    function MorePosts() {
+        var newValue = parseInt($("#hiddenPosts").val()) + 1;
+        alert(newValue);
+        $('#hiddenPosts').val(newValue);
+        $('#update').load("/Blog/MorePosts", { id: $("#Blog_BlogID").val(), postsDisplayed: newValue });
+    };
+
+    function LessPosts() {
+        var newValue = $("#hiddenPosts").val() - 1;
+        alert(newValue);
+        $('#hiddenPosts').val(newValue);
+        $('#update').load("/Blog/LessPosts", { id: $("#Blog_BlogID").val(), postsDisplayed: newValue});
+    };
+-->
 </script>
 @using (Html.BeginForm())
 {
@@ -27,3 +43,5 @@
         @Html.Partial("_BlogContent", Model)
     </div>
 }
+
+@Html.HighLightSyntax()

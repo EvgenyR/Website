@@ -24,15 +24,24 @@
 
         <ol>
             <li class="styled">
-            @Html.LabelFor(model => model.Content)
-            @Html.EditorFor(model => model.Content)
-            @Html.ValidationMessageFor(model => model.Content)
+            @Html.LabelFor(model => model.BriefContent)
+            @Html.EditorFor(model => model.BriefContent)
+            @Html.ValidationMessageFor(model => model.BriefContent)
             </li>
         </ol>
+
+        <ol>
+            <li class="styled">
+            @Html.LabelFor(model => model.RestOfContent)
+            @Html.EditorFor(model => model.RestOfContent)
+            @Html.ValidationMessageFor(model => model.RestOfContent)
+            </li>
+        </ol>
+
     </fieldset>
     
     <fieldset>
         <input class="buttonlink" type="submit" value="Save" />
-        <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
+        <div class="buttonlink">@Html.ActionLink("Back to List", "../Post/Index", new { id = Model.BlogID })</div>
     </fieldset>
 }

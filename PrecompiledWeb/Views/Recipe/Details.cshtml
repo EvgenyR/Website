@@ -87,7 +87,7 @@
     <ol>
         <li class="styled">
             <!--<div class="display-label">Description</div>-->
-            <div class="display-textarea">@Model.Recipe.Description</div>
+            <div class="display-textarea"> @MvcHtmlString.Create(Model.Recipe.Description)</div>
         </li>
     </ol>
 </fieldset>

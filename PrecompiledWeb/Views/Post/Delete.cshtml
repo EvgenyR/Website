@@ -15,15 +15,7 @@
 
     <legend>Post</legend>
 
-         <ol>
-            <li class="styled">
-                <div class="display-label">
-                    @Html.DisplayNameFor(model => model.Title)</div>
-                <div class="display-field">@Html.DisplayFor(model => model.Title)</div>
-            </li>
-        </ol>
-        
-                <ol>
+        <ol>
             <li class="styled">
                 <div class="display-label">
                     @Html.DisplayNameFor(model => model.DateCreated)</div>
@@ -31,18 +23,27 @@
             </li>
         </ol>
         
-                <ol>
+        <ol>
             <li class="styled">
                 <div class="display-label">
-                    @Html.DisplayNameFor(model => model.Content)</div>
-                <div class="display-field">@Html.DisplayFor(model => model.Content)</div>
+                    @Html.DisplayNameFor(model => model.BriefContent)</div>
+                <div class="display-field">@Html.DisplayFor(model => model.BriefContent)</div>
             </li>
         </ol>   
+
+        <ol>
+            <li class="styled">
+                <div class="display-label">
+                    @Html.DisplayNameFor(model => model.RestOfContent)</div>
+                <div class="display-field">@Html.DisplayFor(model => model.RestOfContent)</div>
+            </li>
+        </ol>   
+
 </fieldset>
     
     <fieldset>
     <input class="buttonlink" type="submit" value="Delete" />
-    <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
+    <div class="buttonlink">@Html.ActionLink("Back to List", "../Post/Index", new { id = Model.BlogID })</div>
 </fieldset>
 
 }

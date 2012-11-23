@@ -88,10 +88,11 @@ div.generalText p
 	
 #header 
 {
-    /*background: url(images/topbg.gif) no-repeat left top;*/
+    /*background: url(images/Laptop_saver.jpg) repeat-x left top;*/
 	/*background: #00B2EE;*/
+	/*background-repeat:repeat-x;*/
 	text-align: center;
-	height: 50px;
+	height: 150px;
 }
 	
 #left-sidebar {
@@ -307,6 +308,17 @@ form .buttonlink /* a larger button outside of the form */
     margin: 5px;
 }
 
+.slidingDiv {
+    height:300px;
+    padding:20px;
+    margin-top:35px;
+    margin-bottom:10px;
+}
+ 
+.show_hide {
+    display:none;
+}
+
 /* Styles for validation helpers
 -----------------------------------------------------------*/
 .field-validation-error
@@ -399,7 +411,7 @@ nav[role="navigation"] ul li a:hover, body#recipe #nav-recipe a, body#category #
    float:left;
    width:100%;
    background:#fff;
-   border-bottom:4px solid #000;
+   border-bottom:2px solid #000; /* remove border-bottom to get rid of black line */
    overflow:hidden;
    position:relative;
    background-image:url(images/gameoflife.png);
