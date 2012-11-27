@@ -12,7 +12,7 @@ using System.Globalization;
 
 namespace Recipes.Controllers
 {
-    public class YahooController : Controller
+    public class YahooController : BaseController
     {
         RecipesEntities db = new RecipesEntities();
         //
