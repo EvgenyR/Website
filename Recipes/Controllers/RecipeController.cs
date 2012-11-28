@@ -14,7 +14,8 @@ namespace Recipes.Controllers
         RecipesEntities db = new RecipesEntities();
         //
         // GET: /Recipe/
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ViewResult Index()
         {
             var recipes = db.Recipes.Include(r => r.SubCategory).OrderBy(r => r.SubCategory.SubCategoryID);
@@ -29,7 +30,8 @@ namespace Recipes.Controllers
 
         //
         // GET: /Recipe/Details/5
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Details(int id)
         {
             var recipe = GetRecipeByID(id);
@@ -38,7 +40,8 @@ namespace Recipes.Controllers
 
         //
         // GET: /Recipe/Create
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Create()
         {
             Category selectedCategory = db.Categories.First();
@@ -48,7 +51,8 @@ namespace Recipes.Controllers
 
         //
         // POST: /Recipe/Create
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         [HttpPost]
         public ActionResult Create(RecipeViewModel viewModel)
         {
@@ -98,7 +102,8 @@ namespace Recipes.Controllers
 
         //
         // GET: /Recipe/Edit/5
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Edit(int id)
         {
             Recipe recipe = db.Recipes.Include(r => r.SubCategory).Single(r => r.RecipeID == id);
@@ -143,7 +148,8 @@ namespace Recipes.Controllers
 
         //
         // POST: /Recipe/Edit/5
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         [HttpPost]
         public ActionResult Edit(RecipeViewModel model)
         {
@@ -190,7 +196,8 @@ namespace Recipes.Controllers
 
         //
         // GET: /Recipe/Delete/5
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Delete(int id)
         {
             Recipe recipe = db.Recipes.Find(id);
@@ -205,7 +212,8 @@ namespace Recipes.Controllers
 
         //
         // POST: /Recipe/Delete/5
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {

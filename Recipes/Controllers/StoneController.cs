@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 using Recipes.HtmlHelpers;
 using System.Web.UI;
 
 namespace Recipes.Controllers
 {
-    public class StoneController : Controller
+    public class StoneController : BaseController
     {
         //
         // GET: /Stone/
 
+        [MetaKeywords(Constants.Constants.StoneMetaKeywords)]
+        [MetaDescription(Constants.Constants.StoneMetaDescription)]
         public ActionResult Index()
         {
             SteppingStoneHelpers.CreateNewTable();
@@ -20,6 +19,8 @@ namespace Recipes.Controllers
             return View(table);
         }
 
+        [MetaKeywords(Constants.Constants.StoneMetaKeywords)]
+        [MetaDescription(Constants.Constants.StoneMetaDescription)]
         public ActionResult Theory()
         {
             return View();

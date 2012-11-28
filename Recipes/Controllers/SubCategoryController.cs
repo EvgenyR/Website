@@ -13,7 +13,8 @@ namespace Recipes.Controllers
 
         //
         // GET: /SubCategory/
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ViewResult Index()
         {
             var subcategories = db.SubCategories.Include(s => s.Category);
@@ -22,7 +23,8 @@ namespace Recipes.Controllers
 
         //
         // GET: /SubCategory/Details/5
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ViewResult Details(int id)
         {
             SubCategory subcategory = db.SubCategories.Find(id);
@@ -31,7 +33,8 @@ namespace Recipes.Controllers
 
         //
         // GET: /SubCategory/Create
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Create()
         {
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName");
@@ -40,7 +43,8 @@ namespace Recipes.Controllers
 
         //
         // POST: /SubCategory/Create
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         [HttpPost]
         public ActionResult Create(SubCategory subcategory)
         {
@@ -57,7 +61,8 @@ namespace Recipes.Controllers
         
         //
         // GET: /SubCategory/Edit/5
- 
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Edit(int id)
         {
             SubCategory subcategory = db.SubCategories.Find(id);
@@ -67,7 +72,8 @@ namespace Recipes.Controllers
 
         //
         // POST: /SubCategory/Edit/5
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         [HttpPost]
         public ActionResult Edit(SubCategory subcategory)
         {
@@ -83,7 +89,8 @@ namespace Recipes.Controllers
 
         //
         // GET: /SubCategory/Delete/5
- 
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Delete(int id)
         {
             SubCategory subcategory = db.SubCategories.Find(id);
@@ -92,7 +99,8 @@ namespace Recipes.Controllers
 
         //
         // POST: /SubCategory/Delete/5
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {            

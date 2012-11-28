@@ -6,17 +6,20 @@ namespace Recipes.Controllers
     {
         //
         // GET: /Home/
-
+        [MetaKeywords(Constants.Constants.MainMetaKeywords)]
+        [MetaDescription(Constants.Constants.MainMetaDescription)]
         public ActionResult Index()
         {
             return View();
         }
-
+        [MetaKeywords(Constants.Constants.MainMetaKeywords)]
+        [MetaDescription(Constants.Constants.MainMetaDescription)]
         public ActionResult Resume()
         {
             return View();
         }
-
+        [MetaKeywords(Constants.Constants.MainMetaKeywords)]
+        [MetaDescription(Constants.Constants.MainMetaDescription)]
         public ActionResult Todo()
         {
             return View();

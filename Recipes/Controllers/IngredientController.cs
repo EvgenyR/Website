@@ -13,6 +13,8 @@ namespace Recipes.Controllers
         RecipesEntities db = new RecipesEntities();
         //
         // GET: /Ingredient/
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Index()
         {
             var ingredients = db.Ingredients.ToList();
@@ -22,6 +24,8 @@ namespace Recipes.Controllers
         //
         // GET: /Ingredient/Details/5
 
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Details(int id)
         {
             var ingredient = db.Ingredients.Single(i => i.IngredientID == id);
@@ -32,6 +36,8 @@ namespace Recipes.Controllers
         //
         // GET: /Ingredient/Create
 
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Create()
         {
             return View(new IngredientViewModel(new Ingredient(), db.Measures.ToList()));
@@ -39,7 +45,8 @@ namespace Recipes.Controllers
 
         //
         // POST: /Ingredient/Create
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         [HttpPost]
         public ActionResult Create(Ingredient ingredient)
         {
@@ -71,7 +78,8 @@ namespace Recipes.Controllers
         
         //
         // GET: /Ingredient/Edit/5
- 
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Edit(int id)
         {
             Ingredient ingredient = db.Ingredients.Single(i => i.IngredientID == id);
@@ -80,7 +88,8 @@ namespace Recipes.Controllers
 
         //
         // POST: /Ingredient/Edit/5
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         [HttpPost]
         public ActionResult Edit(Ingredient ingredient)
         {
@@ -99,7 +108,8 @@ namespace Recipes.Controllers
 
         //
         // GET: /Ingredient/Delete/5
- 
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Delete(int id)
         {
             Ingredient ingredient = db.Ingredients.Find(id);
@@ -108,6 +118,8 @@ namespace Recipes.Controllers
 
         //
         // POST: /Ingredient/Delete/5
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {

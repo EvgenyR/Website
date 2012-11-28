@@ -17,7 +17,9 @@ namespace Recipes.Controllers
         RecipesEntities db = new RecipesEntities();
         //
         // GET: /Yahoo/
-        
+
+        [MetaKeywords(Constants.Constants.YahooMetaKeywords)]
+        [MetaDescription(Constants.Constants.YahooMetaDescription)]
         public ActionResult Index(int page = 1, string sort = "YahooSymbolName", string sortDir = "Ascending")
         {
             int totalRecords;
@@ -33,6 +35,8 @@ namespace Recipes.Controllers
             return new YahooViewModel(id, symbol, symbols, datas, totalRecords);
         }
 
+        [MetaKeywords(Constants.Constants.YahooMetaKeywords)]
+        [MetaDescription(Constants.Constants.YahooMetaDescription)]
         public ActionResult Theory()
         {
             return View();

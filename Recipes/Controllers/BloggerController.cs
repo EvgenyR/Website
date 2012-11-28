@@ -13,7 +13,8 @@ namespace Recipes.Controllers
 
         //
         // GET: /Blogger/
-
+        [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
+        [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Index()
         {
             return View(db.Bloggers.ToList());
@@ -21,7 +22,8 @@ namespace Recipes.Controllers
 
         //
         // GET: /Blogger/Details/5
-
+        [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
+        [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Details(int id = 0)
         {
             Blogger blogger = db.Bloggers.Find(id);
@@ -38,7 +40,8 @@ namespace Recipes.Controllers
 
         //
         // GET: /Blogger/Create
-
+        [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
+        [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Create()
         {
             return View();
@@ -46,7 +49,8 @@ namespace Recipes.Controllers
 
         //
         // POST: /Blogger/Create
-
+        [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
+        [MetaDescription(Constants.Constants.BlogMetaDescription)]
         [HttpPost]
         public ActionResult Create(Blogger blogger)
         {
@@ -62,7 +66,8 @@ namespace Recipes.Controllers
 
         //
         // GET: /Blogger/Edit/5
-
+        [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
+        [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Edit(int id = 0)
         {
             Blogger blogger = db.Bloggers.Find(id);
@@ -75,7 +80,8 @@ namespace Recipes.Controllers
 
         //
         // POST: /Blogger/Edit/5
-
+        [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
+        [MetaDescription(Constants.Constants.BlogMetaDescription)]
         [HttpPost]
         public ActionResult Edit(Blogger blogger)
         {
@@ -90,7 +96,8 @@ namespace Recipes.Controllers
 
         //
         // GET: /Blogger/Delete/5
-
+        [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
+        [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Delete(int id = 0)
         {
             Blogger blogger = db.Bloggers.Find(id);
@@ -103,7 +110,8 @@ namespace Recipes.Controllers
 
         //
         // POST: /Blogger/Delete/5
-
+        [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
+        [MetaDescription(Constants.Constants.BlogMetaDescription)]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {

@@ -10,12 +10,14 @@ namespace Recipes.Controllers
     {
         //
         // GET: /Search/
-
+        [MetaKeywords(Constants.Constants.SearchMetaKeywords)]
+        [MetaDescription(Constants.Constants.SearchMetaDescription)]
         public ActionResult Index()
         {
             return View();
         }
-
+        [MetaKeywords(Constants.Constants.SearchMetaKeywords)]
+        [MetaDescription(Constants.Constants.SearchMetaDescription)]
         public ActionResult Theory()
         {
             return View();

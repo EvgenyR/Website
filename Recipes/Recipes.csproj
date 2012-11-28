@@ -136,6 +136,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IngredientController.cs" />
     <Compile Include="Controllers\LeftMenuController.cs" />
+    <Compile Include="Controllers\MetaDescriptionAttribute.cs" />
+    <Compile Include="Controllers\MetaKeywordsAttribute.cs" />
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\RecipeController.cs" />
     <Compile Include="Controllers\SearchController.cs" />

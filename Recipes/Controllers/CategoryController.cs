@@ -15,6 +15,8 @@ namespace Recipes.Controllers
         //
         // GET: /Category/
 
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ViewResult Index()
         {
             return View(db.Categories.ToList());
@@ -23,6 +25,8 @@ namespace Recipes.Controllers
         //
         // GET: /Category/Details/5
 
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ViewResult Details(int id)
         {
             var category = db.Categories.Single(c => c.CategoryID == id);
@@ -33,6 +37,8 @@ namespace Recipes.Controllers
         //
         // GET: /Category/Create
 
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Create()
         {
             return View();
@@ -41,6 +47,8 @@ namespace Recipes.Controllers
         //
         // POST: /Category/Create
 
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         [HttpPost]
         public ActionResult Create(Category category)
         {
@@ -75,7 +83,8 @@ namespace Recipes.Controllers
         
         //
         // GET: /Category/Edit/5
- 
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Edit(int id)
         {
             Category category = db.Categories.Find(id);
@@ -85,6 +94,8 @@ namespace Recipes.Controllers
         //
         // POST: /Category/Edit/5
 
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         [HttpPost]
         public ActionResult Edit(Category category)
         {
@@ -104,7 +115,8 @@ namespace Recipes.Controllers
 
         //
         // GET: /Category/Delete/5
- 
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Delete(int id)
         {
             Category category = db.Categories.Find(id);
@@ -113,7 +125,8 @@ namespace Recipes.Controllers
 
         //
         // POST: /Category/Delete/5
-
+        [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
+        [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {

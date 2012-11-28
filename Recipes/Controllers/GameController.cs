@@ -9,7 +9,8 @@ namespace Recipes.Controllers
     {
         //
         // GET: /Game/
-
+        [MetaKeywords(Constants.Constants.GameMetaKeywords)]
+        [MetaDescription(Constants.Constants.GameMetaDescription)]
         public ActionResult Index()
         {
             GameOfLifeHelpers.InitializeGame();
@@ -19,6 +20,8 @@ namespace Recipes.Controllers
             return View(table);
         }
 
+        [MetaKeywords(Constants.Constants.GameMetaKeywords)]
+        [MetaDescription(Constants.Constants.GameMetaDescription)]
         public ActionResult Theory()
         {
             return View();

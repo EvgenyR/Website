@@ -1,13 +1,21 @@
-﻿using System;
-using System.Web.Mvc;
-using System.Text;
-using System.IO;
-using System.Net.Mail;
+﻿using System.Web.Mvc;
 
 namespace Recipes.Controllers
 {
     public abstract class BaseController : Controller
     {
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            var keywords = filterContext.ActionDescriptor.GetCustomAttributes(typeof(MetaKeywordsAttribute), false);
+            if (keywords.Length == 1)
+                ViewData["MetaKeywords"] = ((MetaKeywordsAttribute)(keywords[0])).Parameter;
+
+            var description = filterContext.ActionDescriptor.GetCustomAttributes(typeof(MetaDescriptionAttribute), false);
+            if (description.Length == 1)
+                ViewData["MetaDescription"] = ((MetaDescriptionAttribute)(description[0])).Parameter;
+
+            base.OnActionExecuting(filterContext);
+        }
         //protected override void OnException(ExceptionContext filterContext)
         //{
         //    string ex = filterContext.Exception.ToString();
