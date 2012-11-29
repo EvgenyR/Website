@@ -10,14 +10,12 @@
 
     function MorePosts() {
         var newValue = parseInt($("#hiddenPosts").val()) + 1;
-        alert(newValue);
         $('#hiddenPosts').val(newValue);
         $('#update').load("/Blog/MorePosts", { id: $("#Blog_BlogID").val(), postsDisplayed: newValue });
     };
 
     function LessPosts() {
         var newValue = $("#hiddenPosts").val() - 1;
-        alert(newValue);
         $('#hiddenPosts').val(newValue);
         $('#update').load("/Blog/LessPosts", { id: $("#Blog_BlogID").val(), postsDisplayed: newValue});
     };

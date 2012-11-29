@@ -480,33 +480,34 @@ public ActionResult Create(BlogViewModel viewModel)
   Posts = posts;
   ...
  }
-}" + "</pre><p>the error just goes away (notice that parameterless constructor that is just sitting there now, happily doing nothing?). Why is that? Well, I'll be totally honest: I have no idea.</p><p><b>Reference</b></p><a href=\"http://nicholasbarger.com/2012/03/11/fun-and-struggles-with-mvc-no-parameterless-constructor-defined/\">Fun and Struggles with MVC – No Parameterless Constructor Defined</a>"; 
+}" + "</pre><p>the error just goes away (notice that parameterless constructor that is just sitting there now, happily doing nothing?). Why is that? Well, I'll be totally honest: I have no idea.</p><p><b>Reference</b></p><a href=\"http://nicholasbarger.com/2012/03/11/fun-and-struggles-with-mvc-no-parameterless-constructor-defined/\">Fun and Struggles with MVC – No Parameterless Constructor Defined</a>";
 
-public const string content_27092012_b = ""; 
-public const string content_27092012_r = ""; 
-
- /* 
-<p>A simple example. Let's say I want to run ping from command line, but to make this more automated, or maybe user friendly, I would like to run a C# application that pings an IP address, captures the returned result and displays it in a user-friendly format.</p><p>Fist thing is to start the command prompt and execute a process. Here's one of the most convenient ways to use it: utilize <b>ProcessStartInfo</b> and <b>Process</b> classes, which are part of <b>System.Diagnostics</b> namespace. <b>ProcessStartInfo</b> takes the program to run, in this case <b>cmd.exe</b>, and parameters, in this case ping, together with its own parameters. Here's how it works:</p><pre class=\"brush: csharp\">private void btnPing_Click(object sender, EventArgs e)
+public const string content_27092012_b = "<p>A simple example. Let's say I want to run ping from command line, but to make this more automated, or maybe user friendly, I would like to run a C# application that pings an IP address, captures the returned result and displays it in a user-friendly format.</p>"; 
+public const string content_27092012_r = "<p>Fist thing is to start the command prompt and execute a process. Here's one of the most convenient ways to use it: utilize <b>ProcessStartInfo</b> and <b>Process</b> classes, which are part of <b>System.Diagnostics</b> namespace. <b>ProcessStartInfo</b> takes the program to run, in this case <b>cmd.exe</b>, and parameters, in this case ping, together with its own parameters. Here's how it works:</p><pre class=\"brush: csharp\">" + 
+@"private void btnPing_Click(object sender, EventArgs e)
 {
- string command = "/c ping " + txtIP.Text;
+ string command = '/c ping ' + txtIP.Text;
 
- ProcessStartInfo procStartInfo = new ProcessStartInfo("CMD", command);
+ ProcessStartInfo procStartInfo = new ProcessStartInfo('CMD', command);
 
  Process proc = new Process();
  proc.StartInfo = procStartInfo;
  proc.Start();
-}</pre><div class=\"separator\" style=\"clear: both; text-align: center;\">
-<a href=\"http://1.bp.blogspot.com/-TAkvWmjvw4U/UE_es2z4LpI/AAAAAAAABGE/DGqWDE3ldHQ/s1600/1.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"138\" width=\"320\" src=\"http://1.bp.blogspot.com/-TAkvWmjvw4U/UE_es2z4LpI/AAAAAAAABGE/DGqWDE3ldHQ/s320/1.png\" /></a></div><p align=\"center\">Command prompts started from Windows Form</p><p>The process starts and the familiar command window appears, then the ping command runs. Now to capture the results of the ping, a few other lines are needed. Firstly, the output of the process needs to be redirected. The following values need to be set:</p><pre class=\"brush: csharp\">procStartInfo.RedirectStandardOutput = true;
-procStartInfo.UseShellExecute = false;</pre><p>Next, to capture the output line by line as it is sent by the process, I'll attach a function that does it asynchronously.</p><pre class=\"brush: csharp\">proc.OutputDataReceived += new DataReceivedEventHandler(proc_OutputDataReceived);
+}" + "</pre><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://1.bp.blogspot.com/-TAkvWmjvw4U/UE_es2z4LpI/AAAAAAAABGE/DGqWDE3ldHQ/s1600/1.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"138\" width=\"320\" src=\"http://1.bp.blogspot.com/-TAkvWmjvw4U/UE_es2z4LpI/AAAAAAAABGE/DGqWDE3ldHQ/s320/1.png\" /></a></div><p align=\"center\">Command prompts started from Windows Form</p><p>The process starts and the familiar command window appears, then the ping command runs. Now to capture the results of the ping, a few other lines are needed. Firstly, the output of the process needs to be redirected. The following values need to be set:</p><pre class=\"brush: csharp\">" + 
+@"procStartInfo.RedirectStandardOutput = true;
+procStartInfo.UseShellExecute = false;" + "</pre><p>Next, to capture the output line by line as it is sent by the process, I'll attach a function that does it asynchronously.</p><pre class=\"brush: csharp\">" + 
+@"proc.OutputDataReceived += new DataReceivedEventHandler(proc_OutputDataReceived);
 proc.Start();
 proc.BeginOutputReadLine();
-proc.WaitForExit();</pre><p>The function can do anything, but in my case I'm simply redirecting the output to the Windows Form.</p><pre class=\"brush: csharp\">void proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
+proc.WaitForExit();" + "</pre><p>The function can do anything, but in my case I'm simply redirecting the output to the Windows Form.</p><pre class=\"brush: csharp\">" + 
+@"void proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
 {
  if (e.Data != null)
  {
   txtOutput.Text = txtOutput.Text + e.Data.Trim() + Environment.NewLine;
  }
-}</pre><p>Looks correct, so why am I receiving this exception:</p><p><i>Cross-thread operation not valid: Control 'txtOutput' accessed from a thread other than the thread it was created on.</i></p><p>Well, looks like it's telling me that the process is running from another thread and can not quite access my text box from that thread. Long story short, this is the shortest solution I have found for this issue (there are many options, some as complicated as using a BackgroundWorker).</p><pre class=\"brush: csharp\">void proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
+}" + "</pre><p>Looks correct, so why am I receiving this exception:</p><p><i>Cross-thread operation not valid: Control 'txtOutput' accessed from a thread other than the thread it was created on.</i></p><p>Well, looks like it's telling me that the process is running from another thread and can not quite access my text box from that thread. Long story short, this is the shortest solution I have found for this issue (there are many options, some as complicated as using a BackgroundWorker).</p><pre class=\"brush: csharp\">" + 
+@"void proc_OutputDataReceived(object sender, DataReceivedEventArgs e)
 {
  if (e.Data != null)
  {
@@ -514,23 +515,19 @@ proc.WaitForExit();</pre><p>The function can do anything, but in my case I'm sim
   MethodInvoker append = () => txtOutput.Text += newLine;
   txtOutput.BeginInvoke(append);
  }
-}</pre><div class=\"separator\" style=\"clear: both; text-align: center;\">
-<a href=\"http://4.bp.blogspot.com/-YX1xABPAeCU/UE_etVx9mAI/AAAAAAAABGQ/Bac2EOYNqks/s1600/2.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"254\" width=\"320\" src=\"http://4.bp.blogspot.com/-YX1xABPAeCU/UE_etVx9mAI/AAAAAAAABGQ/Bac2EOYNqks/s320/2.png\" /></a></div><p align=\"center\">Command prompt output redirected to Windows Form</p><p><b>References:</b></p><a href=\"http://stackoverflow.com/questions/7717518/having-trouble-with-process-class-while-redirecting-command-prompt-output-to-win">Having trouble with Process class while redirecting command prompt output to winform</a><a href=\"http://stackoverflow.com/questions/11631443/capturing-process-output-via-outputdatareceived-event">Capturing process output via OutputDataReceived event</a>
+}" + "</pre><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://4.bp.blogspot.com/-YX1xABPAeCU/UE_etVx9mAI/AAAAAAAABGQ/Bac2EOYNqks/s1600/2.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"254\" width=\"320\" src=\"http://4.bp.blogspot.com/-YX1xABPAeCU/UE_etVx9mAI/AAAAAAAABGQ/Bac2EOYNqks/s320/2.png\" /></a></div><p align=\"center\">Command prompt output redirected to Windows Form</p><p><b>References:</b></p><a href=\"http://stackoverflow.com/questions/7717518/having-trouble-with-process-class-while-redirecting-command-prompt-output-to-win\">Having trouble with Process class while redirecting command prompt output to winform</a><a href=\"http://stackoverflow.com/questions/11631443/capturing-process-output-via-outputdatareceived-event\">Capturing process output via OutputDataReceived event</a>"; 
 
- */ 
-
-public const string content_13092012_b = ""; 
-public const string content_13092012_r = ""; 
-
- /* 
-<p>You will need:<ul><li><a href=\"http://htmlagilitypack.codeplex.com/">HtmlAgilityPack</a> HTML Parser</li><li>Development environment</li><li>Internet connection</li></ul></p><p>Create a Visual Studio project, for example C# Windows Forms application. Drop a <b>TextBox</b>, a <b>Button</b> and a <b>ListView</b> on the form. Creat a class for the methods to be used, let's say <b>Helper.cs</b>. First, I'm using the <b>System.Net.Webclient</b> to call Google and get a page of search results.</p><pre class=\"brush: csharp\">public static WebClient webClient = new WebClient();
+public const string content_13092012_b = "<p>You will need:<ul><li><a href=\"http://htmlagilitypack.codeplex.com/\">HtmlAgilityPack</a> HTML Parser</li><li>Development environment</li><li>Internet connection</li></ul></p><p>Create a Visual Studio project, for example C# Windows Forms application. Drop a <b>TextBox</b>, a <b>Button</b> and a <b>ListView</b> on the form. Creat a class for the methods to be used, let's say <b>Helper.cs</b>. First, I'm using the <b>System.Net.Webclient</b> to call Google and get a page of search results.</p>"; 
+public const string content_13092012_r = "<pre class=\"brush: csharp\">" + 
+@"public static WebClient webClient = new WebClient();
 
 public static string GetSearchResultHtlm(string keywords)
 {
-    StringBuilder sb = new StringBuilder("http://www.google.com/search?q=");
+    StringBuilder sb = new StringBuilder('http://www.google.com/search?q=');
     sb.Append(keywords);
     return webClient.DownloadString(sb.ToString());
-}</pre><p>The string that is returned is the html of the first page of the Google search for the string that is passed to the method. Opened in the web browser, it will look something like this</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://1.bp.blogspot.com/-zxDpRcouMs0/UEbx0fDzesI/AAAAAAAABFQ/tCO-XaW9PpA/s1600/1.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"320\" width=\"297\" src=\"http://1.bp.blogspot.com/-zxDpRcouMs0/UEbx0fDzesI/AAAAAAAABFQ/tCO-XaW9PpA/s320/1.png\" /></a></div><p align=\"center\">Google search result page</p><p>What I want to extract is the actual links, which are marked in red on the screenshot above. Here I'm going to use <b>HtmlAgilityPack</b> to load the string into the <b>HtmlDocument</b> object. After the string is loaded, I will use a simple LINQ query to extract the nodes that match certain conditions: They are html links (a href), and the URL of the link contains either <b>"/url?"</b> or <b>"?url="</b>. By this point, I get quite and unreadable list of values.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://1.bp.blogspot.com/-j6lEU61m_AQ/UEbx09VZE7I/AAAAAAAABFc/YPdWzf3c1XQ/s1600/2.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"61\" width=\"320\" src=\"http://1.bp.blogspot.com/-j6lEU61m_AQ/UEbx09VZE7I/AAAAAAAABFc/YPdWzf3c1XQ/s320/2.png\" /></a></div><p align=\"center\">Raw URLs</p><p>To bring it into readable form, I'll match it to a regular expression and then load the results into the <b>ListView</b>. Here is the code:</p><pre class=\"brush: csharp\">public static Regex extractUrl = new Regex(@"[&?](?:q|url)=([^&]+)", RegexOptions.Compiled);
+}" + "</pre><p>The string that is returned is the html of the first page of the Google search for the string that is passed to the method. Opened in the web browser, it will look something like this</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://1.bp.blogspot.com/-zxDpRcouMs0/UEbx0fDzesI/AAAAAAAABFQ/tCO-XaW9PpA/s1600/1.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"320\" width=\"297\" src=\"http://1.bp.blogspot.com/-zxDpRcouMs0/UEbx0fDzesI/AAAAAAAABFQ/tCO-XaW9PpA/s320/1.png\" /></a></div><p align=\"center\">Google search result page</p><p>What I want to extract is the actual links, which are marked in red on the screenshot above. Here I'm going to use <b>HtmlAgilityPack</b> to load the string into the <b>HtmlDocument</b> object. After the string is loaded, I will use a simple LINQ query to extract the nodes that match certain conditions: They are html links (a href), and the URL of the link contains either <b>\"/url?\"</b> or <b>\"?url=\"</b>. By this point, I get quite and unreadable list of values.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://1.bp.blogspot.com/-j6lEU61m_AQ/UEbx09VZE7I/AAAAAAAABFc/YPdWzf3c1XQ/s1600/2.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"61\" width=\"320\" src=\"http://1.bp.blogspot.com/-j6lEU61m_AQ/UEbx09VZE7I/AAAAAAAABFc/YPdWzf3c1XQ/s320/2.png\" /></a></div><p align=\"center\">Raw URLs</p><p>To bring it into readable form, I'll match it to a regular expression and then load the results into the <b>ListView</b>. Here is the code:</p><pre class=\"brush: csharp\">" + 
+@"public static Regex extractUrl = new Regex(@'[&?](?:q|url)=([^&]+)', RegexOptions.Compiled);
 
 public static List&lt;String&gt; ParseSearchResultHtml(string html)
 {
@@ -539,10 +536,10 @@ public static List&lt;String&gt; ParseSearchResultHtml(string html)
     var doc = new HtmlAgilityPack.HtmlDocument();
     doc.LoadHtml(html);
 
-    var nodes = (from node in doc.DocumentNode.SelectNodes("//a")
-                 let href = node.Attributes["href"]
+    var nodes = (from node in doc.DocumentNode.SelectNodes('//a')
+                 let href = node.Attributes['href']
                  where null != href
-                 where href.Value.Contains("/url?") || href.Value.Contains("?url=")
+                 where href.Value.Contains('/url?') || href.Value.Contains('?url=')
                  select href.Value).ToList();
 
     foreach (var node in nodes)
@@ -553,37 +550,28 @@ public static List&lt;String&gt; ParseSearchResultHtml(string html)
     }
 
     return searchResults;
-}</pre><p>Here is the result:</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://3.bp.blogspot.com/-QVsWrmIXGj8/UEbx1eIxZNI/AAAAAAAABFo/C0XmdtYVLJw/s1600/3.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"221\" width=\"320\" src=\"http://3.bp.blogspot.com/-QVsWrmIXGj8/UEbx1eIxZNI/AAAAAAAABFo/C0XmdtYVLJw/s320/3.png\" /></a></div><p align=\"center\">Final Results</p><p>I'm not quite sure why this may be useful, but as an exercise it is possible to add an option to parse through a certain number of pages, rather than just the first page. But if you try to run those queries in an automated mode, Google will soon start serving 503 errors to you.</p>
+}" + "</pre><p>Here is the result:</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://3.bp.blogspot.com/-QVsWrmIXGj8/UEbx1eIxZNI/AAAAAAAABFo/C0XmdtYVLJw/s1600/3.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"221\" width=\"320\" src=\"http://3.bp.blogspot.com/-QVsWrmIXGj8/UEbx1eIxZNI/AAAAAAAABFo/C0XmdtYVLJw/s320/3.png\" /></a></div><p align=\"center\">Final Results</p><p>I'm not quite sure why this may be useful, but as an exercise it is possible to add an option to parse through a certain number of pages, rather than just the first page. But if you try to run those queries in an automated mode, Google will soon start serving 503 errors to you.</p>";
 
- */ 
+public const string content_11092012_b = "<p>Today I had to perform a fairly specific task: restrict access to a Windows 7 folder to a single user. I think I found the way to do it properly, and it is not a straightforward task. Before I forget, I might keep a record of all actions required because I did not find a clear sequence anywhere on the net. It will only take 10 easy steps.</p>"; 
+public const string content_11092012_r = "<p>Let's assume there is a folder called <b>Bob's Documents</b> where only Bob, and not even the <b>Admin></b>, should have access.</p><ol><li>Right-click on <b>Bob's Documents</b> and select <b>Properties</b></li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://2.bp.blogspot.com/-dMe0CEBvxZ8/UCg9SSny_nI/AAAAAAAABDA/ZZwUhdEKM98/s1600/Untitled00.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"209\" width=\"320\" src=\"http://2.bp.blogspot.com/-dMe0CEBvxZ8/UCg9SSny_nI/AAAAAAAABDA/ZZwUhdEKM98/s320/Untitled00.png\" /></a></div><p align=\"center\">Select Bob's Documents <b>Properties</b></p><li><b>Bob's Documents Properties</b> window will open. Switch to <b>Security</b> tab and click <b>Advanced</b> button.</li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://4.bp.blogspot.com/-QaH7Te4GvpY/UCg9SgWLRVI/AAAAAAAABDM/OrazYUy6bkY/s1600/Untitled01.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"320\" width=\"246\" src=\"http://4.bp.blogspot.com/-QaH7Te4GvpY/UCg9SgWLRVI/AAAAAAAABDM/OrazYUy6bkY/s320/Untitled01.png\" /></a></div>" +
+"<p align=\"center\">Bob's Documents Properties</p><li><b>Advanced Security Settings for Bob's Documents</b> will open. On the <b>Permissions</b> tab, Click <b>Change Permissions</b> button.</li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://3.bp.blogspot.com/-a7ZbFEu57Vw/UCg9S1fND3I/AAAAAAAABDY/mqKCELLvFZQ/s1600/Untitled02.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"206\" width=\"320\" src=\"http://3.bp.blogspot.com/-a7ZbFEu57Vw/UCg9S1fND3I/AAAAAAAABDY/mqKCELLvFZQ/s320/Untitled02.png\" /></a></div>" +
+"<p align=\"center\">Advanced Security Settings for Bob's Documents</p><li>Another window will open. Unfortunately, it's too called <b>Advanced Security Settings for Bob's Documents</b>, adding to confusion. In this new window, untick <b>Include inheritable permissions from this object's parent</b> - that will simplify things a lot, because we only care about permissions to this folder, not its parent folder.</li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://4.bp.blogspot.com/-wWFN3mJr5o0/UCg9TC6lgPI/AAAAAAAABDk/9bRtE7yoG7w/s1600/Untitled03.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"218\" width=\"320\" src=\"http://4.bp.blogspot.com/-wWFN3mJr5o0/UCg9TC6lgPI/AAAAAAAABDk/9bRtE7yoG7w/s320/Untitled03.png\" /></a></div>" +
+"<p align=\"center\">Advanced Security Settings for Bob's Documents - but not the same one!</p><li>As soon as the chechbox is unticked, a warning called <b>Windows Security</b> will pop up. Since we're getting rid of parent permissions, click <b>Remove</b>.</li><div class=\"separator\" style=\"clear: both; text-align: center;\">" +
+"<a href=\"http://2.bp.blogspot.com/-kYY21szUGvs/UCg8E6fEfcI/AAAAAAAABC0/1YTnoumTHb0/s1600/Untitled04.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"146\" width=\"320\" src=\"http://2.bp.blogspot.com/-kYY21szUGvs/UCg8E6fEfcI/AAAAAAAABC0/1YTnoumTHb0/s320/Untitled04.png\" /></a></div><p align=\"center\"><b>Windows Security</b> warning</p><li>All permissions should have disappeared from the <b>Permission entries</b>. Now click <b>Add</b>.</li><li><b>Select User or Group</b> window will open. In <b>Enter the object name to select</b>, type Bob and click <b>Check Names</b> to make sure there is no typo. Bob's name should resolve to PCName\\Bob.</li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://1.bp.blogspot.com/-zrsGWl30oDw/UCg8Eh58kbI/AAAAAAAABCo/AZl4DUFqe6w/s1600/Untitled05.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"170\" width=\"320\" src=\"http://1.bp.blogspot.com/-zrsGWl30oDw/UCg8Eh58kbI/AAAAAAAABCo/AZl4DUFqe6w/s320/Untitled05.png\" /></a></div><p align=\"center\">Select User or Group</p><li>Click <b>OK</b>. Now the <b>Permissions Entry for Bob's Documents</b> window will pop up. Let's give Bob full control - click the checkbox across from <b>Full Control</b> under <b>Allow</b>. All other checkboxes under <b>Allow</b> will select automatically. Click <b>OK</b> to close this window.</li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://1.bp.blogspot.com/-KjhuD2ebT1k/UCg8EW-5UdI/AAAAAAAABCc/4ta4-IT-Zg4/s1600/Untitled06.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"320\" width=\"250\" src=\"http://1.bp.blogspot.com/-KjhuD2ebT1k/UCg8EW-5UdI/AAAAAAAABCc/4ta4-IT-Zg4/s320/Untitled06.png\" /></a></div><p align=\"center\">Permissions Entry for Bob's Documents</p><li>About done. Click <b>OK</b> in <b>Advanced Security Settings for Bob's Documents</b> to close it, and in another <b>Advanced Security Settings for Bob's Documents</b> to close it too, and <b>OK</b> in <b>Bob's Documents Properties</b>.</li><li>Try to browse to <b>Bob's Documents</b>. Even if you're on <b>Administrator</b> account, you should not be able to, but you should if you are logged in as Bob.</li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://4.bp.blogspot.com/-o6D7UJbi200/UCg8EKsNOdI/AAAAAAAABCQ/68g828PrdUk/s1600/Untitled07.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"155\" width=\"320\" src=\"http://4.bp.blogspot.com/-o6D7UJbi200/UCg8EKsNOdI/AAAAAAAABCQ/68g828PrdUk/s320/Untitled07.png\" /></a></div><p align=\"center\">Permissions are set</p></ol>"; 
 
-public const string content_11092012_b = ""; 
-public const string content_11092012_r = ""; 
-
- /* 
-<p>Today I had to perform a fairly specific task: restrict access to a Windows 7 folder to a single user. I think I found the way to do it properly, and it is not a straightforward task. Before I forget, I might keep a record of all actions required because I did not find a clear sequence anywhere on the net. It will only take 10 easy steps.</p><p>Let's assume there is a folder called <b>Bob's Documents</b> where only Bob, and not even the <b>Admin></b>, should have access.</p><ol><li>Right-click on <b>Bob's Documents</b> and select <b>Properties</b></li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://2.bp.blogspot.com/-dMe0CEBvxZ8/UCg9SSny_nI/AAAAAAAABDA/ZZwUhdEKM98/s1600/Untitled00.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"209\" width=\"320\" src=\"http://2.bp.blogspot.com/-dMe0CEBvxZ8/UCg9SSny_nI/AAAAAAAABDA/ZZwUhdEKM98/s320/Untitled00.png\" /></a></div><p align=\"center\">Select Bob's Documents <b>Properties</b></p><li><b>Bob's Documents Properties</b> window will open. Switch to <b>Security</b> tab and click <b>Advanced</b> button.</li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://4.bp.blogspot.com/-QaH7Te4GvpY/UCg9SgWLRVI/AAAAAAAABDM/OrazYUy6bkY/s1600/Untitled01.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"320\" width=\"246\" src=\"http://4.bp.blogspot.com/-QaH7Te4GvpY/UCg9SgWLRVI/AAAAAAAABDM/OrazYUy6bkY/s320/Untitled01.png\" /></a></div>
-<p align=\"center\">Bob's Documents Properties</p><li><b>Advanced Security Settings for Bob's Documents</b> will open. On the <b>Permissions</b> tab, Click <b>Change Permissions</b> button.</li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://3.bp.blogspot.com/-a7ZbFEu57Vw/UCg9S1fND3I/AAAAAAAABDY/mqKCELLvFZQ/s1600/Untitled02.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"206\" width=\"320\" src=\"http://3.bp.blogspot.com/-a7ZbFEu57Vw/UCg9S1fND3I/AAAAAAAABDY/mqKCELLvFZQ/s320/Untitled02.png\" /></a></div>
-<p align=\"center\">Advanced Security Settings for Bob's Documents</p><li>Another window will open. Unfortunately, it's too called <b>Advanced Security Settings for Bob's Documents</b>, adding to confusion. In this new window, untick <b>Include inheritable permissions from this object's parent</b> - that will simplify things a lot, because we only care about permissions to this folder, not its parent folder.</li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://4.bp.blogspot.com/-wWFN3mJr5o0/UCg9TC6lgPI/AAAAAAAABDk/9bRtE7yoG7w/s1600/Untitled03.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"218\" width=\"320\" src=\"http://4.bp.blogspot.com/-wWFN3mJr5o0/UCg9TC6lgPI/AAAAAAAABDk/9bRtE7yoG7w/s320/Untitled03.png\" /></a></div>
-<p align=\"center\">Advanced Security Settings for Bob's Documents - but not the same one!</p><li>As soon as the chechbox is unticked, a warning called <b>Windows Security</b> will pop up. Since we're getting rid of parent permissions, click <b>Remove</b>.</li><div class=\"separator\" style=\"clear: both; text-align: center;\">
-<a href=\"http://2.bp.blogspot.com/-kYY21szUGvs/UCg8E6fEfcI/AAAAAAAABC0/1YTnoumTHb0/s1600/Untitled04.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"146\" width=\"320\" src=\"http://2.bp.blogspot.com/-kYY21szUGvs/UCg8E6fEfcI/AAAAAAAABC0/1YTnoumTHb0/s320/Untitled04.png\" /></a></div><p align=\"center\"><b>Windows Security</b> warning</p><li>All permissions should have disappeared from the <b>Permission entries</b>. Now click <b>Add</b>.</li><li><b>Select User or Group</b> window will open. In <b>Enter the object name to select</b>, type Bob and click <b>Check Names</b> to make sure there is no typo. Bob's name should resolve to PCName\Bob.</li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://1.bp.blogspot.com/-zrsGWl30oDw/UCg8Eh58kbI/AAAAAAAABCo/AZl4DUFqe6w/s1600/Untitled05.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"170\" width=\"320\" src=\"http://1.bp.blogspot.com/-zrsGWl30oDw/UCg8Eh58kbI/AAAAAAAABCo/AZl4DUFqe6w/s320/Untitled05.png\" /></a></div><p align=\"center\">Select User or Group</p><li>Click <b>OK</b>. Now the <b>Permissions Entry for Bob's Documents</b> window will pop up. Let's give Bob full control - click the checkbox across from <b>Full Control</b> under <b>Allow</b>. All other checkboxes under <b>Allow</b> will select automatically. Click <b>OK</b> to close this window.</li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://1.bp.blogspot.com/-KjhuD2ebT1k/UCg8EW-5UdI/AAAAAAAABCc/4ta4-IT-Zg4/s1600/Untitled06.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"320\" width=\"250\" src=\"http://1.bp.blogspot.com/-KjhuD2ebT1k/UCg8EW-5UdI/AAAAAAAABCc/4ta4-IT-Zg4/s320/Untitled06.png\" /></a></div><p align=\"center\">Permissions Entry for Bob's Documents</p><li>About done. Click <b>OK</b> in <b>Advanced Security Settings for Bob's Documents</b> to close it, and in another <b>Advanced Security Settings for Bob's Documents</b> to close it too, and <b>OK</b> in <b>Bob's Documents Properties</b>.</li><li>Try to browse to <b>Bob's Documents</b>. Even if you're on <b>Administrator</b> account, you should not be able to, but you should if you are logged in as Bob.</li><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://4.bp.blogspot.com/-o6D7UJbi200/UCg8EKsNOdI/AAAAAAAABCQ/68g828PrdUk/s1600/Untitled07.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"155\" width=\"320\" src=\"http://4.bp.blogspot.com/-o6D7UJbi200/UCg8EKsNOdI/AAAAAAAABCQ/68g828PrdUk/s320/Untitled07.png\" /></a></div><p align=\"center\">Permissions are set</p></ol>
-
- */ 
-
-public const string content_09082012_b = ""; 
-public const string content_09082012_r = ""; 
-
- /* 
-
-<p>Step one - create my own controller class. Simple, just add a <b>BaseController</b> to the <b>Controllers</b> folder</p><pre class=\"brush: csharp\">public abstract class BaseController : Controller
+public const string content_09082012_b = "<p>Step one - create my own controller class. Simple, just add a <b>BaseController</b> to the <b>Controllers</b> folder</p>"; 
+public const string content_09082012_r = "<pre class=\"brush: csharp\">" + 
+@"public abstract class BaseController : Controller
 {
-}</pre><p>and then modify all existing contollers to inherit from <b>BaseController</b> rather than from <b>System.Web.Mvc.Controller</b>.</p><p>Next, I override the <b>OnException</b> method in the <b>BaseController</b> which is called whenever the exception is thrown within an action.</p><pre class=\"brush: csharp\">public abstract class BaseController : Controller
+}" + "</pre><p>and then modify all existing contollers to inherit from <b>BaseController</b> rather than from <b>System.Web.Mvc.Controller</b>.</p><p>Next, I override the <b>OnException</b> method in the <b>BaseController</b> which is called whenever the exception is thrown within an action.</p><pre class=\"brush: csharp\">" + 
+@"public abstract class BaseController : Controller
 {
     protected override void OnException(ExceptionContext filterContext)
     {
-        var fileName = Path.Combine(Request.MapPath("~/App_Data"), "log.txt");
+        var fileName = Path.Combine(Request.MapPath('~/App_Data'), 'log.txt');
         WriteLog(fileName, filterContext.Exception.ToString());
         filterContext.ExceptionHandled = true; 
-        this.View("Error").ExecuteResult(this.ControllerContext);
+        this.View('Error').ExecuteResult(this.ControllerContext);
     }
     
     static void WriteLog(string logFile, string text)
@@ -591,21 +579,23 @@ public const string content_09082012_r = "";
         StringBuilder message = new StringBuilder();
         message.AppendLine(DateTime.Now.ToString());
         message.AppendLine(text);
-        message.AppendLine("=========================================");
+        message.AppendLine('=========================================');
         System.IO.File.AppendAllText(logFile, message.ToString());
     }
-}</pre><p>I can verify and find out that the Yellow Screen of Death is not indeed shown</p><div class=\"separator\" style=\"clear: both; text-align: center;\">
-<a href=\"http://2.bp.blogspot.com/-vXLfvRvWtH8/UCRFUAgLo3I/AAAAAAAABBs/uXPg0KzESjM/s1600/1.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"100\" width=\"320\" src=\"http://2.bp.blogspot.com/-vXLfvRvWtH8/UCRFUAgLo3I/AAAAAAAABBs/uXPg0KzESjM/s320/1.png\" /></a></div><p align=\"center\">Custom Error Page</p><p>And the log file is in my <b>App_Data</b> folder</p><div class=\"separator\" style=\"clear: both; text-align: center;\">
-<a href=\"http://4.bp.blogspot.com/-FQmABpLIDOc/UCRFUZ6kfKI/AAAAAAAABB4/e1kajlNPtGs/s1600/2.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"270\" width=\"320\" src=\"http://4.bp.blogspot.com/-FQmABpLIDOc/UCRFUZ6kfKI/AAAAAAAABB4/e1kajlNPtGs/s320/2.png\" /></a></div><p align=\"center\">Log File</p><p>Now that I can see it works, I would still want to see the exceptions as soon as they occur, rather than checking the log file on each occasion. To achieve that, first I need to add</p><pre class=\"brush: xml\">&lt;customErrors mode="RemoteOnly" /&gt;</pre><p>to the <b>system.web</b> section of the <b>Web.config</b> file and then in the <b>OnException</b> method check if this section is set.</p><pre class=\"brush: csharp\">protected override void OnException(ExceptionContext filterContext)
+}" + "</pre><p>I can verify and find out that the Yellow Screen of Death is not indeed shown</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://2.bp.blogspot.com/-vXLfvRvWtH8/UCRFUAgLo3I/AAAAAAAABBs/uXPg0KzESjM/s1600/1.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"100\" width=\"320\" src=\"http://2.bp.blogspot.com/-vXLfvRvWtH8/UCRFUAgLo3I/AAAAAAAABBs/uXPg0KzESjM/s320/1.png\" /></a></div><p align=\"center\">Custom Error Page</p><p>And the log file is in my <b>App_Data</b> folder</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://4.bp.blogspot.com/-FQmABpLIDOc/UCRFUZ6kfKI/AAAAAAAABB4/e1kajlNPtGs/s1600/2.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"270\" width=\"320\" src=\"http://4.bp.blogspot.com/-FQmABpLIDOc/UCRFUZ6kfKI/AAAAAAAABB4/e1kajlNPtGs/s320/2.png\" /></a></div><p align=\"center\">Log File</p><p>Now that I can see it works, I would still want to see the exceptions as soon as they occur, rather than checking the log file on each occasion. To achieve that, first I need to add</p><pre class=\"brush: xml\">" + 
+@"&lt;customErrors mode='RemoteOnly' /&gt;" + 
+"</pre><p>to the <b>system.web</b> section of the <b>Web.config</b> file and then in the <b>OnException</b> method check if this section is set.</p><pre class=\"brush: csharp\">" + 
+@"protected override void OnException(ExceptionContext filterContext)
 {
-    var fileName = Path.Combine(Request.MapPath("~/App_Data"), "log.txt");
+    var fileName = Path.Combine(Request.MapPath('~/App_Data'), 'log.txt');
     WriteLog(fileName, filterContext.Exception.ToString());
     if (filterContext.HttpContext.IsCustomErrorEnabled)
     {
         filterContext.ExceptionHandled = true; 
-        this.View("Error").ExecuteResult(this.ControllerContext);
+        this.View('Error').ExecuteResult(this.ControllerContext);
     }
-}</pre><p>Finally, I would like to receive an email when something on my website goes wrong. I'm adding a function for that, rearranging a few lines and come up with the final version of my <b>BaseController</b> (for now).</p><pre class=\"brush: csharp\">using System;
+}" + "</pre><p>Finally, I would like to receive an email when something on my website goes wrong. I'm adding a function for that, rearranging a few lines and come up with the final version of my <b>BaseController</b> (for now).</p><pre class=\"brush: csharp\">" + 
+@"using System;
 using System.Web.Mvc;
 using System.Text;
 using System.IO;
@@ -618,13 +608,13 @@ namespace Recipes.Controllers
         protected override void OnException(ExceptionContext filterContext)
         {
             string ex = filterContext.Exception.ToString();
-            var fileName = Path.Combine(Request.MapPath("~/App_Data"), "log.txt");
+            var fileName = Path.Combine(Request.MapPath('~/App_Data'), 'log.txt');
             WriteLog(fileName, ex);
             SendEmail(ex);
             if (filterContext.HttpContext.IsCustomErrorEnabled)
             {
                 filterContext.ExceptionHandled = true; 
-                this.View("Error").ExecuteResult(this.ControllerContext);
+                this.View('Error').ExecuteResult(this.ControllerContext);
             }
         }
 
@@ -633,7 +623,7 @@ namespace Recipes.Controllers
             StringBuilder message = new StringBuilder();
             message.AppendLine(DateTime.Now.ToString());
             message.AppendLine(text);
-            message.AppendLine("=========================================");
+            message.AppendLine('=========================================');
             return message;
         }
 
@@ -645,25 +635,22 @@ namespace Recipes.Controllers
         static void SendEmail(string text)
         {
             MailMessage mail = new MailMessage();
-            SmtpClient client = new SmtpClient("smtp.example.com");
-            client.Credentials = new System.Net.NetworkCredential("u$3r", "pa$$word"); client.Port = 587;
+            SmtpClient client = new SmtpClient('smtp.example.com');
+            client.Credentials = new System.Net.NetworkCredential('u$3r', 'pa$$word'); client.Port = 587;
 
-            mail.From = new MailAddress("mvc@example.com");
-            mail.To.Add("developer@example.com");
-            mail.Subject = "Error on your website";
+            mail.From = new MailAddress('mvc@example.com');
+            mail.To.Add('developer@example.com');
+            mail.Subject = 'Error on your website';
             mail.Body = ErrorText(text).ToString();
 
             client.Send(mail); 
         }
     }
-}</pre><p><b>References</b></p><a href=\"http://stackoverflow.com/questions/1166089/problem-with-generic-base-controller-error-handling-in-asp-net-mvc">Problem with generic base controller error handling in ASP.NET MVC</a><br/><a href=\"http://blog.dantup.com/2009/04/aspnet-mvc-handleerror-attribute-custom.html">ASP.NET MVC HandleError Attribute, Custom Error Pages and Logging Exceptions</a><br/><a href=\"http://stackoverflow.com/questions/9629647/how-to-send-email-from-asp-net-mvc-3">How to send email from Asp.net Mvc-3?</a><br/>
- */ 
+}" + "</pre><p><b>References</b></p><a href=\"http://stackoverflow.com/questions/1166089/problem-with-generic-base-controller-error-handling-in-asp-net-mvc\">Problem with generic base controller error handling in ASP.NET MVC</a><br/><a href=\"http://blog.dantup.com/2009/04/aspnet-mvc-handleerror-attribute-custom.html\">ASP.NET MVC HandleError Attribute, Custom Error Pages and Logging Exceptions</a><br/><a href=\"http://stackoverflow.com/questions/9629647/how-to-send-email-from-asp-net-mvc-3\">How to send email from Asp.net Mvc-3?</a><br/>"; 
 
-public const string content_06082012_b = ""; 
-public const string content_06082012_r = ""; 
-
- /* 
-<p>I wrote some code and made a quick WPF application that implemented Conway's Game of Life earlier ( <a href=\"http://justmycode.blogspot.com/2012/07/game-of-life-exercise-and-extension.html">Game of Life Exercise and Extension Methods</a>).</p><p>Next, I wanted to see how the game could be run on the MVC platform. The solution in short: use javaScript <b>setInterval</b> function to load the partial view into the div. Use a method in the controller to generate the partial view.</p><p>Here is how my solution looked:</p><pre class=\"brush: csharp\">public class GameController : Controller
+public const string content_06082012_b = "<p>I wrote some code and made a quick WPF application that implemented Conway's Game of Life earlier ( <a href=\"http://justmycode.blogspot.com/2012/07/game-of-life-exercise-and-extension.html\">Game of Life Exercise and Extension Methods</a>).</p>"; 
+public const string content_06082012_r = "<p>Next, I wanted to see how the game could be run on the MVC platform. The solution in short: use javaScript <b>setInterval</b> function to load the partial view into the div. Use a method in the controller to generate the partial view.</p><p>Here is how my solution looked:</p><pre class=\"brush: csharp\">" + 
+@"public class GameController : Controller
 {
     public ActionResult Index()
     {
@@ -674,7 +661,7 @@ public const string content_06082012_r = "";
     [OutputCache(NoStore = true, Location = OutputCacheLocation.Client, Duration = 1)]
     public ActionResult Update()
     {
-        return PartialView("_Table", NextIteration());
+        return PartialView('_Table', NextIteration());
     }
 
     public HtmlString NextIteration()
@@ -682,36 +669,40 @@ public const string content_06082012_r = "";
         GameOfLifeHelpers.DrawNextIteration();
         return new HtmlString(GameOfLifeHelpers.table.ToString());
     }
-}</pre><p>The partial view is called <b>_Table</b> and is nothing more than the <b></b>HtmlString. Here is the partial view:</p><pre class=\"brush: xml\">@model HtmlString
+}" + "</pre><p>The partial view is called <b>_Table</b> and is nothing more than the <b></b>HtmlString. Here is the partial view:</p><pre class=\"brush: xml\">" + 
+@"@model HtmlString
            
 @{ Layout = null; }
 
-@Model</pre><p>The model is just the <b>HtmlString</b> which gets rendered, and the <b>HtmlString</b> itself is just a simple table of a specified number of cells. And here is the <b>Index.cshtml</b></p><pre class="brush: jscript">&lt;script type="text/javascript"&gt;
-    setInterval("$('#update').load('/Game/Update')", 1000);
+@Model" + "</pre><p>The model is just the <b>HtmlString</b> which gets rendered, and the <b>HtmlString</b> itself is just a simple table of a specified number of cells. And here is the <b>Index.cshtml</b></p><pre class=\"brush: jscript\">" + 
+@"&lt;script type='text/javascript'&gt;
+    setInterval('$('#update').load('/Game/Update')', 1000);
 &lt;/script&gt;
 
 @model HtmlString
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = 'Index';
 }
 
 &lt;h2&gt;Index&lt;/h2&gt;
-&lt;div id="update"&gt;@{Html.RenderPartial("_Table", Model);}&lt;/div&gt;
-</pre><p>Note how the interval is set to 1000 ms and the <b>OutputCache</b> duration in the controller is set to the same value. Every second the call to load will return a partial view from the <b>Update</b> method. What does the Update method return? When the game starts, and empty html table is created with each cell having a blue background.</p><pre class=\"brush: csharp\">public static void NewGameTable()
+&lt;div id='update'&gt;@{Html.RenderPartial('_Table', Model);}&lt;/div&gt;" +
+"</pre><p>Note how the interval is set to 1000 ms and the <b>OutputCache</b> duration in the controller is set to the same value. Every second the call to load will return a partial view from the <b>Update</b> method. What does the Update method return? When the game starts, and empty html table is created with each cell having a blue background.</p><pre class=\"brush: csharp\">" + 
+@"public static void NewGameTable()
 {
-    table = new StringBuilder(@"&lt;table border=1 bordercolor=black cellspacing=0 cellpadding=0&gt;");
+    table = new StringBuilder(@'&lt;table border=1 bordercolor=black cellspacing=0 cellpadding=0&gt;');
     for (int i = 0; i &lt; y; i++)
     {
-        table.Append("&lt;tr&gt;");
+        table.Append('&lt;tr&gt;');
         for (int j = 0; j &lt; x; j++)
         {
-            table.Append("&lt;td width=10px height=10px bgcolor=#0276FD&gt;&lt;/td&gt;");
+            table.Append('&lt;td width=10px height=10px bgcolor=#0276FD&gt;&lt;/td&gt;');
         }
-        table.Append("&lt;/tr&gt;");
+        table.Append('&lt;/tr&gt;');
     }
-    table.Append("&lt;/table&gt;");
-}</pre><p>Then, on each iteration, a new boolead array is filled to specify which cells will be "alive".</p><pre class=\"brush: csharp\">public static void DrawNextIteration()
+    table.Append('&lt;/table&gt;');
+}" + "</pre><p>Then, on each iteration, a new boolead array is filled to specify which cells will be \"alive\".</p><pre class=\"brush: csharp\">" + 
+@"public static void DrawNextIteration()
 {
     bool[,] arrCurrent = counter % 2 == 0 ? arrOne : arrTwo;
     bool[,] arrNext = counter % 2 == 0 ? arrTwo : arrOne;
@@ -723,11 +714,12 @@ public const string content_06082012_r = "";
         {
             if (arrNext[i, j] != arrCurrent[i, j])
             {
-                table = arrNext[i, j] ? GameOfLifeTableReplaceCell(i, j, "#FF0000", table) : GameOfLifeTableReplaceCell(i, j, "#0276FD", table);
+                table = arrNext[i, j] ? GameOfLifeTableReplaceCell(i, j, '#FF0000', table) : GameOfLifeTableReplaceCell(i, j, '#0276FD', table);
             }
         }
     }
-}</pre><p>The function that replaces the cell is very simple - it calculates the position where the font for the cell is specified based on the coordinates and makes the cell color red if it went from "dead" to "alive", and vice versa.</p><pre class=\"brush: csharp\">public static StringBuilder GameOfLifeTableReplaceCell(int i, int j, string colour, StringBuilder sb)
+}" + "</pre><p>The function that replaces the cell is very simple - it calculates the position where the font for the cell is specified based on the coordinates and makes the cell color red if it went from \"dead\" to \"alive\", and vice versa.</p><pre class=\"brush: csharp\">" + 
+@"public static StringBuilder GameOfLifeTableReplaceCell(int i, int j, string colour, StringBuilder sb)
 {
     const int rowLength = 48*x + 9;
     const int cellLength = 48;
@@ -735,9 +727,7 @@ public const string content_06082012_r = "";
     sb.Remove(start, 7);
     sb.Insert(start, colour);
     return sb;
-}</pre><p>The rest of the code is omitted because it can be found in my earlier post and used with little or no change.</p>
-
- */ 
+}" + "</pre><p>The rest of the code is omitted because it can be found in my earlier post and used with little or no change.</p>"; 
 
 public const string content_05082012_b = ""; 
 public const string content_05082012_r = ""; 
@@ -749,79 +739,74 @@ public const string content_05082012_r = "";
 //after
 &lt;ProgressBar Foreground="LightGreen" Name="Progress" Grid.Column="0" Value="{Binding ProgressValue}" HorizontalAlignment="Stretch"/&gt;</pre><p>Here is what I saw after making this change:</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://1.bp.blogspot.com/-G_vhuZMgsQc/UB8TW1mw8pI/AAAAAAAABBI/62jp9ptHnjw/s1600/4.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"11\" width=\"320\" src=\"http://1.bp.blogspot.com/-G_vhuZMgsQc/UB8TW1mw8pI/AAAAAAAABBI/62jp9ptHnjw/s320/4.png\" /></a></div><p align=\"center\">Adjusted for best performance</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://4.bp.blogspot.com/-E_1fylonDus/UB8TXWR9XlI/AAAAAAAABBQ/QVkJUaMwzLo/s1600/5.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"13\" width=\"320\" src=\"http://4.bp.blogspot.com/-E_1fylonDus/UB8TXWR9XlI/AAAAAAAABBQ/QVkJUaMwzLo/s320/5.png\" /></a></div><p align=\"center\">Allow Windows to determine settings</p><p><b>Reference:</b></p><a href=\"http://stackoverflow.com/questions/4734814/wpf-progressbar-foreground-color">WPF: Progressbar foreground color</a>
 
- */ 
+ */
 
-public const string content_04082012_b = ""; 
-public const string content_04082012_r = ""; 
-
- /* 
-
-<p>I had to dive into the world of shell scripting and do some work there. One of the tasks I had was to automatically install a bunch of Windows Updates on a server. The server could not be connected to the Internet so the updates were provided as separate files. The updates could be a mix of regular executables or Microsoft Update Standalone Packages (.msu). The script gets the name of the folder it runs from and then iterates over the files in this folder. It checks the file extension and runs appropriate command depending on the file being EXE or MSU. It also checks the return value and keeps a counter on the number of updates that reported successful and unsuccessful result, and writes the result of each install into a log file. At the end it displays a message that informs a user about the number of successfully installed and failed updates.</p><pre class="brush: vb">Sub Main
+public const string content_04082012_b = "<p>I had to dive into the world of shell scripting and do some work there. One of the tasks I had was to automatically install a bunch of Windows Updates on a server. The server could not be connected to the Internet so the updates were provided as separate files. The updates could be a mix of regular executables or Microsoft Update Standalone Packages (.msu). The script gets the name of the folder it runs from and then iterates over the files in this folder. It checks the file extension and runs appropriate command depending on the file being EXE or MSU. It also checks the return value and keeps a counter on the number of updates that reported successful and unsuccessful result, and writes the result of each install into a log file. At the end it displays a message that informs a user about the number of successfully installed and failed updates.</p>"; 
+public const string content_04082012_r = "<pre class=\"brush: vb\">" + 
+@"Sub Main
 
 Dim objfso, objShell
 Dim iSuccess, iFail
 Dim folder, files, sFolder, folderidx, Iretval, return
-Set objfso = CreateObject("Scripting.FileSystemObject")
-Set objShell = CreateObject("Wscript.Shell")
+Set objfso = CreateObject('Scripting.FileSystemObject')
+Set objShell = CreateObject('Wscript.Shell')
  
 sFolder = left(WScript.ScriptFullName,(Len(WScript.ScriptFullName))-(len(WScript.ScriptName)))
 Set folder = objfso.GetFolder(sFolder)
-Set logFile = objfso.CreateTextFile("C:\log.txt", TRUE)
+Set logFile = objfso.CreateTextFile('C:\log.txt', TRUE)
 Set files = folder.Files
 iSuccess = 0
 iFail = 0
  
 For each folderIdx In files
- If Ucase(Right(folderIdx.name,3)) = "MSU" then
-  logFile.WriteLine("Installing " & folderidx.name & "...")
-  wscript.echo "Installing " & folderidx.name & "..."
-  iretval=objShell.Run ("wusa.exe " & sfolder & folderidx.name & " /quiet /norestart", 1, True)
+ If Ucase(Right(folderIdx.name,3)) = 'MSU' then
+  logFile.WriteLine('Installing ' & folderidx.name & '...')
+  wscript.echo 'Installing ' & folderidx.name & '...'
+  iretval=objShell.Run ('wusa.exe ' & sfolder & folderidx.name & ' /quiet /norestart', 1, True)
   If (iRetVal = 0) or (iRetVal = 3010) then
-   logFile.WriteLine("Success.")
-   wscript.echo "Success."
+   logFile.WriteLine('Success.')
+   wscript.echo 'Success.'
    iSuccess = iSuccess + 1
   Else
-   logFile.WriteLine("Failed.")
-   wscript.echo "Failed."
+   logFile.WriteLine('Failed.')
+   wscript.echo 'Failed.'
    iFail = iFail + 1
   End If
- ElseIf Ucase(Right(folderIdx.name,3)) = "EXE" Then
-  logFile.WriteLine("Installing " & folderidx.name & "...")
-  wscript.echo "Installing " & folderidx.name & "..."
-  iretval = objShell.Run(folderidx.name & " /q /norestart", 1, True)
+ ElseIf Ucase(Right(folderIdx.name,3)) = 'EXE' Then
+  logFile.WriteLine('Installing ' & folderidx.name & '...')
+  wscript.echo 'Installing ' & folderidx.name & '...'
+  iretval = objShell.Run(folderidx.name & ' /q /norestart', 1, True)
   If (iRetVal = 0) or (iRetVal = 3010) then
-   logFile.WriteLine("Success.")
-   wscript.echo "Success."
+   logFile.WriteLine('Success.')
+   wscript.echo 'Success.'
    iSuccess = iSuccess + 1
   Else
-   logFile.WriteLine("Failed.")
-   wscript.echo "Failed."
+   logFile.WriteLine('Failed.')
+   wscript.echo 'Failed.'
    iFail = iFail + 1
   End If
  End If
 Next
 
-wscript.echo iSuccess & " update(s) installed successfully and " & iFail & " update(s) failed. See C:\log.txt for details."
+wscript.echo iSuccess & ' update(s) installed successfully and ' & iFail & ' update(s) failed. See C:\log.txt for details.'
  
 End Sub
 
-Main()</pre>
- */ 
+Main()" + "</pre>";
 
-public const string content_31072012_b = ""; 
-public const string content_31072012_r = ""; 
-
- /* 
-<p>A quick attempt in writing the Game of Life simulator using WPF. As a side goal, I wanted to better understand the extension methods in C# so I tried to move as much code as possible into the <b>Helper</b> class without sacrificing readability.</p><p><b>PopulateGrid</b> adds 50 rows and columns to a WPF Grid, creating a 50x50 matrix of cell. It then adds a rectangle to each cell so coloring could be applied. <b>RePaintCell</b> changes the background color of the cell at position i,j. <b>InitializeArray</b> just fills a 50x50 array of booleans, each value representing either a live or dead cell. <b>CheckCell</b> checks a single cell to find out if it will be live or dead in the next iteration. <b>FillArray</b> uses <b>CheckCell</b> to analyse the current array and construct the array of the next iteration. <b>DrawArray</b> compares the current and next iterations. If there is difference in the color of the cell at i,j, this cell is painted appropriately, otherwise it is skipped. Finally, <b>AddGlider</b> adds a glider element to the empty array so it was easy to test that the game runs correctly. The full listing is below.</p><p><b>MainWindow.xaml</b></p><pre class=\"brush: xml\">&lt;Window x:Class="GameOfLife.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="386\" width=\"525"&gt;
-    &lt;Grid Name="MainGrid"&gt;
-        &lt;Grid Name="DynamicGrid" ShowGridLines="True"&gt;
+public const string content_31072012_b = "<p>A quick attempt in writing the Game of Life simulator using WPF. As a side goal, I wanted to better understand the extension methods in C# so I tried to move as much code as possible into the <b>Helper</b> class without sacrificing readability.</p>"; 
+public const string content_31072012_r = "<p><b>PopulateGrid</b> adds 50 rows and columns to a WPF Grid, creating a 50x50 matrix of cell. It then adds a rectangle to each cell so coloring could be applied. <b>RePaintCell</b> changes the background color of the cell at position i,j. <b>InitializeArray</b> just fills a 50x50 array of booleans, each value representing either a live or dead cell. <b>CheckCell</b> checks a single cell to find out if it will be live or dead in the next iteration. <b>FillArray</b> uses <b>CheckCell</b> to analyse the current array and construct the array of the next iteration. <b>DrawArray</b> compares the current and next iterations. If there is difference in the color of the cell at i,j, this cell is painted appropriately, otherwise it is skipped. Finally, <b>AddGlider</b> adds a glider element to the empty array so it was easy to test that the game runs correctly. The full listing is below.</p><p><b>MainWindow.xaml</b></p><pre class=\"brush: xml\">" + 
+@"&lt;Window x:Class='GameOfLife.MainWindow'
+        xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+        xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'
+        Title='MainWindow' Height='386\' width=\'525'&gt;
+    &lt;Grid Name='MainGrid'&gt;
+        &lt;Grid Name='DynamicGrid' ShowGridLines='True'&gt;
         &lt;/Grid&gt;
-        &lt;Button Content="Button" Height="23" HorizontalAlignment="Left" Margin="25,316,0,0" Name="button1" VerticalAlignment="Top\" width=\"75" Click="button1_Click" /&gt;
+        &lt;Button Content='Button' Height='23' HorizontalAlignment='Left' Margin='25,316,0,0' Name='button1' VerticalAlignment='Top\' width=\'75' Click='button1_Click' /&gt;
     &lt;/Grid&gt;
-&lt;/Window&gt;</pre><p><b>MainWindow.xaml.cs</b></p><pre class=\"brush: csharp\">using System.Windows;
+&lt;/Window&gt;" + "</pre><p><b>MainWindow.xaml.cs</b></p><pre class=\"brush: csharp\">" + 
+@"using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System;
@@ -879,7 +864,8 @@ namespace GameOfLife
                 dt.Start();
         }
     }
-}</pre><p><b>Helper.cs</b></p><pre class=\"brush: csharp\">using System.Linq;
+}" + "</pre><p><b>Helper.cs</b></p><pre class=\"brush: csharp\">" + 
+@"using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Shapes;
 using System.Windows.Media;
@@ -1000,15 +986,11 @@ namespace GameOfLife
                 return (val == 3) ? true : false;
         }
     }
-}</pre><p><b>Reference</b></p><a href=\"http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life">Conway's Game of Life</a><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://2.bp.blogspot.com/-9n2qn-Kjxxs/UBhgaEBPooI/AAAAAAAAA2s/v4loHMHPWM0/s1600/1.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"193\" width=\"263\" src=\"http://2.bp.blogspot.com/-9n2qn-Kjxxs/UBhgaEBPooI/AAAAAAAAA2s/v4loHMHPWM0/s320/1.png\" /></a></div><p align=\"center\">The results are impressive</p>
+}" + "</pre><p><b>Reference</b></p><a href=\"http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life\">Conway's Game of Life</a><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://2.bp.blogspot.com/-9n2qn-Kjxxs/UBhgaEBPooI/AAAAAAAAA2s/v4loHMHPWM0/s1600/1.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"193\" width=\"263\" src=\"http://2.bp.blogspot.com/-9n2qn-Kjxxs/UBhgaEBPooI/AAAAAAAAA2s/v4loHMHPWM0/s320/1.png\" /></a></div><p align=\"center\">The results are impressive</p>";
 
- */ 
-
-public const string content_17072012_b = ""; 
-public const string content_17072012_r = ""; 
-
- /* 
-<p>Adding a pop-out menu to the application turned out to be two major steps. The second step can be broken down into obvious sub-steps too:</p><ul><li>Create HTML structure for the menu and apply the CSS</li><li>Create a ViewModel for the menu partial view and fill it with data<ul><li>Create a ViewModel</li><li>Create a controller to fill it with data</li><li>Modify the view to render the ViewModel properly</li></ul></li></ul><p>The first step I'm not describing here because I used a well-written tutorial[1]. I will only record here the styles I added to <b>Site.css</b>:</p><pre class="brush: css">#menu {
+public const string content_17072012_b = "<p>Adding a pop-out menu to the application turned out to be two major steps. The second step can be broken down into obvious sub-steps too:</p>"; 
+public const string content_17072012_r = "<ul><li>Create HTML structure for the menu and apply the CSS</li><li>Create a ViewModel for the menu partial view and fill it with data<ul><li>Create a ViewModel</li><li>Create a controller to fill it with data</li><li>Modify the view to render the ViewModel properly</li></ul></li></ul><p>The first step I'm not describing here because I used a well-written tutorial[1]. I will only record here the styles I added to <b>Site.css</b>:</p><pre class=\"brush: css\">" + 
+@"#menu {
     width: 12em;
     background: #eee;
 }
@@ -1061,17 +1043,20 @@ div#menu ul ul li:hover ul ul
 
 div#menu ul ul li:hover ul,
 div#menu ul ul ul li:hover ul
-{display: block;}</pre><p>The second step I'll write down in more detail.</p><p><b>1.</b> Create a partial view for the left sidebar. I decided to render the partial view by calling <b>Html.Action</b>, so I modified the div that holds the left sidebar in <b>_Layout.shtml</b> to look like this:</p><pre class=\"brush: xml\">&lt;div id="left-sidebar"&gt;
- @Html.Action("MenuResult", "LeftMenu")
-&lt;/div&gt;</pre><p>Then I created a partial view called <b>MenuResult.shtml</b> and placed it in the <b>Shared</b> folder. This is how the HTML structure looks like:</p><pre class=\"brush: xml\">@model Recipes.Models.LeftMenuViewModel
+{display: block;}" + "</pre><p>The second step I'll write down in more detail.</p><p><b>1.</b> Create a partial view for the left sidebar. I decided to render the partial view by calling <b>Html.Action</b>, so I modified the div that holds the left sidebar in <b>_Layout.shtml</b> to look like this:</p><pre class=\"brush: xml\">" + 
+@"&lt;div id='left-sidebar'&gt;
+ @Html.Action('MenuResult', 'LeftMenu')
+&lt;/div&gt;" + 
+"</pre><p>Then I created a partial view called <b>MenuResult.shtml</b> and placed it in the <b>Shared</b> folder. This is how the HTML structure looks like:</p><pre class=\"brush: xml\">" + 
+@"@model Recipes.Models.LeftMenuViewModel
 
 @{ Layout = null; }
 
-&lt;div id="menu"&gt;
+&lt;div id='menu'&gt;
     &lt;ul&gt;
         &lt;li&gt;&lt;h2&gt;Recipes Menu&lt;/h2&gt;
             &lt;ul&gt;
-                &lt;li&gt;@Html.ActionLink("Recipes", "../Recipe/Index")
+                &lt;li&gt;@Html.ActionLink('Recipes', '../Recipe/Index')
                     &lt;ul&gt;
                          &lt;li&gt;Test menu item
                             &lt;ul&gt;
@@ -1083,11 +1068,14 @@ div#menu ul ul ul li:hover ul
             &lt;/ul&gt;
         &lt;/li&gt;
     &lt;/ul&gt;
-&lt;/div&gt;</pre><p><b>2.</b> ViewModel. After I was satisfied with the way the "stub" menu works, I started working on the model for the partial view. My first attempt looked something like this, a pretty simple model:</p><pre class=\"brush: csharp\">public class LeftMenuViewModel
+&lt;/div&gt;" + 
+"</pre><p><b>2.</b> ViewModel. After I was satisfied with the way the \"stub\" menu works, I started working on the model for the partial view. My first attempt looked something like this, a pretty simple model:</p><pre class=\"brush: csharp\">" + 
+@"public class LeftMenuViewModel
 {
  public List&lt;Category&gt; Categories { get; set; }
-}</pre><p>And a pretty simple nested foreach iterator that attempts to render the view:</p><pre class=\"brush: xml\">&lt;ul&gt;
- &lt;li&gt;@Html.ActionLink("Recipes", "../Recipe/Index")
+}" + "</pre><p>And a pretty simple nested foreach iterator that attempts to render the view:</p><pre class=\"brush: xml\">" + 
+@"&lt;ul&gt;
+ &lt;li&gt;@Html.ActionLink('Recipes', '../Recipe/Index')
   &lt;ul&gt;
    @foreach(var cat in Model.Categories)
    {
@@ -1102,7 +1090,9 @@ div#menu ul ul ul li:hover ul
    }
   &lt;/ul&gt;
  &lt;/li&gt;
-&lt;/ul&gt;</pre><p><b>3.</b> Controller. The initial version of the controller looked something like this:</p><pre class=\"brush: csharp\">public class LeftMenuController : Controller
+&lt;/ul&gt;" + 
+"</pre><p><b>3.</b> Controller. The initial version of the controller looked something like this:</p><pre class=\"brush: csharp\">" + 
+@"public class LeftMenuController : Controller
 {
  public PartialViewResult MenuResult()
  {
@@ -1118,8 +1108,8 @@ div#menu ul ul ul li:hover ul
   }
   return PartialView(viewModel);
  }
-}</pre><p>That was the initial attempt, but when I ran this, I was presented with the following exception: <i>The ObjectContext instance has been disposed and can no longer be used for operations that require a connection.</i></p><div class=\"separator\" style=\"clear: both; text-align: center;\">
-<a href=\"http://1.bp.blogspot.com/-G1ehJ1tO-Ag/UAYELwdZa-I/AAAAAAAAA2c/zY8_a1fbhPs/s1600/2.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"65\" width=\"320\" src=\"http://1.bp.blogspot.com/-G1ehJ1tO-Ag/UAYELwdZa-I/AAAAAAAAA2c/zY8_a1fbhPs/s320/2.png\" /></a></div><p align=\"center\">The ObjectContext instance has been disposed</p><p>That looked a bit weird to me - I can see the elements of the collection, but the application refuses to iterate through them, complaining about the context. I found a couple of thoughtful posts on the reason for such a behaviour. First post [2] suggested that most likely, the execution of the query was deferred and now, in the view, when it actually tries to execute the query, I have disposed of the DbContext already and it fails. The suggestion was to convert the query results to list using <b>.ToList()</b> so the query gets executed before disposing. That did not work. Another post [3] suggested replacing the foreach iterator with a for one for a number of reasons, but that did not help either.</p><p>I gave it some thought and chose an easy way out - remove the dependency on the LINQ and complex entity objects and create my own very simple class to use in the view model. Here is the final code, which worked for me:</p><p><b>View Model</b></p><pre class=\"brush: csharp\">public class LeftMenuViewModel
+}" + "</pre><p>That was the initial attempt, but when I ran this, I was presented with the following exception: <i>The ObjectContext instance has been disposed and can no longer be used for operations that require a connection.</i></p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://1.bp.blogspot.com/-G1ehJ1tO-Ag/UAYELwdZa-I/AAAAAAAAA2c/zY8_a1fbhPs/s1600/2.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"65\" width=\"320\" src=\"http://1.bp.blogspot.com/-G1ehJ1tO-Ag/UAYELwdZa-I/AAAAAAAAA2c/zY8_a1fbhPs/s320/2.png\" /></a></div><p align=\"center\">The ObjectContext instance has been disposed</p><p>That looked a bit weird to me - I can see the elements of the collection, but the application refuses to iterate through them, complaining about the context. I found a couple of thoughtful posts on the reason for such a behaviour. First post [2] suggested that most likely, the execution of the query was deferred and now, in the view, when it actually tries to execute the query, I have disposed of the DbContext already and it fails. The suggestion was to convert the query results to list using <b>.ToList()</b> so the query gets executed before disposing. That did not work. Another post [3] suggested replacing the foreach iterator with a for one for a number of reasons, but that did not help either.</p><p>I gave it some thought and chose an easy way out - remove the dependency on the LINQ and complex entity objects and create my own very simple class to use in the view model. Here is the final code, which worked for me:</p><p><b>View Model</b></p><pre class=\"brush: csharp\">" + 
+@"public class LeftMenuViewModel
 {
  public List&lt;MenuElement&gt; elements { get; set; }
 }
@@ -1130,7 +1120,8 @@ public class MenuElement
  public string name { get; set; }
  public List&lt;MenuElement&gt; children { get; set; }
 
-}</pre><p><b>Controller</b></p><pre class=\"brush: csharp\">public class LeftMenuController : Controller
+}" + "</pre><p><b>Controller</b></p><pre class=\"brush: csharp\">" + 
+@"public class LeftMenuController : Controller
 {
  public PartialViewResult MenuResult()
  {
@@ -1156,15 +1147,16 @@ public class MenuElement
   }
   return PartialView(viewModel);
  }
-}</pre><p><b>View</b></p><pre class=\"brush: xml\">@model Recipes.Models.LeftMenuViewModel
+}" + "</pre><p><b>View</b></p><pre class=\"brush: xml\">" + 
+@"@model Recipes.Models.LeftMenuViewModel
 
 @{ Layout = null; }
 
-&lt;div id="menu"&gt;
+&lt;div id='menu'&gt;
     &lt;ul&gt;
         &lt;li&gt;&lt;h2&gt;Recipes Menu&lt;/h2&gt;
             &lt;ul&gt;
-                &lt;li&gt;@Html.ActionLink("Recipes", "../Recipe/Index")
+                &lt;li&gt;@Html.ActionLink('Recipes', '../Recipe/Index')
                     &lt;ul&gt;
 
                         @for(int i=0; i&lt;Model.elements.Count(); i++)
@@ -1183,73 +1175,72 @@ public class MenuElement
             &lt;/ul&gt;
         &lt;/li&gt;
     &lt;/ul&gt;
-&lt;/div&gt;</pre><p>While this looks a bit more complex compared to the initial attempt, I think there is really much less space for error. Here is how the menu looks like:</p><div class=\"separator\" style=\"clear: both; text-align: center;\">
-<a href=\"http://2.bp.blogspot.com/-_mohmihTwOc/UAYEL6QuquI/AAAAAAAAA2Q/8XClFq1hPvA/s1600/1.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"168\" width=\"320\" src=\"http://2.bp.blogspot.com/-_mohmihTwOc/UAYEL6QuquI/AAAAAAAAA2Q/8XClFq1hPvA/s320/1.png\" /></a></div><p align=\"center\">Left side pop-out menu</p><p><b>References:</b></p><a href=\"http://ago.tanfa.co.uk/css/examples/menu/tutorial-v.html">CSS Pop-Out Menu Tutorial</a><br/><a href=\"http://stackoverflow.com/questions/5360372/the-objectcontext-instance-has-been-disposed-and-can-no-longer-be-used-for-opera">The ObjectContext instance has been disposed and can no longer be used for operations that require a connection</a><br/><a href=\"http://stackoverflow.com/questions/8894442/mvc-razor-view-nested-foreachs-model">MVC Razor view nested foreach's model</a>
+&lt;/div&gt;" + 
+"</pre><p>While this looks a bit more complex compared to the initial attempt, I think there is really much less space for error. Here is how the menu looks like:</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://2.bp.blogspot.com/-_mohmihTwOc/UAYEL6QuquI/AAAAAAAAA2Q/8XClFq1hPvA/s1600/1.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"168\" width=\"320\" src=\"http://2.bp.blogspot.com/-_mohmihTwOc/UAYEL6QuquI/AAAAAAAAA2Q/8XClFq1hPvA/s320/1.png\" /></a></div><p align=\"center\">Left side pop-out menu</p><p><b>References:</b></p><a href=\"http://ago.tanfa.co.uk/css/examples/menu/tutorial-v.html\">CSS Pop-Out Menu Tutorial</a><br/><a href=\"http://stackoverflow.com/questions/5360372/the-objectcontext-instance-has-been-disposed-and-can-no-longer-be-used-for-opera\">The ObjectContext instance has been disposed and can no longer be used for operations that require a connection</a><br/><a href=\"http://stackoverflow.com/questions/8894442/mvc-razor-view-nested-foreachs-model\">MVC Razor view nested foreach's model</a>"; 
 
- */ 
-
-public const string content_05072012_b = ""; 
-public const string content_05072012_r = ""; 
-
- /* 
-<p>Continuing the recipe database example, the next step is to not just keep a list of ingredients that are required for a recipe, but also to allow specifying the quantity of each ingredient. Up to this point, I did not need any "mapping table" due to the MVC magic - the <b>Recipe</b> object kept a list of ingredients, and the <b>Ingredient</b> object kept a list of recipes. That was all that MVC needed to resolve the many-to-many relationship between recipes and ingredients and I could get away with just two models.</p><p>Now that I want to know how much of the ingredient is required, I don't have a place to save this information. I don't think I can get away without the <b>RecipeIngredient</b> model any longer. I'm adding that and also giving the user the ability to add and remove ingredients. This requires a technique to edit and save a list of variable length, which is referenced at the end of this post and which I applied, with small modifications.</p><p>To display the list, the following technique is used: a div element which contains one entry from the list is placed in a partial view. Each time the user adds an entry to the list, another such div is appended to the list using an Ajax call to a jQuery append() function. Each time the user removes an entry, a div is removed, which is even easier. To begin with, I added the following to the recipe's Edit view</p><pre class=\"brush: js\">&lt;fieldset&gt;
- &lt;div id="editorRows"&gt;
+public const string content_05072012_b = "<p>Continuing the recipe database example, the next step is to not just keep a list of ingredients that are required for a recipe, but also to allow specifying the quantity of each ingredient. Up to this point, I did not need any \"mapping table\" due to the MVC magic - the <b>Recipe</b> object kept a list of ingredients, and the <b>Ingredient</b> object kept a list of recipes. That was all that MVC needed to resolve the many-to-many relationship between recipes and ingredients and I could get away with just two models.</p>"; 
+public const string content_05072012_r = "<p>Now that I want to know how much of the ingredient is required, I don't have a place to save this information. I don't think I can get away without the <b>RecipeIngredient</b> model any longer. I'm adding that and also giving the user the ability to add and remove ingredients. This requires a technique to edit and save a list of variable length, which is referenced at the end of this post and which I applied, with small modifications.</p><p>To display the list, the following technique is used: a div element which contains one entry from the list is placed in a partial view. Each time the user adds an entry to the list, another such div is appended to the list using an Ajax call to a jQuery append() function. Each time the user removes an entry, a div is removed, which is even easier. To begin with, I added the following to the recipe's Edit view</p><pre class=\"brush: js\">" + 
+@"&lt;fieldset&gt;
+ &lt;div id='editorRows'&gt;
  &lt;ol&gt;
   @foreach (var item in Model.RecipeIngredients)
   {
-   @Html.Partial("_RIEditor", item)
+   @Html.Partial('_RIEditor', item)
   }
  &lt;/ol&gt;
  &lt;/div&gt;
- @Html.ActionLink("Add another ...", "Add", null, new {id = "addItem"})
-&lt;/fieldset&gt;</pre><p>The same partial view <b>_RIEditor</b> is repeated once per each ingredient. The "Add another ..." link will later add an ingredient when the user clicks it. And here's a sample _RIEditor partial view ( the <b>Layout=null</b> part was added because otherwise my partial view was rendered with the header and the footer).</p><pre class=\"brush: csharp\">@using Recipes.HtmlHelpers
+ @Html.ActionLink('Add another ...', 'Add', null, new {id = 'addItem'})
+&lt;/fieldset&gt;" + 
+"</pre><p>The same partial view <b>_RIEditor</b> is repeated once per each ingredient. The \"Add another ...\" link will later add an ingredient when the user clicks it. And here's a sample _RIEditor partial view ( the <b>Layout=null</b> part was added because otherwise my partial view was rendered with the header and the footer).</p><pre class=\"brush: csharp\">" + 
+@"@using Recipes.HtmlHelpers
 @model Recipes.Models.RecipeIngredient
            
 @{ Layout = null; }
 
-&lt;div class="editorRow"&gt;
-    @using (Html.BeginCollectionItem("RecipeIngredients"))
+&lt;div class='editorRow'&gt;
+    @using (Html.BeginCollectionItem('RecipeIngredients'))
     {
-        &lt;li class="styled"&gt;
-        &lt;div class="display-label"&gt;Ingredient:&lt;/div&gt;@Html.TextBoxFor(model =&gt; model.Ingredient.IngredientName)
-        &lt;div class="display-label-nofloat"&gt;Amount:&lt;/div&gt;@Html.TextBoxFor(model =&gt; model.Quantity, new { size = 4 })
-        &lt;a href="#" class="deleteRow"&gt;delete&lt;/a&gt;
+        &lt;li class='styled'&gt;
+        &lt;div class='display-label'&gt;Ingredient:&lt;/div&gt;@Html.TextBoxFor(model =&gt; model.Ingredient.IngredientName)
+        &lt;div class='display-label-nofloat'&gt;Amount:&lt;/div&gt;@Html.TextBoxFor(model =&gt; model.Quantity, new { size = 4 })
+        &lt;a href='#' class='deleteRow'&gt;delete&lt;/a&gt;
         &lt;/li&gt;
     }
-&lt;/div&gt;</pre><p>The key part here is the <b>Html.BeginCollectionItem</b>, which renders a sequence of items that will later be bound to a single collection. In short, it keeps track of the items as they are added or deleted, and when the form is finally submitted, the neat collection of items is returned, ready to be saved to database.</p><p>Now to allow for adding or deleting elements, I need to add two functions. Here's the example:</p><pre class=\"brush: js\">&lt;script type="text/javascript"&gt;
+&lt;/div&gt;" + 
+"</pre><p>The key part here is the <b>Html.BeginCollectionItem</b>, which renders a sequence of items that will later be bound to a single collection. In short, it keeps track of the items as they are added or deleted, and when the form is finally submitted, the neat collection of items is returned, ready to be saved to database.</p><p>Now to allow for adding or deleting elements, I need to add two functions. Here's the example:</p><pre class=\"brush: js\">" + 
+@"&lt;script type='text/javascript'&gt;
 &lt;!--
-    $("#addItem").click(function () {
+    $('#addItem').click(function () {
         $.ajax({
             url: this.href,
             cache: false,
-            success: function (html) { $("#editorRows").append(html); }
+            success: function (html) { $('#editorRows').append(html); }
         });
         return false;
     });
 
-    $("a.deleteRow").live("click", function () {
-        $(this).parents("div.editorRow:first").remove();
+    $('a.deleteRow').live('click', function () {
+        $(this).parents('div.editorRow:first').remove();
         return false;
     });
 --&gt;
-&lt;/script&gt;</pre><p>I also need to reference a couple of JavaScript files to make it work</p><pre class=\"brush: js\">&lt;script src=\"@Url.Content("~/Scripts/MicrosoftAjax.js")" type="text/javascript"&gt;&lt;/script&gt;
-&lt;script src=\"@Url.Content("~/Scripts/MicrosoftMvcValidation.debug.js")" type="text/javascript"&gt;&lt;/script&gt;</pre>
-<p>Almost done, now I only need to take care of that "Add another ..." link that I added to the Edit view. To make it work, I only need a simple action added to the controller. which will return the partial view.</p><pre class=\"brush: csharp\">public ViewResult Add()
+&lt;/script&gt;" + 
+"</pre><p>I also need to reference a couple of JavaScript files to make it work</p><pre class=\"brush: js\">" + 
+@"&lt;script src='@Url.Content('~/Scripts/MicrosoftAjax.js')' type='text/javascript'&gt;&lt;/script&gt;
+&lt;script src='@Url.Content('~/Scripts/MicrosoftMvcValidation.debug.js')' type='text/javascript'&gt;&lt;/script&gt;" + 
+"</pre><p>Almost done, now I only need to take care of that \"Add another ...\" link that I added to the Edit view. To make it work, I only need a simple action added to the controller. which will return the partial view.</p><pre class=\"brush: csharp\">" + 
+@"public ViewResult Add()
 {
- return View("_RIEditor", new RecipeIngredient());
-}</pre><p>So, what have I achieved? Here's the first approximation of how my ingredient list may look like when I load the recipe from the database</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://2.bp.blogspot.com/-5grAdaDUGtU/T_Z5hovP24I/AAAAAAAAA1o/K_eRcO7kNsQ/s1600/1.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"54\" width=\"320\" src=\"http://2.bp.blogspot.com/-5grAdaDUGtU/T_Z5hovP24I/AAAAAAAAA1o/K_eRcO7kNsQ/s320/1.png\" /></a></div><p align=\"center\">Original List of Ingredients</p><p>And how it looks when I click "Add another ...": a line for a new ingredient is added, looking the same as other lines and I can enter some data</p><div class=\"separator\" style=\"clear: both; text-align: center;\">
-<a href=\"http://3.bp.blogspot.com/-0za6JvTx6Dk/T_Z5h8_7pDI/AAAAAAAAA10/NeCzrPf8cz4/s1600/2.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"70\" width=\"320\" src=\"http://3.bp.blogspot.com/-0za6JvTx6Dk/T_Z5h8_7pDI/AAAAAAAAA10/NeCzrPf8cz4/s320/2.png\" /></a></div><p align=\"center\">Modified List of Ingredients</p><p>And then I can verify that some data is returned back on Submit, so my changes are not being lost</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://1.bp.blogspot.com/-vq164er9gtE/T_Z5iMekuMI/AAAAAAAAA2A/7kFSqL46SdE/s1600/3.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"156\" width=\"320\" src=\"http://1.bp.blogspot.com/-vq164er9gtE/T_Z5iMekuMI/AAAAAAAAA2A/7kFSqL46SdE/s320/3.png\" /></a></div><p align=\"center\">Data Posted by the View</p><p>The concept is working at this point - I get back my three "RecipeIngredients" and the data I entered. It's only the proof of concept at this point, I need to make a number of modifications to make it functional.</p><p><b>References:</b></p><a href=\"https://github.com/danludwig/BeginCollectionItem/blob/master/BeginCollectionItem/HtmlPrefixScopeExtensions.cs">BeginCollectionItem source code</a><br/><a href=\"http://blog.codeville.net/2010/01/28/editing-a-variable-length-list-aspnet-mvc-2-style/">Editing a variable length list, ASP.NET MVC 2-style</a>
+ return View('_RIEditor', new RecipeIngredient());
+}" + 
+"</pre><p>So, what have I achieved? Here's the first approximation of how my ingredient list may look like when I load the recipe from the database</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://2.bp.blogspot.com/-5grAdaDUGtU/T_Z5hovP24I/AAAAAAAAA1o/K_eRcO7kNsQ/s1600/1.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"54\" width=\"320\" src=\"http://2.bp.blogspot.com/-5grAdaDUGtU/T_Z5hovP24I/AAAAAAAAA1o/K_eRcO7kNsQ/s320/1.png\" /></a></div><p align=\"center\">Original List of Ingredients</p><p>And how it looks when I click \"Add another ...\": a line for a new ingredient is added, looking the same as other lines and I can enter some data</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://3.bp.blogspot.com/-0za6JvTx6Dk/T_Z5h8_7pDI/AAAAAAAAA10/NeCzrPf8cz4/s1600/2.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"70\" width=\"320\" src=\"http://3.bp.blogspot.com/-0za6JvTx6Dk/T_Z5h8_7pDI/AAAAAAAAA10/NeCzrPf8cz4/s320/2.png\" /></a></div><p align=\"center\">Modified List of Ingredients</p><p>And then I can verify that some data is returned back on Submit, so my changes are not being lost</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://1.bp.blogspot.com/-vq164er9gtE/T_Z5iMekuMI/AAAAAAAAA2A/7kFSqL46SdE/s1600/3.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"156\" width=\"320\" src=\"http://1.bp.blogspot.com/-vq164er9gtE/T_Z5iMekuMI/AAAAAAAAA2A/7kFSqL46SdE/s320/3.png\" /></a></div><p align=\"center\">Data Posted by the View</p><p>The concept is working at this point - I get back my three \"RecipeIngredients\" and the data I entered. It's only the proof of concept at this point, I need to make a number of modifications to make it functional.</p><p><b>References:</b></p><a href=\"https://github.com/danludwig/BeginCollectionItem/blob/master/BeginCollectionItem/HtmlPrefixScopeExtensions.cs\">BeginCollectionItem source code</a><br/><a href=\"http://blog.codeville.net/2010/01/28/editing-a-variable-length-list-aspnet-mvc-2-style/\">Editing a variable length list, ASP.NET MVC 2-style</a>"; 
 
- */ 
-
-public const string content_14062012_b = ""; 
-public const string content_14062012_r = ""; 
-
- /* 
-<p>This is a rather short post. A little "trick" is required to test validation. If the <b>Create</b> function is called directly from the unit test, and the entity is validated using <b>DataAnnotation</b> validation, the model binder will not be invoked and the validation will not take place. The test result, obviously, will not be the expected one. To deal with that, it is necessary to mimic the behavior of the model binder. The following test creates a <b>ValidationContext</b> and uses the <b>DataAnnotations</b>.Validator class to validate the model.</p><pre class=\"brush: csharp\">[TestMethod()]
+public const string content_14062012_b = "<p>This is a rather short post. A little \"trick\" is required to test validation. If the <b>Create</b> function is called directly from the unit test, and the entity is validated using <b>DataAnnotation</b> validation, the model binder will not be invoked and the validation will not take place. The test result, obviously, will not be the expected one. To deal with that, it is necessary to mimic the behavior of the model binder. The following test creates a <b>ValidationContext</b> and uses the <b>DataAnnotations</b>.Validator class to validate the model.</p>"; 
+public const string content_14062012_r = "<pre class=\"brush: csharp\">" + 
+@"[TestMethod()]
 public void ValidateNameIsTooShort()
 {
- Ingredient ingredient = new Ingredient() { IngredientName = "a" };
+ Ingredient ingredient = new Ingredient() { IngredientName = 'a' };
 
  var validationContext = new ValidationContext(ingredient, null, null);
  var validationResults = new List&lt;ValidationResult&gt;();
@@ -1258,7 +1249,8 @@ public void ValidateNameIsTooShort()
  string error = GetValidationError(validationResults);
 
  Assert.AreEqual(error, Constants.Constants.IngredientNameTooShort);
-}</pre><p>If any errors are caught by the validation, they will be added to the <b>ModelState</b> of the controller. To get it back and compare with my expected error message, I just need to retrieve the first error message from the list of <b>ValidationResult</b>.</p><pre class=\"brush: csharp\">public string GetValidationError(List&lt;ValidationResult&gt; results)
+}" + "</pre><p>If any errors are caught by the validation, they will be added to the <b>ModelState</b> of the controller. To get it back and compare with my expected error message, I just need to retrieve the first error message from the list of <b>ValidationResult</b>.</p><pre class=\"brush: csharp\">" + 
+@"public string GetValidationError(List&lt;ValidationResult&gt; results)
 {
  foreach (var result in results)
  {
@@ -1268,45 +1260,43 @@ public void ValidateNameIsTooShort()
   }
  }
  return string.Empty;
-}</pre><p><b>References:</b></p><a href=\"http://johan.driessen.se/posts/testing-dataannotation-based-validation-in-asp.net-mvc">Testing DataAnnotation-based validation in ASP.NET MVC</a><br/><a href=\"http://stackoverflow.com/questions/1269713/unit-tests-on-mvc-validation">Unit tests on MVC validation</a><br/>
+}" + "</pre><p><b>References:</b></p><a href=\"http://johan.driessen.se/posts/testing-dataannotation-based-validation-in-asp.net-mvc\">Testing DataAnnotation-based validation in ASP.NET MVC</a><br/><a href=\"http://stackoverflow.com/questions/1269713/unit-tests-on-mvc-validation\">Unit tests on MVC validation</a><br/>";
 
- */ 
-
-public const string content_12062012_b = ""; 
-public const string content_12062012_r = ""; 
-
- /* 
-<p>Continuing the example with a recipe database, and having the most basic structure working (recipes belong to categories and consist of ingredients), it is time to remember about <b>TDD</b> (test driven development). To be honest, it is already too late, because in proper TDD tests are supposed to be writter before the code is. I'll do my best next time. This time, however, there are some simple tests I can think of which relate to the <b>Ingredient</b> entity</p><ul><li>Test that an Ingredient can be inserted into the database</li><li>Test that an Ingredient can be edited</li><li>Test that an Ingredient can be deleted from the database</li><li>Test that an Ingredient can not be deleted if it is used by any Recipe</li><li>Test that an Ingredient with a name that is too short can not be created</li><li>Test that an Ingredient with a name that is too long can not be created</li><li>Test that an existing Ingredient can not be edited so that its name becomes too short</li><li>Test that an existing Ingredient can not be edited so that its name becomes too long</li></ul><p>In fact, the last four tests are not related to database manipulations because the errors will be caught before the attempt to save data is made. It would be more appropriate to place them in a separate class, which will test the model and I'll return to them next time. The first four tests appear to test database operations.</p><p>Firstly, I would like to have each test start from a known state - for example, an almost empty database which has some minimal amount of seed data. To achieve that, I use the initializer class that inherits from <b>DropCreateDatabaseAlways</b>. For reference, here is the full listing - the only thing I care about is to override the Seed function. I will use the data to test that I can not delete the ingredient which is in use.</p><pre class=\"brush: csharp\">public class TestDatabaseInitializer : DropCreateDatabaseAlways&lt;RecipesEntities&gt;
+public const string content_12062012_b = "<p>Continuing the example with a recipe database, and having the most basic structure working (recipes belong to categories and consist of ingredients), it is time to remember about <b>TDD</b> (test driven development). To be honest, it is already too late, because in proper TDD tests are supposed to be writter before the code is. I'll do my best next time. This time, however, there are some simple tests I can think of which relate to the <b>Ingredient</b> entity</p>"; 
+public const string content_12062012_r = "<ul><li>Test that an Ingredient can be inserted into the database</li><li>Test that an Ingredient can be edited</li><li>Test that an Ingredient can be deleted from the database</li><li>Test that an Ingredient can not be deleted if it is used by any Recipe</li><li>Test that an Ingredient with a name that is too short can not be created</li><li>Test that an Ingredient with a name that is too long can not be created</li><li>Test that an existing Ingredient can not be edited so that its name becomes too short</li><li>Test that an existing Ingredient can not be edited so that its name becomes too long</li></ul><p>In fact, the last four tests are not related to database manipulations because the errors will be caught before the attempt to save data is made. It would be more appropriate to place them in a separate class, which will test the model and I'll return to them next time. The first four tests appear to test database operations.</p><p>Firstly, I would like to have each test start from a known state - for example, an almost empty database which has some minimal amount of seed data. To achieve that, I use the initializer class that inherits from <b>DropCreateDatabaseAlways</b>. For reference, here is the full listing - the only thing I care about is to override the Seed function. I will use the data to test that I can not delete the ingredient which is in use.</p><pre class=\"brush: csharp\">" + 
+@"public class TestDatabaseInitializer : DropCreateDatabaseAlways&lt;RecipesEntities&gt;
 {
  protected override void Seed(RecipesEntities context)
  {
-  var category0 = new Category { CategoryName = "Mains", Description = "Main Dishes" };
-  var category1 = new Category { CategoryName = "Desserts", Description = "Dessert Dishes" };
+  var category0 = new Category { CategoryName = 'Mains', Description = 'Main Dishes' };
+  var category1 = new Category { CategoryName = 'Desserts', Description = 'Dessert Dishes' };
   var categories = new List&lt;Category&gt;() { category0, category1 };
   categories.ForEach(c =&gt; context.Categories.Add(c));
 
-  var ingredient0 = new Ingredient { IngredientName = "Meat" };
-  var ingredient1 = new Ingredient { IngredientName = "Fish" };
-  var ingredient2 = new Ingredient { IngredientName = "Potato" };
+  var ingredient0 = new Ingredient { IngredientName = 'Meat' };
+  var ingredient1 = new Ingredient { IngredientName = 'Fish' };
+  var ingredient2 = new Ingredient { IngredientName = 'Potato' };
   var ingredients = new List&lt;Ingredient&gt;() { ingredient0, ingredient1, ingredient2 };
   ingredients.ForEach(i =&gt; context.Ingredients.Add(i));
 
   var recipes = new List&lt;Recipe&gt;();
-  recipes.Add(new Recipe { RecipeName = "Grilled fish with potatoes", Category = category0, Ingredients = new List&lt;Ingredient&gt;() { ingredient1, ingredient2 } });
-  recipes.Add(new Recipe { RecipeName = "Grilled steak with potatoes", Category = category0, Ingredients = new List&lt;Ingredient&gt;() { ingredient0, ingredient2 } });
+  recipes.Add(new Recipe { RecipeName = 'Grilled fish with potatoes', Category = category0, Ingredients = new List&lt;Ingredient&gt;() { ingredient1, ingredient2 } });
+  recipes.Add(new Recipe { RecipeName = 'Grilled steak with potatoes', Category = category0, Ingredients = new List&lt;Ingredient&gt;() { ingredient0, ingredient2 } });
   recipes.ForEach(r =&gt; context.Recipes.Add(r));
  }
-}</pre><p>I added a small function to my test class to create a database.</p><pre class=\"brush: csharp\">[TestInitialize()]
+}" + "</pre><p>I added a small function to my test class to create a database.</p><pre class=\"brush: csharp\">" + 
+@"[TestInitialize()]
 public void SetupDatabase()
 {
- Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
+ Database.DefaultConnectionFactory = new SqlCeConnectionFactory('System.Data.SqlServerCe.4.0');
  Database.SetInitializer&lt;RecipesEntities&gt;(new TestDatabaseInitializer());
-}</pre><p>Now I think I'm ready to create a simple test.</p><pre class=\"brush: csharp\">[TestMethod()]
+}" + "</pre><p>Now I think I'm ready to create a simple test.</p><pre class=\"brush: csharp\">" + 
+@"[TestMethod()]
 public void CreateTest()
 {
  SetupDatabase();
  IngredientController target = new IngredientController();
- Ingredient ingredient = new Ingredient() { IngredientName = "test" };
+ Ingredient ingredient = new Ingredient() { IngredientName = 'test' };
 
  ActionResult actual = target.Create(ingredient);
  Assert.IsTrue(ingredient.IngredientID != 0);
@@ -1314,13 +1304,14 @@ public void CreateTest()
  RecipesEntities db = new RecipesEntities();
  var newIngredient = db.Ingredients.Find(ingredient.IngredientID);
  Assert.AreEqual(ingredient.IngredientName, newIngredient.IngredientName);
-}</pre><p>I create the <b>Ingredient</b>, record it's <b>IngredientID</b> and make sure that I can retrieve it back from the database by ID after it's added. Deletion and editing tests are equally simple. Now the "negative" test: I'm not testing what I can do now, but rather what I can not do. I should not be able to delete the ingredient if it is used by any recipes - that would destroy referential integrity. Here is a simple test that passes:</p><pre class=\"brush: csharp\">[TestMethod()]
+}" + "</pre><p>I create the <b>Ingredient</b>, record it's <b>IngredientID</b> and make sure that I can retrieve it back from the database by ID after it's added. Deletion and editing tests are equally simple. Now the \"negative\" test: I'm not testing what I can do now, but rather what I can not do. I should not be able to delete the ingredient if it is used by any recipes - that would destroy referential integrity. Here is a simple test that passes:</p><pre class=\"brush: csharp\">" + 
+@"[TestMethod()]
 public void CanNotDeleteUsedIngredient2()
 {
  SetupDatabase();
  IngredientController target = new IngredientController();
  RecipesEntities db = new RecipesEntities();
- var ingredient = db.Ingredients.Where(i =&gt; i.IngredientName == "Meat").FirstOrDefault();
+ var ingredient = db.Ingredients.Where(i =&gt; i.IngredientName == 'Meat').FirstOrDefault();
  int id = ingredient.IngredientID;
 
  Assert.IsNotNull(ingredient);
@@ -1329,7 +1320,8 @@ public void CanNotDeleteUsedIngredient2()
  db = new RecipesEntities();
  var deletedIngredient = db.Ingredients.Find(id);
  Assert.IsNotNull(deletedIngredient);
-}</pre><p>Okay, I tried to delete the ingredient and then I verified and it is still in the database. That's expected, but that tells me nothing about the reason why the ingredient was not deleted. Maybe the whole database is offline or there is an uncommitted transaction. To improve the test, I would like to know something about the reason. I need to check for the errors in the <b>ModelState</b>. Fortunately, I can access the <b>ModelState</b> from the <b>ActionResult</b>. Here is what I could do to return the first error that is found in the <b>ModelState</b>:</p><pre class=\"brush: csharp\">public string GetFirstErrorMessage(ActionResult result)
+}" + "</pre><p>Okay, I tried to delete the ingredient and then I verified and it is still in the database. That's expected, but that tells me nothing about the reason why the ingredient was not deleted. Maybe the whole database is offline or there is an uncommitted transaction. To improve the test, I would like to know something about the reason. I need to check for the errors in the <b>ModelState</b>. Fortunately, I can access the <b>ModelState</b> from the <b>ActionResult</b>. Here is what I could do to return the first error that is found in the <b>ModelState</b>:</p><pre class=\"brush: csharp\">" + 
+@"public string GetFirstErrorMessage(ActionResult result)
 {
  ViewResult vr = (ViewResult)result;
 
@@ -1344,26 +1336,25 @@ public void CanNotDeleteUsedIngredient2()
   }
  }
  return string.Empty;
-}</pre><p>Now I can modify the test to check the <b>ErrorMessage</b>. The check is rather lame at the moment - the error message is created dynamically to tell the user what recipes exactly use the ingredient. So I do not want to check the full error message and I'm satisfied with the fact that the first 10 characters are what I expect. Here is the slightly modified test:</p><pre class=\"brush: csharp\">[TestMethod()]
+}" + "</pre><p>Now I can modify the test to check the <b>ErrorMessage</b>. The check is rather lame at the moment - the error message is created dynamically to tell the user what recipes exactly use the ingredient. So I do not want to check the full error message and I'm satisfied with the fact that the first 10 characters are what I expect. Here is the slightly modified test:</p><pre class=\"brush: csharp\">" + 
+@"[TestMethod()]
 public void CanNotDeleteUsedIngredient()
 {
  SetupDatabase();
  IngredientController target = new IngredientController();
  RecipesEntities db = new RecipesEntities();
- var ingredient = db.Ingredients.Where(i =&gt; i.IngredientName == "Meat").FirstOrDefault();
+ var ingredient = db.Ingredients.Where(i =&gt; i.IngredientName == 'Meat').FirstOrDefault();
  int id = ingredient.IngredientID;
 
  Assert.IsNotNull(ingredient);
 
  ActionResult actual = target.DeleteConfirmed(id);
- Assert.AreEqual(GetFirstErrorMessage(actual).Substring(0, 10), "Cannot del");
+ Assert.AreEqual(GetFirstErrorMessage(actual).Substring(0, 10), 'Cannot del');
 
  db = new RecipesEntities();
  var deletedIngredient = db.Ingredients.Find(id);
  Assert.IsNotNull(deletedIngredient);
-}</pre><p><b>References:</b></p><a href=\"http://www.arrangeactassert.com/code-first-entity-framework-unit-test-examples/">Code First Entity Framework Unit Test Examples</a><br/><a href=\"http://msdn.microsoft.com/en-us/vs2010trainingcourse_aspnetmvc3testing_topic4">Exercise 2: Testing CRUD actions</a><br/><a href=\"http://stackoverflow.com/questions/1352948/how-to-get-all-errors-from-asp-net-mvc-modelstate">How to get all Errors from asp.net mvc modelState?</a><br/><a href=\"http://stackoverflow.com/questions/2071095/how-to-get-the-model-from-an-actionresult">How to get the Model from an ActionResult?</a>
-
- */ 
+}" + "</pre><p><b>References:</b></p><a href=\"http://www.arrangeactassert.com/code-first-entity-framework-unit-test-examples/\">Code First Entity Framework Unit Test Examples</a><br/><a href=\"http://msdn.microsoft.com/en-us/vs2010trainingcourse_aspnetmvc3testing_topic4\">Exercise 2: Testing CRUD actions</a><br/><a href=\"http://stackoverflow.com/questions/1352948/how-to-get-all-errors-from-asp-net-mvc-modelstate\">How to get all Errors from asp.net mvc modelState?</a><br/><a href=\"http://stackoverflow.com/questions/2071095/how-to-get-the-model-from-an-actionresult\">How to get the Model from an ActionResult?</a>"; 
 
 public const string content_15052012_b = ""; 
 public const string content_15052012_r = ""; 
@@ -2642,31 +2633,18 @@ public const string content_02102008_r = "";
 
  */ 
 
-public const string content_01102008_b = ""; 
-public const string content_01102008_r = ""; 
+public const string content_01102008_b = " <p><a href=\"http://www.amazon.com/Peopleware-Productive-Projects-Teams-Second/dp/0932633439/ref=sr_1_1?ie=UTF8&s=books&qid=1232267243&sr=1-1\">\"Peopleware: Productive Projects and Teams (Second Edition)\"</a></p>"; 
+public const string content_01102008_r = "<p>Great book. I won't try writing a review since there's plenty of them on the Internet. It's probably the most interesting book on managing software projects since</p><p><a href=\"http://www.amazon.com/Mythical-Man-Month-Software-Engineering-Anniversary/dp/0201835959/ref=sr_1_1?ie=UTF8&s=books&qid=1232267258&sr=1-1\">\"The Mythical Man-Month: Essays on Software Engineering\"</a></p><p>(I don''t read much on the subject anyway, so I could have missed a few dozens of good books).</p><p>Well after doing some reading, I learned a couple of things: my workspace is designed in the most counter-productive way possible and the project I am currently working on has all chances of joining those 25% of software products that are never actually used.</p><p style=\"color:#666666;\">Mood: insanely optimistic.</p>"; 
 
- /* 
+public const string content_30092008_b = "<p>Just to test out the editing capabilities here, I'll display a bit of code I use often.<br />Let's say I have a business entity class to keep some data.</p>"; 
+public const string content_30092008_r = "<pre class=\"brush:csharp\">" + @"<br />public class MyBusinessEntity <br />{<br />     public string MyProperty = string.Empty; <br />}" + 
+    "</pre><p>I keep these business entities in a List</p><pre class=\"brush:csharp\">" +
+    @"<br />List listToSearch = new List();<br />// fill the list with actual data" + 
+    "</pre><p>I need to select all business entities that satisfy to a certain criteria.</p><pre class=\"brush:csharp\">" + 
+    @"List listIFound = <br />listToSearch.FindAll(delegate(MyBusinessEntity entity)<br />{<br />     return (entity.MyProperty == 'myTestString'); <br />});" + 
+    "</pre><p>listIFound will now contain all instances of MyBusinessEntity from listToSearch where MyProperty equals 'myTestString'.</p>"; 
 
- <p><a href=\"http://www.amazon.com/Peopleware-Productive-Projects-Teams-Second/dp/0932633439/ref=sr_1_1?ie=UTF8&s=books&qid=1232267243&sr=1-1">"Peopleware: Productive Projects and Teams (Second Edition)"</a></p><p>Great book. I won't try writing a review since there's plenty of them on the Internet. It's probably the most interesting book on managing software projects since</p><p><a href=\"http://www.amazon.com/Mythical-Man-Month-Software-Engineering-Anniversary/dp/0201835959/ref=sr_1_1?ie=UTF8&s=books&qid=1232267258&sr=1-1">"The Mythical Man-Month: Essays on Software Engineering"</a></p><p>(I don't read much on the subject anyway, so I could have missed a few dozens of good books).</p><p>Well after doing some reading, I learned a couple of things: my workspace is designed in the most counter-productive way possible and the project I am currently working on has all chances of joining those 25% of software products that are never actually used.</p><p style="color:#666666;">Mood: insanely optimistic.</p>
-
- */ 
-
-public const string content_30092008_b = ""; 
-public const string content_30092008_r = ""; 
-
- /* 
-<p>Just to test out the editing capabilities here, I'll display a bit of code I use often.<br />Let's say I have a business entity class to keep some data.</p><pre class=\"brush:csharp\"><br />public class MyBusinessEntity <br />{<br />     public string MyProperty = string.Empty; <br />}</pre><p>I keep these business entities in a List</p><pre class=\"brush:csharp\"><br />List listToSearch = new List();<br />// fill the list with actual data</pre><p>I need to select all business entities that satisfy to a certain criteria.</p><pre class=\"brush:csharp\">List listIFound = <br />listToSearch.FindAll(delegate(MyBusinessEntity entity)<br />{<br />     return (entity.MyProperty == "myTestString"); <br />});</pre><p>listIFound will now contain all instances of MyBusinessEntity from listToSearch where MyProperty equals "myTestString".</p>
-
- */ 
-
-public const string content_29092008_b = ""; 
+public const string content_29092008_b = "<div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://4.bp.blogspot.com/-LmtstprHOvM/UKLi1MIncdI/AAAAAAAABQo/rP8vTt04lVE/s1600/3.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"187\" width=\"320\" src=\"http://4.bp.blogspot.com/-LmtstprHOvM/UKLi1MIncdI/AAAAAAAABQo/rP8vTt04lVE/s320/3.png\" /></a></div>"; 
 public const string content_29092008_r = ""; 
-
- /* 
-<div class=\"separator\" style=\"clear: both; text-align: center;\">
-<a href=\"http://4.bp.blogspot.com/-LmtstprHOvM/UKLi1MIncdI/AAAAAAAABQo/rP8vTt04lVE/s1600/3.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"187\" width=\"320" src=\"http://4.bp.blogspot.com/-LmtstprHOvM/UKLi1MIncdI/AAAAAAAABQo/rP8vTt04lVE/s320/3.png\" /></a></div>
-
-
- */ 
     }
 }
