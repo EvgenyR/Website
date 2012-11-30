@@ -1,10 +1,9 @@
-﻿using System.Web;
+﻿using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.UI;
 using System.IO;
 using System.Web.Mvc;
-using Recipes.Models;
 using Recipes.ViewModels;
-using System.Collections.Generic;
 
 namespace HtmlHelpers
 {
@@ -135,5 +134,29 @@ namespace HtmlHelpers
             chart.draw(data, options);      }    
             </script>");
         }
+
+        public static string ToSeoUrl(this string url)
+        {
+            // make the url lowercase
+            string encodedUrl = (url ?? "").ToLower();
+
+            // replace & with and
+            encodedUrl = Regex.Replace(encodedUrl, @"\&+", "and");
+
+            // remove characters
+            encodedUrl = encodedUrl.Replace("'", "");
+
+            // remove invalid characters
+            encodedUrl = Regex.Replace(encodedUrl, @"[^a-z0-9]", "-");
+
+            // remove duplicates
+            encodedUrl = Regex.Replace(encodedUrl, @"-+", "-");
+
+            // trim leading & trailing characters
+            encodedUrl = encodedUrl.Trim('-');
+
+            return encodedUrl;
+        }
+
     }
 }

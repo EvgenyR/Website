@@ -7,8 +7,8 @@ namespace Recipes.Models.BlogContents
         public static void PopulateBlogs(RecipesEntities context)
         {
             List<Blog> blogs = new List<Blog> {
-                new Blog { BlogID = 1, BloggerID = 1, Title = "Evgeny's blog" },
-                new Blog { BlogID = 2, BloggerID = 2, Title = "Someone Else's blog" },
+                new Blog { BlogID = 1, BloggerID = 1, Title = "Evgeny's Programming Blog" },
+                new Blog { BlogID = 2, BloggerID = 1, Title = "Evgeny's Digital Biology Blog" },
             };
 
             blogs.ForEach(b => context.Blogs.Add(b));

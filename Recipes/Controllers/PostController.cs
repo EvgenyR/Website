@@ -43,6 +43,20 @@ namespace Recipes.Controllers
                 return HttpNotFound();
             }
             return View(post);
+            //return RedirectToAction("Details", new {id = id, })
+        }
+
+        [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
+        [MetaDescription(Constants.Constants.BlogMetaDescription)]
+        public ActionResult Display(int id = 0)
+        {
+            Post post = db.Posts.Find(id);
+            if (post == null)
+            {
+                return HttpNotFound();
+            }
+            return View(post);
+            //return RedirectToAction("Details", new {id = id, })
         }
 
         //
