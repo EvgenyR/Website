@@ -11,11 +11,11 @@
 {
     <ol>
         <li class="styled">
-            <div class="display-button">@Html.ActionLink("Edit", "Edit", new { id = item.BloggerID })
+            <div class="display-button">@Html.ActionLink("Edit", "Edit", new { id = item.BloggerID, seofriendly = item.BloggerName.ToSeoUrl() })
             </div>
-            <div class="display-button">@Html.ActionLink("Details", "Details", new { id = item.BloggerID })
+            <div class="display-button">@Html.ActionLink("Details", "Details", new { id = item.BloggerID, seofriendly = item.BloggerName.ToSeoUrl() })
             </div>
-            <div class="display-button">@Html.ActionLink("Delete", "Delete", new { id = item.BloggerID })
+            <div class="display-button">@Html.ActionLink("Delete", "Delete", new { id = item.BloggerID, seofriendly = item.BloggerName.ToSeoUrl() })
             </div>
             <div class="display-info">@item.BloggerName</div>
         </li>

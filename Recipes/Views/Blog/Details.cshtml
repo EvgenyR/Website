@@ -19,13 +19,13 @@
             <li class="styled">
                 <div class="display-label">
                     Blogger Name</div>
-                <div class="display-field">@Html.ActionLink(Model.Blog.Blogger.BloggerName, "../Blogger/Details", new { id = Model.Blog.BloggerID })</div>
+                <div class="display-field">@Html.ActionLink(Model.Blog.Blogger.BloggerName, "../Blogger/Details", new { id = Model.Blog.BloggerID, seofriendly = Model.Blog.Title.ToSeoUrl() })</div>
             </li>
         </ol>
     </fieldset>
 
     <fieldset>
-        <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.Blog.BlogID })</div>
+        <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.Blog.BlogID, seofriendly = Model.Blog.Title.ToSeoUrl() })</div>
         <div class="buttonlink">@Html.ActionLink("Back to List", "../Blog/List")</div>
     </fieldset>
 }

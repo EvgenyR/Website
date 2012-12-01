@@ -1,6 +1,6 @@
 ﻿<div id="centeredmenu" style="background: #c99;">
     <ul>
-		<li>@Html.ActionLink("Search Parser", "../Search/Index", new { id = 1 }, new { @class = "game" })</li>
-        <li>@Html.ActionLink("Theory", "../Search/Theory", new { id = 1 }, new { @class = "gamedesc" })</li>
+		<li>@Html.ActionLink("Search Parser", "../Search/Index", new { id = 1, seofriendly = "Google API Example".ToSeoUrl() }, new { @class = "game" })</li>
+        <li>@Html.ActionLink("Theory", "../Search/Theory", new { id = 1, seofriendly = "Google API Example Theory".ToSeoUrl() }, new { @class = "gamedesc" })</li>
     </ul>
 </div>

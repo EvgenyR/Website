@@ -1,6 +1,6 @@
 ﻿<div id="centeredmenu" style="background: #c99;">
     <ul>
-		<li>@Html.ActionLink("Yahoo Finance Data", "../Yahoo/Index", new { id = 1 }, new { @class = "game" })</li>
-        <li>@Html.ActionLink("Theory", "../Yahoo/Theory", new { id = 1 }, new { @class = "gamedesc" })</li>
+		<li>@Html.ActionLink("Yahoo Finance Data", "../Yahoo/Index", new { id = 1, seofriendly = "Yahoo Finance Data Example".ToSeoUrl() }, new { @class = "game" })</li>
+        <li>@Html.ActionLink("Theory", "../Yahoo/Theory", new { id = 1, seofriendly = "Yahoo Finance Data Example Theory".ToSeoUrl() }, new { @class = "gamedesc" })</li>
     </ul>
 </div>

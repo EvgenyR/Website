@@ -22,14 +22,14 @@
     <ol>
         <li class="styled">
             <div class="display-label">Category</div>
-            <div class="display-field">@Html.ActionLink(Model.Recipe.Category.CategoryName, "../Category/Details", new { id = Model.Recipe.Category.CategoryID })</div>
+            <div class="display-field">@Html.ActionLink(Model.Recipe.Category.CategoryName, "../Category/Details", new { id = Model.Recipe.Category.CategoryID, seofriendly = Model.Recipe.Category.CategoryName.ToSeoUrl() })</div>
         </li>
     </ol>
 
     <ol>
         <li class="styled">
             <div class="display-label">Subcategory</div>
-            <div class="display-field">@Html.ActionLink(Model.Recipe.SubCategory.SubCategoryName, "../SubCategory/Details", new { id = Model.Recipe.SubCategory.SubCategoryID })</div>
+            <div class="display-field">@Html.ActionLink(Model.Recipe.SubCategory.SubCategoryName, "../SubCategory/Details", new { id = Model.Recipe.SubCategory.SubCategoryID, seofriendly = Model.Recipe.SubCategory.SubCategoryName.ToSeoUrl() })</div>
         </li>
     </ol>
 </fieldset>
@@ -42,7 +42,7 @@
     {
         <li class="styled">
         <div>
-            <div class="display-field">@Html.ActionLink(ingredient.Ingredient.IngredientName, "../Ingredient/Details", new {id = ingredient.IngredientID})</div>
+            <div class="display-field">@Html.ActionLink(ingredient.Ingredient.IngredientName, "../Ingredient/Details", new { id = ingredient.IngredientID, seofriendly = ingredient.Ingredient.IngredientName.ToSeoUrl() })</div>
             @Html.MeasureImageDiv(ingredient.Ingredient.Measure.MeasureID)
             <div class="display-field">@ingredient.Quantity</div>
             </div>
@@ -93,7 +93,7 @@
 </fieldset>
 
 <fieldset>
-    <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.Recipe.RecipeID })</div>
+    <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.Recipe.RecipeID, seofriendly = Model.Recipe.RecipeName.ToSeoUrl() })</div>
     <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
 </fieldset>
 

@@ -35,7 +35,8 @@
     {
         <li class="styled">
             <div class="display-label"></div>
-            <div class="display-field">@Html.ActionLink(item.RecipeName, "../Recipe/Details", new { id = item.RecipeID })</div>
+        <li>@Html.ActionLink("Theory", "../Yahoo/Theory", new { id = 1, seofriendly = "Yahoo Finance Data Example".ToSeoUrl() }, new { @class = "gamedesc" })</li>
+            <div class="display-field">@Html.ActionLink(item.RecipeName, "../Recipe/Details", new { id = item.RecipeID, seofriendly = item.RecipeName.ToSeoUrl() })</div>
         </li>
     }
     </ol>
@@ -43,7 +44,7 @@
 }
 
 <fieldset>
-    <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.SubCategory.SubCategoryID })</div>
+    <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.SubCategory.SubCategoryID, seofriendly = Model.SubCategory.SubCategoryName.ToSeoUrl() })</div>
     <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
 </fieldset>
 </form>

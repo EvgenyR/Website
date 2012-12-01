@@ -46,14 +46,14 @@
                 <li class="styled">
                     <div class="display-label">
                     </div>
-                    <div class="display-field">@Html.ActionLink(ri.Recipe.RecipeName, "../Recipe/Details", new { id = ri.Recipe.RecipeID })</div>
+                    <div class="display-field">@Html.ActionLink(ri.Recipe.RecipeName, "../Recipe/Details", new { id = ri.Recipe.RecipeID, seofriendly = ri.Recipe.RecipeName.ToSeoUrl() })</div>
                 </li>
             }
         </ol>
     </fieldset>
 }
 <fieldset>
-    <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.Ingredient.IngredientID })</div>
+    <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.Ingredient.IngredientID, seofriendly = Model.Ingredient.IngredientName.ToSeoUrl() })</div>
     <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
 </fieldset>
 <fieldset>

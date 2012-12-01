@@ -25,7 +25,7 @@
                 <li class="styled">
                     <div class="display-label">
                     </div>
-                    <div class="display-field">@Html.ActionLink(b.Title, "../Blog/Details", new { id = b.BlogID })</div>
+                    <div class="display-field">@Html.ActionLink(b.Title, "../Blog/Details", new { id = b.BlogID, seofriendly = b.Title.ToSeoUrl() })</div>
                 </li>
             }
         </ol>
@@ -33,7 +33,7 @@
 }
 
 <fieldset>
-    <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.Blogger.BloggerID })</div>
+    <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.Blogger.BloggerID, seofriendly = Model.Blogger.BloggerName.ToSeoUrl() })</div>
     <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
 </fieldset>
 </form>

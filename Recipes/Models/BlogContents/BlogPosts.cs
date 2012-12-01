@@ -2643,7 +2643,7 @@ public const string content_30092008_r = "<pre class=\"brush:csharp\">" + @"<br 
     @"List listIFound = <br />listToSearch.FindAll(delegate(MyBusinessEntity entity)<br />{<br />     return (entity.MyProperty == 'myTestString'); <br />});" + 
     "</pre><p>listIFound will now contain all instances of MyBusinessEntity from listToSearch where MyProperty equals 'myTestString'.</p>"; 
 
-public const string content_29092008_b = "<div class=\"separator\" style=\"clear: both; text-align: center;\"><a href=\"http://4.bp.blogspot.com/-LmtstprHOvM/UKLi1MIncdI/AAAAAAAABQo/rP8vTt04lVE/s1600/3.png\" imageanchor=\"1\" style=\"margin-left:1em; margin-right:1em\"><img border=\"0\" height=\"187\" width=\"320\" src=\"http://4.bp.blogspot.com/-LmtstprHOvM/UKLi1MIncdI/AAAAAAAABQo/rP8vTt04lVE/s320/3.png\" /></a></div>"; 
-public const string content_29092008_r = ""; 
+public const string content_29092008_b = "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/29092008_tick.jpg\" alt=\"Green Tick\" /></div>"; 
+public const string content_29092008_r = "by <a title=\"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>"; 
     }
 }

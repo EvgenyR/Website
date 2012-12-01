@@ -35,7 +35,7 @@
     </fieldset>
 
     <fieldset>
-        <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.PostID })</div>
+        <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.PostID, seofriendly = Model.Title.ToSeoUrl() })</div>
         <div class="buttonlink">@Html.ActionLink("Back to List", "../Post/Index", new { id = Model.BlogID })</div>
     </fieldset>
 }

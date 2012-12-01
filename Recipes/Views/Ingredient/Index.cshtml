@@ -17,9 +17,9 @@
 {
     <ol>
         <li class="styled">
-            <div class="display-button">@Html.ActionLink("Edit", "Edit", new { id=item.IngredientID }) </div>
-            <div class="display-button">@Html.ActionLink("Details", "Details", new { id = item.IngredientID }) </div>
-            <div class="display-button">@Html.ActionLink("Delete", "Delete", new { id = item.IngredientID }) </div>
+            <div class="display-button">@Html.ActionLink("Edit", "Edit", new { id = item.IngredientID, seofriendly = item.IngredientName.ToSeoUrl() }) </div>
+            <div class="display-button">@Html.ActionLink("Details", "Details", new { id = item.IngredientID, seofriendly = item.IngredientName.ToSeoUrl() }) </div>
+            <div class="display-button">@Html.ActionLink("Delete", "Delete", new { id = item.IngredientID, seofriendly = item.IngredientName.ToSeoUrl() }) </div>
             <div class="display-info">@item.IngredientName</div>
         </li>
     </ol>

@@ -21,6 +21,18 @@ namespace Recipes
             );
 
             routes.MapRoute(
+            name: "Display",
+            url: "Post/{id}/{seofriendly}",
+            defaults: new { controller = "Post", action = "Display", id = UrlParameter.Optional, seofriendly = ""}
+                );
+
+            routes.MapRoute(
+            name: "Resume",
+            url: "Resume/{id}",
+            defaults: new { controller = "Home", action = "Resume", id = UrlParameter.Optional, seofriendly = "" }
+            );
+
+            routes.MapRoute(
                 name: "SEOFriendly",
                 url: "{controller}/{action}/{id}/{seofriendly}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional, seofriendly = "" }
