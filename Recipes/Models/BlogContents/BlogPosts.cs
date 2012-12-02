@@ -3,6 +3,35 @@ namespace Recipes.Models.BlogContents
 {
     public static class BlogPosts
     {
+        public const string content_02122012_b = "<p>I've learned the first step of using rich snippets to make links to my content look better in search results. The process is not extremely complicated, but it also is not intuitive to me, so I'd better write it down. I linked the content on my Blogger blog and also on my website which I'm using as training grounds. There are several steps involved - I need to modify my Google+ account, and I need to modify the content where I publish it.</p>";
+        public const string content_02122012_r = "<p><b>1. Google+ account.</b></p><p>Assuming I already have a Google+ profile with photo on it, I go to my <b>Profile</b>, <b>About</b> and select <b>Edit Profile</b>.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/02122012_Edit_Profile.png\" alt=\"Edit Google Plus Profile\" /></div><p align=\"center\">Edit Profile</p>" +
+"<p>I scroll down to where <b>Contributor to</b> section is. In there I add the places I'm going to post my content. I edit this section to specify where my content is posted. Now Google+ knows where I'm posting, but that's not enough - I have to provide a way to verify that it's actually me.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/02122012_Contributes_To.png\" alt=\"Edit Contributes To\" /></div><p align=\"center\">Edit Contributor</p>" +
+"<p><b>2. My Website.</b></p><p>Here I have full control! I can experiment without fear to break things beyond repair. I did a few simple things so far: In the <b>_Layout.cshtml</b>, the partial view that is rendered on every page, I added the link to my Google+ account</p><pre class=\"brush: xml\">" + 
+@"&lt;head&gt;
+    &lt;link rel='author' href='https://plus.google.com/112677661119561622427/posts'/&gt;
+	...
+&lt;/head&gt;" + 
+"</pre><p>Additionally (optional) I modified the view that will display my posts to update the <b>MetaKeywords</b> and <b>MetaDescription</b> (see my previous post) dynamically.</p><pre class=\"brush: csharp\">" + 
+@"@{
+    ViewBag.MetaDescription = 'Description of this post';
+    ViewBag.MetaKeywords = 'Keywords of this post';
+    ViewBag.Title = Model.Title;
+}" + "</pre><p>I'll add appropriate properties to the <b>Model</b> later, but that's beyond the scope of this post. I think that's all.</p><p><b>3. Blogger.</b></p><p>For reason I'll try to explain below, I had to add the following to the template of my blog in Blogger:</p><pre class=\"brush: xml\">" + 
+@"&lt;a class='updated' expr:href='data:post.url' rel='bookmark' title='permanent link'&gt;&lt;abbr class='updated' expr:title='data:post.timestampISO8601'&gt;&lt;data:post.timestamp/&gt;&lt;/abbr&gt;&lt;/a&gt;" + 
+"</pre><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/02122012_Edit_Blogger_Template.png\" alt=\"Edit Blogger Template\" /></div><p align=\"center\">Edit Blogger Template</p><p>I also added the same link as I did for my website - I'm not sure it's absolutely necessary though.</p><p>I'll also be adding the following to the end of my posts:</p><pre class=\"brush: xml\">" + 
+@"by &lt;a title='Evgeny' rel='author' href='https://plus.google.com/112677661119561622427?rel=author' alt='Google+' title='Google+'&gt;Evgeny&lt;/a&gt;." + 
+"</pre><p>With all that done I can publish this very post on my website and Blogger and then test the results.</p><p><b>4. Testing</b></p>" +
+
+"<p>Now I can test the results by entering the link to my post in the <a href=\"http://www.google.com/webmasters/tools/richsnippets\">Structured Data Testing Tool</a>. I enter the url and the tool tests the link for me.</p><p>This is the Blogger post.</p>" +
+"<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/02122012_Blogger_Positive_Test.png\" alt=\"Test With Blogger - Positive Result\" /></div><p align=\"center\">Blogger - Positive Test Result</p><p>And this is my website.</p>" +
+"<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/02122012_Website_Positive_Test.png\" alt=\"Test With Website - Positive Result\" /></div><p align=\"center\">Website - Positive Test Result</p>" +
+"<p>Finally, what would have happened if I hadn't added that bit to the Blogger template? I did not save the exact screenshot, but the error returned was \"Missing required field 'Updated'\" and looked similar to the image below.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/02122012_Blogger_Negative_Test.png\" alt=\"Missing Required Field Updated\" /></div><p align=\"center\">Missing Required Field \"Updated\"</p>" +
+
+"<p><b>References</b></p><a href=\"http://www.netargument.com/2012/03/warning-missing-required-field-in.html\">Warning: Missing required field \"updated\" in Blogger Rich Snippet Webmaster Tool [Solved]</a><br/><a href=\"http://www.hanselman.com/blog/EmbraceAuthorshipTheImportanceOfRelmeAndRelauthorOnYourContentsSEOAndGoogle.aspx\">Embrace Authorship - The importance of rel=me and rel=author on your content's SEO and Google</a><br/><a href=\"http://www.wordtracker.com/academy/rich-snippets\">Rich snippets for idiots. And, er, you.</a><br/>";
+
+        public const string content_02122012_d = "I describe how I linked the posts to Blogger and my own website to my Google+ account and improve the way they look in search results if anyone ever cares to search for them";
+        public const string content_02122012_k = "Blog SEO Google rel author rich snippet";
+
         public const string content_07092012_b =
             "<p>You will need:<ul><li><a href=\"http://htmlagilitypack.codeplex.com/\">HtmlAgilityPack</a> HTML Parser</li><li>Development environment</li><li>Internet connection</li></ul></p><p>Create a Visual Studio project, for example C# Windows Forms application. Drop a <b>TextBox</b>, a <b>Button</b> and a <b>ListView</b> on the form. Creat a class for the methods to be used, let's say <b>Helper.cs</b>. First, I'm using the <b>System.Net.Webclient</b> to call Google and get a page of search results.</p><pre class=\"brush: csharp\">" +
 

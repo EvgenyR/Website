@@ -159,6 +159,8 @@ namespace Recipes.Models.BlogContents
                 new Post { BlogID = 1, BriefContent = BlogPosts.content_30092008_b, RestOfContent = BlogPosts.content_30092008_r, DateCreated = new DateTime(2008, 9, 30), PostID = 148, Title = "My Favourite Anonymous Delegate" },
                 new Post { BlogID = 1, BriefContent = BlogPosts.content_29092008_b, RestOfContent = BlogPosts.content_29092008_r, DateCreated = new DateTime(2008, 9, 29), PostID = 149, Title = "Good Deed For The Day" },
 
+                new Post{ BlogID = 1, BriefContent = BlogPosts.content_02122012_b, RestOfContent = BlogPosts.content_02122012_r, Keywords = BlogPosts.content_02122012_k, Description = BlogPosts.content_02122012_d, DateCreated = new DateTime(2012, 12, 2), PostID = 150, Title = "SEO Basics: Linking My Content to Google+ Using rel='author'"}
+
 
             };
 

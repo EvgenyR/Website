@@ -1,6 +1,8 @@
 ﻿@model Recipes.Models.Post
 <link href="@Url.Content("~/Content/blog.css")" rel="stylesheet" type="text/css" />
 @{
+    ViewBag.MetaDescription = Model.Description;
+    ViewBag.MetaKeywords = Model.Keywords;
     ViewBag.Title = Model.Title;
 
     string divID = "hide";

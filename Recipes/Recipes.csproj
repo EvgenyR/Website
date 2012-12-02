@@ -192,6 +192,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Content Include="Content\blog.css" />
+    <Content Include="Content\images\blog\02122012_Blogger_Negative_Test.png" />
+    <Content Include="Content\images\blog\02122012_Blogger_Positive_Test.png" />
+    <Content Include="Content\images\blog\02122012_Contributes_To.png" />
+    <Content Include="Content\images\blog\02122012_Edit_Blogger_Template.png" />
+    <Content Include="Content\images\blog\02122012_Edit_Profile.png" />
+    <Content Include="Content\images\blog\02122012_Website_Positive_Test.png" />
     <Content Include="Content\images\blog\29092008_tick.jpg" />
     <Content Include="Content\images\dog.gif" />
     <Content Include="Content\images\dogs.gif" />

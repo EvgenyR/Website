@@ -9,6 +9,8 @@ namespace Recipes.Models
         public int PostID { get; set; }
         public int BlogID { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
+        public string Keywords { get; set; }
         public DateTime DateCreated { get; set; }
         [MaxLength]
         [DisplayName("Start of Post")]
