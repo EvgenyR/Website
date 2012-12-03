@@ -3,6 +3,320 @@ namespace Recipes.Models.BlogContents
 {
     public static class BlogPosts
     {
+        public const string content_26112012_b = "<p>This is a brief summary of the changes I did to implement the AJAX updates to the <b>WebGrid</b> and sorting behaviour. I plan to put more detailed notes and the source code on <a href=\"http://www.ynegve.info/Yahoo/Theory/\">my website</a></p>";
+        public const string content_26112012_r = "<p>To use AJAX and update grid content, firstly the grid needs to be placed in the div which has an id. The <b>ajaxUpdateContainerId</b> has to be specified in the <b>WebGrid</b> declaration. To put it simple, in my main view I have a div</p><pre class=\"brush: xml\">" + 
+@"&lt;div id='wbgrid' style='float:left; min-width:500px;'&gt;
+ @Html.Partial('_WebGrid', Model)
+&lt;/div&gt;" + 
+"</pre><p>And in the partial view the div name <b>wbgrid</b> is specified as <b>ajaxUpdateContainerId</b>.</p><pre class=\"brush: csharp\">" + 
+@"@{ var grid = new WebGrid&lt;Recipes.Models.Yahoo.YahooData&gt;(null, rowsPerPage: 5, defaultSort: 'YahooSymbolName', ajaxUpdateContainerId: 'wbgrid');
+grid.Bind(Model.Datas, rowCount: Model.TotalRows, autoSortAndPage: false);
+}" + "</pre><p>The link on the <b>WebGrid</b> column has the following format <u>http://localhost/Yahoo/Index?sort=DateTime&sortdir=ASC</u></p><p>Therefore, the controller function can automatically receive those parameters with the following signature:</p><pre class=\"brush: csharp\">" + 
+@"public ActionResult Index(int page = 1, string sort = 'YahooSymbolName', string sortDir = 'Ascending')" + 
+"</pre><p>The parameters will be then passed over to the function that retrieves data</p><pre class=\"brush: csharp\">" + 
+@"public List&lt;YahooData&gt; GetData(out int totalRecords, int pageSize, int pageIndex, string sort = 'YahooSymbolName', SortDirection sortOrder = SortDirection.Ascending )
+{
+ IQueryable&lt;YahooData&gt; data = db.YahooData;
+ totalRecords = data.Count();
+
+ Func&lt;IQueryable&lt;YahooData&gt;, bool, IOrderedQueryable&lt;YahooData&gt;&gt; applyOrdering = _dataOrderings[sort];
+ data = applyOrdering(data, sortOrder == SortDirection.Ascending);
+
+ List&lt;YahooData&gt; result = data.ToList();
+ if(pageSize &gt; 0 && pageIndex &gt;=0)
+ {
+  result = result.Skip(pageIndex*pageSize).Take(pageSize).ToList();
+ }
+ return result;
+}" + "</pre><p>A couple of helper functions are utilized by GetData: <b>CreateOrderingFunc</b> and <b>_dataOrderings</b></p><pre class=\"brush: csharp\">" + 
+@"// helpers that take an IQueryable&lt;Product&gt; and a bool to indicate ascending/descending
+// and apply that ordering to the IQueryable and return the result
+private readonly IDictionary&lt;string, Func&lt;IQueryable&lt;YahooData&gt;, bool, IOrderedQueryable&lt;YahooData&gt;&gt;&gt;
+ _dataOrderings = new Dictionary&lt;string, Func&lt;IQueryable&lt;YahooData&gt;, bool, IOrderedQueryable&lt;YahooData&gt;&gt;&gt;
+       {
+        {'YahooSymbolName', CreateOrderingFunc&lt;YahooData, string&gt;(p=&gt;p.DataName)},
+        {'Ask', CreateOrderingFunc&lt;YahooData, decimal?&gt;(p=&gt;p.Ask)},
+        {'Time', CreateOrderingFunc&lt;YahooData, DateTime&gt;(p=&gt;p.DateTime)}
+        // Add for more columns ...
+       };
+
+/// returns a Func that takes an IQueryable and a bool, and sorts the IQueryable (ascending or descending based on the bool).
+/// The sort is performed on the property identified by the key selector.
+private static Func&lt;IQueryable&lt;T&gt;, bool, IOrderedQueryable&lt;T&gt;&gt; CreateOrderingFunc&lt;T, TKey&gt;(Expression&lt;Func&lt;T, TKey&gt;&gt; keySelector)
+{
+ return
+  (source, ascending) =&gt; ascending ? source.OrderBy(keySelector) : source.OrderByDescending(keySelector);
+}" + 
+"</pre><p>Finally, to complete the functional example, I added a <b>jQuery</b> dialog that displays the data that was retrieved from Yahoo. In the view, the <b>RetrieveData</b> function triggers the controller action <b>AddDataToDB</b> (which calls the Yahoo website and adds results to the database).</p><pre class=\"brush: js\">" + 
+@"function RetrieveData() {
+ $.post('@Url.Action('AddDataToDB','yahoo')',
+ function (d) {
+  ShowDialog(d.o);
+ });
+}
+
+function ShowDialog(msg) {
+ $('&lt;div/&gt;').dialog({ title: 'Retrieved the following data', width: 450, height: 250, close: function(){ location.reload(); }}).html(msg);
+}" + 
+"</pre><p><b>AddDataToDB</b> returns a <b>Json</b> result, containing the html table.</p><pre class=\"brush: csharp\">" + 
+@"public ActionResult AddDataToDB()
+{
+ List&lt;YahooData&gt; datas = GetSingleSet();
+ datas.ForEach(d =&gt; db.YahooData.Add(d));
+ db.SaveChanges();
+
+ string s = ""&lt;table&gt;&lt;thead&gt;&lt;tr class=\""webgrid-header\""&gt;&lt;th&gt;Company&lt;/th&gt;&lt;th&gt;Time&lt;/th&gt;&lt;th&gt;LTP&lt;/th&gt;&lt;th&gt;Volume&lt;/th&gt;&lt;th&gt;Ask&lt;/th&gt;&lt;th&gt;Bid&lt;/th&gt;&lt;th&gt;High&lt;/th&gt;&lt;th&gt;Low&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;&lt;tbody&gt;"";
+
+ foreach (var yahooData in datas)
+ {
+  s = s + ""&lt;tr class=\""webgrid-row-style\""&gt;"" + 
+   ""&lt;td class=\""company\""&gt;"" + yahooData.DataName + ""&lt;/td&gt;"" +
+   ""&lt;td class=\""time\""&gt;"" + yahooData.DateTime.ToString(""dd/MM/yyyy hh:mm"") + ""&lt;/td&gt;"" +
+   ""&lt;td class=\""ask\""&gt;"" + yahooData.LTP + ""&lt;/td&gt;"" +
+   ""&lt;td class=\""volume\""&gt;"" + yahooData.Volume + ""&lt;/td&gt;"" +
+   ""&lt;td class=\""ask\""&gt;"" + yahooData.Ask + ""&lt;/td&gt;"" +
+   ""&lt;td class=\""ask\""&gt;"" + yahooData.Bid + ""&lt;/td&gt;"" +
+   ""&lt;td class=\""ask\""&gt;"" + yahooData.High + ""&lt;/td&gt;"" +
+   ""&lt;td class=\""ask\""&gt;"" + yahooData.Low + ""&lt;/td&gt;"" +
+   ""&lt;/tr&gt;"";
+ }
+
+ s = s + ""&lt;/tbody&gt;&lt;/table&gt;"";
+
+ return Json(new { o = s });
+}" + 
+"</pre><p>The result is then utilised by the <b>ShowDialog</b> function, that displays a <b>jQuery</b> dialog. When the user closes the dialog, the page is refreshed so that the <b>WebGrid</b> contents are updated with the latest data retrieved.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/26112012_Complete_Example.png\" alt=\"Complete WebGrid Example\" /></div><p align=\"center\">Complete example</p><p><b>References</b></p><a href=\"http://msdn.microsoft.com/en-us/magazine/hh288075.aspx\">Get the Most out of WebGrid in ASP.NET MVC</a>";
+
+        public const string content_26112012_k = "MVC C# WebGrid AJAX partial view sorting";
+        public const string content_26112012_d = "More advanced usage of WebGrid control, now with AJAX";
+
+        public const string content_28112012_b = "<p>Almost by accident, I came across Google's starter guide for SEO optimisation and decided that it is a good idea to make some improvements I've been neglecting. Here's what I did so far and how I applied it to the MVC framework.</p>";
+        public const string content_28112012_r = "<p><b>1. Create unique, accurate page titles</b></p><p>One way to do it with the MVC framework is to create a placeholder on the master page and then override it on the view page.</p><p><u>Master:</u></p><pre class=\"brush: xml\">" + 
+@"<asp:ContentPlaceHolder id=""init"" runat=""server""></asp:ContentPlaceHolder>
+<head runat=""server"">    
+    <asp:ContentPlaceHolder ID=""title"" runat=""server"">
+        <title><%=this.Page.Title%></title>
+    </asp:ContentPlaceHolder>
+</head>" + "</pre><p><u>View:</u></p><pre class=\"brush: xml\">" + 
+@"<asp:Content ID=""Content1"" ContentPlaceHolderID=""title"" runat=""server"">
+       <title>Home Page</title>
+</asp:Content>" + 
+"</pre><p>For now, I chose the easier approach to set the title in the <b>_Layout.cshtml</b></p><pre class=\"brush: xml\">" + 
+@"<title>@ViewBag.Title</title>" + "</pre><p>And assign it in each view separately</p><pre class=\"brush: csharp\">" + 
+@"@{
+    ViewBag.Title = ""Main Page - The Stepping Stone Markov Chain Algorithm - MVC Stepping Stone Example"";
+}" + "</pre><p><b>2. Make use of the \"description\" and \"keywords\" meta tags</b></p><p>This takes a little more work. Here's my chosen approach: First, make sure each controller inherits from the <b>BaseController</b>. Then create two new classes, <b>MetaDescriptionAttribute</b> and <b>MetaKeywordsAttribute</b>, and inherit them from <b>System.Attribute</b></p><pre class=\"brush: csharp\">" + 
+@"public class MetaDescriptionAttribute : Attribute
+{
+ private readonly string _parameter;
+
+ public MetaDescriptionAttribute(string parameter)
+ {
+  _parameter = parameter;
+ }
+
+ public string Parameter { get { return _parameter; } }
+}
+
+public class MetaKeywordsAttribute : Attribute
+{
+ private readonly string _parameter;
+
+ public MetaKeywordsAttribute(string parameter)
+ {
+  _parameter = parameter;
+ }
+
+ public string Parameter { get { return _parameter; } }
+}" + 
+"</pre><p>In <b>BaseController</b>, override <b>OnActionExecuting</b></p><pre class=\"brush: csharp\">" + 
+@"protected override void OnActionExecuting(ActionExecutingContext filterContext)
+{
+ var keywords = filterContext.ActionDescriptor.GetCustomAttributes(typeof(MetaKeywordsAttribute), false);
+ if (keywords.Length == 1)
+  ViewData[""MetaKeywords""] = ((MetaKeywordsAttribute)(keywords[0])).Parameter;
+
+ var description = filterContext.ActionDescriptor.GetCustomAttributes(typeof(MetaDescriptionAttribute), false);
+ if (description.Length == 1)
+  ViewData[""MetaDescription""] = ((MetaDescriptionAttribute)(description[0])).Parameter;
+
+ base.OnActionExecuting(filterContext);
+}" + "</pre><p>Decorate the appropriate controller method with newly created attributes</p><pre class=\"brush: csharp\">" + 
+@"[MetaKeywords(""C#, MVC, Markov Chain, Stepping Stone, Programming"")]
+[MetaDescription(""Stepping Stone Markov Chain model is an example that has been used in the study of genetics. In this model we have an n-by-n array of squares, and each square is initially any one of k different colors. For each step, a square is chosen at random. This square then chooses one of its eight neighbors at random and assumes the color of that neighbor"")]
+public ActionResult Index()
+{
+ SteppingStoneHelpers.CreateNewTable();
+ HtmlString table = new HtmlString(SteppingStoneHelpers.table.ToString());
+ return View(table);
+}" + "</pre><p>Finally, in the <b>_Layout.cshtml</b>, add the following</p><pre class=\"brush: xml\">" + 
+@"<meta charset=""utf-8"" name=""keywords"" value=""@ViewBag.MetaKeywords"" />
+<meta charset=""utf-8"" name=""description"" value=""@ViewBag.MetaDescription"" />" + 
+"</pre><p>All done! There we go, the resulting html:</p><pre class=\"brush: xml\">" + 
+@"<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=""utf-8"" name=""keywords"" value=""C#, MVC, Markov Chain, Stepping Stone, Programming"" />
+    <meta charset=""utf-8"" name=""description"" value=""Stepping Stone Markov Chain model is an example that has been used in the study of genetics. In this model we have an n-by-n array of squares, and each square is initially any one of k different colors. For each step, a square is chosen at random. This square then chooses one of its eight neighbors at random and assumes the color of that neighbor"" />
+    <title>Main Page - The Stepping Stone Markov Chain Algorithm - MVC Stepping Stone Example</title>
+    <link href=""/Content/Site.css"" rel=""stylesheet"" type=""text/css"" />
+    <script src=""/Scripts/jquery-1.8.0.min.js"" type=""text/javascript""></script>" + 
+"</pre><p><b>References:</b></p><a href=\"http://googlewebmastercentral.blogspot.ch/2010/09/seo-starter-guide-updated.html\">Google Starter Guide</a><br/><a href=\"http://stackoverflow.com/questions/326628/asp-net-mvc-view-with-master-page-how-to-set-title\">ASP.NET MVC - View with master page, how to set title?</a><br/><a href=\"http://stackoverflow.com/questions/4263568/asp-net-mvc-strategy-for-including-seo-information-such-as-meta-keywords-and-d\">asp.net mvc - strategy for including SEO information such as meta keywords and descriptions</a>";
+
+        public const string content_28112012_k = "MVC C# SEO meta keywords description";
+        public const string content_28112012_d = "How to inject meta keywords and description into the MVC views";
+
+        public const string content_25112012_b = "<p>Continuing with the <b></b>WebGrid, I first made it strongly typed. To achieve that, I created a derived type <b></b>WebGrid<T>. The source came from the reference at the end of the post, and the code I used is displayed below too. While it does not seem to change much in terms of functionality, the main advantage is that the IntelliSense and compiler checking will work with the grid now.</p>";
+        public const string content_25112012_r = "<p>Next I added server paging. Why wouldn't I use the built-in paging? Well, the database table behind WebGrid may have hundreds of records. I wouldn't want to pass it all to my <b>ViewModel</b> and then to the view just to display 5 or 10 of the records I actually need. It is handy that the WebGrid paging is in the form of <b>http://website/Items/ShowAll?page=3</b>. This way my controller knows which page is to be displayed and can preselect the data just for this page only.</p><p>To implement paging, I added the TotalRows to the model - that will specify the total number of records in the database table.</p><p>The controller method now looks as follows:</p><pre class=\"brush: csharp\">" + 
+@"public ActionResult Index(int page=1)
+{
+ int totalRecords;
+ List&lt;YahooData&gt; datas = GetData(out totalRecords, pageSize: 5, pageIndex: page - 1);
+ List&lt;YahooSymbol&gt; symbols = db.YahooSymbols.ToList();
+ YahooSymbol symbol = symbols.First();
+ int id = symbol.YahooSymbolID;
+ return View(new YahooViewModel(id, symbol, symbols, datas, totalRecords));
+}
+
+public List&lt;YahooData&gt; GetData(out int totalRecords, int pageSize, int pageIndex)
+{
+ List&lt;YahooData&gt; data = GetData();
+ totalRecords = data.Count;
+ if(pageSize &gt; 0 && pageIndex &gt;=0)
+ {
+  data = data.Skip(pageIndex*pageSize).Take(pageSize).ToList();
+ }
+ return data.ToList();
+}" + 
+"</pre><p>The concept is quite simple - get data from the database table, identify the records that will be displayed on the WebGrid page that is requested, and only pass those records to the view. The WebGrid part of the view now looks as follows</p><pre class=\"brush: csharp\">" + 
+@"&lt;div id=""webgrid"" style=""float:left; min-width:500px;""&gt;
+ @{ var grid = new WebGrid&lt;ViewModels.YahooData&gt;(null, rowsPerPage: 5, defaultSort: ""YahooSymbolName"");
+    grid.Bind(Model.Datas, rowCount: Model.TotalRows, autoSortAndPage: false);
+    @grid.GetHtml(columns: grid.Columns( 
+    grid.Column(""DataName"", header:""Company"", format:@&lt;text&gt;@Html.ActionLink((string)item.DataName, ""Details"", ""Company"", new {id=item.SymbolId}, null)&lt;/text&gt;),
+    grid.Column(""DateTime"", header:""Time"", style:""time"", format:@&lt;text&gt;@item.DateTime.ToString(""dd/MM/yyyy hh:mm"")&lt;/text&gt;), 
+    grid.Column(""LTP""), grid.Column(""Volume""), grid.Column(""Ask""), grid.Column(""Bid""), grid.Column(""High""), grid.Column(""Low"")),
+    tableStyle: ""webGrid"", headerStyle: ""header"", alternatingRowStyle: ""alt"");
+  }
+&lt;/div&gt;" + 
+"</pre><p>My plan from here is to implement AJAX updates to the WebGrid content.</p><p>The strongly typed WebGrid samples:</p><pre class=\"brush: csharp\">" + 
+@"//Strongly Typed WebGrid
+public class WebGrid&lt;T&gt; : WebGrid
+{
+ // Wrapper for System.Web.Helpers.WebGrid that preserves the item type from the data source
+ public WebGrid(IEnumerable&lt;T&gt; source = null, IEnumerable&lt;string&gt; columnNames = null, string defaultSort = null, int rowsPerPage = 10, bool canPage = true, bool canSort = true, string ajaxUpdateContainerId = null, string ajaxUpdateCallback = null, string fieldNamePrefix = null, string pageFieldName = null, string selectionFieldName = null, string sortFieldName = null, string sortDirectionFieldName = null)
+  : base(source.SafeCast&lt;object&gt;(), columnNames, defaultSort, rowsPerPage, canPage, canSort, ajaxUpdateContainerId, ajaxUpdateCallback, fieldNamePrefix, pageFieldName, selectionFieldName, sortFieldName, sortDirectionFieldName)
+ {
+ }
+ public WebGridColumn Column(string columnName = null, string header = null, Func&lt;T, object&gt; format = null, string style = null, bool canSort = true)
+ {
+  Func&lt;dynamic, object&gt; wrappedFormat = null;
+  if (format != null)
+  {
+   wrappedFormat = o =&gt; format((T)o.Value);
+  }
+  WebGridColumn column = base.Column(columnName, header, wrappedFormat, style, canSort);
+  return column;
+ }
+ public WebGrid&lt;T&gt; Bind(IEnumerable&lt;T&gt; source, IEnumerable&lt;string&gt; columnNames = null, bool autoSortAndPage = true, int rowCount = -1)
+ {
+  base.Bind(source.SafeCast&lt;object&gt;(), columnNames, autoSortAndPage, rowCount);
+  return this;
+ }
+}
+
+public static class EnumerableExtensions
+{
+ public static IEnumerable&lt;TTarget&gt; SafeCast&lt;TTarget&gt;(this IEnumerable source)
+ {
+  return source == null ? null : source.Cast&lt;TTarget&gt;();
+ }
+}" + "</pre><pre class=\"brush: csharp\">" + 
+@"//WebGrid extensions
+public static class WebGridExtensions
+{
+ // Light-weight wrapper around the constructor for WebGrid so that we get take advantage of compiler type inference
+ public static WebGrid&lt;T&gt; Grid&lt;T&gt;(this HtmlHelper htmlHelper, IEnumerable&lt;T&gt; source, IEnumerable&lt;string&gt; columnNames = null,
+   string defaultSort = null, int rowsPerPage = 10, bool canPage = true, bool canSort = true,
+   string ajaxUpdateContainerId = null, string ajaxUpdateCallback = null, string fieldNamePrefix = null,
+   string pageFieldName = null, string selectionFieldName = null, string sortFieldName = null, string sortDirectionFieldName = null)
+ {
+  return new WebGrid&lt;T&gt;(source, columnNames, defaultSort, rowsPerPage,
+    canPage, canSort, ajaxUpdateContainerId, ajaxUpdateCallback, fieldNamePrefix, 
+    pageFieldName, selectionFieldName, sortFieldName, sortDirectionFieldName);
+ }
+
+ // Light-weight wrapper around the constructor for WebGrid so that we get take advantage of compiler type inference and to automatically call Bind to disable the automatic paging and sorting (use this for server-side paging)
+ public static WebGrid&lt;T&gt; ServerPagedGrid&lt;T&gt;(this HtmlHelper htmlHelper, IEnumerable&lt;T&gt; source, int totalRows, IEnumerable&lt;string&gt; columnNames = null,
+   string defaultSort = null, int rowsPerPage = 10, bool canPage = true, bool canSort = true, string ajaxUpdateContainerId = null, 
+   string ajaxUpdateCallback = null, string fieldNamePrefix = null,
+   string pageFieldName = null, string selectionFieldName = null, string sortFieldName = null, string sortDirectionFieldName = null)
+ {
+  var webGrid = new WebGrid&lt;T&gt;(null, columnNames, defaultSort, rowsPerPage, canPage,
+    canSort, ajaxUpdateContainerId, ajaxUpdateCallback, fieldNamePrefix,
+    pageFieldName, selectionFieldName, sortFieldName, sortDirectionFieldName);
+  return webGrid.Bind(source, rowCount: totalRows, autoSortAndPage: false); ;
+ }
+}" + 
+"</pre><p><b>References</b></p><a href=\"http://msdn.microsoft.com/en-us/magazine/hh288075.aspx\">Get the Most out of WebGrid in ASP.NET MVC</a>";
+
+        public const string content_25112012_k = "MVC C# WebGrid paging strongly typed";
+        public const string content_25112012_d = "More advanced usage of WebGrid control";
+
+        public const string content_13112012_b = "<p><b>WebGrid</b> is an HTML helper provided as part of the MVC framework to simplify rendering tabular data. It is actually very simple to start with WebGrid. The following is enough to create a complete working example:</p>";
+        public const string content_13112012_r = "<pre class=\"brush: csharp\">" + 
+@"@model YahooViewModel
+
+...
+
+@{ var grid = new WebGrid(Model.Datas);
+   @grid.GetHtml();
+ }" + "</pre><p>Here the \"Datas\" is my list of <b>YahooData</b> entities. This, however, looks a little ugly, so I'll spend a few minutes on styling straight away. The following is a basic style for a WebGrid</p><pre class=\"brush: xml\">" + 
+@"&lt;style type=""text/css""&gt;
+    .webGrid {margin: 4px; border-collapse: collapse; width: 300px;}
+    .header {background-color: #E8E8E8; font-weight: bold; color: #FFF;}
+    .webGrid th, .webGrid td { border: 1px solid #C0C0C0; padding: 5px;}
+    .alt {background-color: #E8E8E8; color: #000;}
+&lt;/style&gt;" + 
+"</pre><p>The style is applied as follows</p><pre class=\"brush: csharp\">" + 
+@"@{ var grid = new WebGrid(Model.Datas);
+   @grid.GetHtml(tableStyle: ""webGrid"", headerStyle: ""header"", alternatingRowStyle: ""alt"");
+ }" + "</pre><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/13112012_First_WebGrid.png\" alt=\"First Attempt at WebGrid\" /></div><p align=\"center\">First WebGrid</p><p>I don't want to show each and every column to the user. I can rewrite the WebGrid specifying the actual columns to show. Only specified columns will be displayed. Also, now the order of the columns is the same as the order I define them.</p><pre class=\"brush: csharp\">" + 
+@"@{ var grid = new WebGrid(Model.Datas, 
+       columnNames: new[] {""DataName"", ""Date"", ""LTP"", ""Time"", ""Volume"", ""Ask"", ""Bid"", ""High"", ""Low""});
+   @grid.GetHtml(tableStyle: ""webGrid"", headerStyle: ""header"", alternatingRowStyle: ""alt"");
+ }" + "</pre><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/13112012_Specific_Columns.png\" alt=\"Showing Only Specific Columns in WebGrid\" /></div><p align=\"center\">Specific columns</p><p>Another way to do it is to actually define columns explicitly. First advantage is that I can now specify a name for the header.</p><pre class=\"brush: csharp\">" + 
+@"@{ var grid = new WebGrid(Model.Datas, columnNames: new[] {""DataName"", ""Date"", ""LTP"", ""Time"", ""Volume"", ""Ask"", ""Bid"", ""High"", ""Low""});
+   @grid.GetHtml(columns: grid.Columns( grid.Column(""DataName"", header: ""Company""), grid.Column(""Date""), grid.Column(""LTP""), grid.Column(""Time""), grid.Column(""Volume""), 
+   grid.Column(""Ask""), grid.Column(""Bid""), grid.Column(""High""), grid.Column(""Low"")),
+   tableStyle: ""webGrid"", headerStyle: ""header"", alternatingRowStyle: ""alt"");
+ }" + 
+"</pre><p>Finally, let's assume I want to let the user click the Company name and navigate to the page that provides some more information about the company. I can use format parameter of the Column to display an ActionLink.</p><pre class=\"brush: csharp\">" + 
+@"@{ var grid = new WebGrid(Model.Datas, columnNames: new[] {""DataName"", ""Date"", ""LTP"", ""Time"", ""Volume"", ""Ask"", ""Bid"", ""High"", ""Low""});
+   @grid.GetHtml(columns: grid.Columns( 
+   grid.Column(""DataName"", header:""Company"", format:@&lt;text&gt;@Html.ActionLink((string)item.DataName, ""Details"", ""Company"", new {id=item.SymbolId}, null)&lt;/text&gt;),
+   grid.Column(""Date""), grid.Column(""LTP""), grid.Column(""Time""), grid.Column(""Volume""), 
+   grid.Column(""Ask""), grid.Column(""Bid""), grid.Column(""High""), grid.Column(""Low"")),
+   tableStyle: ""webGrid"", headerStyle: ""header"", alternatingRowStyle: ""alt"");
+ }" + "</pre><p>The ActionLink will be created in the following format: \"http://localhost/Company/Details/1\"</p><p>Finally (for today) I would like to combine Date and Time in a single column and format it. The last bit of code shows how to format the date in the column and how to apply the style to a specific column.</p><pre class=\"brush: csharp\">" + 
+@"&lt;style type=""text/css""&gt;
+
+...
+
+    .time {width: 200px; font-weight:bold;}
+&lt;/style&gt;
+
+@{ var grid = new WebGrid(Model.Datas, columnNames: new[] {""DataName"", ""Date"", ""LTP"", ""Time"", ""Volume"", ""Ask"", ""Bid"", ""High"", ""Low""});
+   @grid.GetHtml(columns: grid.Columns( 
+   grid.Column(""DataName"", header:""Company"", format:@&lt;text&gt;@Html.ActionLink((string)item.DataName, ""Details"", ""Company"", new {id=item.SymbolId}, null)&lt;/text&gt;),
+   grid.Column(""DateTime"", header:""Time"", style:""time"", format:@&lt;text&gt;@item.DateTime.ToString(""dd/MM/yyyy hh:mm"")&lt;/text&gt;), 
+   grid.Column(""LTP""), grid.Column(""Volume""), grid.Column(""Ask""), grid.Column(""Bid""), grid.Column(""High""), grid.Column(""Low"")),
+   tableStyle: ""webGrid"", headerStyle: ""header"", alternatingRowStyle: ""alt"");
+ }" + 
+"</pre><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/13112012_Better_Formatting.png\" alt=\"Better Formatted WebGrid\" /></div><p align=\"center\">Better formatting</p><p>The plan from here is to add server-side paging to reduce the stress on the view when the number of records is high.</p><p><b>References</b></p><a href=\"http://msdn.microsoft.com/en-us/magazine/hh288075.aspx\">Get the Most out of WebGrid in ASP.NET MVC</a><br/><a href=\"http://www.dotnetcurry.com/ShowArticle.aspx?ID=615\">WebGrid WebHelper in ASP.NET MVC 3 RC</a>";
+        public const string content_13112012_k = "MVC C# WebGrid";
+        public const string content_13112012_d = "Basics of using WebGrid control";
+
         public const string content_02122012_b = "<p>I've learned the first step of using rich snippets to make links to my content look better in search results. The process is not extremely complicated, but it also is not intuitive to me, so I'd better write it down. I linked the content on my Blogger blog and also on my website which I'm using as training grounds. There are several steps involved - I need to modify my Google+ account, and I need to modify the content where I publish it.</p>";
         public const string content_02122012_r = "<p><b>1. Google+ account.</b></p><p>Assuming I already have a Google+ profile with photo on it, I go to my <b>Profile</b>, <b>About</b> and select <b>Edit Profile</b>.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/02122012_Edit_Profile.png\" alt=\"Edit Google Plus Profile\" /></div><p align=\"center\">Edit Profile</p>" +
 "<p>I scroll down to where <b>Contributor to</b> section is. In there I add the places I'm going to post my content. I edit this section to specify where my content is posted. Now Google+ knows where I'm posting, but that's not enough - I have to provide a way to verify that it's actually me.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/02122012_Contributes_To.png\" alt=\"Edit Contributes To\" /></div><p align=\"center\">Edit Contributor</p>" +
@@ -2669,10 +2983,15 @@ public const string content_30092008_r = "<pre class=\"brush:csharp\">" + @"<br 
     "</pre><p>I keep these business entities in a List</p><pre class=\"brush:csharp\">" +
     @"<br />List listToSearch = new List();<br />// fill the list with actual data" + 
     "</pre><p>I need to select all business entities that satisfy to a certain criteria.</p><pre class=\"brush:csharp\">" + 
-    @"List listIFound = <br />listToSearch.FindAll(delegate(MyBusinessEntity entity)<br />{<br />     return (entity.MyProperty == 'myTestString'); <br />});" + 
-    "</pre><p>listIFound will now contain all instances of MyBusinessEntity from listToSearch where MyProperty equals 'myTestString'.</p>"; 
+    @"List listIFound = <br />listToSearch.FindAll(delegate(MyBusinessEntity entity)<br />{<br />     return (entity.MyProperty == 'myTestString'); <br />});" +
+    "</pre><p>listIFound will now contain all instances of MyBusinessEntity from listToSearch where MyProperty equals 'myTestString'.</p>by <a title=\"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
 
-public const string content_29092008_b = "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/29092008_tick.jpg\" alt=\"Green Tick\" /></div>"; 
-public const string content_29092008_r = "by <a title=\"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>"; 
+        public const string content_30092008_k = "C# anonymous delegate";
+        public const string content_30092008_d = "A simple C# anonymous delegate";
+
+        public const string content_29092008_b = "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/29092008_tick.jpg\" alt=\"Green Tick\" /></div>"; 
+        public const string content_29092008_r = "by <a title=\"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_29092008_k = "Test post";
+        public const string content_29092008_d = "Fist, test post";
     }
 }

@@ -156,12 +156,15 @@ namespace Recipes.Models.BlogContents
                 new Post { BlogID = 1, BriefContent = BlogPosts.content_04102008_b, RestOfContent = BlogPosts.content_04102008_r, DateCreated = new DateTime(2008, 10, 4), PostID = 145, Title = "A Well-known Interview Tip" },
                 new Post { BlogID = 1, BriefContent = BlogPosts.content_02102008_b, RestOfContent = BlogPosts.content_02102008_r, DateCreated = new DateTime(2008, 10, 2), PostID = 146, Title = "Exciting Day At Work" },
                 new Post { BlogID = 1, BriefContent = BlogPosts.content_01102008_b, RestOfContent = BlogPosts.content_01102008_r, DateCreated = new DateTime(2008, 10, 1), PostID = 147, Title = "Now Reading" },
-                new Post { BlogID = 1, BriefContent = BlogPosts.content_30092008_b, RestOfContent = BlogPosts.content_30092008_r, DateCreated = new DateTime(2008, 9, 30), PostID = 148, Title = "My Favourite Anonymous Delegate" },
-                new Post { BlogID = 1, BriefContent = BlogPosts.content_29092008_b, RestOfContent = BlogPosts.content_29092008_r, DateCreated = new DateTime(2008, 9, 29), PostID = 149, Title = "Good Deed For The Day" },
+                new Post { BlogID = 1, BriefContent = BlogPosts.content_30092008_b, RestOfContent = BlogPosts.content_30092008_r, Keywords = BlogPosts.content_30092008_k, Description = BlogPosts.content_30092008_d, DateCreated = new DateTime(2008, 9, 30), PostID = 148, Title = "My Favourite Anonymous Delegate" },
+                new Post { BlogID = 1, BriefContent = BlogPosts.content_29092008_b, RestOfContent = BlogPosts.content_29092008_r, Keywords = BlogPosts.content_29092008_k, Description = BlogPosts.content_29092008_d, DateCreated = new DateTime(2008, 9, 29), PostID = 149, Title = "Good Deed For The Day" },
 
-                new Post{ BlogID = 1, BriefContent = BlogPosts.content_02122012_b, RestOfContent = BlogPosts.content_02122012_r, Keywords = BlogPosts.content_02122012_k, Description = BlogPosts.content_02122012_d, DateCreated = new DateTime(2012, 12, 2), PostID = 150, Title = "SEO Basics: Linking My Content to Google+ Using rel='author'"}
+                new Post{ BlogID = 1, BriefContent = BlogPosts.content_02122012_b, RestOfContent = BlogPosts.content_02122012_r, Keywords = BlogPosts.content_02122012_k, Description = BlogPosts.content_02122012_d, DateCreated = new DateTime(2012, 12, 2), PostID = 150, Title = "SEO Basics: Linking My Content to Google+ Using rel='author'"},
 
-
+                new Post { BlogID = 1, BriefContent = BlogPosts.content_28112012_b, RestOfContent = BlogPosts.content_28112012_r, Keywords = BlogPosts.content_28112012_k, Description = BlogPosts.content_28112012_d, DateCreated = new DateTime(2012, 11, 28), PostID = 151, Title = "MVC and SEO basics: inject title, keywords and description" },
+                new Post { BlogID = 1, BriefContent = BlogPosts.content_26112012_b, RestOfContent = BlogPosts.content_26112012_r, Keywords = BlogPosts.content_26112012_k, Description = BlogPosts.content_26112012_d, DateCreated = new DateTime(2012, 11, 26), PostID = 152, Title = "WebGrid: AJAX Updates, Server Sorting" },
+                new Post { BlogID = 1, BriefContent = BlogPosts.content_25112012_b, RestOfContent = BlogPosts.content_25112012_r, Keywords = BlogPosts.content_25112012_k, Description = BlogPosts.content_25112012_d, DateCreated = new DateTime(2012, 11, 25), PostID = 153, Title = "WebGrid: Stronly Typed with Server Paging" },
+                new Post { BlogID = 1, BriefContent = BlogPosts.content_13112012_b, RestOfContent = BlogPosts.content_13112012_r, Keywords = BlogPosts.content_13112012_k, Description = BlogPosts.content_13112012_d, DateCreated = new DateTime(2012, 11, 13), PostID = 154, Title = "Starting with WebGrid" },
             };
 
             posts.ForEach(p => context.Posts.Add(p));
