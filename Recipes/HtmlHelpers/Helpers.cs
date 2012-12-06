@@ -158,5 +158,17 @@ namespace HtmlHelpers
             return encodedUrl;
         }
 
+        public static string ToLink(this string text, string url)
+        {
+            if (string.IsNullOrEmpty(url))
+            {
+                return "<a>" + text + "</a>";
+            }
+            else
+            {
+                return "<a href=\"" + url + "\">" + text + "</a>";
+            }
+        }
+
     }
 }

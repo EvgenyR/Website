@@ -224,7 +224,9 @@ namespace Recipes.Controllers
             List<Blog> blogs = db.Blogs.ToList();
             List<Blogger> bloggers = db.Bloggers.ToList();
 
-            return new BlogViewModel(blog, posts, blogs, bloggers, iPostsDisplayed);
+            BlogViewModel model = new BlogViewModel(blog, posts, blogs, bloggers, iPostsDisplayed);
+
+            return model;
         }
 
     }

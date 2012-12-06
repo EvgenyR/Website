@@ -1,12 +1,12 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
 namespace Recipes.Models.BlogContents
 {
     public static class PopulateBlogBasics
     {
         public static void PopulateBlogs(RecipesEntities context)
         {
-            List<Blog> blogs = new List<Blog> {
+            var blogs = new List<Blog> {
                 new Blog { BlogID = 1, BloggerID = 1, Title = "Evgeny's Programming Blog" },
                 new Blog { BlogID = 2, BloggerID = 1, Title = "Evgeny's Digital Biology Blog" },
             };
@@ -17,7 +17,7 @@ namespace Recipes.Models.BlogContents
 
         public static void PopulateBloggers(RecipesEntities context)
         {
-            List<Blogger> bloggers = new List<Blogger> {
+            var bloggers = new List<Blogger> {
                 new Blogger { BloggerID = 1, BloggerName = "Evgeny" },
                 new Blogger { BloggerID = 2, BloggerName = "Someone Else" },
             };

@@ -22,8 +22,8 @@ namespace Recipes.Models
                 PopulateBlogBasics.PopulateBloggers(context);
                 PopulateBlogBasics.PopulateBlogs(context);
 
-                PopulateEvgeny.AddPosts(context);
-                PopulateSomeoneElse.AddPosts(context);
+                PopulateEvgeny_Programming.AddPosts(context);
+                PopulateEvgeny_Biology.AddPosts(context);
 
                 //yahoo
 
