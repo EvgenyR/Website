@@ -195,6 +195,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Content Include="Content\blog.css" />
+    <Content Include="Content\blogentry.css" />
     <Content Include="Content\images\blog\db\2012\27112012_CellDesigner_with_MAPK-42_model.png" />
     <Content Include="Content\images\blog\db\2012\27112012_COPASI_with_MAPK-42_model.png" />
     <Content Include="Content\images\blog\db\2012\29102012_Calcium_Oscillation_Model.png" />

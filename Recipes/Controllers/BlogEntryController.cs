@@ -22,14 +22,12 @@ namespace Recipes.Controllers
             int curYear = posts.First().DateCreated.Year;
             int curMonth = posts.First().DateCreated.Month;
 
-            //will hold the "current parent" entity
-
             //create first "year-level" item
             var topYear = new BlogEntry { Name = posts.First().DateCreated.Year.ToString().ToLink(string.Empty) };
             entries.Add(topYear);
             var currentYear = topYear;
 
-            var topMonth = new BlogEntry { Name = posts.First().DateCreated.Month.ToString().ToLink(string.Empty), Parent = currentYear };
+            var topMonth = new BlogEntry { Name = posts.First().DateCreated.ToString("MMMM").ToLink(string.Empty), Parent = currentYear };
             currentYear.Children.Add(topMonth);
             var currentMonth = topMonth;
 
@@ -40,7 +38,7 @@ namespace Recipes.Controllers
                     if (post.DateCreated.Month != curMonth)
                     {
                         //create "month-level" item
-                        var month = new BlogEntry { Name = post.DateCreated.Month.ToString().ToLink(string.Empty), Parent = currentYear };
+                        var month = new BlogEntry { Name = post.DateCreated.ToString("MMMM").ToLink(string.Empty), Parent = currentYear };
                         currentYear.Children.Add(month);
                         currentMonth = month;
 
@@ -48,7 +46,7 @@ namespace Recipes.Controllers
                     }
 
                     //create "blog entry level" item
-                    var blogEntry = new BlogEntry { Name = post.Title.ToLink("/Post/" + post.PostID ), Parent = currentMonth };
+                    var blogEntry = new BlogEntry { Name = post.Title.ToLink("/Post/" + post.PostID + "/" + post.Title.ToSeoUrl() ), Parent = currentMonth };
                     currentMonth.Children.Add(blogEntry);
                 }
                 else

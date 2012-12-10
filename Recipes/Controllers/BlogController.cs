@@ -12,7 +12,7 @@ namespace Recipes.Controllers
     {
         RecipesEntities db = new RecipesEntities();
 
-        private int iPostsDisplayed;
+        private int _postsDisplayed;
 
         //
         // GET: /Blog/
@@ -21,7 +21,7 @@ namespace Recipes.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            iPostsDisplayed = 3;
+            _postsDisplayed = 10;
             return View(ViewModelFromBlogID(1));
         }
 
@@ -30,7 +30,7 @@ namespace Recipes.Controllers
         [HttpPost]
         public ActionResult Index(int id)
         {
-            iPostsDisplayed = 3;
+            _postsDisplayed = 10;
             return View(ViewModelFromBlogID(id));
         }
 
@@ -38,7 +38,7 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult List()
         {
-            iPostsDisplayed = 3;
+            _postsDisplayed = 10;
             return View(db.Blogs.ToList());
         }
 
@@ -55,7 +55,7 @@ namespace Recipes.Controllers
             }
             blog.Blogger = db.Bloggers.Where(b => b.BloggerID == blog.BloggerID).FirstOrDefault();
 
-            BlogViewModel viewModel = new BlogViewModel(blog, null, null, null, iPostsDisplayed);
+            BlogViewModel viewModel = new BlogViewModel(blog, null, null, null, _postsDisplayed);
 
             return View(viewModel);
         }
@@ -69,7 +69,7 @@ namespace Recipes.Controllers
             Blog blog = new Blog();
             blog.Blogger = db.Bloggers.FirstOrDefault();
             blog.BloggerID = blog.Blogger.BloggerID;
-            BlogViewModel viewModel = new BlogViewModel(blog, new List<Post>(), db.Blogs.ToList(), db.Bloggers.ToList(), iPostsDisplayed);
+            BlogViewModel viewModel = new BlogViewModel(blog, new List<Post>(), db.Blogs.ToList(), db.Bloggers.ToList(), _postsDisplayed);
             return View(viewModel);
          }
 
@@ -117,7 +117,7 @@ namespace Recipes.Controllers
                     }
                 }
             }
-            return View(new BlogViewModel(blog, null, db.Blogs.ToList(), null, iPostsDisplayed));
+            return View(new BlogViewModel(blog, null, db.Blogs.ToList(), null, _postsDisplayed));
         }
 
         //
@@ -128,7 +128,7 @@ namespace Recipes.Controllers
         {
             Blog blog = db.Blogs.Find(id);
             blog.Blogger = db.Bloggers.Single(b => b.BloggerID == blog.BloggerID);
-            return View(new BlogViewModel(blog, null, null, db.Bloggers.ToList(), iPostsDisplayed));
+            return View(new BlogViewModel(blog, null, null, db.Bloggers.ToList(), _postsDisplayed));
         }
 
         //
@@ -224,7 +224,7 @@ namespace Recipes.Controllers
             List<Blog> blogs = db.Blogs.ToList();
             List<Blogger> bloggers = db.Bloggers.ToList();
 
-            BlogViewModel model = new BlogViewModel(blog, posts, blogs, bloggers, iPostsDisplayed);
+            BlogViewModel model = new BlogViewModel(blog, posts, blogs, bloggers, _postsDisplayed);
 
             return model;
         }

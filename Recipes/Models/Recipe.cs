@@ -25,7 +25,7 @@ namespace Recipes.Models
         [DisplayName("Description")]
         public string Description { get; set; }
 
-        //public string test { get; set; }
+        public string test { get; set; }
 
         //total caloric content - calculated fields
         public decimal TotalFatCalories { get; set; }
