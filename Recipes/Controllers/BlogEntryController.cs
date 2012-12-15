@@ -4,6 +4,8 @@ using System.Web.Mvc;
 using HtmlHelpers;
 using Recipes.Models;
 using Recipes.ViewModels;
+using System;
+using System.Collections;
 
 namespace Recipes.Controllers
 {
@@ -13,51 +15,70 @@ namespace Recipes.Controllers
         // GET: /BlogEntry/
 
         readonly RecipesEntities db = new RecipesEntities();
-        readonly List<BlogEntry> entries = new List<BlogEntry>();
+        List<BlogEntry> entries = new List<BlogEntry>();
 
         public PartialViewResult BlogResult()
         {
-            IEnumerable<Post> posts = db.Posts.OrderBy(p => p.DateCreated);
+            //var results = from allPosts in db.Posts.OrderBy(p => p.DateCreated)
+            //              group allPosts by allPosts.DateCreated.Year into postsByYear
 
-            int curYear = posts.First().DateCreated.Year;
-            int curMonth = posts.First().DateCreated.Month;
+            //              select new
+            //              {
+            //                  postsByYear.Key,
+            //                  SubGroups = from yearLevelPosts in postsByYear
+            //                              group yearLevelPosts by yearLevelPosts.DateCreated.Month into postsByMonth
+            //                              select new
+            //                              {
+            //                                  postsByMonth.Key,
+            //                                  SubGroups = from monthLevelPosts in postsByMonth
+            //                                              group monthLevelPosts by monthLevelPosts.Title into post
+            //                                              select post
+            //                              }
+            //              };
 
-            //create first "year-level" item
-            var topYear = new BlogEntry { Name = posts.First().DateCreated.Year.ToString().ToLink(string.Empty) };
-            entries.Add(topYear);
-            var currentYear = topYear;
+            //foreach (var yearPosts in results)
+            //{
+            //    //create "year-level" item
+            //    var year = new BlogEntry { Name = yearPosts.Key.ToString().ToLink(string.Empty) };
+            //    entries.Add(year);
+            //    foreach (var monthPosts in yearPosts.SubGroups)
+            //    {
+            //        var month = new BlogEntry { Name = new DateTime(2000, (int)monthPosts.Key, 1).ToString("MMMM").ToLink(string.Empty), Parent = year };
+            //        year.Children.Add(month);
+            //        foreach (var postEntry in monthPosts.SubGroups)
+            //        {
+            //            //create "blog entry level" item
+            //            var post = postEntry.First() as Post;
+            //            var blogEntry = new BlogEntry { Name = post.Title.ToLink("/Post/" + post.PostID + "/" + post.Title.ToSeoUrl()), Parent = month };
+            //            month.Children.Add(blogEntry);
+            //        }
+            //    }
+            //}
 
-            var topMonth = new BlogEntry { Name = posts.First().DateCreated.ToString("MMMM").ToLink(string.Empty), Parent = currentYear };
-            currentYear.Children.Add(topMonth);
-            var currentMonth = topMonth;
+            var results = db.Posts.OrderBy(p => p.DateCreated).GroupByMany(p => p.DateCreated.Year, p => p.DateCreated.Month);
 
-            foreach (var post in posts)
+            entries = new List<BlogEntry>();
+
+            //years
+            foreach (var yearPosts in results)
             {
-                if(post.DateCreated.Year == curYear)
+                //create "year-level" item
+                var year = new BlogEntry { Name = yearPosts.Key.ToString().ToLink(string.Empty) };
+                entries.Add(year);
+
+                //months
+                foreach (var monthPosts in yearPosts.SubGroups)
                 {
-                    if (post.DateCreated.Month != curMonth)
+                    var month = new BlogEntry { Name = new DateTime(2000, (int)monthPosts.Key, 1).ToString("MMMM").ToLink(string.Empty), Parent = year };
+                    year.Children.Add(month);
+
+                    foreach (var postEntry in monthPosts.Items)
                     {
-                        //create "month-level" item
-                        var month = new BlogEntry { Name = post.DateCreated.ToString("MMMM").ToLink(string.Empty), Parent = currentYear };
-                        currentYear.Children.Add(month);
-                        currentMonth = month;
-
-                        curMonth = post.DateCreated.Month;
+                        //create "blog entry level" item
+                        var post = postEntry as Post;
+                        var blogEntry = new BlogEntry { Name = post.Title.ToLink("/Post/" + post.PostID + "/" + post.Title.ToSeoUrl()), Parent = month };
+                        month.Children.Add(blogEntry);
                     }
-
-                    //create "blog entry level" item
-                    var blogEntry = new BlogEntry { Name = post.Title.ToLink("/Post/" + post.PostID + "/" + post.Title.ToSeoUrl() ), Parent = currentMonth };
-                    currentMonth.Children.Add(blogEntry);
-                }
-                else
-                {
-                    //create "year-level" item
-                    var year = new BlogEntry { Name = post.DateCreated.Year.ToString().ToLink(string.Empty) };
-                    entries.Add(year);
-                    currentYear = year;
-
-                    curMonth = post.DateCreated.Month;
-                    curYear = post.DateCreated.Year;
                 }
             }
 
@@ -65,5 +86,38 @@ namespace Recipes.Controllers
 
             return PartialView(model);
         }
+    }
+
+    public static class MyEnumerableExtensions
+    {
+        public static IEnumerable<GroupResult> GroupByMany<TElement>(
+            this IEnumerable<TElement> elements,
+            params Func<TElement, object>[] groupSelectors)
+        {
+            if (groupSelectors.Length > 0)
+            {
+                var selector = groupSelectors.First();
+
+                //reduce the list recursively until zero
+                var nextSelectors = groupSelectors.Skip(1).ToArray();
+                return
+                    elements.GroupBy(selector).Select(
+                        g => new GroupResult
+                        {
+                            Key = g.Key,
+                            Items = g,
+                            SubGroups = g.GroupByMany(nextSelectors)
+                        });
+            }
+            else
+                return null;
+        }
+    }
+
+    public class GroupResult
+    {
+        public object Key { get; set; }
+        public IEnumerable Items { get; set; }
+        public IEnumerable<GroupResult> SubGroups { get; set; }
     }
 }
