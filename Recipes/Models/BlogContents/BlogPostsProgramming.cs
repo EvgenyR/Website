@@ -3568,6 +3568,7 @@ if(testText) testText->setProperty(""text"", dummy.getString());" +
         public const string content_02122012_d = "I describe how I linked the posts to Blogger and my own website to my Google+ account and improve the way they look in search results if anyone ever cares to search for them";
         public const string content_02122012_k = "Blog SEO Google rel author rich snippet";
 
+        //"SEO Basics: Friendly URLs"
         public const string content_10122012_b = "<p>Implementing SEO-friendly URLs turned out to be much easier than I expected - MVC routing already takes care of the \"heavy lifting\". The developer only needs to provide a function that returnes the \"friendly urls\" from strings (product names, blog titles etc.) and to update action links.</p>";
         public const string content_10122012_r =
             "<p>1. Routing. A new route needs to be added. It has to be added above the default route so that MVC framework attempted to match it first. The seofriendly parameter can be pretty much anything that will satisfy valid url requirements.</p><pre class=\"brush:csharp\">" +
