@@ -20,6 +20,8 @@ namespace Recipes.Models.BlogContents
                 new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_13092012_b, RestOfContent = BlogPostsBiology.content_13092012_r, Keywords = BlogPostsBiology.content_13092012_k, Description = BlogPostsBiology.content_13092012_d, DateCreated = new DateTime(2012, 9, 13), PostID = 12, Title = "Markov Chains Monte Carlo Bayesian Inference" },
                 new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_27112012_b, RestOfContent = BlogPostsBiology.content_27112012_r, Keywords = BlogPostsBiology.content_27112012_k, Description = BlogPostsBiology.content_27112012_d, DateCreated = new DateTime(2012, 11, 27), PostID = 13, Title = "COPASI and CellDesigner: Comparison"},
                 new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_29102012_b, RestOfContent = BlogPostsBiology.content_29102012_r, Keywords = BlogPostsBiology.content_29102012_k, Description = BlogPostsBiology.content_29102012_d, DateCreated = new DateTime(2012, 10, 29), PostID = 14, Title = "Calculation of Phase Space Models with COPASI"},
+                new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_20122012_b, RestOfContent = BlogPostsBiology.content_20122012_r, Keywords = BlogPostsBiology.content_20122012_k, Description = BlogPostsBiology.content_20122012_d, DateCreated = new DateTime(2012, 12, 20), PostID = 15, Title = "Stoichiometry matrix" },
+
             };
 
             posts.ForEach(p => context.Posts.Add(p));
