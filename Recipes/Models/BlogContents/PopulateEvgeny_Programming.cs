@@ -163,6 +163,8 @@ namespace Recipes.Models.BlogContents
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_25112012_b, RestOfContent = BlogPostsProgramming.content_25112012_r, Keywords = BlogPostsProgramming.content_25112012_k, Description = BlogPostsProgramming.content_25112012_d, DateCreated = new DateTime(2012, 11, 25), PostID = 153, Title = "WebGrid: Stronly Typed with Server Paging" },
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_13112012_b, RestOfContent = BlogPostsProgramming.content_13112012_r, Keywords = BlogPostsProgramming.content_13112012_k, Description = BlogPostsProgramming.content_13112012_d, DateCreated = new DateTime(2012, 11, 13), PostID = 154, Title = "Starting with WebGrid" },
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_10122012_b, RestOfContent = BlogPostsProgramming.content_10122012_r, Keywords = BlogPostsProgramming.content_10122012_k, Description = BlogPostsProgramming.content_10122012_d, DateCreated = new DateTime(2012, 12, 10), PostID = 155, Title = "SEO Basics: Friendly URLs"},
+                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_20122012_b, RestOfContent = BlogPostsProgramming.content_20122012_r, Keywords = BlogPostsProgramming.content_20122012_k, Description = BlogPostsProgramming.content_20122012_d, DateCreated = new DateTime(2012, 12, 20), PostID = 156, Title = "Implementing a Tree View - Small Case Study" },
+
             };
 
             posts.ForEach(p => context.Posts.Add(p));

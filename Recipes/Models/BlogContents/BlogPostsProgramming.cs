@@ -3610,5 +3610,224 @@ if(testText) testText->setProperty(""text"", dummy.getString());" +
             "</pre><p><b>References:</b></p><a href=\"http://quysnhat.wordpress.com/2012/03/14/seo-friendly-urls-in-asp-net-mvc/\">SEO-Friendly URLs in ASP.Net MVC 3</a><br/><a href=\"http://stackoverflow.com/questions/217960/how-can-i-create-a-friendly-url-in-asp-net-mvc\">How can I create a friendly URL in ASP.NET MVC?</a><br/>by <a title=\"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
         public const string content_10122012_d = "A brief guide on implementing \"SEO-friendly\", or human readable, URL using MVC framework";
         public const string content_10122012_k = "MVC C# SEO friendly url";
+
+        //Implementing a Tree View - Small Case Study
+        public const string content_20122012_b = "<p>Implementing the control that allows navigating my blog history could be roughly divided into 4 steps.</p><p><b>1. Select and group posts from the database</b></p><p>Here the LINQ grouping came handy. Starting with grouping posts by year published to create my top level in hierarchy, the query would look like this:</p><pre class=\"brush:csharp\">" + @"var results = from allPosts in db.Posts.OrderBy(p =&gt; p.DateCreated)
+			  group allPosts by allPosts.DateCreated.Year into postsByYear;" + "</pre><p>Here <b>results</b> is the enumeration of groups - in my case, groups of posts which were published in the certain year. Posts are grouped by the key, which is defined in the <b>IGrouping</b> interface.</p><p>Moving further, I want to create child groups, in my case - posts by the month. I have to add a nested query along these lines</p><pre class=\"brush:csharp\">" + @"var results = from allPosts in db.Posts.OrderBy(p =&gt; p.DateCreated)
+			  group allPosts by allPosts.DateCreated.Year into postsByYear
+
+			  select new
+			  {
+				  postsByYear.Key,
+				  SubGroups = from yearLevelPosts in postsByYear
+							  group yearLevelPosts by yearLevelPosts.DateCreated.Month into postsByMonth;
+			  };" + "</pre>";
+        public const string content_20122012_r = "<p>This is still not too bad. The first level are posts by year. Each year has <b>SubGroups</b> property which stores the group of posts published in a certian month. Now I finally need to get all the posts published in a month. I end up with the following query:</p><pre class=\"brush:csharp\">" + @"var results = from allPosts in db.Posts.OrderBy(p =&gt; p.DateCreated)
+			  group allPosts by allPosts.DateCreated.Year into postsByYear
+
+			  select new
+			  {
+				  postsByYear.Key,
+				  SubGroups = from yearLevelPosts in postsByYear
+							  group yearLevelPosts by yearLevelPosts.DateCreated.Month into postsByMonth
+							  select new
+							  {
+								  postsByMonth.Key,
+								  SubGroups = from monthLevelPosts in postsByMonth
+											  group monthLevelPosts by monthLevelPosts.Title into post
+											  select post
+							  }
+			  };" + "</pre><p>It is fully functional and suits my purposes. It is on the edge of being unreadable, however, and if I had to add one more level of depth it would probably be beyond. Following the example from <a href=\"http://blogs.msdn.com/b/mitsu/\">Mitsu Furuta's blog</a>, I make the query generic. The <b>GroupResult</b> class holds the grouping key and the group items. The GroupByMany extension allows for an undefined number of group selectors. This is the code I need to make it work:</p><pre class=\"brush:csharp\">" + @"public static class MyEnumerableExtensions
+{
+	public static IEnumerable&lt;GroupResult&gt; GroupByMany&lt;TElement&gt;(this IEnumerable&lt;TElement&gt; elements, params Func&lt;TElement, object&gt;[] groupSelectors)
+	{
+		if (groupSelectors.Length &gt; 0)
+		{
+			var selector = groupSelectors.First();
+
+			//reduce the list recursively until zero
+			var nextSelectors = groupSelectors.Skip(1).ToArray();
+			return
+				elements.GroupBy(selector).Select(
+					g =&gt; new GroupResult
+					{
+						Key = g.Key,
+						Items = g,
+						SubGroups = g.GroupByMany(nextSelectors)
+					});
+		}
+		else
+			return null;
+	}
+}
+
+public class GroupResult
+{
+	public object Key { get; set; }
+	public IEnumerable Items { get; set; }
+	public IEnumerable&lt;GroupResult&gt; SubGroups { get; set; }
+}" + "</pre><p>And now I can rewrite my query in one line:</p><pre class=\"brush:csharp\">" + @"var results = db.Posts.OrderBy(p =&gt; p.DateCreated).GroupByMany(p =&gt; p.DateCreated.Year, p =&gt; p.DateCreated.Month);" + "</pre><p><b>2. Populate a tree structure that will be used to generate HTML</b></p><p>I used a complete solution suggested by <a href=\"http://marktinderholt.wordpress.com/2011/10/09/rendering-a-tree-view-using-asp-net-mvc-3-razor/\">Mark Tinderhold</a> almost without changes.</p><p>The <b>BlogEntry</b> class has a <b>Name</b>, which will be rendered, and references to <b>Children</b> and <b>Parent</b> nodes.</p><pre class=\"brush:csharp\">" + @"public class BlogEntry : ITreeNode&lt;BlogEntry&gt;
+{
+	public BlogEntry()
+	{
+		Children = new List&lt;BlogEntry&gt;();
+	}
+
+	public string Name { get; set; }
+	public BlogEntry Parent { get; set; }
+	public List&lt;BlogEntry&gt; Children { get; set; }
+}" + "</pre><p>A list of <b>BlogEntry</b> is populated from my query results</p><pre class=\"brush:csharp\">" + @"var entries = new List&lt;BlogEntry&gt;();
+
+//years
+foreach (var yearPosts in results)
+{
+	//create ""year-level"" item
+	var year = new BlogEntry { Name = yearPosts.Key.ToString().ToLink(string.Empty) };
+	entries.Add(year);
+
+	//months
+	foreach (var monthPosts in yearPosts.SubGroups)
+	{
+		var month = new BlogEntry { Name = new DateTime(2000, (int)monthPosts.Key, 1).ToString(""MMMM"").ToLink(string.Empty), Parent = year };
+		year.Children.Add(month);
+
+		foreach (var postEntry in monthPosts.Items)
+		{
+			//create ""blog entry level"" item
+			var post = postEntry as Post;
+			var blogEntry = new BlogEntry { Name = post.Title.ToLink(""/Post/"" + post.PostID + ""/"" + post.Title.ToSeoUrl()), Parent = month };
+			month.Children.Add(blogEntry);
+		}
+	}
+}" + "</pre><p><b>3. Use the tree structure to generate HTML</b></p><p>The TreeRenderer writes out HTML.</p><pre class=\"brush:csharp\">" + @"public interface ITreeNode&lt;T&gt;
+{
+	T Parent { get; }
+	List&lt;T&gt; Children { get; }
+}
+
+public static class TreeRenderHtmlHelper
+{
+	public static string RenderTree&lt;T&gt;(this HtmlHelper htmlHelper, IEnumerable&lt;T&gt; rootLocations, Func&lt;T, string&gt; locationRenderer) where T : ITreeNode&lt;T&gt;
+	{
+		return new TreeRenderer&lt;T&gt;(rootLocations, locationRenderer).Render();
+	}
+}
+public class TreeRenderer&lt;T&gt; where T : ITreeNode&lt;T&gt;
+{
+	private readonly Func&lt;T, string&gt; locationRenderer;
+	private readonly IEnumerable&lt;T&gt; rootLocations;
+	private HtmlTextWriter writer;
+	public TreeRenderer(IEnumerable&lt;T&gt; rootLocations, Func&lt;T, string&gt; locationRenderer)
+	{
+		this.rootLocations = rootLocations;
+		this.locationRenderer = locationRenderer;
+	}
+	public string Render()
+	{
+		writer = new HtmlTextWriter(new StringWriter());
+		RenderLocations(rootLocations);
+		return writer.InnerWriter.ToString();
+	}
+	/// &lt;summary&gt;
+	/// Recursively walks the location tree outputting it as hierarchical UL/LI elements
+	/// &lt;/summary&gt;
+	/// &lt;param name=""locations""&gt;&lt;/param&gt;
+	private void RenderLocations(IEnumerable&lt;T&gt; locations)
+	{
+		if (locations == null) return;
+		if (locations.Count() == 0) return;
+		InUl(() =&gt; locations.ForEach(location =&gt; InLi(() =&gt;
+		{
+			writer.Write(locationRenderer(location));
+			RenderLocations(location.Children);
+		})));
+	}
+	private void InUl(Action action)
+	{
+		writer.WriteLine();
+		writer.RenderBeginTag(HtmlTextWriterTag.Ul);
+		action();
+		writer.RenderEndTag();
+		writer.WriteLine();
+	}
+	private void InLi(Action action)
+	{
+		writer.RenderBeginTag(HtmlTextWriterTag.Li);
+		action();
+		writer.RenderEndTag();
+		writer.WriteLine();
+	}
+}" + "</pre><p>The renderer will be called the following way from the view:</p><pre class=\"brush:csharp\">" + @"&lt;div id=""treeview"" class=""treeview""&gt;
+    @MvcHtmlString.Create(Html.RenderTree(Model.BlogEntries, x =&gt; x.Name))
+&lt;/div&gt;" + "</pre><p><b>4. Render the HTML on the webpage</b></p><p>After reviewing a couple of other options, I decided on a <a href=\"https://github.com/vakata/jstree\">jsTree</a>. It has rich capabilities, but to this point I only used the \"default\" options. I added the tree to the <b>_Layout.cshtml</b> by adding a line of code</p><pre class=\"brush:csharp\">" + @"@Html.Action(""BlogResult"", ""BlogEntry"")" + "</pre><p>This line calls the function in the <b>BlogEntryController</b></p><pre class=\"brush:csharp\">" + @"public PartialViewResult BlogResult()
+{
+	var results = db.Posts.OrderBy(p =&gt; p.DateCreated).GroupByMany(p =&gt; p.DateCreated.Year, p =&gt; p.DateCreated.Month);
+
+	entries = new List&lt;BlogEntry&gt;();
+	
+	//code that populates entries - see above
+
+	BlogEntryViewModel model = new BlogEntryViewModel(entries);
+
+	return PartialView(model);
+}" + "</pre><p>The <b>BlogEntryViewModel</b> is extremely simple.</p><pre class=\"brush:csharp\">" + @"public class BlogEntryViewModel
+{
+	public List&lt;BlogEntry&gt; BlogEntries { get; set; }
+
+	public BlogEntryViewModel(List&lt;BlogEntry&gt; blogEntries)
+	{
+		BlogEntries = blogEntries;
+	}
+
+	public BlogEntryViewModel()
+	{
+	}
+}" + "</pre><p>Finally, the partial view that is rendered</p><pre class=\"brush:csharp\">" + @"@model Recipes.ViewModels.BlogEntryViewModel
+
+@{ Layout = null; }
+
+&lt;link href=""@Url.Content(""~/Content/blogentry.css"")"" rel=""stylesheet"" type=""text/css"" /&gt;
+
+&lt;!-- Tree View jstree --&gt;
+&lt;script src=""@Url.Content(""~/Scripts/jquery.js"")"" type=""text/javascript""&gt;&lt;/script&gt;
+&lt;script src=""@Url.Content(""~/Scripts/jquery.hotkeys.js"")"" type=""text/javascript""&gt;&lt;/script&gt;
+&lt;script src=""@Url.Content(""~/Scripts/jquery.cookie.js"")"" type=""text/javascript""&gt;&lt;/script&gt;
+&lt;script src=""@Url.Content(""~/Scripts/jquery.jstree.js"")"" type=""text/javascript""&gt;&lt;/script&gt;
+
+&lt;script type=""text/javascript""&gt;
+    jQuery(function ($) {
+        $(""#treeview"").jstree({ ""plugins"": [""themes"", ""html_data""] });
+    });
+&lt;/script&gt;
+
+&lt;div class=""blogheader""&gt;
+&lt;h2&gt;Blog Archives&lt;/h2&gt;
+&lt;/div&gt;
+&lt;div id=""treeview"" class=""treeview""&gt;
+    @MvcHtmlString.Create(Html.RenderTree(Model.BlogEntries, x =&gt; x.Name))
+&lt;/div&gt;" + "</pre><p>What I had to make sure of to make it work:</p><p>And for information, this is the contents of <b>blogentry.css</b></p><pre class=\"brush:csharp\">" + @"div.treeview, div.blogheader {
+    width: 14em;
+    background: #eee;
+  	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+div.blogheader h2 
+{
+    font: bold 11px/16px arial, helvetica, sans-serif;
+    display: block;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ccc #888 #555 #bbb;
+    margin: 0;
+    padding: 2px 3px;
+    
+    color: #fff;
+    background: #000;
+    text-transform: uppercase;
+}" + "</pre><p>The end result looks like that:</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2012/20122012_Resulting_Treeview.png\" alt=\"Resulting Treeview\" /></div><p align=\"center\">Resulting Treeview</p><p><b>References:</b></p><a href=\"http://stackoverflow.com/questions/2230202/how-can-i-hierarchically-group-data-using-linq\">How can I hierarchically group data using LINQ?</a><br/><a href=\"http://blogs.msdn.com/b/mitsu/archive/2007/12/22/playing-with-linq-grouping-groupbymany.aspx\">Playing with Linq grouping: GroupByMany ?</a><br/><a href=\"http://mikehadlow.blogspot.com.au/2008/10/rendering-tree-view-using-mvc-framework.html\">Rendering a tree view using the MVC Framework</a><br/><a href=\"http://jquery.bassistance.de/treeview/demo/\">jQuery Treeview Plugin Demo</a><br/><a href=\"http://tkgospodinov.com/jstree-part-1-introduction/\">jsTree – Part 1: Introduction</a><br/><a href=\"https://github.com/vakata/jstree\">jsTree on GitHub</a><br/><a href=\"http://stackoverflow.com/questions/5730795/best-place-to-learn-jstree\">Best place to learn JStree</a><br/>by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_20122012_d = "Implementing a Tree View on my Website";
+        public const string content_20122012_k = "Implementing a Tree View jstree MVC C# Software Development LINQ grouping";
+
     }
 }
