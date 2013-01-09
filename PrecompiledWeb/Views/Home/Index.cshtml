@@ -20,8 +20,8 @@
         to a single user. I think I found the way to do it properly, and it is not a straightforward
         task. Before I forget, I might keep a record of all actions required because I did
         not find a clear sequence anywhere on the net. It will only take 10 easy steps.
-        Let's assume there is a folder called <b>Bob's Documents</b> where only Bob, and
-        not even the <b>Admin</b>, should have access.
+        Let's assume there is a folder called <strong>Bob's Documents</strong> where only Bob, and
+        not even the <strong>Admin</strong>, should have access.
         <h4 class="title">
             <a href="http://justmycode.blogspot.com.au/2012/08/securing-access-to-windows-7-folder.html">
                 Read More</a></h4>
@@ -34,18 +34,18 @@
         <div class="info">
             <span class="submitted">Submitted on Thu, 09/08/2012</span>
         </div>
-        Step one - create my own controller class. Simple, just add a <b>BaseController</b>
-        to the <b>Controllers</b> folder
+        Step one - create my own controller class. Simple, just add a <strong>BaseController</strong>
+        to the <strong>Controllers</strong> folder
         <pre class="brush: csharp">public abstract class BaseController : Controller
         {
         }</pre>
-        and then modify all existing contollers to inherit from <b>BaseController</b> rather
-        than from <b>System.Web.Mvc.Controller</b>.
+        and then modify all existing contollers to inherit from <strong>BaseController</strong> rather
+        than from <strong>System.Web.Mvc.Controller</strong>.
         <h4 class="title">
             <a href="http://justmycode.blogspot.com.au/2012/08/learning-mvc-display-custom-error-page.html">
                 Read More</a></h4>
     </div>
-    </br>
+    <br/>
     <div class="blogcontainer">
         <h3 class="title">
             <a href="http://justmycode.blogspot.com.au/2012/08/learning-mvc-game-of-life-in-mvc.html">Learning MVC: Game of Life in MVC
@@ -58,7 +58,7 @@
         of Life earlier ( <a href="http://justmycode.blogspot.com/2012/07/game-of-life-exercise-and-extension.html">
             Game of Life Exercise and Extension Methods</a>).<br />
         Next, I wanted to see how the game could be run on the MVC platform. The solution
-        in short: use javaScript <b>setInterval</b> function to load the partial view into
+        in short: use javaScript <strong>setInterval</strong> function to load the partial view into
         the div. Use a method in the controller to generate the partial view.<br />
         Here is how my solution looked:
         <h4 class="title">

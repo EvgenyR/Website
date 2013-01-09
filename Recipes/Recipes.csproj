@@ -577,6 +577,7 @@
     <Content Include="Content\images\bg_blue.jpg" />
     <Content Include="Content\images\bg_white.jpg" />
     <Content Include="Content\images\evgeny.jpg" />
+    <Content Include="Content\images\favicon.ico" />
     <Content Include="Content\images\gameoflife.png" />
     <Content Include="Content\images\Laptop_saver.jpg" />
     <Content Include="Content\images\measures\cup.gif" />

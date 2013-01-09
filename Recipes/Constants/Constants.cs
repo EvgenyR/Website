@@ -40,7 +40,7 @@ namespace Constants
         public const string GameMetaDescription = "The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970. This page implements the Game of Life using MVC Framework";
 
         public const string MainMetaKeywords = "C#, MVC, Developer, Programmer, WebSite, Blog";
-        public const string MainMetaDescription = "The goal of this website is to provide some information about Evgeny";
+        public const string MainMetaDescription = "The goal of this website is to provide some information about Evgeny and Software Development";
 
         public const string SearchMetaKeywords = "C#, MVC, HTTP, Google API, Search, Programming, Development";
         public const string SearchMetaDescription = "Automatic extraction of Google search results. The page gets results from Google search by two means: First,using the HtmlAgilityPack HTML parser, the Google search is returned with System.Net.Webclient, then the HTML is parsed and links are extracted. Second, using Google API for .NET.";

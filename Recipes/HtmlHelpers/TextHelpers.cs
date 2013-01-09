@@ -13,11 +13,11 @@ namespace HtmlHelpers
 
         public static IHtmlString YahooTheory(this HtmlHelper helper)
         {
-            string contents1 = "<p><b>WebGrid</b> is an HTML helper provided as part of the MVC framework to simplify rendering tabular data.</p><p>When I learned how to use <b>WebGrid</b> I found a very good article with code samples here:</p><p><a href=\"http://msdn.microsoft.com/en-us/magazine/hh288075.aspx\">Get the Most out of WebGrid in ASP.NET MVC</a></p><p>My application of these ideas I described on my blog:</p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/starting-with-webgrid.html\">Starting with WebGrid</a></p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/webgrid-stronly-typed-with-server-paging.html\">WebGrid: Stronly Typed with Server Paging</a></p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/webgrid-ajax-updates-server-sorting.html\">WebGrid: AJAX Updates, Server Sorting</a></p><p>Here is most of the <b></b>View that displays my <b>WebGrid</b>:</p>";
-            string contents2 = "<p>Key points:</p><p>The <b>WebGrid</b> is displayed in the partial view <b>_WebGrid</b>. The <b>RetrieveData</b> function triggers the controller action <b>AddDataToDB</b> (which calls the Yahoo website and adds results to the database). The data is then used by the <b>ShowDialog</b> function that displays exactly the subset of data that was retrieved. The css is used to style the <b>WebGrid</b>.</p><p>The <b>WebGrid</b> partial view:</p>";
-            string contents3 = "<p>Here the <b>WebGrid</b> is defined, including all columns and the format for the data to be displayed. <b>ajaxUpdateContainerId</b> is used to enable AJAX behaviour. The css is utilised for styling. The <b>WebGrid</b> is bound to the <b>Model</b>, which is defined as follows</p>";
+            string contents1 = "<p><strong>WebGrid</strong> is an HTML helper provided as part of the MVC framework to simplify rendering tabular data.</p><p>When I learned how to use <strong>WebGrid</strong> I found a very good article with code samples here:</p><p><a href=\"http://msdn.microsoft.com/en-us/magazine/hh288075.aspx\">Get the Most out of WebGrid in ASP.NET MVC</a></p><p>My application of these ideas I described on my blog:</p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/starting-with-webgrid.html\">Starting with WebGrid</a></p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/webgrid-stronly-typed-with-server-paging.html\">WebGrid: Stronly Typed with Server Paging</a></p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/webgrid-ajax-updates-server-sorting.html\">WebGrid: AJAX Updates, Server Sorting</a></p><p>Here is most of the <strong></strong>View that displays my <strong>WebGrid</strong>:</p>";
+            string contents2 = "<p>Key points:</p><p>The <strong>WebGrid</strong> is displayed in the partial view <strong>_WebGrid</strong>. The <strong>RetrieveData</strong> function triggers the controller action <strong>AddDataToDB</strong> (which calls the Yahoo website and adds results to the database). The data is then used by the <strong>ShowDialog</strong> function that displays exactly the subset of data that was retrieved. The css is used to style the <strong>WebGrid</strong>.</p><p>The <strong>WebGrid</strong> partial view:</p>";
+            string contents3 = "<p>Here the <strong>WebGrid</strong> is defined, including all columns and the format for the data to be displayed. <strong>ajaxUpdateContainerId</strong> is used to enable AJAX behaviour. The css is utilised for styling. The <strong>WebGrid</strong> is bound to the <strong>Model</strong>, which is defined as follows</p>";
             string contents4 = "<p>Finally, this is most of the controller code:</p>";
-            string contents5 = "<p>Main points: The link on the <b>WebGrid</b> column has the following format: <u>http://localhost/Yahoo/Index?sort=DateTime&sortdir=ASC</u>. Therefore, the controller function can automatically receive those parameters. The parameters will be then passed over to the <b>GetData</b> function that retrieves data. A couple of helper functions are utilized by <b>GetData</b>: <b>CreateOrderingFunc</b> and <b>_dataOrderings</b>. The retrieved data is saved to the database and also sent back to the <b>View</b> where, as shown earlier, it is used by the <b>ShowDialog</b> function to display the set of data to the user.</p>";
+            string contents5 = "<p>Main points: The link on the <strong>WebGrid</strong> column has the following format: <u>http://localhost/Yahoo/Index?sort=DateTime&sortdir=ASC</u>. Therefore, the controller function can automatically receive those parameters. The parameters will be then passed over to the <strong>GetData</strong> function that retrieves data. A couple of helper functions are utilized by <strong>GetData</strong>: <strong>CreateOrderingFunc</strong> and <strong>_dataOrderings</strong>. The retrieved data is saved to the database and also sent back to the <strong>View</strong> where, as shown earlier, it is used by the <strong>ShowDialog</strong> function to display the set of data to the user.</p>";
 
             string viewCode = "<pre class=\"brush: xml\">@model Recipes.ViewModels.YahooViewModel" +
                 @"&lt;link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'/&gt;
@@ -318,7 +318,7 @@ public enum SortDirection
 
         public static IHtmlString SearchTheory(this HtmlHelper helper)
         {
-            string contents = @"<p><b>Automatic extraction of Google search results</b></p><p>The page gets results from Google search by two means.</p><p>1. Using the HtmlAgilityPack HTML parser, the Google search is returned with System.Net.Webclient, then the HTML is parsed and links are extracted. Here is the code for retrieving the HTML</p>";
+            string contents = @"<p><strong>Automatic extraction of Google search results</strong></p><p>The page gets results from Google search by two means.</p><p>1. Using the HtmlAgilityPack HTML parser, the Google search is returned with System.Net.Webclient, then the HTML is parsed and links are extracted. Here is the code for retrieving the HTML</p>";
 
             string code1 = "<pre class=\"brush: csharp\">public static WebClient webClient = new WebClient();" +
  
@@ -377,14 +377,14 @@ public enum SortDirection
              }
             }</pre><p>" +
             
-            @"The drawbacks are that the API is deprecated, the number of search results returned is limited to 64 and the number of calls to the API per day is limited.</p><p><b>References:</b></p><a href='http://gapi4net.codeplex.com/'>Google API for .NET</a><br/><a href='https://developers.google.com/web-search/docs/'>Developer's guide to Google Search API</a><br/><a href='https://developers.google.com/errors/'>Error description which specifies that automated requests are prohibited</a><br/><a href='http://stackoverflow.com/questions/5121090/google-search-api'>Google Search API</a><br/><a href='http://stackoverflow.com/questions/6084096/what-free-web-search-apis-are-available/8666532'>What free web search api's are available?</a>";
+            @"The drawbacks are that the API is deprecated, the number of search results returned is limited to 64 and the number of calls to the API per day is limited.</p><p><strong>References:</strong></p><a href='http://gapi4net.codeplex.com/'>Google API for .NET</a><br/><a href='https://developers.google.com/web-search/docs/'>Developer's guide to Google Search API</a><br/><a href='https://developers.google.com/errors/'>Error description which specifies that automated requests are prohibited</a><br/><a href='http://stackoverflow.com/questions/5121090/google-search-api'>Google Search API</a><br/><a href='http://stackoverflow.com/questions/6084096/what-free-web-search-apis-are-available/8666532'>What free web search api's are available?</a>";
 
             return new HtmlString(contents + code1 + contents2 + code2);
         }
 
         public static IHtmlString StoneTheory(this HtmlHelper helper)
         {
-            string contents = @"<p><b>Stepping Stone Markov Chain model</b></p><p>A Markov chain is a process which can be in a number of states. The process starts in one of the states
+            string contents = @"<p><strong>Stepping Stone Markov Chain model</strong></p><p>A Markov chain is a process which can be in a number of states. The process starts in one of the states
                 and moves successively from one to another. Each move is called a step. At each step a process has a probability to move to another state, and the probability does not depend
                 on any of the previous states of the process. That is why such process is called “memoryless”.</p><p>Example: In a weather model, a day can be either nice, rainy or snowy.
                 If the day is nice, the next day will be either rainy or snowy with 50% probability. If the day is rainy or snowy, it will stay the same with 50% probability, or will change 
@@ -404,7 +404,7 @@ public enum SortDirection
 
         public static IHtmlString GameTheory(this HtmlHelper helper)
         {
-            string contents = @"<p><b>Game Rules [1]</b></p><p>The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician 
+            string contents = @"<p><strong>Game Rules [1]</strong></p><p>The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician 
                 John Horton Conway in 1970.</p><p>The universe of the Game of Life is an infinite two-dimensional orthogonal grid of square cells, each of which is in one of two 
                 possible states, alive or dead. Every cell interacts with its eight neighbours, which are the cells that are horizontally, vertically, or diagonally adjacent. 
                 At each step in time, the following transitions occur:</p><p><ul><li>Any live cell with fewer than two live neighbours dies, as if caused by under-population.</li>
@@ -412,11 +412,11 @@ public enum SortDirection
                 overcrowding.</li><li>Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.</li></ul></p><p>The initial pattern constitutes the 
                 seed of the system. The first generation is created by applying the above rules simultaneously to every cell in the seed—births and deaths occur simultaneously, 
                 and the discrete moment at which this happens is sometimes called a tick (in other words, each generation is a pure function of the preceding one). The rules continue 
-                to be applied repeatedly to create further generations.</p><p><b>Implementation</b></p><p>[1] 
+                to be applied repeatedly to create further generations.</p><p><strong>Implementation</strong></p><p>[1] 
                 <a href=&quot;http://en.wikipedia.org/wiki/Conway%27s_game_of_life&quot;>Conway's Game Of Life</a></p>";
 
             string t =
-                "<p>To refresh the page every second, javaScript <b></b>setInterval function is used to load the partial view into the div. A method in the controller generates the partial view.</p><p><b>The Controller</b></p><pre class=\"brush: csharp\">public class GameController : BaseController" +
+                "<p>To refresh the page every second, javaScript <strong></strong>setInterval function is used to load the partial view into the div. A method in the controller generates the partial view.</p><p><strong>The Controller</strong></p><pre class=\"brush: csharp\">public class GameController : BaseController" +
                 @"{
                 public ActionResult Index()
                 {
@@ -435,11 +435,11 @@ public enum SortDirection
                     GameOfLifeHelpers.DrawNextIteration();
                     return new HtmlString(GameOfLifeHelpers.table.ToString());
                 }
-            }</pre><p>The partial view is called <b>_Table</b> and is nothing more than the <b>HtmlString</b>.</p><p><b>_Table.cshtml</b></p><pre class=""brush: csharp"">@model HtmlString
+            }</pre><p>The partial view is called <strong>_Table</strong> and is nothing more than the <strong>HtmlString</strong>.</p><p><strong>_Table.cshtml</strong></p><pre class=""brush: csharp"">@model HtmlString
            
             @{ Layout = null; }
 
-            @Model</pre><p>The model is just the <b>HtmlString</b> which gets rendered, and the <b>HtmlString</b> itself is just a simple table of a specified number of cells.</p><p><b>Index.cshtml</b></p><pre class=""brush: xml"">&lt;script type=&quot;text/javascript&quot;&gt;
+            @Model</pre><p>The model is just the <strong>HtmlString</strong> which gets rendered, and the <strong>HtmlString</strong> itself is just a simple table of a specified number of cells.</p><p><strong>Index.cshtml</strong></p><pre class=""brush: xml"">&lt;script type=&quot;text/javascript&quot;&gt;
 
                 var timerID;
 
@@ -465,7 +465,7 @@ public enum SortDirection
                     &lt;input id=""stop"" type=""button"" onclick=""Stop();"" value=""Stop"" /&gt;&lt;input id=""start""
                         type=""button"" onclick=""Start();"" value=""Start"" /&gt;
                 &lt;/div&gt;
-            &lt;/div&gt;</pre><p>Note how the interval is set to 1000 ms and the <b>OutputCache</b> duration in the controller is set to the same value. Every second the call to load will return a partial view from the <b>Update</b> method. What does the <b>Update</b> method return? When the game starts, and empty html table is created with each cell having a blue background.</p><pre class=""brush: csharp"">public static void NewGameTable()
+            &lt;/div&gt;</pre><p>Note how the interval is set to 1000 ms and the <strong>OutputCache</strong> duration in the controller is set to the same value. Every second the call to load will return a partial view from the <strong>Update</strong> method. What does the <strong>Update</strong> method return? When the game starts, and empty html table is created with each cell having a blue background.</p><pre class=""brush: csharp"">public static void NewGameTable()
             {
                 table = new StringBuilder(@""&lt;table border=1 bordercolor=black cellspacing=0 cellpadding=0&gt;"");
 
@@ -511,7 +511,7 @@ public enum SortDirection
                 sb.Insert(start, colour);
 
                 return sb;
-            }</pre><p>Function <b>CheckCell</b> applies game rules to a cell to check if it will be alive or dead in the next iteration.</p><pre class=""brush: csharp"">public static bool CheckCell(bool[,] arr, int i, int j)
+            }</pre><p>Function <strong>CheckCell</strong> applies game rules to a cell to check if it will be alive or dead in the next iteration.</p><pre class=""brush: csharp"">public static bool CheckCell(bool[,] arr, int i, int j)
             {
                 int nextI = i == (x - 1) ? 0 : i + 1;
                 int prevI = i == 0 ? x - 1 : i - 1;
