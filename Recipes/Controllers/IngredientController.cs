@@ -69,7 +69,7 @@ namespace Recipes.Controllers
                     }
                 }
             }
-            catch(DataException ex)
+            catch(DataException)
             {
                 ModelState.AddModelError(string.Empty, Constants.Constants.DataExceptionMessage );
             }

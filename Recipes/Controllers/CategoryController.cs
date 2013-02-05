@@ -72,7 +72,7 @@ namespace Recipes.Controllers
                         }
                     }
                 }
-                catch (DataException ex)
+                catch (DataException)
                 {
                     ModelState.AddModelError(string.Empty, Constants.Constants.DataExceptionMessage);
                 }
@@ -107,10 +107,7 @@ namespace Recipes.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            else
-            {
-                return View(new CategoryViewModel(category));
-            }
+            return View(new CategoryViewModel(category));
         }
 
         //
@@ -150,7 +147,7 @@ namespace Recipes.Controllers
                         }
                     }
                 }
-                catch (DataException ex)
+                catch (DataException)
                 {
                     ModelState.AddModelError(string.Empty, Constants.Constants.DataExceptionMessage);
                 }

@@ -164,6 +164,7 @@ namespace Recipes.Models.BlogContents
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_13112012_b, RestOfContent = BlogPostsProgramming.content_13112012_r, Keywords = BlogPostsProgramming.content_13112012_k, Description = BlogPostsProgramming.content_13112012_d, DateCreated = new DateTime(2012, 11, 13), PostID = 154, Title = "Starting with WebGrid" },
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_10122012_b, RestOfContent = BlogPostsProgramming.content_10122012_r, Keywords = BlogPostsProgramming.content_10122012_k, Description = BlogPostsProgramming.content_10122012_d, DateCreated = new DateTime(2012, 12, 10), PostID = 155, Title = "SEO Basics: Friendly URLs"},
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_20122012_b, RestOfContent = BlogPostsProgramming.content_20122012_r, Keywords = BlogPostsProgramming.content_20122012_k, Description = BlogPostsProgramming.content_20122012_d, DateCreated = new DateTime(2012, 12, 20), PostID = 156, Title = "Implementing a Tree View - Small Case Study" },
+                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_05022013_b, RestOfContent = BlogPostsProgramming.content_05022013_r, Keywords = BlogPostsProgramming.content_05022013_k, Description = BlogPostsProgramming.content_05022013_d, DateCreated = new DateTime(2013, 02, 05), PostID = 157, Title = "Use of PostgreSQL Indexes" },
 
             };
 

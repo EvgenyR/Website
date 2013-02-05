@@ -136,6 +136,7 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IngredientController.cs" />
+    <Compile Include="Controllers\JQGameController.cs" />
     <Compile Include="Controllers\LeftMenuController.cs" />
     <Compile Include="Controllers\MetaDescriptionAttribute.cs" />
     <Compile Include="Controllers\MetaKeywordsAttribute.cs" />
@@ -591,6 +592,7 @@
     <Content Include="Content\images\on_bg.gif" />
     <Content Include="Content\images\tip.png" />
     <Content Include="Content\images\topbg.gif" />
+    <Content Include="Content\jsgame.css" />
     <Content Include="Content\leftmenu.css" />
     <Content Include="Content\resume.css" />
     <Content Include="Content\shCore.css" />
@@ -598,6 +600,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Content\style-ie.css" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\game.js" />
     <Content Include="Scripts\jquery-1.8.0-vsdoc.js" />
     <Content Include="Scripts\jquery-1.8.0.js" />
     <Content Include="Scripts\jquery-1.8.0.min.js" />
@@ -674,7 +677,9 @@
     <Content Include="Views\Yahoo\Doggy.cshtml" />
     <Content Include="Views\Company\Details.cshtml" />
     <Content Include="Views\Post\Display.cshtml" />
-    <Content Include="Views\Shared\BlogResult.cshtml" />
+    <Content Include="Views\Shared\ProgBlogResult.cshtml" />
+    <Content Include="Views\JQGame\Index.cshtml" />
+    <Content Include="Views\Shared\BioBlogResult.cshtml" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\README_ENU.txt" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\msvcr90.dll" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest" />

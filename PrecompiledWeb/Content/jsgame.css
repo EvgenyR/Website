@@ -1,0 +1,18 @@
+﻿body {font-family: Georgia, serif; font-size: 16px; color: #666;}
+h1,h2,h3 {color: #693; }
+
+p { margin-bottom:  30px; }
+#wrapper
+{
+    width: 960px;
+    margin: 0px auto;
+}
+
+
+#gamecontainer td { padding: 10px; background-color: #f2f2f2; cursor: pointer; }
+.cel { background-color: #693 !important; }
+
+button { padding: 5px; border: none; color: #fff; background-color: #666; cursor: pointer; }
+button:hover { background-color: #693; }
+
+#footer {margin: 10px; font-size: 12px;}

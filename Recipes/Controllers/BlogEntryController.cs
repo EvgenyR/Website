@@ -17,45 +17,21 @@ namespace Recipes.Controllers
         readonly RecipesEntities db = new RecipesEntities();
         List<BlogEntry> entries = new List<BlogEntry>();
 
-        public PartialViewResult BlogResult()
+        public PartialViewResult BioBlogResult()
         {
-            //var results = from allPosts in db.Posts.OrderBy(p => p.DateCreated)
-            //              group allPosts by allPosts.DateCreated.Year into postsByYear
+            BlogEntryViewModel model = new BlogEntryViewModel(GetBlogEntries(2));
+            return PartialView(model);
+        }
 
-            //              select new
-            //              {
-            //                  postsByYear.Key,
-            //                  SubGroups = from yearLevelPosts in postsByYear
-            //                              group yearLevelPosts by yearLevelPosts.DateCreated.Month into postsByMonth
-            //                              select new
-            //                              {
-            //                                  postsByMonth.Key,
-            //                                  SubGroups = from monthLevelPosts in postsByMonth
-            //                                              group monthLevelPosts by monthLevelPosts.Title into post
-            //                                              select post
-            //                              }
-            //              };
+        public PartialViewResult ProgBlogResult()
+        {
+            BlogEntryViewModel model = new BlogEntryViewModel(GetBlogEntries(1));
+            return PartialView(model);
+        }
 
-            //foreach (var yearPosts in results)
-            //{
-            //    //create "year-level" item
-            //    var year = new BlogEntry { Name = yearPosts.Key.ToString().ToLink(string.Empty) };
-            //    entries.Add(year);
-            //    foreach (var monthPosts in yearPosts.SubGroups)
-            //    {
-            //        var month = new BlogEntry { Name = new DateTime(2000, (int)monthPosts.Key, 1).ToString("MMMM").ToLink(string.Empty), Parent = year };
-            //        year.Children.Add(month);
-            //        foreach (var postEntry in monthPosts.SubGroups)
-            //        {
-            //            //create "blog entry level" item
-            //            var post = postEntry.First() as Post;
-            //            var blogEntry = new BlogEntry { Name = post.Title.ToLink("/Post/" + post.PostID + "/" + post.Title.ToSeoUrl()), Parent = month };
-            //            month.Children.Add(blogEntry);
-            //        }
-            //    }
-            //}
-
-            var results = db.Posts.OrderBy(p => p.DateCreated).GroupByMany(p => p.DateCreated.Year, p => p.DateCreated.Month);
+        private List<BlogEntry> GetBlogEntries(int blogID)
+        {
+            var results = db.Posts.Where(p => p.BlogID == blogID).OrderBy(p => p.DateCreated).GroupByMany(p => p.DateCreated.Year, p => p.DateCreated.Month);
 
             entries = new List<BlogEntry>();
 
@@ -81,10 +57,7 @@ namespace Recipes.Controllers
                     }
                 }
             }
-
-            BlogEntryViewModel model = new BlogEntryViewModel(entries);
-
-            return PartialView(model);
+            return entries;
         }
     }
 

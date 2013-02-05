@@ -3561,8 +3561,8 @@ if(testText) testText->setProperty(""text"", dummy.getString());" +
 
             "<p>Now I can test the results by entering the link to my post in the <a href=\"http://www.google.com/webmasters/tools/richsnippets\">Structured Data Testing Tool</a>. I enter the url and the tool tests the link for me.</p><p>This is the Blogger post.</p>" +
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2012/02122012_Blogger_Positive_Test.png\" alt=\"Test With Blogger - Positive Result\" /></div><p align=\"center\">Blogger - Positive Test Result</p><p>And this is my website.</p>" +
-            "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/02122012_Website_Positive_Test.png\" alt=\"Test With Website - Positive Result\" /></div><p align=\"center\">Website - Positive Test Result</p>" +
-            "<p>Finally, what would have happened if I hadn't added that bit to the Blogger template? I did not save the exact screenshot, but the error returned was \"Missing required field 'Updated'\" and looked similar to the image below.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/02122012_Blogger_Negative_Test.png\" alt=\"Missing Required Field Updated\" /></div><p align=\"center\">Missing Required Field \"Updated\"</p>" +
+            "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2012/02122012_Website_Positive_Test.png\" alt=\"Test With Website - Positive Result\" /></div><p align=\"center\">Website - Positive Test Result</p>" +
+            "<p>Finally, what would have happened if I hadn't added that bit to the Blogger template? I did not save the exact screenshot, but the error returned was \"Missing required field 'Updated'\" and looked similar to the image below.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2012/02122012_Blogger_Negative_Test.png\" alt=\"Missing Required Field Updated\" /></div><p align=\"center\">Missing Required Field \"Updated\"</p>" +
 
             "<p><strong>References</strong></p><a href=\"http://www.netargument.com/2012/03/warning-missing-required-field-in.html\">Warning: Missing required field \"updated\" in Blogger Rich Snippet Webmaster Tool [Solved]</a><br/><a href=\"http://www.hanselman.com/blog/EmbraceAuthorshipTheImportanceOfRelmeAndRelauthorOnYourContentsSEOAndGoogle.aspx\">Embrace Authorship - The importance of rel=me and rel=author on your content's SEO and Google</a><br/><a href=\"http://www.wordtracker.com/academy/rich-snippets\">Rich snippets for idiots. And, er, you.</a><br/><br/>by <a rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
         public const string content_02122012_d = "I describe how I linked the posts to Blogger and my own website to my Google+ account and improve the way they look in search results if anyone ever cares to search for them";
@@ -3829,5 +3829,23 @@ div.blogheader h2
         public const string content_20122012_d = "Implementing a Tree View on my Website";
         public const string content_20122012_k = "Implementing a Tree View jstree MVC C# Software Development LINQ grouping";
 
+        //Use of PostgreSQL Indexes
+        public const string content_05022013_b = "<p>I'm busy with investigating how indexing works in PostgreSQL and what are the ways to improve it. One particularly useful query I came across is this:</p>";
+        public const string content_05022013_r = "<pre class=\"brush:csharp\">" + @"SELECT idstat.schemaname AS schema_name, idstat.relname AS table_name,
+indexrelname AS index_name,
+idstat.idx_scan AS times_used,
+pg_size_pretty(pg_relation_size(idstat.relid)) AS table_size, pg_size_pretty(pg_relation_size(indexrelid)) AS index_size,
+n_tup_upd + n_tup_ins + n_tup_del as num_writes,
+indexdef AS definition
+FROM pg_stat_user_indexes AS idstat JOIN pg_indexes ON (indexrelname = indexname AND idstat.schemaname = pg_indexes.schemaname)
+JOIN pg_stat_user_tables AS tabstat ON idstat.relid = tabstat.relid
+WHERE idstat.idx_scan  &lt; 200
+	AND indexdef !~* 'unique'
+ORDER BY idstat.relname, indexrelname;" + "</pre><p>It returns the following information for each index in the database:</p>" + 
+    "<ul><li>schema name</li><li>table name</li><li>index name</li><li>disk space used by the index, and the table</li><li>how many rows were inserted, deleted or updated</li><li>how many times the index was used</li></ul>" + 
+        "<p>If the database was used for some time, the information may help to find out which indexes are not used at all, or used rarely but occupy a lot of space on the disk. Or it may suggest that something is not working as designed - a rarely used index that was expected to be used a lot is probably a warning sign.</p><p>The unfortunate complication that I came across was that the query returned absolutely no data after the database restore. My current understanding is that PostgreSQL does not backup the pg_catalog, and also the indexes are rebuilt when the database is restored. Therefore, if I do not have direct access to the database, I have to either ask someone to run the script (and give them the PostgreSQL/pgAdmin password), or somehow obtain a file system level copy of the database. In the future, I'll need to create a utility that extracts this information and saves it to a file.</p><p><b>References</b></p><a href=\"http://instagram-engineering.tumblr.com/post/40781627982/handling-growth-with-postgres-5-tips-from-instagram\">Handling Growth with Postgres: 5 Tips From Instagram</a><br/><a href=\"https://devcenter.heroku.com/articles/postgresql-indexes\">Efficient Use of PostgreSQL Indexes</a><br/><a href=\"http://it.toolbox.com/blogs/database-soup/finding-useless-indexes-28796\">Finding Useless Indexes</a><br/><a href=\"http://www.postgresql.org/docs/8.1/static/functions-admin.html\">9.20. System Administration Functions</a><br/><a href=\"http://www.postgresql.org/docs/devel/static/monitoring-stats.html\">27.2. The Statistics Collector</a><br/><a href=\"http://stackoverflow.com/questions/14472065/postgresql-index-usage-backing-up-pg-catalog-data\">PostgreSQL index usage, backing up pg_catalog data</a><br/>" 
+        + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_05022013_d = "Investigating how indexing works in PostgreSQL and how usage of indexes may be improved";
+        public const string content_05022013_k = "PostgreSQL SQL index database performance";
     }
 }

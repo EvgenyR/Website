@@ -147,7 +147,7 @@ namespace Recipes.Controllers
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //log.Fatal("Exception in InsertData: ", ex);
             }
@@ -178,7 +178,7 @@ namespace Recipes.Controllers
                                 DateTime = DateTime.ParseExact(splitLine[2].Replace("\"", "") + " " + splitLine[4].Replace("\"", ""), "MM/d/yyyy h:mmtt", CultureInfo.InvariantCulture)
                 };
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //log.Fatal("Exception in GetDatum: ", ex);
             }
