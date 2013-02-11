@@ -44,5 +44,8 @@ namespace Constants
 
         public const string SearchMetaKeywords = "C#, MVC, HTTP, Google API, Search, Programming, Development";
         public const string SearchMetaDescription = "Automatic extraction of Google search results. The page gets results from Google search by two means: First,using the HtmlAgilityPack HTML parser, the Google search is returned with System.Net.Webclient, then the HTML is parsed and links are extracted. Second, using Google API for .NET.";
+
+        public const string PhotoboxMetaKeywords = "CSS3 jQuery Photobox Image Gallery";
+        public const string PhotoboxMetaDescription = "Implementation of Photobox - a practical lightweight image gallery script";
     }
 }

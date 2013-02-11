@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Photobox - CSS3 jQuery Image Gallery";
+}
+
+@Html.BodyTagUpdate("game")
+
+<link href="@Url.Content("~/Scripts/photobox/photobox.css")" rel="stylesheet" type="text/css"/>
+<link href="@Url.Content("~/Scripts/photobox/photobox.ie.css")" rel="stylesheet" type="text/css"/>
+<script src="@Url.Content("~/Scripts/photobox/photobox.js")" type="text/javascript"></script>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+	    $('#gallery').photobox('a');
+	});
+</script>
+
+<style type="text/css">
+img {
+   padding:1px;
+   border:1px solid #021a40;
+   background-color:#ff0;
+}
+</style>
+
+<div id="page" style="min-width:500px">
+    @Html.Partial("_PhotoboxNav")
+
+    <div id='gallery'>
+		    <a href="../../../Content/photobox/P1.jpg" alt="Wilsons Promontory Park, Victoria">
+			    <img src="../../../Content/photobox/P1_small.jpg" alt="Wilsons Promontory Park, Victoria"/>
+		    </a>
+
+            <a href="../../../Content/photobox/P2.jpg" alt="Wilsons Promontory Park, Victoria">
+			    <img src="../../../Content/photobox/P2_small.jpg" alt="Wilsons Promontory Park, Victoria"/>
+		    </a>
+
+            <a href="../../../Content/photobox/P3.jpg" alt="Sydney at Night from Circular Quay">
+			    <img src="../../../Content/photobox/P3_small.jpg" alt="Sydney at Night from Circular Quay"/>
+		    </a>
+        
+            <a href="../../../Content/photobox/P4.jpg" alt="Wilsons Promontory Park, Victoria">
+			    <img src="../../../Content/photobox/P4_small.jpg" alt="Wilsons Promontory Park, Victoria"/>
+		    </a>
+
+            <a href="../../../Content/photobox/P5.jpg" alt="Wilsons Promontory Park, Victoria">
+			    <img src="../../../Content/photobox/P5_small.jpg" alt="Wilsons Promontory Park, Victoria"/>
+		    </a>
+
+            <a href="../../../Content/photobox/P6.jpg" alt="Wilsons Promontory Park, Victoria">
+			    <img src="../../../Content/photobox/P6_small.jpg" alt="Wilsons Promontory Park, Victoria"/>
+		    </a>
+
+            <a href="../../../Content/photobox/P7.jpg" alt="Lighthouse near Taronga Zoo, Sydney">
+			    <img src="../../../Content/photobox/P7_small.jpg" alt="Lighthouse near Taronga Zoo, Sydney"/>
+		    </a>
+
+            <a href="../../../Content/photobox/P8.jpg" alt="Upstairs inside 'Star Bar', Sydney CBD">
+			    <img src="../../../Content/photobox/P8_small.jpg" alt="Upstairs inside 'Star Bar', Sydney CBD"/>
+		    </a>
+
+       	    <a href="../../../Content/photobox/P9.jpg" alt="Sydney CBD">
+			    <img src="../../../Content/photobox/P9_small.jpg" alt="Sydney CBD"/>
+		    </a>
+
+            <a href="../../../Content/photobox/P10.jpg" alt="Bondi Beach, Sydney">
+			    <img src="../../../Content/photobox/P10_small.jpg" alt="Bondi Beach, Sydney"/>
+		    </a>
+
+            <a href="../../../Content/photobox/P11.jpg" alt="Sydney, 2013 New Year">
+			    <img src="../../../Content/photobox/P11_small.jpg" alt="Sydney, 2013 New Year"/>
+		    </a>
+
+            <a href="../../../Content/photobox/P12.jpg" alt="Sydney CBD">
+			    <img src="../../../Content/photobox/P12_small.jpg" alt="Sydney CBD"/>
+		    </a>
+    </div>
+
+</div>

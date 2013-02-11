@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <link href="../../../Scripts/photobox/photobox.css" rel="stylesheet" type="text/css"/>
+    <link href="../../../Scripts/photobox/photobox.ie.css")" rel="stylesheet" type="text/css"/>
+    <script src="../../../Scripts/photobox/photobox.js")" type="text/javascript"></script>
+</head>
+<body>
+<div id='gallery'>
+		<a href="../../../Content/photobox/P1.jpg">
+			<img src="../../../Content/photobox/P1_small.jpg" alt="photo1 title">
+		</a>
+</div>
+
+	<script type="text/javascript">
+	    //$('#gallery').photobox('a');
+	    // or with a fancier selector and some settings, and a callback:
+
+	    //$(document).ready(function () {
+
+	    $('#gallery').photobox('a:first', { thumbs: false, time: 0 }, imageLoaded);
+	    function imageLoaded() {
+	        console.log('image has been loaded...');
+	    }
+
+	    //});
+	</script>
+</body>
+</html>

@@ -11,6 +11,11 @@ namespace HtmlHelpers
             return new HtmlString(script);
         }
 
+        public static IHtmlString PhotoboxTheory(this HtmlHelper helper)
+        {
+            return new HtmlString("photobox theory here");
+        }
+
         public static IHtmlString YahooTheory(this HtmlHelper helper)
         {
             string contents1 = "<p><strong>WebGrid</strong> is an HTML helper provided as part of the MVC framework to simplify rendering tabular data.</p><p>When I learned how to use <strong>WebGrid</strong> I found a very good article with code samples here:</p><p><a href=\"http://msdn.microsoft.com/en-us/magazine/hh288075.aspx\">Get the Most out of WebGrid in ASP.NET MVC</a></p><p>My application of these ideas I described on my blog:</p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/starting-with-webgrid.html\">Starting with WebGrid</a></p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/webgrid-stronly-typed-with-server-paging.html\">WebGrid: Stronly Typed with Server Paging</a></p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/webgrid-ajax-updates-server-sorting.html\">WebGrid: AJAX Updates, Server Sorting</a></p><p>Here is most of the <strong></strong>View that displays my <strong>WebGrid</strong>:</p>";
