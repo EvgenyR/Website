@@ -3847,5 +3847,43 @@ ORDER BY idstat.relname, indexrelname;" + "</pre><p>It returns the following inf
         + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
         public const string content_05022013_d = "Investigating how indexing works in PostgreSQL and how usage of indexes may be improved";
         public const string content_05022013_k = "PostgreSQL SQL index database performance";
+
+        //Photobox – CSS3 JQuery Image Gallery
+        public const string content_12022013_b = "<p>I came across a nice image gallery script which is lightweight, hardware accelerated and generally looks good. Image can be zoomed in and out using mouse wheel and navigated using mouse move. Image 'alt' is shown at the bottom, and the row of thumbnail images is also displayed at the bottom. The autoplay is supported and time is configurable. The script can be downloaded from <a href=\"https://github.com/yairEO/photobox\">Photobox github</a>. It only supports IE 8 and higher, and does not look as good as in other browsers though.</p><p>The usage is very easy: jQuery, script and css have to be referenced as usual, i.e.</p>";
+
+        public const string content_12022013_r = "<pre class=\"brush:csharp\">" + @"&lt;script src=""//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"" type=""text/javascript""&gt;&lt;/script&gt; 
+&lt;link href=""@Url.Content(""~/Scripts/photobox/photobox.css"")"" rel=""stylesheet"" type=""text/css""/&gt;
+&lt;link href=""@Url.Content(""~/Scripts/photobox/photobox.ie.css"")"" rel=""stylesheet"" type=""text/css""/&gt;
+&lt;script src=""@Url.Content(""~/Scripts/photobox/photobox.js"")"" type=""text/javascript""&gt;&lt;/script&gt;" + "</pre><p>A gallery with all default values (again, check <a href=\"https://github.com/yairEO/photobox\">Photobox github</a> for parameters) is included as follows</p><pre class=\"brush:csharp\">" + @"&lt;div id='gallery'&gt;
+		&lt;a href=""../../../Content/photobox/P1.jpg""&gt;
+			&lt;img src=""../../../Content/photobox/P1_small.jpg"" alt=""photo1 title""/&gt;
+		&lt;/a&gt;
+
+		...
+		//More images
+&lt;/div&gt;
+
+&lt;script type=""text/javascript""&gt;
+	$(document).ready(function () {
+	    $('#gallery').photobox('a');
+	});
+&lt;/script&gt;" + "</pre><p>A more involved setup with parameters may look as follows</p><pre class=\"brush:csharp\">" + @"&lt;script type=""text/javascript""&gt;
+	$(document).ready(function () {
+	    $('#gallery').photobox('a:first', { thumbs:false, time:0 }, imageLoaded);
+		function imageLoaded(){
+			console.log('image has been loaded...');
+		}
+	});
+&lt;/script&gt;" + "</pre><p>I added a sample gallery (photos courtesy of my wife) to my website: <a href=\"http://ynegve.info/Photobox/Index\">Photobox Example</a></p><p>The border around the images is totally optional</p><pre class=\"brush:csharp\">" + @"&lt;style type=""text/css""&gt;
+img {
+   padding:1px;
+   border:1px solid #021a40;
+   background-color:#ff0;
+}
+&lt;/style&gt;" + "</pre><p><b>References</b></p><a href=\"http://dropthebit.com/500/photobox-css3-image-gallery-jquery-plugin/\">Photobox – CSS3 JQuery Image Gallery</a><br/><a href=\"https://github.com/yairEO/photobox\">Photobox github</a><br/><a href=\"http://stackoverflow.com/questions/5168093/jquery-access-nested-div\">jquery access nested div</a><br/><a href=\"http://css-tricks.com/using-css-for-image-borders/\">Using CSS for Image Borders</a><br/>" +
+            "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_12022013_d = "How to use photobox - nice image gallery script which is lightweight, hardware accelerated and generally looks good.";
+        public const string content_12022013_k = "Photobox CSS JQuery Image Gallery script programming";
+
     }
 }

@@ -13,7 +13,54 @@ namespace HtmlHelpers
 
         public static IHtmlString PhotoboxTheory(this HtmlHelper helper)
         {
-            return new HtmlString("photobox theory here");
+            string contents1 = "<h2>Photobox – CSS3 JQuery Image Gallery</h2><p>Photobox is a nice image gallery script which is lightweight, hardware accelerated and generally looks good. Image can be zoomed in and out using mouse wheel and navigated using mouse move. Image 'alt' is shown at the bottom, and the row of thumbnail images is also displayed at the bottom. The autoplay is supported and time is configurable. The script can be downloaded from <a href=\"https://github.com/yairEO/photobox\">Photobox github</a>. It only supports IE 8 and higher, and does not look as good as in other browsers though.</p><p>The usage is very easy: jQuery, script and css have to be referenced as usual, i.e.</p>";
+            string contents2 = "<p>A gallery with all default values (again, check <a href=\"https://github.com/yairEO/photobox\">Photobox github</a> for parameters) is included as follows";
+            string contents3 = "<p>A more involved setup with parameters may look as follows</p>";
+            string contents4 = "<p>The border around the images is totally optional</p>";
+
+            string scripts = "<pre class=\"brush: xml\">" + 
+                @"&lt;script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js' type='text/javascript'&gt;&lt;/script&gt; 
+                    &lt;link href='@Url.Content('~/Scripts/photobox/photobox.css')' rel='stylesheet' type='text/css'/&gt;
+                    &lt;link href='@Url.Content('~/Scripts/photobox/photobox.ie.css')' rel='stylesheet' type='text/css'/&gt;
+                    &lt;script src='@Url.Content('~/Scripts/photobox/photobox.js')' type='text/javascript'&gt;&lt;/script&gt;" +
+                "</pre>";
+            string gallery = "<pre class=\"brush: xml\">" +
+                @"&lt;div id='gallery'&gt;
+		                &lt;a href='../../../Content/photobox/P1.jpg'&gt;
+			                &lt;img src='../../../Content/photobox/P1_small.jpg' alt='photo1 title'/&gt;
+		                &lt;/a&gt;
+
+		                ...
+		                //More images
+                &lt;/div&gt;
+
+                &lt;script type='text/javascript'&gt;
+	                $(document).ready(function () {
+	                    $('#gallery').photobox('a');
+	                });
+                &lt;/script&gt;" +
+                "</pre>";
+            string setup = "<pre class=\"brush: xml\">" +
+                @"&lt;script type='text/javascript'&gt;
+	            $(document).ready(function () {
+	                $('#gallery').photobox('a:first', { thumbs:false, time:0 }, imageLoaded);
+		            function imageLoaded(){
+			            console.log('image has been loaded...');
+		            }
+	            });
+                &lt;/script&gt;" +
+                "</pre>";
+            string border = "<pre class=\"brush: css\">" +
+                @"&lt;style type='text/css'&gt;
+                img {
+                   padding:1px;
+                   border:1px solid #021a40;
+                   background-color:#ff0;
+                }
+                &lt;/style&gt;" +
+                "</pre>";
+
+            return new HtmlString(contents1 + scripts + contents2 + gallery + contents3 + setup + contents4 + border);
         }
 
         public static IHtmlString YahooTheory(this HtmlHelper helper)

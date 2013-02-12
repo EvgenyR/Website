@@ -625,7 +625,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Content\style-ie.css" />
     <Content Include="Global.asax" />
-    <Content Include="pbox.htm" />
     <Content Include="Scripts\game.js" />
     <Content Include="Scripts\jquery.cookie.js" />
     <Content Include="Scripts\jquery.hotkeys.js" />
