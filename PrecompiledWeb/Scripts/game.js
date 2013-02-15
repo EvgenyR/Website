@@ -16,6 +16,7 @@ var presets = {
 $(document).ready(function () {
     createGrid(cols, rows);
     initGameOfLife();
+
     $('.preset').click(function () {
         applyPreset($(this).html().toLowerCase());
     });
@@ -161,6 +162,9 @@ function createGrid(rows, cols) {
     htmlStr += '</table>';
 
     $(holder).append(htmlStr);
+
+    var nArr = getNeighboringCels('#r7c17');
+    console.log(nArr);
 }
 
 function getNeighboringCels(cel) {

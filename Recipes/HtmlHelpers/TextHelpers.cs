@@ -7,25 +7,238 @@ namespace HtmlHelpers
     {
         public static IHtmlString HighLightSyntax(this HtmlHelper helper)
         {
-            string script = "<script type=\"text/javascript\">SyntaxHighlighter.all()</script>";
+            const string script = "<script type=\"text/javascript\">SyntaxHighlighter.all()</script>";
             return new HtmlString(script);
+        }
+
+        public static IHtmlString JQGameTheory(this HtmlHelper helper)
+        {
+            const string contents1 = "<h2>Conway's Game of Life - JQuery Implementation</h2><p><b>1.</b> Function createGrid creates the 'game field'.</p>";
+
+            const string createGrid = "<pre class=\"brush: jscript\">" +
+            @"function createGrid(rows, cols) {
+	        var htmlStr = '';
+	        htmlStr += '&lt;table&gt;';
+	        for (var i = 0; i &lt; rows; i++) {
+		        htmlStr += '&lt;tr&gt;';
+		        var arr = [];
+		        for (var j = 0; j &lt; cols; j++) {
+			        htmlStr += '&lt;td id=""r' + i + 'c' + j + '"" r=""' + i + '"" c=""' + j + '"" status=""0""&gt;';
+			        htmlStr += '&lt;/td&gt;';
+			        arr.push('#' + 'r' + i + 'c' + j);
+		        }
+		        rowsArr.push(arr);
+		        htmlStr += '&lt;/tr&gt;';
+	        }
+	        htmlStr += '&lt;/table&gt;';
+
+	        var gamediv = $(holder);
+	        gamediv.append(htmlStr);
+
+	        $('#gamecontainer').append(htmlStr);
+        }" + "</pre>";
+
+            const string contents2 = "<p>For example, for 3 rows and 3 columns the following table will be constructed</p>";
+
+            const string table = "<pre class=\"brush: xml\">" +
+            @"&lt;table&gt;
+	        &lt;tbody&gt;
+		        &lt;tr&gt;
+			        &lt;td id=""r0c0"" r=""0"" c=""0"" status=""0""&gt;&lt;/td&gt;
+			        &lt;td id=""r0c1"" r=""0"" c=""1"" status=""0""&gt;&lt;/td&gt;
+			        &lt;td id=""r0c2"" r=""0"" c=""2"" status=""0""&gt;&lt;/td&gt;
+		        &lt;/tr&gt;
+		        &lt;tr&gt;
+			        &lt;td id=""r1c0"" r=""1"" c=""0"" status=""0""&gt;&lt;/td&gt;
+			        &lt;td id=""r1c1"" r=""1"" c=""1"" status=""0""&gt;&lt;/td&gt;
+			        &lt;td id=""r1c2"" r=""1"" c=""2"" status=""0""&gt;&lt;/td&gt;
+		        &lt;/tr&gt;
+		        &lt;tr&gt;
+			        &lt;td id=""r2c0"" r=""2"" c=""0"" status=""0""&gt;&lt;/td&gt;
+			        &lt;td id=""r2c1"" r=""2"" c=""1"" status=""0""&gt;&lt;/td&gt;
+			        &lt;td id=""r2c2"" r=""2"" c=""2"" status=""0""&gt;&lt;/td&gt;
+		        &lt;/tr&gt;
+	        &lt;/tbody&gt;
+        &lt;/table&gt;" + "</pre>";
+
+            const string contents3 = "<p>and the following will be stored in rowsArr for future use.</p>";
+
+            const string rowsArr = "<pre class=\"brush: jscript\">" + 
+                @"#r0c0,#r0c1,#r0c2
+                #r1c0,#r1c1,#r1c2
+                #r2c0,#r2c1,#r2c2" + "</pre>";
+
+            const string contents4 = "<p><b>2.</b> Function that gets the neighbouring cells of a particular cell.</p>";
+
+            const string getNeighboringCels = "<pre class=\"brush: jscript\">" +
+            @"function getNeighboringCels(cel) {
+	            var arr = [];
+	            var rowId = parseInt($(cel).attr('r'));
+	            var colId = parseInt($(cel).attr('c'));
+
+	            var nextRow = rowId + 1;
+	            var nextCol = colId + 1;
+	            var prevRow = rowId - 1;
+	            var prevCol = colId - 1;
+
+	            if(rowId == totalRows - 1)
+		            nextRow = 0;
+	            if(rowId == 0)
+		            prevRow = totalRows - 1;
+	            if(colId == totalCols - 1)
+		            nextCol = 0;
+	            if(colId == 0)
+		            prevCol = totalCols - 1;
+
+	            arr.push(rowsArr[prevRow][colId]);
+	            arr.push(rowsArr[nextRow][colId]);
+	            arr.push(rowsArr[rowId][prevCol]);
+	            arr.push(rowsArr[rowId][nextCol]);
+	            arr.push(rowsArr[prevRow][prevCol]);
+	            arr.push(rowsArr[prevRow][nextCol]);
+	            arr.push(rowsArr[nextRow][prevCol]);
+	            arr.push(rowsArr[nextRow][nextCol]);
+
+	            return arr.unique();
+            }" + "</pre>";
+
+            const string contents5 = "<p><b>3.</b> A function that returns the number of 'alive' (selected) neighbours for a cell</p>";
+
+            const string getAliveNeighboursCount = "<pre class=\"brush: jscript\">" +
+            @"function getAliveNeighboursCount(cel) {
+	            var nArr = getNeighboringCels('#' + cel.attr('id'));
+	            var nArrAliveNum = 0;
+	            for (var i = 0; i &lt; nArr.length; i++) {
+		            if (parseInt($(nArr[i]).attr('status'))) {
+			            nArrAliveNum++;
+		            }
+	            }
+	            return nArrAliveNum;
+            }" + "</pre>";
+
+            const string contents6 = "<p><b>4.</b> If the cell is clicked, it's state is reverted. Also, assign functions to buttons.</p>";
+
+            const string initGameOfLife = "<pre class=\"brush: jscript\">" +
+            @"function initGameOfLife() {
+	            $(holder + ' td').click(function () {
+		            if (parseInt($(this).attr('status'))) {
+			            $(this).removeClass('cel');
+			            $(this).attr('status', 0);
+		            }
+		            else {
+			            $(this).addClass('cel');
+			            $(this).attr('status', 1);
+		            }
+	            });
+	            $('#start').click(startGameOfLife);
+	            $('#stop').click(stopGameOfLife);
+	            $('#reset').click(resetGameOfLife);
+            }" + "</pre>";
+
+            const string contents7 = "<p><b>5.</b> The game function has a simple logic. It runs an infinite loop, or until all cells are dead. On each step of the game, it checks each cell of the grid and calculates the number of live neighbours. If the cell is alive and has less than 2 or more than 3 live neighbours it dies, if it has exactly 2 or 3 live neighbours it keeps living. If the cell is dead and has exactly three live neighbours, it is resurrected from the dead. (More about <a href=\"http://en.wikipedia.org/wiki/Conway's_Game_of_Life\">Game of Life rules</a>). At the end of each iteration the number of live cells is calculated and, if 0, game is over.</p>";
+
+            const string game = "<pre class=\"brush: jscript\">" +
+            @"function game() {
+	        console.log('...');
+	        //collect cells which will live and the ones which will die
+	        cLiveArr = [];
+	        cDieArr = [];
+
+	        //run a loop on all the cels and see check their status
+	        $(holder + ' td').each(function () {
+
+		        var nArrAliveNum = getAliveNeighboursCount($(this));
+		        if (parseInt($(this).attr('status'))) {
+			        //this cell dies
+			        if (!(nArrAliveNum == 2 || nArrAliveNum == 3)) {
+				        cDieArr.push($(this));
+			        }
+		        }
+		        else {
+			        //this cell is resurrected
+			        if (nArrAliveNum == 3) {
+				        cLiveArr.push($(this));
+			        }
+		        }
+	        });
+
+	        //bring to life or kill cells from collection
+	        for (var i = 0; i < cLiveArr.length; i++) {
+		        selectCel(cLiveArr[i]);
+	        }
+
+	        for (var i = 0; i < cDieArr.length; i++) {
+		        unselectCel(cDieArr[i]);
+	        }
+
+	        //check if all cels are dead.. if so then stop the game
+	        if ($('.cel').length < 1) {
+		        alert('All cells dead! GAME OVER!');
+		        resetGameOfLife();
+	        }
+        }" + "</pre>";
+
+            const string contents8 = "<p><b>6.</b> There are interesting patterns in the game of life, and some of the simpler ones are included as examples. They are a blinker, a glider, a toad, a small spaceship and a pulsar. There are much more complex patterns of interest, but they are beyond the scope of this mini project. The patterns are defined as an array of cells. </p>";
+
+            const string presets = "<pre class=\"brush: jscript\">" +
+            @"    var presets = {
+                    blinker: ['#r9c18', '#r9c19', '#r9c20'],
+                    glider: ['#r8c19', '#r9c18', '#r10c18', '#r10c19', '#r10c20'],
+                    toad: ['#r9c19', '#r9c20', '#r9c21', '#r10c18', '#r10c19', '#r10c20'],
+                    spaceship: ['#r8c19', '#r8c20', '#r9c17', '#r9c18', '#r9c20', '#r9c21', '#r10c17', '#r10c18', '#r10c19', '#r10c20', '#r11c18', '#r11c19'],
+                };" + "</pre>";
+
+            const string contents9 = "<p>The buttons have a class of 'preset'.</p>";
+
+            const string contents10 = "<p>The function that runs when a button with a 'preset' class is clicked selects an array from presets and selects all cells in this array.</p>";
+
+            const string style = "<pre class=\"brush: xml\">" +
+            @"&lt;td style='text-align: right;'&gt;
+                &lt;strong&gt;Presets:&lt;/strong&gt; 
+                &lt;button class='preset'&gt;Blinker&lt;/button&gt;
+                &lt;button class='preset'&gt;Glider&lt;/button&gt;
+                &lt;button class='preset'&gt;Toad&lt;/button&gt;
+                &lt;button class='preset'&gt;Spaceship&lt;/button&gt;
+                &lt;button class='preset'&gt;Pulsar&lt;/button&gt;
+                &lt;/td&gt;" + "</pre>";
+
+            const string ready = "<pre class=\"brush: jscript\">" +
+            @"$(document).ready(function () {
+	            createGrid(cols, rows);
+	            initGameOfLife();
+
+	            $('.preset').click(function () {
+		            applyPreset($(this).html().toLowerCase());
+	            });
+            });
+
+            function applyPreset(p) {
+	            resetGameOfLife();
+	            for (var i = 0; i < presets[p].length; i++) {
+		            selectCel($(presets[p][i]));
+	            }
+            }" + "</pre>";
+
+            return new HtmlString(contents1 + createGrid + contents2 + table + contents3 + rowsArr +
+                contents4 + getNeighboringCels + contents5 + getAliveNeighboursCount + contents6 + initGameOfLife +
+                contents7 + game + contents8 + presets + contents9 + style + contents10 + ready);
         }
 
         public static IHtmlString PhotoboxTheory(this HtmlHelper helper)
         {
-            string contents1 = "<h2>Photobox – CSS3 JQuery Image Gallery</h2><p>Photobox is a nice image gallery script which is lightweight, hardware accelerated and generally looks good. Image can be zoomed in and out using mouse wheel and navigated using mouse move. Image 'alt' is shown at the bottom, and the row of thumbnail images is also displayed at the bottom. The autoplay is supported and time is configurable. The script can be downloaded from <a href=\"https://github.com/yairEO/photobox\">Photobox github</a>. It only supports IE 8 and higher, and does not look as good as in other browsers though.</p><p>The usage is very easy: jQuery, script and css have to be referenced as usual, i.e.</p>";
-            string contents2 = "<p>A gallery with all default values (again, check <a href=\"https://github.com/yairEO/photobox\">Photobox github</a> for parameters) is included as follows";
-            string contents3 = "<p>A more involved setup with parameters may look as follows</p>";
-            string contents4 = "<p>The border around the images is totally optional</p>";
+            const string contents1 = "<h2>Photobox – CSS3 JQuery Image Gallery</h2><p>Photobox is a nice image gallery script which is lightweight, hardware accelerated and generally looks good. Image can be zoomed in and out using mouse wheel and navigated using mouse move. Image 'alt' is shown at the bottom, and the row of thumbnail images is also displayed at the bottom. The autoplay is supported and time is configurable. The script can be downloaded from <a href=\"https://github.com/yairEO/photobox\">Photobox github</a>. It only supports IE 8 and higher, and does not look as good as in other browsers though.</p><p>The usage is very easy: jQuery, script and css have to be referenced as usual, i.e.</p>";
+            const string contents2 = "<p>A gallery with all default values (again, check <a href=\"https://github.com/yairEO/photobox\">Photobox github</a> for parameters) is included as follows";
+            const string contents3 = "<p>A more involved setup with parameters may look as follows</p>";
+            const string contents4 = "<p>The border around the images is totally optional</p>";
 
-            string scripts = "<pre class=\"brush: xml\">" + 
-                @"&lt;script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js' type='text/javascript'&gt;&lt;/script&gt; 
+            const string scripts = "<pre class=\"brush: xml\">" + 
+                                   @"&lt;script src='//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js' type='text/javascript'&gt;&lt;/script&gt; 
                     &lt;link href='@Url.Content('~/Scripts/photobox/photobox.css')' rel='stylesheet' type='text/css'/&gt;
                     &lt;link href='@Url.Content('~/Scripts/photobox/photobox.ie.css')' rel='stylesheet' type='text/css'/&gt;
                     &lt;script src='@Url.Content('~/Scripts/photobox/photobox.js')' type='text/javascript'&gt;&lt;/script&gt;" +
-                "</pre>";
-            string gallery = "<pre class=\"brush: xml\">" +
-                @"&lt;div id='gallery'&gt;
+                                   "</pre>";
+            const string gallery = "<pre class=\"brush: xml\">" +
+                                   @"&lt;div id='gallery'&gt;
 		                &lt;a href='../../../Content/photobox/P1.jpg'&gt;
 			                &lt;img src='../../../Content/photobox/P1_small.jpg' alt='photo1 title'/&gt;
 		                &lt;/a&gt;
@@ -39,9 +252,9 @@ namespace HtmlHelpers
 	                    $('#gallery').photobox('a');
 	                });
                 &lt;/script&gt;" +
-                "</pre>";
-            string setup = "<pre class=\"brush: xml\">" +
-                @"&lt;script type='text/javascript'&gt;
+                                   "</pre>";
+            const string setup = "<pre class=\"brush: jscript\">" +
+                                 @"&lt;script type='text/javascript'&gt;
 	            $(document).ready(function () {
 	                $('#gallery').photobox('a:first', { thumbs:false, time:0 }, imageLoaded);
 		            function imageLoaded(){
@@ -49,30 +262,30 @@ namespace HtmlHelpers
 		            }
 	            });
                 &lt;/script&gt;" +
-                "</pre>";
-            string border = "<pre class=\"brush: css\">" +
-                @"&lt;style type='text/css'&gt;
+                                 "</pre>";
+            const string border = "<pre class=\"brush: css\">" +
+                                  @"&lt;style type='text/css'&gt;
                 img {
                    padding:1px;
                    border:1px solid #021a40;
                    background-color:#ff0;
                 }
                 &lt;/style&gt;" +
-                "</pre>";
+                                  "</pre>";
 
             return new HtmlString(contents1 + scripts + contents2 + gallery + contents3 + setup + contents4 + border);
         }
 
         public static IHtmlString YahooTheory(this HtmlHelper helper)
         {
-            string contents1 = "<p><strong>WebGrid</strong> is an HTML helper provided as part of the MVC framework to simplify rendering tabular data.</p><p>When I learned how to use <strong>WebGrid</strong> I found a very good article with code samples here:</p><p><a href=\"http://msdn.microsoft.com/en-us/magazine/hh288075.aspx\">Get the Most out of WebGrid in ASP.NET MVC</a></p><p>My application of these ideas I described on my blog:</p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/starting-with-webgrid.html\">Starting with WebGrid</a></p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/webgrid-stronly-typed-with-server-paging.html\">WebGrid: Stronly Typed with Server Paging</a></p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/webgrid-ajax-updates-server-sorting.html\">WebGrid: AJAX Updates, Server Sorting</a></p><p>Here is most of the <strong></strong>View that displays my <strong>WebGrid</strong>:</p>";
-            string contents2 = "<p>Key points:</p><p>The <strong>WebGrid</strong> is displayed in the partial view <strong>_WebGrid</strong>. The <strong>RetrieveData</strong> function triggers the controller action <strong>AddDataToDB</strong> (which calls the Yahoo website and adds results to the database). The data is then used by the <strong>ShowDialog</strong> function that displays exactly the subset of data that was retrieved. The css is used to style the <strong>WebGrid</strong>.</p><p>The <strong>WebGrid</strong> partial view:</p>";
-            string contents3 = "<p>Here the <strong>WebGrid</strong> is defined, including all columns and the format for the data to be displayed. <strong>ajaxUpdateContainerId</strong> is used to enable AJAX behaviour. The css is utilised for styling. The <strong>WebGrid</strong> is bound to the <strong>Model</strong>, which is defined as follows</p>";
-            string contents4 = "<p>Finally, this is most of the controller code:</p>";
-            string contents5 = "<p>Main points: The link on the <strong>WebGrid</strong> column has the following format: <u>http://localhost/Yahoo/Index?sort=DateTime&sortdir=ASC</u>. Therefore, the controller function can automatically receive those parameters. The parameters will be then passed over to the <strong>GetData</strong> function that retrieves data. A couple of helper functions are utilized by <strong>GetData</strong>: <strong>CreateOrderingFunc</strong> and <strong>_dataOrderings</strong>. The retrieved data is saved to the database and also sent back to the <strong>View</strong> where, as shown earlier, it is used by the <strong>ShowDialog</strong> function to display the set of data to the user.</p>";
+            const string contents1 = "<p><strong>WebGrid</strong> is an HTML helper provided as part of the MVC framework to simplify rendering tabular data.</p><p>When I learned how to use <strong>WebGrid</strong> I found a very good article with code samples here:</p><p><a href=\"http://msdn.microsoft.com/en-us/magazine/hh288075.aspx\">Get the Most out of WebGrid in ASP.NET MVC</a></p><p>My application of these ideas I described on my blog:</p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/starting-with-webgrid.html\">Starting with WebGrid</a></p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/webgrid-stronly-typed-with-server-paging.html\">WebGrid: Stronly Typed with Server Paging</a></p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/webgrid-ajax-updates-server-sorting.html\">WebGrid: AJAX Updates, Server Sorting</a></p><p>Here is most of the <strong></strong>View that displays my <strong>WebGrid</strong>:</p>";
+            const string contents2 = "<p>Key points:</p><p>The <strong>WebGrid</strong> is displayed in the partial view <strong>_WebGrid</strong>. The <strong>RetrieveData</strong> function triggers the controller action <strong>AddDataToDB</strong> (which calls the Yahoo website and adds results to the database). The data is then used by the <strong>ShowDialog</strong> function that displays exactly the subset of data that was retrieved. The css is used to style the <strong>WebGrid</strong>.</p><p>The <strong>WebGrid</strong> partial view:</p>";
+            const string contents3 = "<p>Here the <strong>WebGrid</strong> is defined, including all columns and the format for the data to be displayed. <strong>ajaxUpdateContainerId</strong> is used to enable AJAX behaviour. The css is utilised for styling. The <strong>WebGrid</strong> is bound to the <strong>Model</strong>, which is defined as follows</p>";
+            const string contents4 = "<p>Finally, this is most of the controller code:</p>";
+            const string contents5 = "<p>Main points: The link on the <strong>WebGrid</strong> column has the following format: <u>http://localhost/Yahoo/Index?sort=DateTime&sortdir=ASC</u>. Therefore, the controller function can automatically receive those parameters. The parameters will be then passed over to the <strong>GetData</strong> function that retrieves data. A couple of helper functions are utilized by <strong>GetData</strong>: <strong>CreateOrderingFunc</strong> and <strong>_dataOrderings</strong>. The retrieved data is saved to the database and also sent back to the <strong>View</strong> where, as shown earlier, it is used by the <strong>ShowDialog</strong> function to display the set of data to the user.</p>";
 
-            string viewCode = "<pre class=\"brush: xml\">@model Recipes.ViewModels.YahooViewModel" +
-                @"&lt;link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'/&gt;
+            const string viewCode = "<pre class=\"brush: xml\">@model Recipes.ViewModels.YahooViewModel" +
+                                    @"&lt;link href='http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css' rel='stylesheet' type='text/css'/&gt;
 &lt;script src='http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js'&gt;&lt;/script&gt;
 &lt;script src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js'&gt;&lt;/script&gt;
 
@@ -148,8 +361,8 @@ namespace HtmlHelpers
         &lt;input id='dlg' type='button' style='margin:3px' onclick='ShowDialog();' value='Dialog' /&gt;
 &lt;/div&gt;</pre>";
 
-            string partialViewCode = "<pre class=\"brush: xml\">@model Recipes.ViewModels.YahooViewModel" + 
-@"@{ var grid = new WebGrid&lt;Recipes.Models.Yahoo.YahooData&gt;(null, rowsPerPage: 5, defaultSort: 'YahooSymbolName', ajaxUpdateContainerId: 'wbgrid');
+            const string partialViewCode = "<pre class=\"brush: xml\">@model Recipes.ViewModels.YahooViewModel" + 
+                                           @"@{ var grid = new WebGrid&lt;Recipes.Models.Yahoo.YahooData&gt;(null, rowsPerPage: 5, defaultSort: 'YahooSymbolName', ajaxUpdateContainerId: 'wbgrid');
 grid.Bind(Model.Datas, rowCount: Model.TotalRows, autoSortAndPage: false);
 }
 
@@ -169,8 +382,8 @@ selectedRowStyle: 'webgrid-selected-row',
 rowStyle: 'webgrid-row-style' 
 alternatingRowStyle: 'alt')</pre>";
 
-            string modelCode = "<pre class=\"brush: csharp\">" +
-@"public class YahooViewModel
+            const string modelCode = "<pre class=\"brush: csharp\">" +
+                                     @"public class YahooViewModel
 {
 	public List&lt;string&gt; strings { get; set; }
 
@@ -190,9 +403,9 @@ alternatingRowStyle: 'alt')</pre>";
 	}
 }</pre>";
 
-            string controllerCode = "<pre class=\"brush: csharp\">public class YahooController : BaseController" +
+            const string controllerCode = "<pre class=\"brush: csharp\">public class YahooController : BaseController" +
                 
-@"{
+                                          @"{
 	RecipesEntities db = new RecipesEntities();
 	
 	public ActionResult Index(int page = 1, string sort = 'YahooSymbolName', string sortDir = 'Ascending')
@@ -370,19 +583,19 @@ public enum SortDirection
 
         public static IHtmlString SearchTheory(this HtmlHelper helper)
         {
-            string contents = @"<p><strong>Automatic extraction of Google search results</strong></p><p>The page gets results from Google search by two means.</p><p>1. Using the HtmlAgilityPack HTML parser, the Google search is returned with System.Net.Webclient, then the HTML is parsed and links are extracted. Here is the code for retrieving the HTML</p>";
+            const string contents = @"<p><strong>Automatic extraction of Google search results</strong></p><p>The page gets results from Google search by two means.</p><p>1. Using the HtmlAgilityPack HTML parser, the Google search is returned with System.Net.Webclient, then the HTML is parsed and links are extracted. Here is the code for retrieving the HTML</p>";
 
-            string code1 = "<pre class=\"brush: csharp\">public static WebClient webClient = new WebClient();" +
+            const string code1 = "<pre class=\"brush: csharp\">public static WebClient webClient = new WebClient();" +
  
-            @"public static string GetSearchResultHtlm(string keywords)
+                                 @"public static string GetSearchResultHtlm(string keywords)
             {
                 StringBuilder sb = new StringBuilder('http://www.google.com/search?q=');
                 sb.Append(keywords);
                 return webClient.DownloadString(sb.ToString());
             }</pre><p>And here is the example of parsing the HTML to extract the actual links.</p>" + 
-                        "<pre class=\"brush: csharp\">public static Regex extractUrl = new Regex(@\"[&?](?:q|url)=([^&]+)\", RegexOptions.Compiled);" +
+                                 "<pre class=\"brush: csharp\">public static Regex extractUrl = new Regex(@\"[&?](?:q|url)=([^&]+)\", RegexOptions.Compiled);" +
  
-            @"public static List&lt;String&gt; ParseSearchResultHtml(string html)
+                                 @"public static List&lt;String&gt; ParseSearchResultHtml(string html)
             {
                 List&lt;String&gt; searchResults = new List&lt;string&gt;();
  
@@ -405,10 +618,10 @@ public enum SortDirection
                 return searchResults;
             }</pre>";
             
-            string contents2 = "<p>The drawbacks of this method are that Google will server 503 errors if it suspects you are trying to automate the calls to the search engine.</p><p>2. Using the Google API. The easiest way to do that was to use Google API for .NET. When it is referenced, the following code will return the results</p>";
+            const string contents2 = "<p>The drawbacks of this method are that Google will server 503 errors if it suspects you are trying to automate the calls to the search engine.</p><p>2. Using the Google API. The easiest way to do that was to use Google API for .NET. When it is referenced, the following code will return the results</p>";
             
-            string code2 = "<pre class=\"brush: csharp\">private void btnSearch_Click(object sender, EventArgs e)" +
-            @"{
+            const string code2 = "<pre class=\"brush: csharp\">private void btnSearch_Click(object sender, EventArgs e)" +
+                                 @"{
              string searchTerms = txtTerms.Text;
              List&lt;string&gt; GoogleApiResults = GoogleAPI.StringResultList(searchTerms, 100);
             }
@@ -429,14 +642,14 @@ public enum SortDirection
              }
             }</pre><p>" +
             
-            @"The drawbacks are that the API is deprecated, the number of search results returned is limited to 64 and the number of calls to the API per day is limited.</p><p><strong>References:</strong></p><a href='http://gapi4net.codeplex.com/'>Google API for .NET</a><br/><a href='https://developers.google.com/web-search/docs/'>Developer's guide to Google Search API</a><br/><a href='https://developers.google.com/errors/'>Error description which specifies that automated requests are prohibited</a><br/><a href='http://stackoverflow.com/questions/5121090/google-search-api'>Google Search API</a><br/><a href='http://stackoverflow.com/questions/6084096/what-free-web-search-apis-are-available/8666532'>What free web search api's are available?</a>";
+                                 @"The drawbacks are that the API is deprecated, the number of search results returned is limited to 64 and the number of calls to the API per day is limited.</p><p><strong>References:</strong></p><a href='http://gapi4net.codeplex.com/'>Google API for .NET</a><br/><a href='https://developers.google.com/web-search/docs/'>Developer's guide to Google Search API</a><br/><a href='https://developers.google.com/errors/'>Error description which specifies that automated requests are prohibited</a><br/><a href='http://stackoverflow.com/questions/5121090/google-search-api'>Google Search API</a><br/><a href='http://stackoverflow.com/questions/6084096/what-free-web-search-apis-are-available/8666532'>What free web search api's are available?</a>";
 
             return new HtmlString(contents + code1 + contents2 + code2);
         }
 
         public static IHtmlString StoneTheory(this HtmlHelper helper)
         {
-            string contents = @"<p><strong>Stepping Stone Markov Chain model</strong></p><p>A Markov chain is a process which can be in a number of states. The process starts in one of the states
+            const string contents = @"<p><strong>Stepping Stone Markov Chain model</strong></p><p>A Markov chain is a process which can be in a number of states. The process starts in one of the states
                 and moves successively from one to another. Each move is called a step. At each step a process has a probability to move to another state, and the probability does not depend
                 on any of the previous states of the process. That is why such process is called “memoryless”.</p><p>Example: In a weather model, a day can be either nice, rainy or snowy.
                 If the day is nice, the next day will be either rainy or snowy with 50% probability. If the day is rainy or snowy, it will stay the same with 50% probability, or will change 
@@ -467,9 +680,8 @@ public enum SortDirection
                 to be applied repeatedly to create further generations.</p><p><strong>Implementation</strong></p><p>[1] 
                 <a href=&quot;http://en.wikipedia.org/wiki/Conway%27s_game_of_life&quot;>Conway's Game Of Life</a></p>";
 
-            string t =
-                "<p>To refresh the page every second, javaScript <strong></strong>setInterval function is used to load the partial view into the div. A method in the controller generates the partial view.</p><p><strong>The Controller</strong></p><pre class=\"brush: csharp\">public class GameController : BaseController" +
-                @"{
+            const string t = "<p>To refresh the page every second, javaScript <strong></strong>setInterval function is used to load the partial view into the div. A method in the controller generates the partial view.</p><p><strong>The Controller</strong></p><pre class=\"brush: csharp\">public class GameController : BaseController" +
+                             @"{
                 public ActionResult Index()
                 {
                     GameOfLifeHelpers.InitializeGame();

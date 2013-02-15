@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace Recipes.Controllers
 {
@@ -10,11 +6,18 @@ namespace Recipes.Controllers
     {
         //
         // GET: /JQGame/
-
+        [MetaKeywords(Constants.Constants.JQGameMetaKeywords)]
+        [MetaDescription(Constants.Constants.JQGameMetaDescription)]
         public ActionResult Index()
         {
             return View();
         }
 
+        [MetaKeywords(Constants.Constants.JQGameMetaKeywords)]
+        [MetaDescription(Constants.Constants.JQGameMetaDescription)]
+        public ActionResult Theory()
+        {
+            return View();
+        }
     }
 }

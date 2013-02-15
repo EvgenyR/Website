@@ -47,5 +47,8 @@ namespace Constants
 
         public const string PhotoboxMetaKeywords = "CSS3 jQuery Photobox Image Gallery";
         public const string PhotoboxMetaDescription = "Implementation of Photobox - a practical lightweight image gallery script";
+
+        public const string JQGameMetaKeywords = "jQuery, MVC, Game of Life, HTML, CSS";
+        public const string JQGameMetaDescription = "jQuery Implementation of Conway's Game of Life";
     }
 }
