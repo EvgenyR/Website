@@ -23,8 +23,13 @@ section {
 }
 
 body {
-	font-size: 62.5%;
 	background: url(images/stripe.png) repeat;
+}
+
+nav#topnavigation 
+{
+    font-size: 62.5%;
+    font-family: Georgia, "Times New Roman", Times, serif;
 }
 
 p, li {
@@ -129,7 +134,7 @@ html, body, h1, form, fieldset, legend, ol, li {
 body {
     background: #ffffff;
     color: #111111;
-    font-family: Georgia, "Times New Roman", Times, serif;
+    /*font-family: Georgia, "Times New Roman", Times, serif;*/
     padding: 20px;
 }
 
