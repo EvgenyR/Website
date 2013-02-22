@@ -16,6 +16,9 @@ namespace Recipes.Controllers
 
             base.OnActionExecuting(filterContext);
         }
+
+        //these may be used in the future
+
         //protected override void OnException(ExceptionContext filterContext)
         //{
         //    string ex = filterContext.Exception.ToString();

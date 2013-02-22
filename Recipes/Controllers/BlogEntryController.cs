@@ -14,33 +14,47 @@ namespace Recipes.Controllers
         //
         // GET: /BlogEntry/
 
-        readonly RecipesEntities db = new RecipesEntities();
-        List<BlogEntry> entries = new List<BlogEntry>();
+        readonly RecipesEntities _db = new RecipesEntities();
+        List<BlogEntry> _entries = new List<BlogEntry>();
 
+        /// <summary>
+        /// Returns entries from the digital biology blog
+        /// </summary>
+        /// <returns>Partial view of the blog contents</returns>
         public PartialViewResult BioBlogResult()
         {
             BlogEntryViewModel model = new BlogEntryViewModel(GetBlogEntries(2));
             return PartialView(model);
         }
 
+        /// <summary>
+        /// Returns entries from the programming blog
+        /// </summary>
+        /// <returns>Partial view of the blog contents</returns>
         public PartialViewResult ProgBlogResult()
         {
             BlogEntryViewModel model = new BlogEntryViewModel(GetBlogEntries(1));
             return PartialView(model);
         }
 
+        /// <summary>
+        /// Selects all posts that belong to a blog. Groups the posts to create a hierarchical structure by year and month of publication
+        /// The structure is then used to generate html which will be rendered in the form of an expandable tree
+        /// </summary>
+        /// <param name="blogID">Id of the blog to get posts from</param>
+        /// <returns>A hierarchical structure of blog posts, organised by year and month</returns>
         private List<BlogEntry> GetBlogEntries(int blogID)
         {
-            var results = db.Posts.Where(p => p.BlogID == blogID).OrderBy(p => p.DateCreated).GroupByMany(p => p.DateCreated.Year, p => p.DateCreated.Month);
+            var results = _db.Posts.Where(p => p.BlogID == blogID).OrderBy(p => p.DateCreated).GroupByMany(p => p.DateCreated.Year, p => p.DateCreated.Month);
 
-            entries = new List<BlogEntry>();
+            _entries = new List<BlogEntry>();
 
             //years
             foreach (var yearPosts in results)
             {
                 //create "year-level" item
                 var year = new BlogEntry { Name = yearPosts.Key.ToString().ToLink(string.Empty) };
-                entries.Add(year);
+                _entries.Add(year);
 
                 //months
                 foreach (var monthPosts in yearPosts.SubGroups)
@@ -57,12 +71,19 @@ namespace Recipes.Controllers
                     }
                 }
             }
-            return entries;
+            return _entries;
         }
     }
 
     public static class MyEnumerableExtensions
     {
+        /// <summary>
+        /// Applies grouping to the collection of elements using the selectors specified
+        /// </summary>
+        /// <typeparam name="TElement">Type of the element</typeparam>
+        /// <param name="elements">Elements to be grouped</param>
+        /// <param name="groupSelectors">Selectors, or properties to be grouped on</param>
+        /// <returns></returns>
         public static IEnumerable<GroupResult> GroupByMany<TElement>(
             this IEnumerable<TElement> elements,
             params Func<TElement, object>[] groupSelectors)
@@ -82,8 +103,7 @@ namespace Recipes.Controllers
                             SubGroups = g.GroupByMany(nextSelectors)
                         });
             }
-            else
-                return null;
+            return null;
         }
     }
 

@@ -1,10 +1,10 @@
 ﻿/*dynamicdrive.com/style/blog/*/
+/* styling for blog items */
 
 body{
 margin: 0;
 padding: 0;
 font: normal 90% "Lucida Grande", "Trebuchet MS", Verdana, Helvetica, sans-serif;
-/*background: #568150 url(http://www.dynamicdrive.com/eeincludes/burst.png) no-repeat center -100px;*/
 }
 
 div.blogcontainer ul
@@ -70,9 +70,7 @@ padding-left: 0;
 }
 
 .headers a.bar{
-/*background: transparent url(arrowbullet2.gif) no-repeat center right;*/
 text-decoration: none;
-/*padding-right: 18px;*/
 color: #273565;
 }
 
@@ -99,16 +97,3 @@ div.blogcontainer .info{
 color: gray;
 margin-top: 1px;
 }
-
-/*
-.blogcontainer p{
-margin: 8px 0;
-}*/
-
-/*
-div.info + p:first-letter{
-font-size:;
-float:left;
-font: bold 180% Arial;
-margin-right: 3px;
-}*/

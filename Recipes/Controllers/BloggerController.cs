@@ -9,10 +9,14 @@ namespace Recipes.Controllers
 {
     public class BloggerController : BaseController
     {
-        private RecipesEntities db = new RecipesEntities();
+        private readonly RecipesEntities db = new RecipesEntities();
 
         //
         // GET: /Blogger/
+        /// <summary>
+        /// Returns a list of bloggers
+        /// </summary>
+        /// <returns>Index view</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Index()
@@ -22,6 +26,11 @@ namespace Recipes.Controllers
 
         //
         // GET: /Blogger/Details/5
+        /// <summary>
+        /// Returns details of a blogger
+        /// </summary>
+        /// <param name="id">blogger id</param>
+        /// <returns>Details view</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Details(int id = 0)
@@ -40,6 +49,10 @@ namespace Recipes.Controllers
 
         //
         // GET: /Blogger/Create
+        /// <summary>
+        /// Creates a blogger
+        /// </summary>
+        /// <returns>View</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Create()
@@ -49,6 +62,11 @@ namespace Recipes.Controllers
 
         //
         // POST: /Blogger/Create
+        /// <summary>
+        /// Creates a blogger in the database
+        /// </summary>
+        /// <param name="blogger">Blogger object</param>
+        /// <returns>Redirects to a list of bloggers</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         [HttpPost]
@@ -66,6 +84,11 @@ namespace Recipes.Controllers
 
         //
         // GET: /Blogger/Edit/5
+        /// <summary>
+        /// Edits blogger details
+        /// </summary>
+        /// <param name="id">Id of a blogger</param>
+        /// <returns>Edit view</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Edit(int id = 0)
@@ -80,6 +103,11 @@ namespace Recipes.Controllers
 
         //
         // POST: /Blogger/Edit/5
+        /// <summary>
+        /// Edits a blogger
+        /// </summary>
+        /// <param name="blogger">Edited blogger entiry</param>
+        /// <returns>Redirects to Index of bloggers</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         [HttpPost]
@@ -96,6 +124,11 @@ namespace Recipes.Controllers
 
         //
         // GET: /Blogger/Delete/5
+        /// <summary>
+        /// Initiates deletion of a blogger
+        /// </summary>
+        /// <param name="id">Id of a blogger to delete</param>
+        /// <returns>Delete view</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Delete(int id = 0)
@@ -110,6 +143,11 @@ namespace Recipes.Controllers
 
         //
         // POST: /Blogger/Delete/5
+        /// <summary>
+        /// Confirms deletion of a blogger
+        /// </summary>
+        /// <param name="id">Id of a blogger to delete</param>
+        /// <returns>Redirects to blogger index</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         [HttpPost, ActionName("Delete")]
@@ -121,12 +159,12 @@ namespace Recipes.Controllers
             List<Blog> blogs = db.Blogs.Where(b => b.BloggerID == blogger.BloggerID).ToList();
 
             //if there are blogs, for each blog start with deleting posts
-            if (blogs != null && blogs.Count > 0)
+            if (blogs.Count > 0)
             {
                 foreach (Blog blog in blogs)
                 {
                     List<Post> posts = db.Posts.Where(p => p.BlogID == blog.BlogID).ToList();
-                    if (posts != null && posts.Count > 0)
+                    if (posts.Count > 0)
                     {
                         foreach (Post post in posts)
                         {

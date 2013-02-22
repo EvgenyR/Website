@@ -10,12 +10,16 @@ namespace Recipes.Controllers
 {
     public class BlogController : BaseController
     {
-        RecipesEntities db = new RecipesEntities();
+        readonly RecipesEntities _db = new RecipesEntities();
 
         private int _postsDisplayed;
 
         //
         // GET: /Blog/
+        /// <summary> 
+        /// Displays the Index of a default blog
+        /// </summary> 
+        /// <returns>Index view</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         [HttpGet]
@@ -25,6 +29,13 @@ namespace Recipes.Controllers
             return View(ViewModelFromBlogID(1));
         }
 
+        /// <summary> 
+        /// Displays the Index of a specified blog
+        /// </summary> 
+        /// <param name="id">
+        /// Id of the Blog to display
+        /// </param>
+        /// <returns>Index view</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         [HttpPost]
@@ -34,26 +45,37 @@ namespace Recipes.Controllers
             return View(ViewModelFromBlogID(id));
         }
 
+        /// <summary> 
+        /// Displays the List of all blogs
+        /// </summary> 
+        /// <returns>List View</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult List()
         {
             _postsDisplayed = 10;
-            return View(db.Blogs.ToList());
+            return View(_db.Blogs.ToList());
         }
 
         //
         // GET: /Default1/Details/5
+        /// <summary> 
+        /// Displays the details information about a blog
+        /// </summary> 
+        /// <param name="id">
+        /// Id of the Blog to display information about
+        /// </param>
+        /// <returns>Details view</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Details(int id = 0)
         {
-            Blog blog = db.Blogs.Find(id);
+            Blog blog = _db.Blogs.Find(id);
             if (blog == null)
             {
                 return HttpNotFound();
             }
-            blog.Blogger = db.Bloggers.Where(b => b.BloggerID == blog.BloggerID).FirstOrDefault();
+            blog.Blogger = _db.Bloggers.Where(b => b.BloggerID == blog.BloggerID).FirstOrDefault();
 
             BlogViewModel viewModel = new BlogViewModel(blog, null, null, null, _postsDisplayed);
 
@@ -62,33 +84,43 @@ namespace Recipes.Controllers
 
         //
         // GET: /Default1/Create
+        /// <summary> 
+        /// Creates a new blog
+        /// </summary> 
+        /// <returns>Create view</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Create()
         {
-            Blog blog = new Blog();
-            blog.Blogger = db.Bloggers.FirstOrDefault();
+            Blog blog = new Blog {Blogger = _db.Bloggers.FirstOrDefault()};
             blog.BloggerID = blog.Blogger.BloggerID;
-            BlogViewModel viewModel = new BlogViewModel(blog, new List<Post>(), db.Blogs.ToList(), db.Bloggers.ToList(), _postsDisplayed);
+            BlogViewModel viewModel = new BlogViewModel(blog, new List<Post>(), _db.Blogs.ToList(), _db.Bloggers.ToList(), _postsDisplayed);
             return View(viewModel);
          }
 
         //
         // POST: /Default1/Create
+        /// <summary> 
+        /// Creates a new blog from a BlogViewModel entity
+        /// </summary> 
+        /// <param name="viewModel">
+        /// ViewModel contains data about Blog, Posts, all blogs, all bloggers and number of posts to display by default
+        /// </param>
+        /// <returns>Create view</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         [HttpPost]
         public ActionResult Create(BlogViewModel viewModel)
         {
             Blog blog = viewModel.Blog;
-            blog.Blogger = db.Bloggers.Where(b => b.BloggerID == viewModel.Blog.BloggerID).FirstOrDefault();
+            blog.Blogger = _db.Bloggers.Where(b => b.BloggerID == viewModel.Blog.BloggerID).FirstOrDefault();
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    db.Blogs.Add(blog);
-                    db.SaveChanges();
+                    _db.Blogs.Add(blog);
+                    _db.SaveChanges();
                 }
                 catch (DbEntityValidationException vex)
                 {
@@ -107,102 +139,141 @@ namespace Recipes.Controllers
 
                 return RedirectToAction("../Blog/List");
             }
-            else
+            foreach (ModelState modelState in ViewData.ModelState.Values)
             {
-                foreach (ModelState modelState in ViewData.ModelState.Values)
+                foreach (ModelError error in modelState.Errors)
                 {
-                    foreach (ModelError error in modelState.Errors)
-                    {
-                        string s = error.ErrorMessage;
-                    }
+                    //string s used for debugging purposes
+                    string s = error.ErrorMessage;
                 }
             }
-            return View(new BlogViewModel(blog, null, db.Blogs.ToList(), null, _postsDisplayed));
+            return View(new BlogViewModel(blog, null, _db.Blogs.ToList(), null, _postsDisplayed));
         }
 
         //
         // GET: /Default1/Edit/5
+        /// <summary> 
+        /// Edit the blog details
+        /// </summary> 
+        /// <param name="id">
+        /// Id of the blog to edit
+        /// </param>
+        /// <returns>Details view</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Edit(int id = 0)
         {
-            Blog blog = db.Blogs.Find(id);
-            blog.Blogger = db.Bloggers.Single(b => b.BloggerID == blog.BloggerID);
-            return View(new BlogViewModel(blog, null, null, db.Bloggers.ToList(), _postsDisplayed));
+            Blog blog = _db.Blogs.Find(id);
+            blog.Blogger = _db.Bloggers.Single(b => b.BloggerID == blog.BloggerID);
+            return View(new BlogViewModel(blog, null, null, _db.Bloggers.ToList(), _postsDisplayed));
         }
 
         //
         // POST: /Default1/Edit/5
+        /// <summary> 
+        /// Edit the blog details, use ViewModel
+        /// </summary> 
+        /// <param name="viewModel">
+        /// ViewModel contains data about Blog, Posts, all blogs, all bloggers and number of posts to display by default
+        /// </param>
+        /// <returns>Details view</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         [HttpPost]
-        public ActionResult Edit(BlogViewModel model)
+        public ActionResult Edit(BlogViewModel viewModel)
         {
-            Blog blog = model.Blog;
-            blog.BloggerID = model.Blog.Blogger.BloggerID;
-            blog.Blogger = db.Bloggers.Find(blog.BloggerID);
+            Blog blog = viewModel.Blog;
+            blog.BloggerID = viewModel.Blog.Blogger.BloggerID;
+            blog.Blogger = _db.Bloggers.Find(blog.BloggerID);
 
             if (ModelState.IsValid)
             {
-                db.Entry(blog).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(blog).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("../Blog/List");
             }
-            return View(model);
+            return View(viewModel);
         }
 
         //
         // GET: /Default1/Delete/5
+        /// <summary> 
+        /// Delete a blog
+        /// </summary> 
+        /// <param name="id">
+        /// id of the blog to delete
+        /// </param>
+        /// <returns>Details view</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Delete(int id = 0)
         {
-            Blog blog = db.Blogs.Find(id);          
-            blog.Blogger = db.Bloggers.Find(blog.BloggerID);
-            if (blog == null)
-            {
-                return HttpNotFound();
-            }
+            Blog blog = _db.Blogs.Find(id);          
+            blog.Blogger = _db.Bloggers.Find(blog.BloggerID);
             return View(blog);
         }
 
         //
         // POST: /Default1/Delete/5
+        /// <summary> 
+        /// Delete a blog, confirmation
+        /// </summary> 
+        /// <param name="id">
+        /// id of the blog to delete
+        /// </param>
+        /// <returns>Redirects to blog list</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Blog blog = db.Blogs.Find(id);
+            Blog blog = _db.Blogs.Find(id);
 
             //if posts exist, delete posts
-            List<Post> posts = db.Posts.Where(p => p.BlogID == blog.BlogID).ToList();
+            List<Post> posts = _db.Posts.Where(p => p.BlogID == blog.BlogID).ToList();
             if (posts != null && posts.Count > 0)
             {
                 foreach(Post post in posts)
                 {
-                    db.Posts.Remove(post);
+                    _db.Posts.Remove(post);
                 }
             }
             //then delete blog
 
-            db.Blogs.Remove(blog);
-            db.SaveChanges();
+            _db.Blogs.Remove(blog);
+            _db.SaveChanges();
             return RedirectToAction("../Blog/List");
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            _db.Dispose();
             base.Dispose(disposing);
         }
 
+        /// <summary> 
+        /// Update blog details
+        /// </summary> 
+        /// <param name="id">
+        /// id of the blog to update
+        /// </param>
+        /// <returns>Partial view with updated blog contents</returns>
         public ActionResult Update(int id)
         {
             BlogViewModel model = ViewModelFromBlogID(id);
             return PartialView("_BlogContent", model);
         }
 
+        /// <summary> 
+        /// Display one additional post
+        /// </summary> 
+        /// <param name="id">
+        /// id of the blog
+        /// </param>
+        /// <param name="postsDisplayed">
+        /// number of posts to display
+        /// </param>
+        /// <returns>Partial view with updated blog contents</returns>
         public ActionResult MorePosts(int id, int postsDisplayed)
         {
             BlogViewModel model = ViewModelFromBlogID(id);
@@ -210,6 +281,16 @@ namespace Recipes.Controllers
             return PartialView("_BlogContent", model);
         }
 
+        /// <summary> 
+        /// Display one less post
+        /// </summary> 
+        /// <param name="id">
+        /// id of the blog
+        /// </param>
+        /// <param name="postsDisplayed">
+        /// number of posts to display
+        /// </param>
+        /// <returns>Partial view with updated blog contents</returns>
         public ActionResult LessPosts(int id, int postsDisplayed)
         {
             BlogViewModel model = ViewModelFromBlogID(id);
@@ -217,17 +298,21 @@ namespace Recipes.Controllers
             return PartialView("_BlogContent", model);
         }
 
+        /// <summary>
+        /// Creates a ViewModel given a blog id
+        /// </summary>
+        /// <param name="id">Id of a blog</param>
+        /// <returns>ViewModel contains data about Blog, Posts, all blogs, all bloggers and number of posts to display by default</returns>
         public BlogViewModel ViewModelFromBlogID(int id)
         {
-            Blog blog = db.Blogs.Where(b => b.BlogID == id).FirstOrDefault();
-            List<Post> posts = db.Posts.Where(p => p.BlogID == id).OrderByDescending(p => p.DateCreated).ToList();
-            List<Blog> blogs = db.Blogs.ToList();
-            List<Blogger> bloggers = db.Bloggers.ToList();
+            Blog blog = _db.Blogs.Where(b => b.BlogID == id).FirstOrDefault();
+            List<Post> posts = _db.Posts.Where(p => p.BlogID == id).OrderByDescending(p => p.DateCreated).ToList();
+            List<Blog> blogs = _db.Blogs.ToList();
+            List<Blogger> bloggers = _db.Bloggers.ToList();
 
             BlogViewModel model = new BlogViewModel(blog, posts, blogs, bloggers, _postsDisplayed);
 
             return model;
         }
-
     }
 }
