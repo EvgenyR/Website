@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using Recipes.Models;
 
-namespace Recipes.Models.Yahoo
+namespace Recipes.SeedData
 {
     public static class AddYahoo
     {

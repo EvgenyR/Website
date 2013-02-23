@@ -1,5 +1,9 @@
-﻿
-namespace Recipes.Models.Yahoo
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace Recipes.SeedData
 {
     public class YahooSymbol
     {

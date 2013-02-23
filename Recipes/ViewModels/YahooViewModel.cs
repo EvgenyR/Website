@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Recipes.Models.Yahoo;
+using Recipes.SeedData;
 
 namespace Recipes.ViewModels
 {

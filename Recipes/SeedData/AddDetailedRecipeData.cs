@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Recipes.Models;
 using System.Data.Entity.Validation;
 
-namespace Recipes.Models.Recipes
+namespace Recipes.SeedData
 {
-    public static class AddRecipes
+    public static class AddDetailedRecipeData
     {
         public static void Execute(RecipesEntities context)
         {
@@ -65,7 +66,7 @@ namespace Recipes.Models.Recipes
                     Description = @"Beat the eggs, orange juice, and salt in a flat bowl with a fork or whisk until blended.  Mix the cornflakes, wheat germ, and nuts in a pie pan or cake pan. Heat the margarine in a large skillet.  Dip bread slices into egg mixture and then into cornflake mixture, coating both sides. Place in skillet as many pieces as will fit comfortably in 1 layer (2 or 3 batches may be needed). Cook until brown on both sides, turning slices carefully with wide spatula. Keep finished toast warm if cooking more batches."
                 });
                 context.SaveChanges();
-                
+
                 var ri1_1 = new RecipeIngredient { RecipeIngredientID = 8, IngredientID = 8, RecipeID = 2, Quantity = 0.25M };
                 var ri1_2 = new RecipeIngredient { RecipeIngredientID = 9, IngredientID = 9, RecipeID = 2, Quantity = 0.5M };
                 var ri1_3 = new RecipeIngredient { RecipeIngredientID = 10, IngredientID = 10, RecipeID = 2, Quantity = 0.25M };
@@ -208,9 +209,9 @@ namespace Recipes.Models.Recipes
 
                 //Drop Biscuits
 
-                var ingredient35 = new Ingredient {IngredientID = 35, IngredientName = "Milk", MeasureID = 2, Carb = 4.7M, Fat = 3.3M, Protein = 3.3M};
-                var ingredient36 = new Ingredient {IngredientID = 36, IngredientName = "Baking Powder", MeasureID = 4, Carb = 46.9M, Fat = 0.1M, Protein = 0.4M};
-                var ingredient37 = new Ingredient {IngredientID = 37, IngredientName = "Shortening", MeasureID = 2, Fat = 100M};
+                var ingredient35 = new Ingredient { IngredientID = 35, IngredientName = "Milk", MeasureID = 2, Carb = 4.7M, Fat = 3.3M, Protein = 3.3M };
+                var ingredient36 = new Ingredient { IngredientID = 36, IngredientName = "Baking Powder", MeasureID = 4, Carb = 46.9M, Fat = 0.1M, Protein = 0.4M };
+                var ingredient37 = new Ingredient { IngredientID = 37, IngredientName = "Shortening", MeasureID = 2, Fat = 100M };
 
                 ingredients = new List<Ingredient> { ingredient35, ingredient36, ingredient37 };
                 ingredients.ForEach(i => context.Ingredients.Add(i));
@@ -224,11 +225,11 @@ namespace Recipes.Models.Recipes
                 });
                 context.SaveChanges();
 
-                var ri6_1 = new RecipeIngredient {RecipeIngredientID = 44, IngredientID = 32, RecipeID = 7, Quantity = 2};
-                var ri6_2 = new RecipeIngredient {RecipeIngredientID = 45, IngredientID = 13, RecipeID = 7, Quantity = 1.5M};
-                var ri6_3 = new RecipeIngredient {RecipeIngredientID = 46, IngredientID = 35, RecipeID = 7, Quantity = 1};
-                var ri6_4 = new RecipeIngredient {RecipeIngredientID = 47, IngredientID = 36, RecipeID = 7, Quantity = 1};
-                var ri6_5 = new RecipeIngredient {RecipeIngredientID = 48, IngredientID = 37, RecipeID = 7, Quantity = 0.3M};
+                var ri6_1 = new RecipeIngredient { RecipeIngredientID = 44, IngredientID = 32, RecipeID = 7, Quantity = 2 };
+                var ri6_2 = new RecipeIngredient { RecipeIngredientID = 45, IngredientID = 13, RecipeID = 7, Quantity = 1.5M };
+                var ri6_3 = new RecipeIngredient { RecipeIngredientID = 46, IngredientID = 35, RecipeID = 7, Quantity = 1 };
+                var ri6_4 = new RecipeIngredient { RecipeIngredientID = 47, IngredientID = 36, RecipeID = 7, Quantity = 1 };
+                var ri6_5 = new RecipeIngredient { RecipeIngredientID = 48, IngredientID = 37, RecipeID = 7, Quantity = 0.3M };
 
                 recipeIngredients = new List<RecipeIngredient> { ri6_1, ri6_2, ri6_3, ri6_4, ri6_5 };
                 recipeIngredients.ForEach(ri => context.RecipeIngredients.Add(ri));
@@ -237,20 +238,20 @@ namespace Recipes.Models.Recipes
                 //Peasant bread
 
                 context.Recipes.Add(new Recipe
-                                        {
-                                            RecipeID = 7,
-                                            RecipeName = "Peasant Bread",
-                                            SubCategoryID = 13,
-                                            Description = @"A very moist, chewy bread with a light, crispy crust.  Similar to the English Muffin loaf but more moist.  Wonderful for grilled cheese sandwiches."
-                                        });
+                {
+                    RecipeID = 7,
+                    RecipeName = "Peasant Bread",
+                    SubCategoryID = 13,
+                    Description = @"A very moist, chewy bread with a light, crispy crust.  Similar to the English Muffin loaf but more moist.  Wonderful for grilled cheese sandwiches."
+                });
 
                 context.SaveChanges();
 
-                var ri7_1 = new RecipeIngredient {RecipeIngredientID = 49, IngredientID = 23, RecipeID = 8, Quantity = 1.5M};
-                var ri7_2 = new RecipeIngredient {RecipeIngredientID = 50, IngredientID = 3, RecipeID = 8, Quantity = 0.1M};
-                var ri7_3 = new RecipeIngredient {RecipeIngredientID = 51, IngredientID = 13, RecipeID = 8, Quantity = 1.5M};
-                var ri7_4 = new RecipeIngredient {RecipeIngredientID = 52, IngredientID = 32, RecipeID = 8, Quantity = 3};
-                var ri7_5 = new RecipeIngredient {RecipeIngredientID = 53, IngredientID = 33, RecipeID = 8, Quantity = 1};
+                var ri7_1 = new RecipeIngredient { RecipeIngredientID = 49, IngredientID = 23, RecipeID = 8, Quantity = 1.5M };
+                var ri7_2 = new RecipeIngredient { RecipeIngredientID = 50, IngredientID = 3, RecipeID = 8, Quantity = 0.1M };
+                var ri7_3 = new RecipeIngredient { RecipeIngredientID = 51, IngredientID = 13, RecipeID = 8, Quantity = 1.5M };
+                var ri7_4 = new RecipeIngredient { RecipeIngredientID = 52, IngredientID = 32, RecipeID = 8, Quantity = 3 };
+                var ri7_5 = new RecipeIngredient { RecipeIngredientID = 53, IngredientID = 33, RecipeID = 8, Quantity = 1 };
 
                 recipeIngredients = new List<RecipeIngredient> { ri7_1, ri7_2, ri7_3, ri7_4, ri7_5 };
                 recipeIngredients.ForEach(ri => context.RecipeIngredients.Add(ri));
@@ -258,37 +259,37 @@ namespace Recipes.Models.Recipes
 
                 //Apple bran muffings
 
-                var ingredient38 = new Ingredient {IngredientID = 38, IngredientName = "Butter", MeasureID = 2, Fat = 81.1M, Carb = 0.1M, Protein = 0.9M};
-                var ingredient39 = new Ingredient {IngredientID = 39, IngredientName = "Bran", MeasureID = 2, Carb = 66.2M, Protein = 17.3M, Fat = 7M};
-                var ingredient40 = new Ingredient {IngredientID = 40, IngredientName = "Apples", MeasureID = 3, Carb = 15.3M, Fat = 0.2M, Protein = 0.4M};
-                var ingredient41 = new Ingredient {IngredientID = 41, IngredientName = "Cloves", MeasureID = 4, Carb = 61.2M, Protein = 6M, Fat = 20.1M};
-                var ingredient42 = new Ingredient {IngredientID = 42, IngredientName = "Maple Syrup", MeasureID = 2, Carb = 29.6M, Protein = 0.1M, Fat = 0.1M};
-                var ingredient43 = new Ingredient {IngredientID = 43, IngredientName = "Nutmeg", MeasureID = 4, Carb = 49.3M, Protein = 5.8M, Fat = 36.3M};
-                var ingredient44 = new Ingredient {IngredientID = 44, IngredientName = "Raisins", MeasureID = 2, Carb = 78.5M, Protein = 2.5M, Fat = 0.5M};
+                var ingredient38 = new Ingredient { IngredientID = 38, IngredientName = "Butter", MeasureID = 2, Fat = 81.1M, Carb = 0.1M, Protein = 0.9M };
+                var ingredient39 = new Ingredient { IngredientID = 39, IngredientName = "Bran", MeasureID = 2, Carb = 66.2M, Protein = 17.3M, Fat = 7M };
+                var ingredient40 = new Ingredient { IngredientID = 40, IngredientName = "Apples", MeasureID = 3, Carb = 15.3M, Fat = 0.2M, Protein = 0.4M };
+                var ingredient41 = new Ingredient { IngredientID = 41, IngredientName = "Cloves", MeasureID = 4, Carb = 61.2M, Protein = 6M, Fat = 20.1M };
+                var ingredient42 = new Ingredient { IngredientID = 42, IngredientName = "Maple Syrup", MeasureID = 2, Carb = 29.6M, Protein = 0.1M, Fat = 0.1M };
+                var ingredient43 = new Ingredient { IngredientID = 43, IngredientName = "Nutmeg", MeasureID = 4, Carb = 49.3M, Protein = 5.8M, Fat = 36.3M };
+                var ingredient44 = new Ingredient { IngredientID = 44, IngredientName = "Raisins", MeasureID = 2, Carb = 78.5M, Protein = 2.5M, Fat = 0.5M };
 
                 ingredients = new List<Ingredient> { ingredient38, ingredient39, ingredient40, ingredient41, ingredient42, ingredient43, ingredient44 };
                 ingredients.ForEach(i => context.Ingredients.Add(i));
 
                 context.Recipes.Add(new Recipe
-                                        {
-                                            RecipeID = 8,
-                                            RecipeName = "Apple Bran Muffins",
-                                            SubCategoryID = 14,
-                                            Description = @"Combine bran, flour, baking powder, nutmeg and cloves; set aside.  Cream together milk, eggs, maple syrup, and butter; fold in flour mixture.  Stir in apples and raisins.  Pour into oiled muffin tins, and bake at 350 degrees until tops split, 15 to 25 minutes."
-                                        });
+                {
+                    RecipeID = 8,
+                    RecipeName = "Apple Bran Muffins",
+                    SubCategoryID = 14,
+                    Description = @"Combine bran, flour, baking powder, nutmeg and cloves; set aside.  Cream together milk, eggs, maple syrup, and butter; fold in flour mixture.  Stir in apples and raisins.  Pour into oiled muffin tins, and bake at 350 degrees until tops split, 15 to 25 minutes."
+                });
                 context.SaveChanges();
 
-                var ri8_1 = new RecipeIngredient {RecipeIngredientID = 54, IngredientID = 32, RecipeID = 9, Quantity = 1};
-                var ri8_2 = new RecipeIngredient {RecipeIngredientID = 55, IngredientID = 36, RecipeID = 9, Quantity = 1.25M};
-                var ri8_3 = new RecipeIngredient {RecipeIngredientID = 56, IngredientID = 35, RecipeID = 9, Quantity = 0.3M};
-                var ri8_4 = new RecipeIngredient {RecipeIngredientID = 57, IngredientID = 12, RecipeID = 9, Quantity = 2};
-                var ri8_5 = new RecipeIngredient {RecipeIngredientID = 58, IngredientID = 38, RecipeID = 9, Quantity = 0.25M};
-                var ri8_6 = new RecipeIngredient {RecipeIngredientID = 59, IngredientID = 39, RecipeID = 9, Quantity = 1.25M};
-                var ri8_7 = new RecipeIngredient {RecipeIngredientID = 60, IngredientID = 40, RecipeID = 9, Quantity = 1};
-                var ri8_8 = new RecipeIngredient {RecipeIngredientID = 61, IngredientID = 41, RecipeID = 9, Quantity = 0.25M};
-                var ri8_9 = new RecipeIngredient {RecipeIngredientID = 62, IngredientID = 42, RecipeID = 9, Quantity = 0.75M};
-                var ri8_10 = new RecipeIngredient {RecipeIngredientID = 63, IngredientID = 43, RecipeID = 9, Quantity = 0.75M};
-                var ri8_11 = new RecipeIngredient {RecipeIngredientID = 64, IngredientID = 44, RecipeID = 9, Quantity = 1};
+                var ri8_1 = new RecipeIngredient { RecipeIngredientID = 54, IngredientID = 32, RecipeID = 9, Quantity = 1 };
+                var ri8_2 = new RecipeIngredient { RecipeIngredientID = 55, IngredientID = 36, RecipeID = 9, Quantity = 1.25M };
+                var ri8_3 = new RecipeIngredient { RecipeIngredientID = 56, IngredientID = 35, RecipeID = 9, Quantity = 0.3M };
+                var ri8_4 = new RecipeIngredient { RecipeIngredientID = 57, IngredientID = 12, RecipeID = 9, Quantity = 2 };
+                var ri8_5 = new RecipeIngredient { RecipeIngredientID = 58, IngredientID = 38, RecipeID = 9, Quantity = 0.25M };
+                var ri8_6 = new RecipeIngredient { RecipeIngredientID = 59, IngredientID = 39, RecipeID = 9, Quantity = 1.25M };
+                var ri8_7 = new RecipeIngredient { RecipeIngredientID = 60, IngredientID = 40, RecipeID = 9, Quantity = 1 };
+                var ri8_8 = new RecipeIngredient { RecipeIngredientID = 61, IngredientID = 41, RecipeID = 9, Quantity = 0.25M };
+                var ri8_9 = new RecipeIngredient { RecipeIngredientID = 62, IngredientID = 42, RecipeID = 9, Quantity = 0.75M };
+                var ri8_10 = new RecipeIngredient { RecipeIngredientID = 63, IngredientID = 43, RecipeID = 9, Quantity = 0.75M };
+                var ri8_11 = new RecipeIngredient { RecipeIngredientID = 64, IngredientID = 44, RecipeID = 9, Quantity = 1 };
 
                 recipeIngredients = new List<RecipeIngredient> { ri8_1, ri8_2, ri8_3, ri8_4, ri8_5, ri8_6, ri8_7, ri8_8, ri8_9, ri8_10, ri8_11 };
                 recipeIngredients.ForEach(ri => context.RecipeIngredients.Add(ri));
@@ -300,25 +301,25 @@ namespace Recipes.Models.Recipes
                 context.Ingredients.Add(ingredient45);
 
                 context.Recipes.Add(new Recipe
-                                        {
-                                            RecipeID = 9,
-                                            RecipeName = "Baked Doughnuts",
-                                            SubCategoryID = 15,
-                                            Description = @"<p>1. Sprinkle the yeast over the warm water in a small bowl and let it dissolve for 5 minutes. Put the milk and shortening in a saucepan and heat until the shortening is melted. Cool to lukewarm.</p><p>2. Pour the yeast mixture into a large mixing bowl and add the milk mix. Stif in the 1/4 cup sugar, salt, nutmeg, eggs and 2 cups flour. Beat briskly until well blended. Add the remaining 2 1/2 cups flour and beat until smooth. Cover the bowl and let double in bulk, about 1 hour.</p><p>3. Dust a board generously with flour and turn the dough mass onto it. This dough is soft and needs enough flour on the board to prevent sticking, but is easy to handle. Pat the dough into a round about 1/2 inch thick. Use a 3 inch doughnut cutter and cut out the doughnuts, placing them (and the doughnut holes) on greased baking sheets, 1 inch apart. These don't spread much; they rise. Preheat oven to 450F. Let the doughnuts rest and rise for 20 minutes uncovered. Bake about 10 minutes or a little longer, until they have a touch of golden brown. Remove from the oven. Have ready the melted butter and a brush. On a sheet of wax paper, spread the cinnamon sugar. Brush each doughnut and doughnut hole with butter and roll in the cinnamon sugar. Serve hot.</p>"
-                                        });
+                {
+                    RecipeID = 9,
+                    RecipeName = "Baked Doughnuts",
+                    SubCategoryID = 15,
+                    Description = @"<p>1. Sprinkle the yeast over the warm water in a small bowl and let it dissolve for 5 minutes. Put the milk and shortening in a saucepan and heat until the shortening is melted. Cool to lukewarm.</p><p>2. Pour the yeast mixture into a large mixing bowl and add the milk mix. Stif in the 1/4 cup sugar, salt, nutmeg, eggs and 2 cups flour. Beat briskly until well blended. Add the remaining 2 1/2 cups flour and beat until smooth. Cover the bowl and let double in bulk, about 1 hour.</p><p>3. Dust a board generously with flour and turn the dough mass onto it. This dough is soft and needs enough flour on the board to prevent sticking, but is easy to handle. Pat the dough into a round about 1/2 inch thick. Use a 3 inch doughnut cutter and cut out the doughnuts, placing them (and the doughnut holes) on greased baking sheets, 1 inch apart. These don't spread much; they rise. Preheat oven to 450F. Let the doughnuts rest and rise for 20 minutes uncovered. Bake about 10 minutes or a little longer, until they have a touch of golden brown. Remove from the oven. Have ready the melted butter and a brush. On a sheet of wax paper, spread the cinnamon sugar. Brush each doughnut and doughnut hole with butter and roll in the cinnamon sugar. Serve hot.</p>"
+                });
                 context.SaveChanges();
 
-                var ri9_1 = new RecipeIngredient {RecipeIngredientID = 65, IngredientID = 13, RecipeID = 10, Quantity = 2};
-                var ri9_2 = new RecipeIngredient {RecipeIngredientID = 66, IngredientID = 33, RecipeID = 10, Quantity = 2};
-                var ri9_3 = new RecipeIngredient {RecipeIngredientID = 67, IngredientID = 23, RecipeID = 10, Quantity = 0.3M};
-                var ri9_4 = new RecipeIngredient {RecipeIngredientID = 68, IngredientID = 35, RecipeID = 10, Quantity = 1.5M};
-                var ri9_5 = new RecipeIngredient {RecipeIngredientID = 69, IngredientID = 37, RecipeID = 10, Quantity = 0.3M};
-                var ri9_6 = new RecipeIngredient {RecipeIngredientID = 70, IngredientID = 3, RecipeID = 10, Quantity = 0.25M};
-                var ri9_7 = new RecipeIngredient {RecipeIngredientID = 71, IngredientID = 43, RecipeID = 10, Quantity = 2};
-                var ri9_8 = new RecipeIngredient {RecipeIngredientID = 72, IngredientID = 12, RecipeID = 10, Quantity = 2};
-                var ri9_9 = new RecipeIngredient {RecipeIngredientID = 73, IngredientID = 32, RecipeID = 10, Quantity = 4.5M};
-                var ri9_10 = new RecipeIngredient {RecipeIngredientID = 74, IngredientID = 38, RecipeID = 10, Quantity = 0.5M};
-                var ri9_11 = new RecipeIngredient {RecipeIngredientID = 75, IngredientID = 45, RecipeID = 10, Quantity = 1};
+                var ri9_1 = new RecipeIngredient { RecipeIngredientID = 65, IngredientID = 13, RecipeID = 10, Quantity = 2 };
+                var ri9_2 = new RecipeIngredient { RecipeIngredientID = 66, IngredientID = 33, RecipeID = 10, Quantity = 2 };
+                var ri9_3 = new RecipeIngredient { RecipeIngredientID = 67, IngredientID = 23, RecipeID = 10, Quantity = 0.3M };
+                var ri9_4 = new RecipeIngredient { RecipeIngredientID = 68, IngredientID = 35, RecipeID = 10, Quantity = 1.5M };
+                var ri9_5 = new RecipeIngredient { RecipeIngredientID = 69, IngredientID = 37, RecipeID = 10, Quantity = 0.3M };
+                var ri9_6 = new RecipeIngredient { RecipeIngredientID = 70, IngredientID = 3, RecipeID = 10, Quantity = 0.25M };
+                var ri9_7 = new RecipeIngredient { RecipeIngredientID = 71, IngredientID = 43, RecipeID = 10, Quantity = 2 };
+                var ri9_8 = new RecipeIngredient { RecipeIngredientID = 72, IngredientID = 12, RecipeID = 10, Quantity = 2 };
+                var ri9_9 = new RecipeIngredient { RecipeIngredientID = 73, IngredientID = 32, RecipeID = 10, Quantity = 4.5M };
+                var ri9_10 = new RecipeIngredient { RecipeIngredientID = 74, IngredientID = 38, RecipeID = 10, Quantity = 0.5M };
+                var ri9_11 = new RecipeIngredient { RecipeIngredientID = 75, IngredientID = 45, RecipeID = 10, Quantity = 1 };
 
                 recipeIngredients = new List<RecipeIngredient> { ri9_1, ri9_2, ri9_3, ri9_4, ri9_5, ri9_6, ri9_7, ri9_8, ri9_9, ri9_10, ri9_11 };
                 recipeIngredients.ForEach(ri => context.RecipeIngredients.Add(ri));
@@ -326,22 +327,22 @@ namespace Recipes.Models.Recipes
 
                 //Oven Roasted Potatoes
 
-                var ingredient46 = new Ingredient {IngredientID = 46, IngredientName = "Potatoes", MeasureID = 1, Carb = 12.4M, Protein = 2.6M, Fat = 0.1M};
+                var ingredient46 = new Ingredient { IngredientID = 46, IngredientName = "Potatoes", MeasureID = 1, Carb = 12.4M, Protein = 2.6M, Fat = 0.1M };
                 context.Ingredients.Add(ingredient46);
 
                 context.Recipes.Add(new Recipe
-                                        {
-                                            RecipeID = 10,
-                                            RecipeName = "Oven Roasted Potatoes",
-                                            SubCategoryID = 4,
-                                            Description = @"Preheat oven to 450 degrees.  In large plastic bag or bowl add all ingredients,  close bag and shake, or toss in bowl, until potatoes are evenly coated.  Empty potatoes into shallow baking or roasting pan; discard bag,  bake stirring occasionally, 40 minutes or until potatoes are tender and golden brown.  Garnish, if desired with chopped fresh parsley"
-                                        });
+                {
+                    RecipeID = 10,
+                    RecipeName = "Oven Roasted Potatoes",
+                    SubCategoryID = 4,
+                    Description = @"Preheat oven to 450 degrees.  In large plastic bag or bowl add all ingredients,  close bag and shake, or toss in bowl, until potatoes are evenly coated.  Empty potatoes into shallow baking or roasting pan; discard bag,  bake stirring occasionally, 40 minutes or until potatoes are tender and golden brown.  Garnish, if desired with chopped fresh parsley"
+                });
 
                 context.SaveChanges();
 
-                var ri10_1 = new RecipeIngredient {RecipeIngredientID = 76, IngredientID = 18, RecipeID = 11, Quantity = 1};
-                var ri10_2 = new RecipeIngredient {RecipeIngredientID = 77, IngredientID = 46, RecipeID = 11, Quantity = 1000};
-                var ri10_3 = new RecipeIngredient {RecipeIngredientID = 78, IngredientID = 24, RecipeID = 11, Quantity = 0.3M};
+                var ri10_1 = new RecipeIngredient { RecipeIngredientID = 76, IngredientID = 18, RecipeID = 11, Quantity = 1 };
+                var ri10_2 = new RecipeIngredient { RecipeIngredientID = 77, IngredientID = 46, RecipeID = 11, Quantity = 1000 };
+                var ri10_3 = new RecipeIngredient { RecipeIngredientID = 78, IngredientID = 24, RecipeID = 11, Quantity = 0.3M };
 
                 recipeIngredients = new List<RecipeIngredient> { ri10_1, ri10_2, ri10_3 };
                 recipeIngredients.ForEach(ri => context.RecipeIngredients.Add(ri));
@@ -359,21 +360,21 @@ namespace Recipes.Models.Recipes
                 ingredients.ForEach(i => context.Ingredients.Add(i));
 
                 context.Recipes.Add(new Recipe
-                                        {
-                                            RecipeID = 11,
-                                            RecipeName = "Red and Green Tomato Pie",
-                                            SubCategoryID = 5,
-                                            Description = @"Line deep 9″ pie pan with the pastry; crimp edges, and brush with evaporated milk. Bake in a very hot oven, 450°, 5 minutes. Fill shell with tomatoes, and sprinkle with salt and pepper. Mix remaining ingredients and spread on tomatoes. Bake in moderate oven, 350°, for 40 minutes, or until tomatoes are done."
-                                        });
+                {
+                    RecipeID = 11,
+                    RecipeName = "Red and Green Tomato Pie",
+                    SubCategoryID = 5,
+                    Description = @"Line deep 9″ pie pan with the pastry; crimp edges, and brush with evaporated milk. Bake in a very hot oven, 450°, 5 minutes. Fill shell with tomatoes, and sprinkle with salt and pepper. Mix remaining ingredients and spread on tomatoes. Bake in moderate oven, 350°, for 40 minutes, or until tomatoes are done."
+                });
                 context.SaveChanges();
 
-                var ri11_1 = new RecipeIngredient {RecipeIngredientID = 79, IngredientID = 13, RecipeID = 12, Quantity = 1.5M};
-                var ri11_2 = new RecipeIngredient {RecipeIngredientID = 80, IngredientID = 20, RecipeID = 12, Quantity = 0.125M};
-                var ri11_3 = new RecipeIngredient {RecipeIngredientID = 81, IngredientID = 47, RecipeID = 12, Quantity = 1};
-                var ri11_4 = new RecipeIngredient {RecipeIngredientID = 82, IngredientID = 48, RecipeID = 12, Quantity = 0.3M};
-                var ri11_5 = new RecipeIngredient {RecipeIngredientID = 83, IngredientID = 49, RecipeID = 12, Quantity = 9};
-                var ri11_6 = new RecipeIngredient {RecipeIngredientID = 84, IngredientID = 50, RecipeID = 12, Quantity = 5};
-                var ri11_7 = new RecipeIngredient {RecipeIngredientID = 85, IngredientID = 51, RecipeID = 12, Quantity = 0.3M};
+                var ri11_1 = new RecipeIngredient { RecipeIngredientID = 79, IngredientID = 13, RecipeID = 12, Quantity = 1.5M };
+                var ri11_2 = new RecipeIngredient { RecipeIngredientID = 80, IngredientID = 20, RecipeID = 12, Quantity = 0.125M };
+                var ri11_3 = new RecipeIngredient { RecipeIngredientID = 81, IngredientID = 47, RecipeID = 12, Quantity = 1 };
+                var ri11_4 = new RecipeIngredient { RecipeIngredientID = 82, IngredientID = 48, RecipeID = 12, Quantity = 0.3M };
+                var ri11_5 = new RecipeIngredient { RecipeIngredientID = 83, IngredientID = 49, RecipeID = 12, Quantity = 9 };
+                var ri11_6 = new RecipeIngredient { RecipeIngredientID = 84, IngredientID = 50, RecipeID = 12, Quantity = 5 };
+                var ri11_7 = new RecipeIngredient { RecipeIngredientID = 85, IngredientID = 51, RecipeID = 12, Quantity = 0.3M };
 
                 recipeIngredients = new List<RecipeIngredient> { ri11_1, ri11_2, ri11_3, ri11_4, ri11_5, ri11_6, ri11_7 };
                 recipeIngredients.ForEach(ri => context.RecipeIngredients.Add(ri));
@@ -381,29 +382,29 @@ namespace Recipes.Models.Recipes
 
                 //Cherry Nut Easter Egg
 
-                var ingredient52 = new Ingredient {IngredientID = 52, IngredientName = "Chocolate", MeasureID = 1, Carb = 22.1M, Protein = 3.0M, Fat = 1.1M};
-                var ingredient53 = new Ingredient {IngredientID = 53, IngredientName = "Cherries", MeasureID = 1, Carb = 16.5M, Protein = 1.2M, Fat = 1};
-                var ingredient54 = new Ingredient {IngredientID = 54, IngredientName = "Pudding", MeasureID = 1, Carb = 91.2M, Protein = 2.7M, Fat = 0.1M};
+                var ingredient52 = new Ingredient { IngredientID = 52, IngredientName = "Chocolate", MeasureID = 1, Carb = 22.1M, Protein = 3.0M, Fat = 1.1M };
+                var ingredient53 = new Ingredient { IngredientID = 53, IngredientName = "Cherries", MeasureID = 1, Carb = 16.5M, Protein = 1.2M, Fat = 1 };
+                var ingredient54 = new Ingredient { IngredientID = 54, IngredientName = "Pudding", MeasureID = 1, Carb = 91.2M, Protein = 2.7M, Fat = 0.1M };
 
                 ingredients = new List<Ingredient> { ingredient52, ingredient53, ingredient54 };
                 ingredients.ForEach(i => context.Ingredients.Add(i));
 
                 context.Recipes.Add(new Recipe
-                                        {
-                                            RecipeID = 12,
-                                            RecipeName = "Cherry Nut Easter Egg",
-                                            SubCategoryID = 21,
-                                            Description = @"<p>Preparation : Cut cherries in half, and drain well on paper towels. Cook milk, butter and pudding in a medium saucepan on low heat until well blended and thick. Remove from stove and add cherries, nuts and enough sugar to make a thick consistency.  Form the mixture into 8 to 10 egg shapes with hands coated in butter. Place on wax paper covered cookie sheet.  Chill several hours until firm. Melt chocolate being careful not to scorch it.  Frost egg with melted chocolate.  Decorate with butter cream icing.</p>"
-                                        });
+                {
+                    RecipeID = 12,
+                    RecipeName = "Cherry Nut Easter Egg",
+                    SubCategoryID = 21,
+                    Description = @"<p>Preparation : Cut cherries in half, and drain well on paper towels. Cook milk, butter and pudding in a medium saucepan on low heat until well blended and thick. Remove from stove and add cherries, nuts and enough sugar to make a thick consistency.  Form the mixture into 8 to 10 egg shapes with hands coated in butter. Place on wax paper covered cookie sheet.  Chill several hours until firm. Melt chocolate being careful not to scorch it.  Frost egg with melted chocolate.  Decorate with butter cream icing.</p>"
+                });
                 context.SaveChanges();
 
-                var ri12_1 = new RecipeIngredient {RecipeIngredientID = 86, IngredientID = 35, RecipeID = 13, Quantity = 0.5M};
-                var ri12_2 = new RecipeIngredient {RecipeIngredientID = 87, IngredientID = 38, RecipeID = 13, Quantity = 0.5M};
-                var ri12_3 = new RecipeIngredient {RecipeIngredientID = 88, IngredientID = 11, RecipeID = 13, Quantity = 1};
-                var ri12_4 = new RecipeIngredient {RecipeIngredientID = 89, IngredientID = 3, RecipeID = 13, Quantity = 2};
-                var ri12_5 = new RecipeIngredient {RecipeIngredientID = 90, IngredientID = 52, RecipeID = 13, Quantity = 400};
-                var ri12_6 = new RecipeIngredient {RecipeIngredientID = 91, IngredientID = 53, RecipeID = 13, Quantity = 400};
-                var ri12_7 = new RecipeIngredient {RecipeIngredientID = 92, IngredientID = 54, RecipeID = 13, Quantity = 150};
+                var ri12_1 = new RecipeIngredient { RecipeIngredientID = 86, IngredientID = 35, RecipeID = 13, Quantity = 0.5M };
+                var ri12_2 = new RecipeIngredient { RecipeIngredientID = 87, IngredientID = 38, RecipeID = 13, Quantity = 0.5M };
+                var ri12_3 = new RecipeIngredient { RecipeIngredientID = 88, IngredientID = 11, RecipeID = 13, Quantity = 1 };
+                var ri12_4 = new RecipeIngredient { RecipeIngredientID = 89, IngredientID = 3, RecipeID = 13, Quantity = 2 };
+                var ri12_5 = new RecipeIngredient { RecipeIngredientID = 90, IngredientID = 52, RecipeID = 13, Quantity = 400 };
+                var ri12_6 = new RecipeIngredient { RecipeIngredientID = 91, IngredientID = 53, RecipeID = 13, Quantity = 400 };
+                var ri12_7 = new RecipeIngredient { RecipeIngredientID = 92, IngredientID = 54, RecipeID = 13, Quantity = 150 };
 
                 recipeIngredients = new List<RecipeIngredient> { ri12_1, ri12_2, ri12_3, ri12_4, ri12_5, ri12_6, ri12_7 };
                 recipeIngredients.ForEach(ri => context.RecipeIngredients.Add(ri));
@@ -411,27 +412,27 @@ namespace Recipes.Models.Recipes
 
                 //Cat Litter Casserole
 
-                var ingredient55 = new Ingredient{IngredientID = 55, IngredientName = "Rice", MeasureID = 2, Carb = 74.9M, Protein = 14.7M, Fat = 1.1M};
-                var ingredient56 = new Ingredient{IngredientID = 56, IngredientName = "Biscuits", MeasureID = 1, Carb = 63.3M, Protein = 8, Fat = 15.4M};
+                var ingredient55 = new Ingredient { IngredientID = 55, IngredientName = "Rice", MeasureID = 2, Carb = 74.9M, Protein = 14.7M, Fat = 1.1M };
+                var ingredient56 = new Ingredient { IngredientID = 56, IngredientName = "Biscuits", MeasureID = 1, Carb = 63.3M, Protein = 8, Fat = 15.4M };
                 context.Ingredients.Add(ingredient55);
                 context.Ingredients.Add(ingredient56);
 
                 context.Recipes.Add(new Recipe
-                                        {
-                                            RecipeID = 13,
-                                            RecipeName = "Cat Litter Casserole",
-                                            SubCategoryID = 22,
-                                            Description = @"<p>To make dumps: With an adult’s help, preheat the oven to 350F. Using clean hans, mix together the dump ingredients in a large bowl. Mold pieces of this mixture into various size/shape dumps. Place so they don't touch each other in an ungreased baking pan. Use two if they don''t all fit. With an adult’s help, bake the dumps for about 20 minutes or until they are all brown, firm and slightly crusty. While the meat cooks, put all four litter ingredients into a large   saucepan. Then, with an adult’s help, heat on high until the water   comes to a boil. Stir, turn heat to low and cover the pan. Simmer   without lifting the cover for fourteen minutes. With an adult’s help, remove the saucepan from the stove and   carefully (to avoid having your face melted away by the steam), lift   off the cover. Break apart, or “fluff” the rice with a fork and set pan aside. When dumps are done, carefully transfer them onto paper towels to   drain.      Spoon the rice and dumps into the now empty baking pan, leaving some   dumps partially uncovered, the way Kitty does when he/she is in a   hurry. Serves 8-10 litterbox lovers. Use ppper scooper to serve.</p>"
-                                        });
+                {
+                    RecipeID = 13,
+                    RecipeName = "Cat Litter Casserole",
+                    SubCategoryID = 22,
+                    Description = @"<p>To make dumps: With an adult’s help, preheat the oven to 350F. Using clean hans, mix together the dump ingredients in a large bowl. Mold pieces of this mixture into various size/shape dumps. Place so they don't touch each other in an ungreased baking pan. Use two if they don''t all fit. With an adult’s help, bake the dumps for about 20 minutes or until they are all brown, firm and slightly crusty. While the meat cooks, put all four litter ingredients into a large   saucepan. Then, with an adult’s help, heat on high until the water   comes to a boil. Stir, turn heat to low and cover the pan. Simmer   without lifting the cover for fourteen minutes. With an adult’s help, remove the saucepan from the stove and   carefully (to avoid having your face melted away by the steam), lift   off the cover. Break apart, or “fluff” the rice with a fork and set pan aside. When dumps are done, carefully transfer them onto paper towels to   drain.      Spoon the rice and dumps into the now empty baking pan, leaving some   dumps partially uncovered, the way Kitty does when he/she is in a   hurry. Serves 8-10 litterbox lovers. Use ppper scooper to serve.</p>"
+                });
                 context.SaveChanges();
 
-                var ri13_1 = new RecipeIngredient {RecipeIngredientID = 93, IngredientID = 51, RecipeID = 14, Quantity = 1};
-                var ri13_2 = new RecipeIngredient {RecipeIngredientID = 94, IngredientID = 1, RecipeID = 14, Quantity = 400};
-                var ri13_3 = new RecipeIngredient {RecipeIngredientID = 95, IngredientID = 55, RecipeID = 14, Quantity = 2};
-                var ri13_4 = new RecipeIngredient {RecipeIngredientID = 96, IngredientID = 56, RecipeID = 14, Quantity = 100};
-                var ri13_5 = new RecipeIngredient {RecipeIngredientID = 97, IngredientID = 23, RecipeID = 14, Quantity = 3.75M};
-                var ri13_6 = new RecipeIngredient {RecipeIngredientID = 98, IngredientID = 13, RecipeID = 14, Quantity = 2};
-                var ri13_7 = new RecipeIngredient {RecipeIngredientID = 99, IngredientID = 38, RecipeID = 14, Quantity = 1};
+                var ri13_1 = new RecipeIngredient { RecipeIngredientID = 93, IngredientID = 51, RecipeID = 14, Quantity = 1 };
+                var ri13_2 = new RecipeIngredient { RecipeIngredientID = 94, IngredientID = 1, RecipeID = 14, Quantity = 400 };
+                var ri13_3 = new RecipeIngredient { RecipeIngredientID = 95, IngredientID = 55, RecipeID = 14, Quantity = 2 };
+                var ri13_4 = new RecipeIngredient { RecipeIngredientID = 96, IngredientID = 56, RecipeID = 14, Quantity = 100 };
+                var ri13_5 = new RecipeIngredient { RecipeIngredientID = 97, IngredientID = 23, RecipeID = 14, Quantity = 3.75M };
+                var ri13_6 = new RecipeIngredient { RecipeIngredientID = 98, IngredientID = 13, RecipeID = 14, Quantity = 2 };
+                var ri13_7 = new RecipeIngredient { RecipeIngredientID = 99, IngredientID = 38, RecipeID = 14, Quantity = 1 };
 
                 recipeIngredients = new List<RecipeIngredient> { ri13_1, ri13_2, ri13_3, ri13_4, ri13_5, ri13_6, ri13_7 };
                 recipeIngredients.ForEach(ri => context.RecipeIngredients.Add(ri));
@@ -439,12 +440,11 @@ namespace Recipes.Models.Recipes
 
                 //Cornucopia
 
-                context.Recipes.Add(new Recipe
-                                        {RecipeID = 14, RecipeName = "Cornucopia", SubCategoryID = 23, Description = @"<ol><li>Preheat oven to 350 degrees F.  Lightly spray a cookie sheet, at least 17“x 14”, with non-stick cooking spray.</li><li>Tear off a 30“x 18″ sheet of heavy duty aluminum foil.  Fold in 1/2 to 18'x 15'.  Roll diagonally to form a hollow cone, about 18' long with a diameter of 5″ at the widest end (Cornucopia opening). Fasten end with clear tape.  Stuff cone with crumpled regular foil until form is rigid. Bend tail of cone up then down at end.  Spray outside of cone with non-stick cooking spray.  Place on cookie sheet.</li><li>Open and unroll first  can of breadstick dough on work surface. Seperate breadsticks.  Begin by wraping one breadstick around tip of cone. Brush end of next breadstick with Glaze and press to attach to end of first breadstick.  Continue spiral-wrapping cone, slightly overlapping dough until there are 3 breadsticks left.</li><li>Pinch one end of the 3 breadsticks together, then braid.  Brush bread around opening of Cornucopia with Glaze.  Gently press on braid.  Brush entire Cornucopia with Glaze.</li><li>Bake 45 minutes in preheated oven or until bread is a rich brown. (If parts start to darken too much, cover them with poeces of foil.)</li><li>Remove from oven and let cool completely on cookie sheet on a wire rack.  Carefully remove foil when cool. (If freezing, leave foil in bread for support. Remove when thawed.)</li> <li>Fill Cornucopia with the assorted raw vegetables directly on table and let them spill out of opening</li></ol>"});
+                context.Recipes.Add(new Recipe { RecipeID = 14, RecipeName = "Cornucopia", SubCategoryID = 23, Description = @"<ol><li>Preheat oven to 350 degrees F.  Lightly spray a cookie sheet, at least 17“x 14”, with non-stick cooking spray.</li><li>Tear off a 30“x 18″ sheet of heavy duty aluminum foil.  Fold in 1/2 to 18'x 15'.  Roll diagonally to form a hollow cone, about 18' long with a diameter of 5″ at the widest end (Cornucopia opening). Fasten end with clear tape.  Stuff cone with crumpled regular foil until form is rigid. Bend tail of cone up then down at end.  Spray outside of cone with non-stick cooking spray.  Place on cookie sheet.</li><li>Open and unroll first  can of breadstick dough on work surface. Seperate breadsticks.  Begin by wraping one breadstick around tip of cone. Brush end of next breadstick with Glaze and press to attach to end of first breadstick.  Continue spiral-wrapping cone, slightly overlapping dough until there are 3 breadsticks left.</li><li>Pinch one end of the 3 breadsticks together, then braid.  Brush bread around opening of Cornucopia with Glaze.  Gently press on braid.  Brush entire Cornucopia with Glaze.</li><li>Bake 45 minutes in preheated oven or until bread is a rich brown. (If parts start to darken too much, cover them with poeces of foil.)</li><li>Remove from oven and let cool completely on cookie sheet on a wire rack.  Carefully remove foil when cool. (If freezing, leave foil in bread for support. Remove when thawed.)</li> <li>Fill Cornucopia with the assorted raw vegetables directly on table and let them spill out of opening</li></ol>" });
 
-                var ri14_1 = new RecipeIngredient {RecipeIngredientID = 100, IngredientID = 49, RecipeID = 15, Quantity = 3};
-                var ri14_2 = new RecipeIngredient {RecipeIngredientID = 101, IngredientID = 12, RecipeID = 15, Quantity = 1};
-                var ri14_3 = new RecipeIngredient {RecipeIngredientID = 102, IngredientID = 23, RecipeID = 15, Quantity = 1};
+                var ri14_1 = new RecipeIngredient { RecipeIngredientID = 100, IngredientID = 49, RecipeID = 15, Quantity = 3 };
+                var ri14_2 = new RecipeIngredient { RecipeIngredientID = 101, IngredientID = 12, RecipeID = 15, Quantity = 1 };
+                var ri14_3 = new RecipeIngredient { RecipeIngredientID = 102, IngredientID = 23, RecipeID = 15, Quantity = 1 };
 
                 recipeIngredients = new List<RecipeIngredient> { ri14_1, ri14_2, ri14_3 };
                 recipeIngredients.ForEach(ri => context.RecipeIngredients.Add(ri));
@@ -453,26 +453,26 @@ namespace Recipes.Models.Recipes
                 //Holiday Eggnog
 
                 var ingredient57 = new Ingredient { IngredientID = 57, IngredientName = "Beer", MeasureID = 2, Carb = 1.3M, Protein = 0.2M };
-                var ingredient58 = new Ingredient {IngredientID = 58, IngredientName = "Bourbon", MeasureID = 2, Carb = 0.1M};
+                var ingredient58 = new Ingredient { IngredientID = 58, IngredientName = "Bourbon", MeasureID = 2, Carb = 0.1M };
                 context.Ingredients.Add(ingredient57);
                 context.Ingredients.Add(ingredient58);
 
                 context.Recipes.Add(new Recipe
-                                        {
-                                            RecipeID = 15,
-                                            RecipeName = "Holiday Eggnog",
-                                            SubCategoryID = 24,
-                                            Description = @"<p>Beat egg yolks with 1/4 cup sugar until very thick. Gradually stir in milk, beer, and brandy. Beat egg whites until foamy. Gradually beat in 1/4 cup sugar, continuing beating until stiff peaks form. Fold whites into yolk-beer mixture. Chill. Just before serving, fold in whipped cream. Serve in small punch cups, sprinkled with nutmeg. Makes 6 cups, or 12 half-cup servings.<p>"
-                                        });
+                {
+                    RecipeID = 15,
+                    RecipeName = "Holiday Eggnog",
+                    SubCategoryID = 24,
+                    Description = @"<p>Beat egg yolks with 1/4 cup sugar until very thick. Gradually stir in milk, beer, and brandy. Beat egg whites until foamy. Gradually beat in 1/4 cup sugar, continuing beating until stiff peaks form. Fold whites into yolk-beer mixture. Chill. Just before serving, fold in whipped cream. Serve in small punch cups, sprinkled with nutmeg. Makes 6 cups, or 12 half-cup servings.<p>"
+                });
                 context.SaveChanges();
 
-                var ri15_1 = new RecipeIngredient { RecipeIngredientID = 103, IngredientID = 57, RecipeID = 16, Quantity = 1};
+                var ri15_1 = new RecipeIngredient { RecipeIngredientID = 103, IngredientID = 57, RecipeID = 16, Quantity = 1 };
                 var ri15_2 = new RecipeIngredient { RecipeIngredientID = 104, IngredientID = 58, RecipeID = 16, Quantity = 0.25M };
                 var ri15_3 = new RecipeIngredient { RecipeIngredientID = 105, IngredientID = 12, RecipeID = 16, Quantity = 3 };
-                var ri15_4 = new RecipeIngredient { RecipeIngredientID = 106, IngredientID = 3, RecipeID = 16, Quantity = 0.5M};
+                var ri15_4 = new RecipeIngredient { RecipeIngredientID = 106, IngredientID = 3, RecipeID = 16, Quantity = 0.5M };
                 var ri15_5 = new RecipeIngredient { RecipeIngredientID = 107, IngredientID = 35, RecipeID = 16, Quantity = 2 };
                 var ri15_6 = new RecipeIngredient { RecipeIngredientID = 108, IngredientID = 2, RecipeID = 16, Quantity = 1 };
-                var ri15_7 = new RecipeIngredient { RecipeIngredientID = 109, IngredientID = 43, RecipeID = 16, Quantity = 1};
+                var ri15_7 = new RecipeIngredient { RecipeIngredientID = 109, IngredientID = 43, RecipeID = 16, Quantity = 1 };
 
                 recipeIngredients = new List<RecipeIngredient> { ri15_1, ri15_2, ri15_3, ri15_4, ri15_5, ri15_6, ri15_7 };
                 recipeIngredients.ForEach(ri => context.RecipeIngredients.Add(ri));
@@ -480,16 +480,16 @@ namespace Recipes.Models.Recipes
 
                 //Valentine Sugar Cookies
 
-                var ingredient59 = new Ingredient { IngredientID = 57, IngredientName = "Vanilla extract", MeasureID = 4, Carb = 12.6M, Protein = 0.1M, Fat = 0.1M};
+                var ingredient59 = new Ingredient { IngredientID = 57, IngredientName = "Vanilla extract", MeasureID = 4, Carb = 12.6M, Protein = 0.1M, Fat = 0.1M };
                 context.Ingredients.Add(ingredient59);
 
                 context.Recipes.Add(new Recipe
-                                        {
-                                            RecipeID = 16,
-                                            RecipeName = "Valentine Sugar Cookies",
-                                            SubCategoryID = 25,
-                                            Description = @"<p>In a mixing bowl, cream butter and sugar. Add egg and extracts. Stir in flour; mix well. Chill for several hours. On a lightly floured surface, roll dough to 1/4 inch thickness; cut with a 2 1/2 or 3 inch heart shaped cookie cutter. Place on ungreased baking sheets; sprinkle with red sugar, if desired. Bake at 375F for 8 to 10 minutes or until lightly browned.</p>"
-                                        });
+                {
+                    RecipeID = 16,
+                    RecipeName = "Valentine Sugar Cookies",
+                    SubCategoryID = 25,
+                    Description = @"<p>In a mixing bowl, cream butter and sugar. Add egg and extracts. Stir in flour; mix well. Chill for several hours. On a lightly floured surface, roll dough to 1/4 inch thickness; cut with a 2 1/2 or 3 inch heart shaped cookie cutter. Place on ungreased baking sheets; sprinkle with red sugar, if desired. Bake at 375F for 8 to 10 minutes or until lightly browned.</p>"
+                });
                 context.SaveChanges();
 
                 var ri16_1 = new RecipeIngredient { RecipeIngredientID = 110, IngredientID = 59, RecipeID = 17, Quantity = 1 };
@@ -597,12 +597,12 @@ namespace Recipes.Models.Recipes
                 ingredients.ForEach(i => context.Ingredients.Add(i));
 
                 context.Recipes.Add(new Recipe
-                                        {
-                                            RecipeID = 20,
-                                            RecipeName = "Turkey Stock",
-                                            SubCategoryID = 9,
-                                            Description = @"<p>Combine giblets, neck, and wing tips with water in a large saucepan; add remaining ingredients. Bring to boil, then lower heat and simmer for about 15 minutes, or until liver is tender. Remove liver and continue to simmer mixture for about 1 hour, or until remaining giblets are tender. Strain mixture; remove and chop giblets and liver for gravy. Reserve stock.</p>"
-                                        });
+                {
+                    RecipeID = 20,
+                    RecipeName = "Turkey Stock",
+                    SubCategoryID = 9,
+                    Description = @"<p>Combine giblets, neck, and wing tips with water in a large saucepan; add remaining ingredients. Bring to boil, then lower heat and simmer for about 15 minutes, or until liver is tender. Remove liver and continue to simmer mixture for about 1 hour, or until remaining giblets are tender. Strain mixture; remove and chop giblets and liver for gravy. Reserve stock.</p>"
+                });
                 context.SaveChanges();
 
                 var ri20_1 = new RecipeIngredient { RecipeIngredientID = 135, IngredientID = 70, RecipeID = 21, Quantity = 500 };
@@ -694,12 +694,12 @@ namespace Recipes.Models.Recipes
                 //Gery's Cheesecake
 
                 context.Recipes.Add(new Recipe
-                                        {
-                                            RecipeID = 24,
-                                            RecipeName = "Gery's Cheesecake",
-                                            SubCategoryID = 18,
-                                            Description = @"<p>Filling:  Combine cheese and sugar and mix thoroughly.</p><p>Add eggs one at a time, beating after each addition.</p><p>Beat in salt and vanilla. Turn into prepared graham cracker crust. Bake 1 hour in preheated 325 oven.</p><p>Topping: Combine sour cream, sugar and vanilla. Spread over top of cream cheese mixture.  Return to oven for 5 minutes. Remove and place to chill.</p><p>Serve plain or with berries.  Makes one deep-dish pie. I have doubled this and placed in a 11 x 8. Works beautifully. (Prepare crust by using boxed crushed graham cracker crumbs mixed with butter and press into dish)</p>"
-                                        });
+                {
+                    RecipeID = 24,
+                    RecipeName = "Gery's Cheesecake",
+                    SubCategoryID = 18,
+                    Description = @"<p>Filling:  Combine cheese and sugar and mix thoroughly.</p><p>Add eggs one at a time, beating after each addition.</p><p>Beat in salt and vanilla. Turn into prepared graham cracker crust. Bake 1 hour in preheated 325 oven.</p><p>Topping: Combine sour cream, sugar and vanilla. Spread over top of cream cheese mixture.  Return to oven for 5 minutes. Remove and place to chill.</p><p>Serve plain or with berries.  Makes one deep-dish pie. I have doubled this and placed in a 11 x 8. Works beautifully. (Prepare crust by using boxed crushed graham cracker crumbs mixed with butter and press into dish)</p>"
+                });
                 context.SaveChanges();
 
                 var ri24_1 = new RecipeIngredient { RecipeIngredientID = 162, IngredientID = 4, RecipeID = 25, Quantity = 1 };
@@ -720,12 +720,12 @@ namespace Recipes.Models.Recipes
                 context.Ingredients.Add(ingredient77);
 
                 context.Recipes.Add(new Recipe
-                                        {
-                                            RecipeID = 25,
-                                            RecipeName = "Icy Yogurt Pops",
-                                            SubCategoryID = 19,
-                                            Description = @"<p>You can use pureed fresh fruit or frozen fruits instead juice. In a 4 cup glass measure, combine yogurt, fruit juice concentrate and milk. Pour into pop molds or use small paper cups and insert a wooden stick in the centre of each. Freeze until firm, about 2 - 3 hours. To serve, peel off paper cups.</p>"
-                                        });
+                {
+                    RecipeID = 25,
+                    RecipeName = "Icy Yogurt Pops",
+                    SubCategoryID = 19,
+                    Description = @"<p>You can use pureed fresh fruit or frozen fruits instead juice. In a 4 cup glass measure, combine yogurt, fruit juice concentrate and milk. Pour into pop molds or use small paper cups and insert a wooden stick in the centre of each. Freeze until firm, about 2 - 3 hours. To serve, peel off paper cups.</p>"
+                });
                 context.SaveChanges();
 
                 var ri25_1 = new RecipeIngredient { RecipeIngredientID = 169, IngredientID = 77, RecipeID = 26, Quantity = 1 };
@@ -744,12 +744,12 @@ namespace Recipes.Models.Recipes
                 context.Ingredients.Add(ingredient79);
 
                 context.Recipes.Add(new Recipe
-                                        {
-                                            RecipeID = 26,
-                                            RecipeName = "Lemon Mousse",
-                                            SubCategoryID = 20,
-                                            Description = @"<p>Sprinkle gelatin over cold water and soften. Set in a bowl of hot water and mix till dissolved. Beat egg yolks in a medium bowl until blended. Gradually add half the sugar and continue beating until ribbon forms, about 3 to 5 minutes. Beat in lemon juice and zest, then the gelatin.</p><p>Refrigerator for 10 minutes, stirring every two minutes or until mixture mounds slightly when dropped from a spoon.</p><p>Whip cream until stiff. Whip egg whites wntil soft peaks form, then add remaining sugar a tablespoon at a time. Continue beating until stiff but not dry.</p><p>Gently fold egg-yolk mixture into shites until no streaks are left then fold in whipped cream.</p><p>Spoon into serving bowl or individual desset dishes.</p><p>Refrigerate 3 hours. Garnish with mint and lemon slices.</p>"
-                                        });
+                {
+                    RecipeID = 26,
+                    RecipeName = "Lemon Mousse",
+                    SubCategoryID = 20,
+                    Description = @"<p>Sprinkle gelatin over cold water and soften. Set in a bowl of hot water and mix till dissolved. Beat egg yolks in a medium bowl until blended. Gradually add half the sugar and continue beating until ribbon forms, about 3 to 5 minutes. Beat in lemon juice and zest, then the gelatin.</p><p>Refrigerator for 10 minutes, stirring every two minutes or until mixture mounds slightly when dropped from a spoon.</p><p>Whip cream until stiff. Whip egg whites wntil soft peaks form, then add remaining sugar a tablespoon at a time. Continue beating until stiff but not dry.</p><p>Gently fold egg-yolk mixture into shites until no streaks are left then fold in whipped cream.</p><p>Spoon into serving bowl or individual desset dishes.</p><p>Refrigerate 3 hours. Garnish with mint and lemon slices.</p>"
+                });
                 context.SaveChanges();
 
                 var ri26_1 = new RecipeIngredient { RecipeIngredientID = 172, IngredientID = 78, RecipeID = 27, Quantity = 1 };
@@ -774,5 +774,6 @@ namespace Recipes.Models.Recipes
                 }
             }
         }
+
     }
 }

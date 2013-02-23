@@ -7,8 +7,8 @@ using System.IO;
 using Recipes.Models;
 using Recipes.ViewModels;
 using System.Collections.Generic;
-using Recipes.Models.Yahoo;
 using System.Globalization;
+using Recipes.SeedData;
 
 namespace Recipes.Controllers
 {

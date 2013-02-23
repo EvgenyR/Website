@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 
-namespace Recipes.Models.Yahoo
+namespace Recipes.SeedData
 {
     public class YahooData
     {

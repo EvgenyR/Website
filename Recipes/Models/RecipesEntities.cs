@@ -1,5 +1,5 @@
 ﻿using System.Data.Entity;
-using Recipes.Models.Yahoo;
+using Recipes.SeedData;
 
 namespace Recipes.Models
 {

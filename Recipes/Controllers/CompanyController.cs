@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using Recipes.Models;
-using Recipes.Models.Yahoo;
+using Recipes.SeedData;
 
 namespace Recipes.Controllers
 {

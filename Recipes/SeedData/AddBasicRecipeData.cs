@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Recipes.Models;
 using System.Data.Entity.Validation;
 
-namespace Recipes.Models.Recipes
+namespace Recipes.SeedData
 {
-    public static class AddBasics
+    public static class AddBasicRecipeData
     {
         public static void Execute(RecipesEntities context)
         {
