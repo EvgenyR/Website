@@ -35,7 +35,6 @@
     {
         <li class="styled">
             <div class="display-label"></div>
-        <li>@Html.ActionLink("Theory", "../Yahoo/Theory", new { id = 1, seofriendly = "Yahoo Finance Data Example".ToSeoUrl() }, new { @class = "gamedesc" })</li>
             <div class="display-field">@Html.ActionLink(item.RecipeName, "../Recipe/Details", new { id = item.RecipeID, seofriendly = item.RecipeName.ToSeoUrl() })</div>
         </li>
     }
