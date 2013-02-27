@@ -11,13 +11,13 @@ namespace Recipes.Tests
     {
         public static void SetupDatabase()
         {
-            Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
-            Database.SetInitializer<RecipesEntities>(new TestDatabaseInitializer());
+            //Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
+            //Database.SetInitializer<RecipesEntities>(new TestDatabaseInitializer());
 
-            using (var db = new RecipesEntities())
-            {
-                db.Database.Initialize(true);
-            }
+            //using (var db = new RecipesEntities())
+            //{
+            //    db.Database.Initialize(true);
+            //}
         }
 
         public static string GetValidationError(List<ValidationResult> results)
