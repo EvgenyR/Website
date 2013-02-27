@@ -8,11 +8,11 @@ namespace Recipes.SeedData
         public const string content_27112011_r = "<p><u>2. What is the purpose of the model</u></p><p>In general, the population growth model helps understand processes that occur in the ecological system. In particular, if applied to human population, for example, the model may be used to predict the population growth and approach the potential problems that the growth will cause, such as overpopulation, shortage of housing or fresh water, pollution and similar.</p>" +
             "<p><u>3. What does the model represent</u></p><p>In fact, there are multiple models of the population growth and the complete list is probably outside the scope of this exercise. Generally, the population growth model is a total number of species in the population as a function of time t, and there are multiple factors that influence the result of the function. More complex models consider more factors and are more accurate.</p><p><u>4. How is it represented</u></p>" +
             "<p>The simplest model may be the arithmetic model. In this case the population is defined as follows:</p>" +
-            "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2011/27112011_Equation_1.png\" alt=\"Equation 1\" /></div>" +
+            "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2011/27112011_Equation_1.png\" alt=\"Equation 1\" /></div>" +
             "<p>And the population size is a simple function of births, immigration, deaths and emigration. While this model may be accurate in retrospect, it is not very useful in predicting the population growth because the variables on the right side of the equation are generally not known beforehand.</p><p>Another well-known model is an exponential model</p>" +
-            "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2011/27112011_Equation_1.png\" alt=\"Equation 1\" /></div>" +
+            "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2011/27112011_Equation_2.png\" alt=\"Equation 1\" /></div>" +
             "<p>This model assumes that the population grows at a certain rate r. This model is a simplification because it makes several assumptions, such as the rate being constant, ignoring emigration and immigration and ignoring restrictions on population growth which will inevitably apply.</p><p>A logistic growth model appears to be more advanced.</p>" +
-            "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2011/27112011_Equation_1.png\" alt=\"Equation 1\" /></div>" +
+            "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2011/27112011_Equation_3.png\" alt=\"Equation 1\" /></div>" +
             "<p>Compared to the exponential model, this model takes into account the carrying capacity K, which is the maximum sustainable population size or, simply, the largest amount of species the environment can support. As the population size approaches K, the population grows and the population size N can never be larger than K. This model still makes certain assumptions, such as that K remains constant, and influence of immigration and emigration is ignored too.</p><p><u>5. Is the representation accurate?</u></p><p>None of the models mentioned above appears to be exactly accurate. For example, the exponential growth model is fairly accurate at the initial phase. However, at a later stage a lot of other effects become significant which are not considered by the model.</p>" +
             "<p><u>6. How could you validate your model?</u></p><p>The model can be simulated by computational methods but that, of course, does not say anything about the validity of the model. Intuitively, it appears that the model can not be proven valid; the best possible outcome would be to estimate the range of the possible error. Even in a relatively simple case, for example a model of a bacterial growth under known conditions, it is unlikely that the population size will be exactly equal to the predicted value. If we repeat the experiment a number of times, the resulting population size will probably be in a certain range, following a normal distribution. In complex models, such as the human population size, the estimates may be in much wider range. For example, the projections of human population in 2050 made by UN range from low 8 billion to high 10.5 billion. The best case for validating the model is to be able to explain the actual observed data within the experimental error.</p><p><u>7. Additional information</u></p>" +
             "<p>The population growth models are just the basics of the population biology. The models above only apply to the population of a single species. However, most species on the planet interact with other species and mutually influence their population sizes. One of the examples of a model involving two species is the parasite-host system. Such model will consider additional factors compared to single-species model: hosts that carry parasites will give rise to the next generation of parasites, while host that do not carry parasites will produce their own offspring, the fraction of the hosts that are parasitized depend on the rate of the encounters of the two species etc. Another possible example is the interaction between a plant species and a herbivore. Such models generally require differential equations to describe them.</p>";
@@ -74,9 +74,9 @@ namespace Recipes.SeedData
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/13092012_Equation_6.png\" alt=\"Equation 6\" /></div>" +
             "<p>where <i>k = 2, ..., 7</i>, corresponding to seasons from 2004/5 to 2009/10, and <i>&pi;<sub>1</sub></i> is estimated individually as a success probability for 2003/4 season. <i>R<sub>k</sub></i> are performances for the current seasons. A beta prior is the success probability for the first season and gamma priors are relative successes <i>R<sub>k</sub></i>.</p><p>Likelihood for this model is given by (11).</p>" +
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/13092012_Equation_7.png\" alt=\"Equation 7\" /></div>" +
-            "<p>The likelihood is written in OpenBUGS as</p><pre class=\"brush: c\">for (k in 1:YEARS){ y[k]  ~ dbin( pi[k], N[k] ) }</pre><p>while the model for success probabilities is expressed as follows:</p><pre class=\"brush: c\">" +
+            "<p>The likelihood is written in OpenBUGS as</p><pre class=\"brush: cpp\">for (k in 1:YEARS){ y[k]  ~ dbin( pi[k], N[k] ) }</pre><p>while the model for success probabilities is expressed as follows:</p><pre class=\"brush: cpp\">" +
             @"for (k in 2:YEARS){ pi[k]<-pi[k-1]*R[k] }" +
-            "</pre><p>The data for the model specifies the values of the successes and total attempts (<i>y<sub>i</sub></i> and <i>N<sub>i</sub></i>) for each season. Initial values for the model must be specified for <i>&pi;<sub>1</sub></i> and <i>R<sub>k</sub></i> as follows:</p><pre class=\"brush: c\">" +
+            "</pre><p>The data for the model specifies the values of the successes and total attempts (<i>y<sub>i</sub></i> and <i>N<sub>i</sub></i>) for each season. Initial values for the model must be specified for <i>&pi;<sub>1</sub></i> and <i>R<sub>k</sub></i> as follows:</p><pre class=\"brush: cpp\">" +
             @"list(pi=c(0.5, NA, NA, NA, NA, NA, NA), R=c(NA, 1,1,1,1,1,1))" +
             "</pre><p>No initial values were specified for <i>&pi;<sub>2</sub></i> ... <i>&pi;<sub>7</sub></i> since they are deterministic and for <i>R<sub>1</sub></i> since it is constant. Actual initial data used for the model is attached as separate initX.txt files, where X is the number of the chain.</p><p><strong>4.3. One Chain Calculation</strong></p><p>The initial calculation was run with 1000 samples burn-in and 2000 sample points, for one chain. The posterior summaries were presented in Figure 1</p>" +
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/13092012_Posterior_summaries_for_one_chain_calculation.png\" alt=\"Posterior summaries for one chain calculation\" /></div>" +
@@ -88,7 +88,7 @@ namespace Recipes.SeedData
             " Convergence can be checked by using the trace option from <strong>Inference -> Samples</strong> menu. Figure 4 represents the history plots for <i>&pi;<sub>i</sub></i>.</p>" +
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/13092012_History_Plots_for_one_chain.png\" alt=\"History Plots for one chain\" /></div>" +
             "<p align=\"center\">Figure 4 – History Plots for <i>&pi;<sub>i</sub></i>, one chain</p><p>It is clear that <i>&pi;<sub>7</sub></i> has converged, while the result for other seasons is not so obvious. Multiple chain calculation with a higher number of iterations may be helpful. Another reason to use the higher number of iterations is the reduction of Monte Carlo error in case it is too high – it decreases as the number of iteration grows. In fact, the value of Monte Carlo error can be used to decide when to stop simulation.</p>" +
-            "<p><strong>4.4. Multiple chain calculation</strong></p><p>The main difference between the single and multiple chain calculations is the fact that a separate set of initial values is required for each chain. The following initial values were used for the three chains:</p><pre class=\"brush: c\">" +
+            "<p><strong>4.4. Multiple chain calculation</strong></p><p>The main difference between the single and multiple chain calculations is the fact that a separate set of initial values is required for each chain. The following initial values were used for the three chains:</p><pre class=\"brush: cpp\">" +
             @"list(pi=c(0.5, NA, NA, NA, NA, NA, NA), R=c(NA, 1,1,1,1,1,1))
             list(pi=c(0.9, NA, NA, NA, NA, NA, NA), R=c(NA, 1,1,1,1,1,1))
             list(pi=c(0.1, NA, NA, NA, NA, NA, NA), R=c(NA, 1,1,1,1,1,1))" +
@@ -137,7 +137,7 @@ namespace Recipes.SeedData
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/04082012_Equation_13.png\" alt=\"Equation 13\" /></div>" +
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/04082012_Equation_14.png\" alt=\"Equation 14\" /></div>" +
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/04082012_Equation_15.png\" alt=\"Equation 15\" /></div>" +
-            "<p>The data and the regression line can be plotted using the following R script</p><pre class=\"brush: c\">" +
+            "<p>The data and the regression line can be plotted using the following R script</p><pre class=\"brush: cpp\">" +
             @"conc<-c(0.66,1,1.5,3,4,6)
             rate1<-c(0.0611,0.0870,0.1148,0.1407,0.1685,0.1796)
             plot(conc,rate1,lwd=2,col=""red"",xlab=""[S], micromoles"",ylab=""V0"")
@@ -161,29 +161,29 @@ namespace Recipes.SeedData
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/04082012_Equation_20.png\" alt=\"Equation 20\" /></div>" +
             "<p>Considering that the <i>K<sub>m</sub></i> and <i>V<sub>max</sub></i> are constants, the equation is now in the linear form of <i>y=ax+b</i>, where <i>y=1/V</i>, <i>a=<i>K<sub>m</sub></i>/<i>V<sub>max</sub></i></i> and <i>b=1/<i>V<sub>max</sub></i></i>." +
             " The graphical representation of the function is known as Lineweaver-Burk plot and is used for the estimation of the <i>K<sub>m</sub></i> and <i>V<sub>max</sub></i> parameters. It is, however, very error prone because the <i>y</i>-axis takes a reciprocal of reaction rates and small measurement errors are increased.</p><p>When the analytical solution for the non-linear function does not exist, numerical methods are used. The algorithms behind these methods generally require an estimate for the parameter of interest, which should be reasonable to make sure the result is correct. In R language, <i>nls</i> function is used to determine nonlinear least-squares estimates of the parameters of a nonlinear model. To apply the function, it would be reasonable to first use the Lineweaver-Burk plot for an estimate of the parameters and then to use the results as an input for the <i>nls</i> function.</p><p>The reciprocal values were produced and the Lineweaver-Burk plot was constructed using the data from Table 1. " +
-            "Next, the least squares regression was applied to the plot of reciprocals to establish the values of <i>K<sub>m</sub></i> and <i>V<sub>max</sub></i>. This was achieved by the following R script</p><pre class=\"brush: c\">" +
+            "Next, the least squares regression was applied to the plot of reciprocals to establish the values of <i>K<sub>m</sub></i> and <i>V<sub>max</sub></i>. This was achieved by the following R script</p><pre class=\"brush: cpp\">" +
             @"concLB<-1/conc
             rate1LB<-1/rate1
             fit<-lm(rate1LB~concLB)
             fit" +
-            "</pre><p>The script produced the following output.</p><pre class=\"brush: c\">" +
+            "</pre><p>The script produced the following output.</p><pre class=\"brush: cpp\">" +
             @"Call:
             lm(formula = rate1LB ~ concLB)
 
             Coefficients:
             (Intercept)       concLB  
                   4.051        7.853  " +
-            "</pre><p>The results were plotted by the following R script and are presented in Figure 3.</p><pre class=\"brush: c\">" +
+            "</pre><p>The results were plotted by the following R script and are presented in Figure 3.</p><pre class=\"brush: cpp\">" +
             @"plot(concLB,rate1LB,ylim=range(c(rate1LB)),lwd=2,col=""red"",xlab=""1/[S], 1/micromoles"",ylab=""1/V0"")
             par(new=TRUE)
             abline(a=4.051,b=7.853,col=""blue"")
             text(1, 10, ""regression line"", col=""blue"")" +
             "</pre>" +
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/04082012_R_Plot_2.png\" alt=\"R Plot 2\" /></div>" +
-            "<p align=\"center\">Figure 3-Using Lineweaver-Burk plot to estimate Michaelis-Menten parameters</p><p>The output was used to calculate the estimates for <i>K<sub>m</sub></i> and <i>V<sub>max</sub></i>.</p><i>1/V<sub>max</sub> = 4.051 + 7.853*(1/K<sub>m</sub>)</i><br/><i>V<sub>max</sub> = 1/4.051 = 0.2469</i><br/><i>-7.853*(1/K<sub>m</sub>) = 4.051</i><br/><i>-(1/K<sub>m</sub>)=0.5159</i><br/><i>K<sub>m</sub> = 1.9384</i><br/><p>Now that the reasonable estimates are calculated, it is possible to use the non-linear regression to fit Michaelis-Menten function. This is achieved by the following R script.</p><pre class=\"brush: c\">" +
+            "<p align=\"center\">Figure 3-Using Lineweaver-Burk plot to estimate Michaelis-Menten parameters</p><p>The output was used to calculate the estimates for <i>K<sub>m</sub></i> and <i>V<sub>max</sub></i>.</p><i>1/V<sub>max</sub> = 4.051 + 7.853*(1/K<sub>m</sub>)</i><br/><i>V<sub>max</sub> = 1/4.051 = 0.2469</i><br/><i>-7.853*(1/K<sub>m</sub>) = 4.051</i><br/><i>-(1/K<sub>m</sub>)=0.5159</i><br/><i>K<sub>m</sub> = 1.9384</i><br/><p>Now that the reasonable estimates are calculated, it is possible to use the non-linear regression to fit Michaelis-Menten function. This is achieved by the following R script.</p><pre class=\"brush: cpp\">" +
             @"df<-data.frame(conc, rate1)   
             nlsfit <- nls(rate1~Vm*conc/(K+conc),data=df, start=list(K=1.9384, Vm=0.2469))
-            summary(nlsfit)" + "</pre><p>The script provides the following output</p><pre class=\"brush: c\">" +
+            summary(nlsfit)" + "</pre><p>The script provides the following output</p><pre class=\"brush: cpp\">" +
             @"Formula: rate1 ~ Vm * conc/(K + conc)
 
             Parameters:
@@ -197,7 +197,7 @@ namespace Recipes.SeedData
 
             Number of iterations to convergence: 3 
             Achieved convergence tolerance: 2.895e-06" +
-            "</pre><p>Alternatively, the R language contains a number of ‘self-starting’ models, which can be used without the initial estimates for the parameters. The Michaelis-Menten model is represented by SSmicmen function and can be used as in the following R script</p><pre class=\"brush: c\">" +
+            "</pre><p>Alternatively, the R language contains a number of ‘self-starting’ models, which can be used without the initial estimates for the parameters. The Michaelis-Menten model is represented by SSmicmen function and can be used as in the following R script</p><pre class=\"brush: cpp\">" +
             @"model<-nls(rate1~SSmicmen(conc,a,b))
             summary(model)
 
@@ -216,7 +216,7 @@ namespace Recipes.SeedData
 
             Number of iterations to convergence: 0 
             Achieved convergence tolerance: 2.637e-06" +
-            "</pre><p>In this case, the results were identical for the <i>nls</i> function and the SSmicmen function. This probably means that the initial estimates used in the <i>nls</i> function were reasonable. Lastly, the parameters identified by nonlinear regression can be used to plot the resulting function and compare it with experimental data.</p><p>The following R script will generate 100 points on the curve predicted by the values of <i>K<sub>m</sub></i> and <i>V<sub>max</sub></i> that were identified by the nonlinear least squares method and plot them against the experimental data.</p><pre class=\"brush: c\">" +
+            "</pre><p>In this case, the results were identical for the <i>nls</i> function and the SSmicmen function. This probably means that the initial estimates used in the <i>nls</i> function were reasonable. Lastly, the parameters identified by nonlinear regression can be used to plot the resulting function and compare it with experimental data.</p><p>The following R script will generate 100 points on the curve predicted by the values of <i>K<sub>m</sub></i> and <i>V<sub>max</sub></i> that were identified by the nonlinear least squares method and plot them against the experimental data.</p><pre class=\"brush: cpp\">" +
             @"plot(conc,rate1,lwd=2,col=""red"",xlab=""[S], micromoles"",ylab=""V0"")
             par(new=TRUE)
             Vm <- 0.2315
@@ -248,7 +248,7 @@ namespace Recipes.SeedData
             "Random variables are used when describing probability models. In mathematical notation, a random variable that describes a coin toss is defined as (1).</p>" +
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/01082012_Distribution.png\" alt=\"Distribution\" /></div>" +
             "<i><u>Probability density function</u></i><p>Each random variable has an associated probability distribution. For a discrete random variable this distribution is called the probability mass function (pmf) and for the continuous random variable – the probability distribution function (pdf)." +
-            " In simple terms, it can be described as the shape of the distribution. It tells how densely or tightly the probability is packed for any point x. The key property of all probability distributions is that the total area under the pdf curve is always equal to one. To understand why, consider that the pdf represents the entire sample space and the event is guaranteed to happen somewhere in that space. Therefore the total probability over the sample space is one. The area below the pdf function to the left of the value <i>x</i> is equal to the probability of the random variable being less than the given <i>x</i>. As an example of the pdf consider the plot generated by the following R script:</p><pre class=\"brush: c\">" +
+            " In simple terms, it can be described as the shape of the distribution. It tells how densely or tightly the probability is packed for any point x. The key property of all probability distributions is that the total area under the pdf curve is always equal to one. To understand why, consider that the pdf represents the entire sample space and the event is guaranteed to happen somewhere in that space. Therefore the total probability over the sample space is one. The area below the pdf function to the left of the value <i>x</i> is equal to the probability of the random variable being less than the given <i>x</i>. As an example of the pdf consider the plot generated by the following R script:</p><pre class=\"brush: cpp\">" +
             @"x=seq(-4,4,length=200)
             y=dnorm(x)
             plot(x,y,type=""l"", lwd=2, col=""blue"")
@@ -265,7 +265,7 @@ namespace Recipes.SeedData
             "The pdf for the random variable that has uniform distribution can be defined as (3).</p>" +
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/01082012_Function.png\" alt=\"Function\" /></div>" +
             "<p>The uniform distribution is the most basic continuous random variable: all the values of a probability density function are the same, which means that the occurrence of a random variable within an interval of fixed length is independent of the location of the interval." +
-            " It is also known as a rectangular distribution, because the area under the curve of the pdf is rectangular in shape, and the pdf itself is a straight horizontal line. Real-life examples may include composition samples from perfect mixtures, arrival times of requests on a web server or just a random number generator. An example of discrete uniform distribution model can be demonstrated by plotting the results of a simple 6-sided die roll, using the following R script:</p><pre class=\"brush: c\">" +
+            " It is also known as a rectangular distribution, because the area under the curve of the pdf is rectangular in shape, and the pdf itself is a straight horizontal line. Real-life examples may include composition samples from perfect mixtures, arrival times of requests on a web server or just a random number generator. An example of discrete uniform distribution model can be demonstrated by plotting the results of a simple 6-sided die roll, using the following R script:</p><pre class=\"brush: cpp\">" +
             @"numcases <- 10000                           #number of rolls
             min <- 1                                  #minimum and maximum values
             max <- 6
@@ -279,7 +279,7 @@ namespace Recipes.SeedData
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/01082012_Function_2.png\" alt=\"Function\" /></div>" +
             "<p>The cdf for the exponential distribution is defined in (5).</p>" +
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/01082012_Function_3.png\" alt=\"Function\" /></div>" +
-            "<p>An example of the exponential distribution is plotted using the R script below, using λ=2. The greyed area corresponds to the probability of <i>x</i> taking the value less than 1.</p><pre class=\"brush: c\">" +
+            "<p>An example of the exponential distribution is plotted using the R script below, using λ=2. The greyed area corresponds to the probability of <i>x</i> taking the value less than 1.</p><pre class=\"brush: cpp\">" +
             @"x=seq(0,4,length=200)
             y=dexp(x,rate=2)
             plot(x,y,type=""l"",lwd=2,col=""red"",ylab=""p"")
@@ -293,7 +293,7 @@ namespace Recipes.SeedData
             "If X represents a waiting time, then the probability of waiting a given length of time is not affected by the time waited already. This is described by a formula</p>" +
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/01082012_Probability_2.png\" alt=\"Probability\" /></div>" +
             "<p>In other words, if you have already waited a minutes, the probability of waiting another b minutes is the same as the initial probability of waiting b minutes.</p>" +
-            "<p>The constant λ is the reciprocal of the mean of the exponential distribution. So, if the value of λ is large, the distribution has a small mean and quickly drops toward zero. If the value of λ is small, the mean is large and the distribution drops very slowly. This is illustrated by the following R script, which plots the distribution with λ=3 in red and λ=1 in green. The red curve drops towards the zero much faster than the green one.</p><pre class=\"brush: c\">" +
+            "<p>The constant λ is the reciprocal of the mean of the exponential distribution. So, if the value of λ is large, the distribution has a small mean and quickly drops toward zero. If the value of λ is small, the mean is large and the distribution drops very slowly. This is illustrated by the following R script, which plots the distribution with λ=3 in red and λ=1 in green. The red curve drops towards the zero much faster than the green one.</p><pre class=\"brush: cpp\">" +
             @"x=seq(0,4,length=200)
             y=dexp(x,rate=3)
             x1=seq(0,4,length=200)
@@ -307,7 +307,7 @@ namespace Recipes.SeedData
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/01082012_Probability_3.png\" alt=\"Probability\" /></div></a>" +
             "</div><p>Exponential random variates can be generated from the uniform random variates according to (7).</p>" +
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/01082012_Probability_4.png\" alt=\"Probability\" /></div>" +
-            "<p>To visually confirm this property of the exponential distribution, the following R script first generates uniform random variates and then applies (7) to each of them to calculate the value of <i>x</i>, which is then plotted on the graph in Figure 4.</p><pre class=\"brush: c\">" +
+            "<p>To visually confirm this property of the exponential distribution, the following R script first generates uniform random variates and then applies (7) to each of them to calculate the value of <i>x</i>, which is then plotted on the graph in Figure 4.</p><pre class=\"brush: cpp\">" +
             @"n<-100
             lambda <- 1
             UnifRandVar <- runif(n, min=0, max=100)
@@ -323,7 +323,7 @@ namespace Recipes.SeedData
         public const string content_15052012_b = "<h2>1. Introduction</h2><p>The asparatic proteinase from HIV is a target for antiviral drug design.  Kuzmic et al (1996) studied the influence of mechanical stirring on the process of asparatic proteinase catalysed hydrolysis of a fluorogenic peptide. The kinetics were measured for the two reactions types, one with mechanical stirring and one without, under otherwise identical conditions. Initial velocities from both sets of reactions were plotted at initial substrate concentrations of 6, 4, 3, 1.5, 1 and 0.66 micromoles. Kuzmic et al (1996) did not include the raw data into the article, but the data was presented in Figure 1.</p>";
         public const string content_15052012_r =
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/15052012_Raw_data_used_in_the_exercise.png\" alt=\"Raw data used in the exercise\" /></div>" +
-            "<p align=\"center\"><strong>Figure 1. Raw data used in the exercise</strong></p><p>For the purpose of this exercise, the raw data was visually translated from the graph into the numeric values. The data then was plotted using the following <strong>R</strong> script</p><pre class=\"brush: c\">" +
+            "<p align=\"center\"><strong>Figure 1. Raw data used in the exercise</strong></p><p>For the purpose of this exercise, the raw data was visually translated from the graph into the numeric values. The data then was plotted using the following <strong>R</strong> script</p><pre class=\"brush: cpp\">" +
             @"conc&lt;-c(0.66,1,1.5,3,4,6)
             rate1&lt;-c(0.0611,0.0870,0.1,0.1407,0.1685,0.1796)
             rate2&lt;-c(0.0685,0.0944,0.1148,0.1592,0.1796,0.1907)
@@ -333,7 +333,7 @@ namespace Recipes.SeedData
             plot(conc,rate2,ylim=range(c(rate1,rate2)),lwd=2,col=""green"",axes=FALSE,xlab="""",ylab="""")" +
             "</pre>" +
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/15052012_Raw_data_plotted_with_R.png\" alt=\"Raw data plotted with R\" /></div>" +
-            "<strong><p align=\"center\">Figure 2. Raw data plotted with R</p></strong><h2>2. Using the Lineweaver-Burk plot</h2><p>Next, the reciprocal values were produced and the Lineweaver-Burk plot was constructed and plotted using the following <strong>R</strong> script</p><pre class=\"brush: c\">" +
+            "<strong><p align=\"center\">Figure 2. Raw data plotted with R</p></strong><h2>2. Using the Lineweaver-Burk plot</h2><p>Next, the reciprocal values were produced and the Lineweaver-Burk plot was constructed and plotted using the following <strong>R</strong> script</p><pre class=\"brush: cpp\">" +
             @"concLB&lt;-1/conc
             rate1LB&lt;-1/rate1
             rate2LB&lt;-1/rate2
@@ -342,7 +342,7 @@ namespace Recipes.SeedData
             plot(concLB,rate2LB,ylim=range(c(rate1LB,rate2LB)),lwd=2,col=""green"",xlab="",ylab="")" +
             "</pre><strong>" +
             "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/db/2012/15052012_Lineweaver-Burk_plot_with_R.png\" alt=\"Lineweaver-Burk plot with R\" /></div>" +
-            "<p align=\"center\">Figure 3. Lineweaver-Burk plot with R</p></strong><p>Next, the least squares regression was applied to the plot of reciprocals to establish the values of K<sub>m</sub> and V<sub>max</sub></p><pre class=\"brush: c\">" +
+            "<p align=\"center\">Figure 3. Lineweaver-Burk plot with R</p></strong><p>Next, the least squares regression was applied to the plot of reciprocals to establish the values of K<sub>m</sub> and V<sub>max</sub></p><pre class=\"brush: cpp\">" +
             @"fit&lt;-lm(rate1LB~concLB)
             fit
 
@@ -352,7 +352,7 @@ namespace Recipes.SeedData
             Coefficients:
             (Intercept)       concLB  
                   4.050        7.626" +
-            "</pre><p>From the results of the script, the regression line for the data gathered in the absence of stirring is described by the following equation<br>1/ V<sub>max</sub> = 4.050 + 7.626*(1/ K<sub>m</sub>)<br>V<sub>max</sub> = 1/4.050 = 0.2469<br>-7.626*(1/ K<sub>m</sub>) = 4.050<br>-(1/ K<sub>m</sub>)=0.5311<br>K<sub>m</sub> = 1.8829</p><p>Similarly, the following script was applied to the second set of data</p><pre class=\"brush: c\">" +
+            "</pre><p>From the results of the script, the regression line for the data gathered in the absence of stirring is described by the following equation<br>1/ V<sub>max</sub> = 4.050 + 7.626*(1/ K<sub>m</sub>)<br>V<sub>max</sub> = 1/4.050 = 0.2469<br>-7.626*(1/ K<sub>m</sub>) = 4.050<br>-(1/ K<sub>m</sub>)=0.5311<br>K<sub>m</sub> = 1.8829</p><p>Similarly, the following script was applied to the second set of data</p><pre class=\"brush: cpp\">" +
             @"fit&lt;-lm(rate2LB~concLB)
             fit
 
@@ -369,13 +369,13 @@ namespace Recipes.SeedData
             (Intercept)       concLB  
                   4.166        7.170" +
             "</pre><p>The regression line was described by the following equation.<br>1/ V<sub>max</sub> = 4.166 + 7.170*(1/ K<sub>m</sub>), from which<br>V<sub>max</sub> = 0.24, K<sub>m</sub> = 1.7212</p><h2>3. Using the Hanes-Woolf plot</h2><p>The Lineweaver-Burk plot is prone to errors as small errors in reaction rate measurement increase the reciprocal. Among alternative linear forms is the Hanes-Woolf plot where the ratio of the substrate concentration to the reaction velocity is plotted against substrate concentration." +
-            " The data was used to plot the Hanes-Woolf plot using the following <strong>R</strong> script</p><pre class=\"brush: c\">" +
+            " The data was used to plot the Hanes-Woolf plot using the following <strong>R</strong> script</p><pre class=\"brush: cpp\">" +
             @"rate1HW&lt;-conc/rate1
             rate2HW&lt;-conc/rate2
             plot(conc,rate1HW,ylim=range(c(rate1HW,rate2HW)),lwd=2,col=""red"",xlab=""[S]"",ylab=""[S]/V0"")
             par(new=TRUE)
             plot(conc,rate2HW,ylim=range(c(rate1HW,rate2HW)),lwd=2,col=""green"",xlab="""",ylab="""")" +
-            "</pre><p>The least squares regression was applied</p><pre class=\"brush: c\">" +
+            "</pre><p>The least squares regression was applied</p><pre class=\"brush: cpp\">" +
             @"fit&lt;-lm(rate1HW~conc)
             fit
 
@@ -385,7 +385,7 @@ namespace Recipes.SeedData
             Coefficients:
             (Intercept)         conc  
                   8.005        4.191" +
-            "</pre><p>The regression line is described by the following equation<br>(S/v) = 8.005 + 4.191*S<br>K<sub>m</sub> = 8.005/4.191 = 1.91<br>K<sub>m</sub> / V<sub>max</sub> = 8.005<br>V<sub>max</sub> = 1.91/8.005 = 0.2386</p><p>Similar script was used to process the data taken in the presence of stirring.</p><pre class=\"brush: c\">" +
+            "</pre><p>The regression line is described by the following equation<br>(S/v) = 8.005 + 4.191*S<br>K<sub>m</sub> = 8.005/4.191 = 1.91<br>K<sub>m</sub> / V<sub>max</sub> = 8.005<br>V<sub>max</sub> = 1.91/8.005 = 0.2386</p><p>Similar script was used to process the data taken in the presence of stirring.</p><pre class=\"brush: cpp\">" +
             @"fit&lt;-lm(rate2HW~conc)
             fit
 
@@ -396,7 +396,7 @@ namespace Recipes.SeedData
             (Intercept)         conc  
                   6.726        4.054" +
             "</pre><p>The regression line is described by the following equation<br>(S/v) = 6.726 + 4.054*S<br>K<sub>m</sub> = 1.659, V<sub>max</sub> = 0.2467</p><h2>4. Using the R language package</h2><p>Finally, the non-linear self-starting Michaelis-Menten model, which is part of the <strong>R</strong> language, was used to estimate the values of V<sub>max</sub>" +
-            " and K<sub>m</sub> in the absence of stirring using the following <strong>R</strong> script</p><pre class=\"brush: c\">" +
+            " and K<sub>m</sub> in the absence of stirring using the following <strong>R</strong> script</p><pre class=\"brush: cpp\">" +
             @"model&lt;nls(rate1~SSmicmen(conc,a,b))
             summary(model)
 
@@ -415,7 +415,7 @@ namespace Recipes.SeedData
 
             Number of iterations to convergence: 0 
             Achieved convergence tolerance: 1.244e-06 " +
-            "</pre><p>Which estimated V<sub>max</sub> = 0.23953 and K<sub>m</sub> =1.92898</p><p>Similar results for the reaction with stirring were</p><pre class=\"brush: c\">" +
+            "</pre><p>Which estimated V<sub>max</sub> = 0.23953 and K<sub>m</sub> =1.92898</p><p>Similar results for the reaction with stirring were</p><pre class=\"brush: cpp\">" +
             @"model&lt;-nls(rate2~SSmicmen(conc,a,b))
             summary(model)
 

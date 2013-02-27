@@ -1,25 +1,16 @@
-﻿using System.Data.Entity;
-using Recipes.Models;
-using System.Data.Entity.Infrastructure;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 
-namespace Recipes.Tests
+namespace Recipes.UnitTests
 {
-    public static class Common
+    internal class Common
     {
-        public static void SetupDatabase()
-        {
-            Database.DefaultConnectionFactory = new SqlCeConnectionFactory("System.Data.SqlServerCe.4.0");
-            Database.SetInitializer<RecipesEntities>(new TestDatabaseInitializer());
-
-            using (var db = new RecipesEntities())
-            {
-                db.Database.Initialize(true);
-            }
-        }
-
+        /// <summary>
+        /// Returns a validation error message if a validation error occurred, and an empty string otherwise
+        /// </summary>
+        /// <param name="results">validation results</param>
+        /// <returns>error message</returns>
         public static string GetValidationError(List<ValidationResult> results)
         {
             foreach (var result in results)
@@ -32,6 +23,11 @@ namespace Recipes.Tests
             return string.Empty;
         }
 
+        /// <summary>
+        /// Used when an error is expected to occur
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns>First error message</returns>
         public static string GetFirstErrorMessage(ActionResult result)
         {
             ViewResult vr = (ViewResult)result;
@@ -49,13 +45,5 @@ namespace Recipes.Tests
             return string.Empty;
         }
 
-        public static Category GetNewTestCategory()
-        {
-            return new Category()
-                       {
-                           CategoryName = "test",
-                           Description = "test description"
-                       };
-        }
     }
 }

@@ -23,8 +23,7 @@ namespace Recipes.SeedData
                 AddBlogEngineBloggerData.PopulateBloggers(context);
                 AddBlogEngineBlogData.PopulateBlogs(context);
 
-                AddDigitalBiologyBlogData.AddPosts(context);
-                AddDevelopmentBlogData.AddPosts(context);
+                AddBlogPostData.AddPosts(context);
 
                 //yahoo
 

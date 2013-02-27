@@ -2,27 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Recipes.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace Recipes.Tests
+namespace Recipes.UnitTests
 {
-    /// <summary>
-    ///This is a test class for RecipeModelTest and is intended
-    ///to contain all RecipeModelTest Unit Tests
-    ///</summary>
-    [TestClass()]
-    public class RecipeModelTest
+    public class RecipeModelTests
     {
-        private string ShortName = "a";
+        private readonly string ShortName = "a";
 
-        private string LongName = @"aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa
+        private readonly string LongName = @"aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa
                 aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa aaaaaaaaaa";
 
-        [TestMethod()]
+        /// <summary>
+        /// Verifies that attempt to create a Recipe returns correct validation error
+        /// if recipe name is too short
+        /// </summary>
+        [Test]
         public void RecipeNameTooShortTest()
         {
+            //Arrange
             Recipe recipe = new Recipe()
             {
                 RecipeName = ShortName
@@ -30,16 +30,24 @@ namespace Recipes.Tests
 
             var validationContext = new ValidationContext(recipe, null, null);
             var validationResults = new List<ValidationResult>();
+
+            //Act
             Validator.TryValidateObject(recipe, validationContext, validationResults);
 
             string error = Common.GetValidationError(validationResults);
 
+            //Assert
             Assert.AreEqual(error, Constants.Constants.RecipeNameTooShort);
         }
 
-        [TestMethod()]
+        /// <summary>
+        /// Verifies that attempt to create a Recipe returns correct validation error
+        /// if recipe name is too long
+        /// </summary>
+        [Test]
         public void RecipeNameTooLongTest()
         {
+            //Arrange
             Recipe recipe = new Recipe()
             {
                 RecipeName = LongName
@@ -47,10 +55,13 @@ namespace Recipes.Tests
 
             var validationContext = new ValidationContext(recipe, null, null);
             var validationResults = new List<ValidationResult>();
+            
+            //Act
             Validator.TryValidateObject(recipe, validationContext, validationResults);
 
             string error = Common.GetValidationError(validationResults);
 
+            //Assert
             Assert.AreEqual(error, Constants.Constants.RecipeNameTooLong);
         }
     }

@@ -89,6 +89,66 @@ namespace Recipes.UnitTests
         }
 
         /// <summary>
+        /// A category can be deleted normally
+        /// </summary>
+        [Test]
+        public void DeletesExistingRecipeCategory()
+        {
+            //Arrange
+            CategoryController target = new CategoryController();
+
+            Category initialCategory = GetNewTestCategory();
+            Category deletedCategory = GetNewTestCategory();
+
+            target.Create(initialCategory);
+            int id = initialCategory.CategoryID;
+
+            //Act
+            ActionResult actual = target.DeleteConfirmed(id);
+
+            using (RecipesEntities db = new RecipesEntities())
+            {
+                deletedCategory = db.Categories.Find(id);
+            }
+
+            //Assert
+            Assert.IsNotNull(initialCategory);
+            Assert.IsNull(deletedCategory);
+        }
+
+        /// <summary>
+        /// Can not delete a category if there are recipes that belong to it
+        /// </summary>
+        [Test]
+        public void CanNotDeleteUsedTest()
+        {
+            Category category;
+            Category deletedCategory = null;
+            int id;
+
+            using (RecipesEntities db = new RecipesEntities())
+            {
+                category = db.Categories.Where(c => c.CategoryName == "Main Dishes").FirstOrDefault();
+                id = category.CategoryID;
+            }
+
+            CategoryController target = new CategoryController();
+
+            //Act
+            ActionResult actual = target.DeleteConfirmed(id);
+
+            using (RecipesEntities db = new RecipesEntities())
+            {
+                deletedCategory = db.Categories.Find(id);
+            }
+
+            //Assert
+            Assert.IsNotNull(category);
+            Assert.AreEqual(Common.GetFirstErrorMessage(actual).Substring(0, 10), "Cannot del");
+            Assert.IsNotNull(deletedCategory);
+        }
+
+        /// <summary>
         /// Verifies that the correct validation error message is returned if the category name is too short
         /// </summary>
         [Test]
@@ -103,9 +163,9 @@ namespace Recipes.UnitTests
             ActionResult actual = target.Create(category);
 
             //Assert
-            Assert.AreEqual(GetFirstErrorMessage(actual), Constants.Constants.CategoryNameTooShort);
+            Assert.AreEqual(Common.GetFirstErrorMessage(actual), Constants.Constants.CategoryNameTooShort);
         }
-        
+
         /// <summary>
         /// Verifies that a correct validation error is returned if a category name is too long
         /// </summary>
@@ -121,7 +181,7 @@ namespace Recipes.UnitTests
             ActionResult actual = target.Create(category);
 
             //Assert
-            Assert.AreEqual(GetFirstErrorMessage(actual), Constants.Constants.CategoryNameTooLong);
+            Assert.AreEqual(Common.GetFirstErrorMessage(actual), Constants.Constants.CategoryNameTooLong);
         }
 
         /// <summary>
@@ -139,7 +199,7 @@ namespace Recipes.UnitTests
             ActionResult actual = target.Create(category);
 
             //Assert
-            Assert.AreEqual(GetFirstErrorMessage(actual), Constants.Constants.CategoryDescTooShort);
+            Assert.AreEqual(Common.GetFirstErrorMessage(actual), Constants.Constants.CategoryDescTooShort);
         }
 
         /// <summary>
@@ -157,7 +217,7 @@ namespace Recipes.UnitTests
             ActionResult actual = target.Create(category);
 
             //Assert
-            Assert.AreEqual(GetFirstErrorMessage(actual), Constants.Constants.CategoryDescTooLong);
+            Assert.AreEqual(Common.GetFirstErrorMessage(actual), Constants.Constants.CategoryDescTooLong);
         }
 
         /// <summary>
@@ -171,28 +231,6 @@ namespace Recipes.UnitTests
                 CategoryName = "test",
                 Description = "test description"
             };
-        }
-
-        /// <summary>
-        /// Used when an error is expected to occur
-        /// </summary>
-        /// <param name="result"></param>
-        /// <returns>First error message</returns>
-        public static string GetFirstErrorMessage(ActionResult result)
-        {
-            ViewResult vr = (ViewResult)result;
-
-            foreach (ModelState error in vr.ViewData.ModelState.Values)
-            {
-                foreach (var innerError in error.Errors)
-                {
-                    if (!string.IsNullOrEmpty(innerError.ErrorMessage))
-                    {
-                        return innerError.ErrorMessage;
-                    }
-                }
-            }
-            return string.Empty;
         }
     }
 }

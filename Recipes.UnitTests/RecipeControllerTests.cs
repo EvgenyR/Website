@@ -1,63 +1,52 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Recipes.Models;
+using Recipes.ViewModels;
+using NUnit.Framework;
 using Recipes.Controllers;
 using System.Web.Mvc;
 using System.Data.Entity;
-using Recipes.ViewModels;
 
-namespace Recipes.Tests
+namespace Recipes.UnitTests
 {
-    /// <summary>
-    ///This is a test class for RecipeControllerTest and is intended
-    ///to contain all RecipeControllerTest Unit Tests
-    ///</summary>
-    [TestClass()]
-    public class RecipeControllerTest
+    public class RecipeControllerTests
     {
-        private Recipe GetNewCorrectTestRecipe()
+        /// <summary>
+        /// A new recipe can be created
+        /// </summary>
+        [Test]
+        public void CreatesNewRecipe()
         {
-            using (RecipesEntities db = new RecipesEntities())
-            {
-                Ingredient ingredient = db.Ingredients.Where(x => x.IngredientName == "Meat").FirstOrDefault();
-                Category category = db.Categories.Where(x => x.CategoryName == "Mains").FirstOrDefault();
-
-                return new Recipe()
-                           {
-                               RecipeName = "test",
-                               Category = new Category(){CategoryID = 5},
-                               SubCategoryID = 25,
-                               RecipeIngredients = new List<RecipeIngredient>(){new RecipeIngredient(){RecipeID = 0, IngredientID = 1, Quantity = 20}}
-                           };
-            }
-        }
-
-        [TestMethod()]
-        public void CreateTest()
-        {
-            Common.SetupDatabase();
+            //Arrange
             Recipe recipe = GetNewCorrectTestRecipe();
             RecipeController target = new RecipeController();
-            
-            ActionResult actual = target.Create(GetRecipeViewModel(recipe));
+            Recipe actualRecipe = null;
 
-            Assert.IsTrue(recipe.RecipeID != 0);
+
+            //Act
+            ActionResult actual = target.Create(GetRecipeViewModel(recipe));
 
             using (RecipesEntities db = new RecipesEntities())
             {
-                var newRecipe = db.Recipes.Find(recipe.RecipeID);
-                Assert.IsNotNull(newRecipe);
-                Assert.AreEqual( recipe.RecipeName, newRecipe.RecipeName);
+                actualRecipe = db.Recipes.Find(recipe.RecipeID);
             }
+
+            //Assert
+            Assert.IsTrue(recipe.RecipeID != 0);
+            Assert.IsNotNull(actualRecipe);
+            Assert.AreEqual(recipe.RecipeName, actualRecipe.RecipeName);
         }
 
-        [TestMethod()]
-        public void EditTest()
+        /// <summary>
+        /// An existing recipe can be accessed and modified
+        /// </summary>
+        [Test]
+        public void EditsExistingRecipe()
         {
-            Common.SetupDatabase();
+            //Arrange
             RecipeController target = new RecipeController();
             Recipe recipe;
+            Recipe editedRecipe;
             const int id = 1;
             string editedName;
             RecipeViewModel viewModel;
@@ -82,44 +71,55 @@ namespace Recipes.Tests
             editedName = recipe.RecipeName + "Edited";
             viewModel.Recipe.RecipeName = editedName;
 
+            //Act
             ActionResult actual = target.Edit(viewModel);
 
             using (RecipesEntities db = new RecipesEntities())
             {
-                var editedRecipe = db.Recipes.Find(id);
-                Assert.AreEqual(editedRecipe.RecipeName, editedName);
+                editedRecipe = db.Recipes.Find(id);
             }
+
+            //Assert
+            Assert.AreEqual(editedRecipe.RecipeName, editedName);
         }
 
-        [TestMethod()]
-        public void DeleteTest()
+        /// <summary>
+        /// An existing recipe can be deleted
+        /// </summary>
+        [Test]
+        public void DeletesExistingRecipe()
         {
-            Common.SetupDatabase();
+            //Arrange
             Recipe recipe = GetNewCorrectTestRecipe();
+            Recipe deletedRecipe = GetNewCorrectTestRecipe();
             RecipeController target = new RecipeController();
             ActionResult actual = target.Create(GetRecipeViewModel(recipe));
-
-            Assert.IsNotNull(recipe);
             int id = recipe.RecipeID;
 
+            //Act
             actual = target.DeleteConfirmed(id);
 
             using (RecipesEntities db = new RecipesEntities())
             {
-                var deletedRecipe = db.Recipes.Find(id);
-                Assert.IsNull(deletedRecipe);
+                deletedRecipe = db.Recipes.Find(id);
             }
+
+            //Assert
+            Assert.IsNotNull(recipe);
+            Assert.IsNull(deletedRecipe);
         }
 
-        [TestMethod()]
+        /// <summary>
+        /// A list of recipe ingredients can be edited
+        /// </summary>
+        [Test]
         public void EditIngredientsTest()
         {
-            Common.SetupDatabase();
             RecipeController target = new RecipeController();
             Recipe recipe;
+            Recipe editedRecipe;
             RecipeViewModel viewModel;
             int count = 0;
-            //List<Ingredient> allIngredients;
 
             using (RecipesEntities db = new RecipesEntities())
             {
@@ -141,21 +141,27 @@ namespace Recipes.Tests
                 count = viewModel.Recipe.RecipeIngredients.Count();
             }
 
+            //Act
             ActionResult actual = target.Edit(viewModel);
 
             using (RecipesEntities db = new RecipesEntities())
             {
-                var editedRecipe = db.Recipes.Find(1);
-                Assert.AreEqual(editedRecipe.RecipeIngredients.Count, count);
+                editedRecipe = db.Recipes.Find(1);
             }
+
+            //Assert
+            Assert.AreEqual(count, editedRecipe.RecipeIngredients.Count);
         }
 
-        [TestMethod()]
+        /// <summary>
+        /// A recipe category can be modified
+        /// </summary>
+        [Test]
         public void EditCategoryTest()
         {
-            Common.SetupDatabase();
             RecipeController target = new RecipeController();
             Recipe recipe;
+            Recipe editedRecipe;
             RecipeViewModel viewModel;
             int id = 1;
 
@@ -178,50 +184,72 @@ namespace Recipes.Tests
             viewModel.Recipe.Category.CategoryID = 5;
             viewModel.Recipe.SubCategoryID = 25;
 
+            //Act
             ActionResult actual = target.Edit(viewModel);
 
             using (RecipesEntities db = new RecipesEntities())
             {
-                var editedRecipe = db.Recipes.Find(id);
-                Assert.AreEqual(editedRecipe.SubCategoryID, 25);
+                editedRecipe = db.Recipes.Find(id);
             }
+
+            //Assert
+            Assert.AreEqual(25, editedRecipe.SubCategoryID);
         }
 
-        [TestMethod()]
-        public void CanNotCreateWithNoIngredientsTest()
+        /// <summary>
+        /// A recipe with no ingredients can not be created
+        /// </summary>
+        [Test]
+        public void CanNotCreateWithNoIngredients()
         {
-            Common.SetupDatabase();
+            //Arrange
             Recipe recipe = GetNewCorrectTestRecipe();
             RecipeViewModel viewModel = GetRecipeViewModel(recipe);
             viewModel.Recipe.RecipeIngredients = null;
 
             RecipeController target = new RecipeController();
+
+            //Act
             ActionResult actual = target.Create(viewModel);
 
             string s = Common.GetFirstErrorMessage(actual);
+
+            //Assert
             Assert.AreEqual(Constants.Constants.RecipeHasNoIngredients, s);
         }
 
-        [TestMethod()]
+
+        /// <summary>
+        /// A recipe with no category can not be created
+        /// </summary>
+        [Test]
         public void CanNotCreateWithNoCategoryTest()
         {
-            Common.SetupDatabase();
+            //Arrange
             Recipe recipe = GetNewCorrectTestRecipe();
             RecipeViewModel viewModel = GetRecipeViewModel(recipe);
             viewModel.Recipe.Category.CategoryID = 0;
             viewModel.CategoryID = 0;
 
             RecipeController target = new RecipeController();
+
+            //Act
             ActionResult actual = target.Create(viewModel);
 
             string s = Common.GetFirstErrorMessage(actual);
+
+            //Assert
             Assert.AreEqual(Constants.Constants.RecipeHasNoCategory, s);
         }
 
+        /// <summary>
+        /// Creates a ViewModel to serve as a template for creating a recipe.
+        /// The ViewModel is then modified to simulate test conditions
+        /// </summary>
+        /// <param name="recipe">Template Recipe</param>
+        /// <returns>Correct RecipeViewModel</returns>
         private RecipeViewModel GetRecipeViewModel(Recipe recipe)
         {
-            Common.SetupDatabase();
-
             int categoryID = 5;
             int subcategoryID = 25;
             List<Category> categories = new List<Category>();
@@ -234,6 +262,27 @@ namespace Recipes.Tests
             }
 
             return new RecipeViewModel(recipe, categories, subCategories, categoryID, subcategoryID);
+        }
+
+        /// <summary>
+        /// Creates a valid test Recipe
+        /// </summary>
+        /// <returns>Recipe entity</returns>
+        private Recipe GetNewCorrectTestRecipe()
+        {
+            using (RecipesEntities db = new RecipesEntities())
+            {
+                Ingredient ingredient = db.Ingredients.Where(x => x.IngredientName == "Meat").FirstOrDefault();
+                Category category = db.Categories.Where(x => x.CategoryName == "Mains").FirstOrDefault();
+
+                return new Recipe()
+                {
+                    RecipeName = "test",
+                    Category = new Category() { CategoryID = 5 },
+                    SubCategoryID = 25,
+                    RecipeIngredients = new List<RecipeIngredient>() { new RecipeIngredient() { RecipeID = 0, IngredientID = 1, Quantity = 20 } }
+                };
+            }
         }
     }
 }

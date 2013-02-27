@@ -14,7 +14,7 @@ namespace Recipes.Models
         public int IngredientID { get; set; }
         [DisplayName("Ingredient Name")]
         public string IngredientName { get; set; }
-        //public string Test { get; set; }
+        public string Test { get; set; }
 
         [DisplayName("Protein, %")]
         [Required(ErrorMessage = "Protein content is required, or 0 if none")]

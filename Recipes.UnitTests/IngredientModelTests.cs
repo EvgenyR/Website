@@ -2,26 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Recipes.Models;
 using System.ComponentModel.DataAnnotations;
-using Recipes.Controllers;
 
-namespace Recipes.Tests
+namespace Recipes.UnitTests
 {
-    /// <summary>
-    ///This is a test class for IngredientModelTest and is intended
-    ///to contain all IngredientModelTest Unit Tests
-    ///</summary>
-    [TestClass()]
-    public class IngredientModelTest
+    public class IngredientModelTests
     {
         private const string ShortName = "t";
         private const string LongName = "tttttttttt tttttttttt tttttttttt tttttttttt tttttttttt";
 
-        [TestMethod()]
+        [Test]
         public void ValidateNameIsTooShort()
         {
+            //Arrange
             Ingredient ingredient = new Ingredient()
             {
                 IngredientName = ShortName
@@ -29,16 +24,20 @@ namespace Recipes.Tests
 
             var validationContext = new ValidationContext(ingredient, null, null);
             var validationResults = new List<ValidationResult>();
+
+            //Act
             Validator.TryValidateObject(ingredient, validationContext, validationResults);
 
             string error = Common.GetValidationError(validationResults);
 
+            //Assert
             Assert.AreEqual(error, Constants.Constants.IngredientNameTooShort);
         }
 
-        [TestMethod()]
+        [Test]
         public void ValidateNameIsTooLong()
         {
+            //Arrange
             Ingredient ingredient = new Ingredient()
             {
                 IngredientName = LongName
@@ -46,10 +45,12 @@ namespace Recipes.Tests
 
             var validationContext = new ValidationContext(ingredient, null, null);
             var validationResults = new List<ValidationResult>();
-            Validator.TryValidateObject(ingredient, validationContext, validationResults);
 
+            //Act
+            Validator.TryValidateObject(ingredient, validationContext, validationResults);
             string error = Common.GetValidationError(validationResults);
 
+            //Assert
             Assert.AreEqual(error, Constants.Constants.IngredientNameTooLong);
         }
     }

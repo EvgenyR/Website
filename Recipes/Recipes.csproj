@@ -166,8 +166,7 @@
     <Compile Include="SeedData\AddBlogEngineBlogData.cs" />
     <Compile Include="SeedData\AddBlogEngineBloggerData.cs" />
     <Compile Include="SeedData\AddDetailedRecipeData.cs" />
-    <Compile Include="SeedData\AddDevelopmentBlogData.cs" />
-    <Compile Include="SeedData\AddDigitalBiologyBlogData.cs" />
+    <Compile Include="SeedData\AddBlogPostData.cs" />
     <Compile Include="SeedData\AddYahoo.cs" />
     <Compile Include="SeedData\BlogPostsBiology.cs" />
     <Compile Include="SeedData\BlogPostsProgramming.cs" />
@@ -639,9 +638,12 @@
     <Content Include="Scripts\photobox\photobox.ie.css" />
     <Content Include="Scripts\photobox\photobox.js" />
     <Content Include="Scripts\photobox\photobox.min.js" />
+    <Content Include="Scripts\shBrushCpp.js" />
     <Content Include="Scripts\shBrushCSharp.js" />
     <Content Include="Scripts\shBrushCss.js" />
     <Content Include="Scripts\shBrushJScript.js" />
+    <Content Include="Scripts\shBrushSql.js" />
+    <Content Include="Scripts\shBrushVb.js" />
     <Content Include="Scripts\shBrushXml.js" />
     <Content Include="Scripts\shCore.js" />
     <Content Include="Scripts\themes\apple\bg.jpg" />

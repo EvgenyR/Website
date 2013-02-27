@@ -1,80 +1,34 @@
-﻿using Recipes.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Web.Mvc;
-using Recipes.Models;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using NUnit.Framework;
+using Recipes.Controllers;
+using Recipes.Models;
+using System.Web.Mvc;
 
-namespace Recipes.Tests
+namespace Recipes.UnitTests
 {
-    /// <summary>
-    ///This is a test class for IngredientControllerTest and is intended
-    ///to contain all IngredientControllerTest Unit Tests
-    ///</summary>
-    [TestClass()]
-    public class IngredientControllerTest
+    public class IngredientControllerTests
     {
-        private TestContext testContextInstance;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
-
-        #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
-        //[ClassInitialize()]
-        //public static void MyClassInitialize(TestContext testContext)
-        //{
-        //}
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        //[TestInitialize()]
-        //public void MyTestInitialize()
-        //{
-        //}
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-        #endregion
-
         /// <summary>
         ///A test for Details
         ///</summary>
         // TODO: Ensure that the UrlToTest attribute specifies a URL to an ASP.NET page (for example,
         // http://.../Default.aspx). This is necessary for the unit test to be executed on the web server,
         // whether you are testing a page, web service, or a WCF service.
-        [TestMethod()]
+        [Test]
         public void DetailsTest()
         {
+            //Arrange
             IngredientController target = new IngredientController(); // TODO: Initialize to an appropriate value
             int id = 1;
             string expected = "System.Web.Mvc.ViewResult";
-            string actual;
-            actual = target.Details(id).ToString();
+
+            //Act
+            string actual = target.Details(id).ToString();
+
+            //Assert
             Assert.AreEqual(expected, actual);
         }
 
@@ -84,72 +38,89 @@ namespace Recipes.Tests
         // TODO: Ensure that the UrlToTest attribute specifies a URL to an ASP.NET page (for example,
         // http://.../Default.aspx). This is necessary for the unit test to be executed on the web server,
         // whether you are testing a page, web service, or a WCF service.
-        [TestMethod()]
+        [Test]
         public void IndexTest()
         {
+            //Arrange
             IngredientController target = new IngredientController(); // TODO: Initialize to an appropriate value
             string expected = "System.Web.Mvc.ViewResult";
+
+            //Act
             string actual = target.Index().ToString();
+
+            //Assert
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod()]
+        /// <summary>
+        /// Verifies a new ingredient can be created
+        /// </summary>
+        [Test]
         public void CreateTest()
         {
-            Common.SetupDatabase();
+            //Arrange
             IngredientController target = new IngredientController();
-
+            Ingredient newIngredient = null;
             Ingredient ingredient = new Ingredient()
             {
                 IngredientName = "test"
             };
 
             ActionResult actual = target.Create(ingredient);
-            Assert.IsTrue(ingredient.IngredientID != 0);
 
             using (RecipesEntities db = new RecipesEntities())
             {
-                var newIngredient = db.Ingredients.Find(ingredient.IngredientID);
-                Assert.AreEqual(ingredient.IngredientName, newIngredient.IngredientName);
+                newIngredient = db.Ingredients.Find(ingredient.IngredientID);
             }
+
+            //Assert
+            Assert.IsTrue(ingredient.IngredientID != 0);
+            Assert.AreEqual(ingredient.IngredientName, newIngredient.IngredientName);
         }
 
-        [TestMethod()]
+        /// <summary>
+        /// Verifies an existing Ingredient can be modified
+        /// </summary>
+        [Test]
         public void CanEdit()
         {
-            Common.SetupDatabase();
-
+            //Arrange
             IngredientController target = new IngredientController();
 
             Ingredient ingredient;
+            Ingredient editedIngredient;
             string editedName;
             int id;
-            using(RecipesEntities db = new RecipesEntities())
+            using (RecipesEntities db = new RecipesEntities())
             {
                 ingredient = db.Ingredients.Where(i => i.IngredientName == "Meat").FirstOrDefault();
                 id = ingredient.IngredientID;
-
-                Assert.IsNotNull(ingredient);
-
                 editedName = ingredient.IngredientName + "Edited";
                 ingredient.IngredientName = editedName;
             }
 
+            //Act
             ActionResult actual = target.Edit(ingredient);
 
             using (RecipesEntities db = new RecipesEntities())
             {
-                var editedIngredient = db.Ingredients.Find(id);
-                Assert.AreEqual(editedIngredient.IngredientName, editedName);
+                editedIngredient = db.Ingredients.Find(id);
             }
+
+            //Assert
+            Assert.IsNotNull(ingredient);
+            Assert.AreEqual(editedIngredient.IngredientName, editedName);
         }
 
-        [TestMethod()]
+        /// <summary>
+        /// Verifies an Ingredient can be deleted under normal conditions
+        /// </summary>
+        [Test]
         public void CanDeleteUnusedIngredient()
         {
-            Common.SetupDatabase();
+            //Arrange
             IngredientController target = new IngredientController();
-
+            Ingredient deletedIngredient = new Ingredient();
             Ingredient ingredient = new Ingredient()
             {
                 IngredientName = "test"
@@ -158,41 +129,49 @@ namespace Recipes.Tests
             target.Create(ingredient);
             int id = ingredient.IngredientID;
 
-            Assert.IsNotNull(ingredient);
-
+            //Act
             ActionResult actual = target.DeleteConfirmed(id);
 
-            using(RecipesEntities db = new RecipesEntities())
+            using (RecipesEntities db = new RecipesEntities())
             {
-                var deletedIngredient = db.Ingredients.Find(id);
-                Assert.IsNull(deletedIngredient);
+                deletedIngredient = db.Ingredients.Find(id);
             }
-        }
 
-        [TestMethod()]
+            //Assert
+            Assert.IsNotNull(ingredient);
+            Assert.IsNull(deletedIngredient);
+         }
+
+        /// <summary>
+        /// Verifies an ingredient can not be deleted if used in the recipe
+        /// </summary>
+        [Test]
         public void CanNotDeleteUsedIngredient()
         {
-            Common.SetupDatabase();
+            //Arrange
             Ingredient ingredient;
+            Ingredient deletedIngredient = null;
             int id;
 
             using (RecipesEntities db = new RecipesEntities())
             {
                 ingredient = db.Ingredients.Where(i => i.IngredientName == "Meat").FirstOrDefault();
                 id = ingredient.IngredientID;
-
-                Assert.IsNotNull(ingredient);
             }
             IngredientController target = new IngredientController();
 
+            //Act
             ActionResult actual = target.DeleteConfirmed(id);
 
             using (RecipesEntities db = new RecipesEntities())
             {
-                var deletedIngredient = db.Ingredients.Find(id);
-                Assert.AreEqual(Common.GetFirstErrorMessage(actual).Substring(0, 10), "Cannot del");
-                Assert.IsNotNull(deletedIngredient);
+                deletedIngredient = db.Ingredients.Find(id);
             }
+
+            //Assert
+            Assert.IsNotNull(ingredient);
+            Assert.AreEqual(Common.GetFirstErrorMessage(actual).Substring(0, 10), "Cannot del");
+            Assert.IsNotNull(deletedIngredient);
         }
     }
 }
