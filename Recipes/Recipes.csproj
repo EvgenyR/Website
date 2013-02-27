@@ -166,8 +166,8 @@
     <Compile Include="SeedData\AddBlogEngineBlogData.cs" />
     <Compile Include="SeedData\AddBlogEngineBloggerData.cs" />
     <Compile Include="SeedData\AddDetailedRecipeData.cs" />
-    <Compile Include="SeedData\AddDigitalBiologyBlogData.cs" />
     <Compile Include="SeedData\AddDevelopmentBlogData.cs" />
+    <Compile Include="SeedData\AddDigitalBiologyBlogData.cs" />
     <Compile Include="SeedData\AddYahoo.cs" />
     <Compile Include="SeedData\BlogPostsBiology.cs" />
     <Compile Include="SeedData\BlogPostsProgramming.cs" />
@@ -576,10 +576,6 @@
     <Content Include="Content\images\blog\pr\2012\27092012_results.png" />
     <Content Include="Content\images\blog\pr\2012\29032012_Practical_CPP.png" />
     <Content Include="Content\images\blog\pr\2012\31072012_Game_of_life.png" />
-    <Content Include="Content\images\blog\pr\2013\25022013_Duplicates_History_Table.png" />
-    <Content Include="Content\images\blog\pr\2013\25022013_Insert_Only.png" />
-    <Content Include="Content\images\blog\pr\2013\25022013_Insert_Then_Update.png" />
-    <Content Include="Content\images\blog\pr\2013\25022013_Second_Level_Cache.png" />
     <Content Include="Content\images\dog.gif" />
     <Content Include="Content\images\dogs.gif" />
     <Content Include="Content\images\bg_blue.jpg" />
@@ -646,8 +642,6 @@
     <Content Include="Scripts\shBrushCSharp.js" />
     <Content Include="Scripts\shBrushCss.js" />
     <Content Include="Scripts\shBrushJScript.js" />
-    <Content Include="Scripts\shBrushSql.js" />
-    <Content Include="Scripts\shBrushVb.js" />
     <Content Include="Scripts\shBrushXml.js" />
     <Content Include="Scripts\shCore.js" />
     <Content Include="Scripts\themes\apple\bg.jpg" />

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using Recipes.Models;
 
 namespace Recipes.SeedData
 {
-    public class AddBlogEngineBloggerData
+    public static class AddBlogEngineBloggerData
     {
         public static void PopulateBloggers(RecipesEntities context)
         {

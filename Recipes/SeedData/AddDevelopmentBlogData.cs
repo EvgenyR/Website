@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using Recipes.Models;
 
 namespace Recipes.SeedData
@@ -167,29 +169,11 @@ namespace Recipes.SeedData
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_20122012_b, RestOfContent = BlogPostsProgramming.content_20122012_r, Keywords = BlogPostsProgramming.content_20122012_k, Description = BlogPostsProgramming.content_20122012_d, DateCreated = new DateTime(2012, 12, 20), PostID = 156, Title = "Implementing a Tree View - Small Case Study" },
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_05022013_b, RestOfContent = BlogPostsProgramming.content_05022013_r, Keywords = BlogPostsProgramming.content_05022013_k, Description = BlogPostsProgramming.content_05022013_d, DateCreated = new DateTime(2013, 02, 05), PostID = 157, Title = "Use of PostgreSQL Indexes" },
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_12022013_b, RestOfContent = BlogPostsProgramming.content_12022013_r, Keywords = BlogPostsProgramming.content_12022013_k, Description = BlogPostsProgramming.content_12022013_d, DateCreated = new DateTime(2013, 02, 12), PostID = 158, Title = "Photobox – CSS3 JQuery Image Gallery" },
-                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_27022013_b, RestOfContent = BlogPostsProgramming.content_27022013_r, Keywords = BlogPostsProgramming.content_27022013_k, Description = BlogPostsProgramming.content_27022013_d, DateCreated = new DateTime(2013, 02, 27), PostID = 159, Title = "On PostgreSQL Inverse mode and database audit table triggers" },
-
-                //new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_27112011_b, RestOfContent = BlogPostsBiology.content_27112011_r, Keywords = BlogPostsBiology.content_27112011_k, Description = BlogPostsBiology.content_27112011_d, DateCreated = new DateTime(2011, 11, 27), PostID = 160, Title = "Models in Biology" },
-                //new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_07122011_b, RestOfContent = BlogPostsBiology.content_07122011_r, Keywords = BlogPostsBiology.content_07122011_k, Description = BlogPostsBiology.content_07122011_d, DateCreated = new DateTime(2011, 12, 7), PostID = 161, Title = "Starting with Cytoscape" },
-                //new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_25122011_b, RestOfContent = BlogPostsBiology.content_25122011_r, Keywords = BlogPostsBiology.content_25122011_k, Description = BlogPostsBiology.content_25122011_d, DateCreated = new DateTime(2011, 12, 25), PostID = 162, Title = "Network Topology" },
-                //new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_25022012_b, RestOfContent = BlogPostsBiology.content_25022012_r, Keywords = BlogPostsBiology.content_25022012_k, Description = BlogPostsBiology.content_25022012_d, DateCreated = new DateTime(2012, 2, 25), PostID = 163, Title = "Adding Expression Data to the Network" },
-                //new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_09012012_b, RestOfContent = BlogPostsBiology.content_09012012_r, Keywords = BlogPostsBiology.content_09012012_k, Description = BlogPostsBiology.content_09012012_d, DateCreated = new DateTime(2012, 1, 9), PostID = 164, Title = "Validating Active Modules with BiNGO" },
-                //new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_23022012_b, RestOfContent = BlogPostsBiology.content_23022012_r, Keywords = BlogPostsBiology.content_23022012_k, Description = BlogPostsBiology.content_23022012_d, DateCreated = new DateTime(2012, 2, 23), PostID = 165, Title = "Building a model for the mouse response to Trypanosoma Congolense using jActiveModules and BiNGO" },
-                //new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_15052012_b, RestOfContent = BlogPostsBiology.content_15052012_r, Keywords = BlogPostsBiology.content_15052012_k, Description = BlogPostsBiology.content_15052012_d, DateCreated = new DateTime(2012, 5, 15), PostID = 166, Title = "Estimating Michaelis-Menten Parameters" },
-                //new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_01082012_b, RestOfContent = BlogPostsBiology.content_01082012_r, Keywords = BlogPostsBiology.content_01082012_k, Description = BlogPostsBiology.content_01082012_d, DateCreated = new DateTime(2011, 8, 1), PostID = 167, Title = "A Tutorial on Probability and Exponential Distribution" },
-                //new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_04082012_b, RestOfContent = BlogPostsBiology.content_04082012_r, Keywords = BlogPostsBiology.content_04082012_k, Description = BlogPostsBiology.content_04082012_d, DateCreated = new DateTime(2011, 11, 27), PostID = 168, Title = "Statistical Inference" },
-                //new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_13092012_b, RestOfContent = BlogPostsBiology.content_13092012_r, Keywords = BlogPostsBiology.content_13092012_k, Description = BlogPostsBiology.content_13092012_d, DateCreated = new DateTime(2012, 9, 13), PostID = 169, Title = "Markov Chains Monte Carlo Bayesian Inference" },
-                //new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_27112012_b, RestOfContent = BlogPostsBiology.content_27112012_r, Keywords = BlogPostsBiology.content_27112012_k, Description = BlogPostsBiology.content_27112012_d, DateCreated = new DateTime(2012, 11, 27), PostID = 170, Title = "COPASI and CellDesigner: Comparison"},
-                //new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_29102012_b, RestOfContent = BlogPostsBiology.content_29102012_r, Keywords = BlogPostsBiology.content_29102012_k, Description = BlogPostsBiology.content_29102012_d, DateCreated = new DateTime(2012, 10, 29), PostID = 171, Title = "Calculation of Phase Space Models with COPASI"},
-                //new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_20122012_b, RestOfContent = BlogPostsBiology.content_20122012_r, Keywords = BlogPostsBiology.content_20122012_k, Description = BlogPostsBiology.content_20122012_d, DateCreated = new DateTime(2012, 12, 20), PostID = 172, Title = "Stoichiometry matrix" },
 
             };
 
-            foreach (var post in posts)
-            {
-                context.Posts.Add(post);
-                context.SaveChanges();
-            }
+            posts.ForEach(p => context.Posts.Add(p));
+            context.SaveChanges();
         }
     }
 }

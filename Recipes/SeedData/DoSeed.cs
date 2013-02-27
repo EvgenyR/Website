@@ -1,4 +1,8 @@
-﻿using Recipes.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using Recipes.Models;
 using System.Data.Entity.Validation;
 
 namespace Recipes.SeedData
@@ -18,10 +22,9 @@ namespace Recipes.SeedData
 
                 AddBlogEngineBloggerData.PopulateBloggers(context);
                 AddBlogEngineBlogData.PopulateBlogs(context);
-                
+
                 AddDigitalBiologyBlogData.AddPosts(context);
                 AddDevelopmentBlogData.AddPosts(context);
-
 
                 //yahoo
 

@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Validation;
 using Recipes.SeedData;
 
 namespace Recipes.Models

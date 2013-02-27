@@ -6,7 +6,7 @@ using Recipes.Models;
 
 namespace Recipes.SeedData
 {
-    public class AddDigitalBiologyBlogData
+    public static class AddDigitalBiologyBlogData
     {
         public static void AddPosts(RecipesEntities context)
         {
