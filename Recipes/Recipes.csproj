@@ -575,6 +575,10 @@
     <Content Include="Content\images\blog\pr\2012\27092012_results.png" />
     <Content Include="Content\images\blog\pr\2012\29032012_Practical_CPP.png" />
     <Content Include="Content\images\blog\pr\2012\31072012_Game_of_life.png" />
+    <Content Include="Content\images\blog\pr\2013\25022013_Duplicates_History_Table.png" />
+    <Content Include="Content\images\blog\pr\2013\25022013_Insert_Only.png" />
+    <Content Include="Content\images\blog\pr\2013\25022013_Insert_Then_Update.png" />
+    <Content Include="Content\images\blog\pr\2013\25022013_Second_Level_Cache.png" />
     <Content Include="Content\images\dog.gif" />
     <Content Include="Content\images\dogs.gif" />
     <Content Include="Content\images\bg_blue.jpg" />

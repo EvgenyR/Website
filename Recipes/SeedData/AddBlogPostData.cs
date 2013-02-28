@@ -170,12 +170,6 @@ namespace Recipes.SeedData
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_05022013_b, RestOfContent = BlogPostsProgramming.content_05022013_r, Keywords = BlogPostsProgramming.content_05022013_k, Description = BlogPostsProgramming.content_05022013_d, DateCreated = new DateTime(2013, 02, 05), PostID = 157, Title = "Use of PostgreSQL Indexes" },
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_12022013_b, RestOfContent = BlogPostsProgramming.content_12022013_r, Keywords = BlogPostsProgramming.content_12022013_k, Description = BlogPostsProgramming.content_12022013_d, DateCreated = new DateTime(2013, 02, 12), PostID = 158, Title = "Photobox – CSS3 JQuery Image Gallery" },
 
-            };
-
-            posts.ForEach(p => context.Posts.Add(p));
-            context.SaveChanges();
-
-            var posts2 = new List<Post> {
                 new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_27112011_b, RestOfContent = BlogPostsBiology.content_27112011_r, Keywords = BlogPostsBiology.content_27112011_k, Description = BlogPostsBiology.content_27112011_d, DateCreated = new DateTime(2011, 11, 27), PostID = 159, Title = "Models in Biology" },
                 new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_07122011_b, RestOfContent = BlogPostsBiology.content_07122011_r, Keywords = BlogPostsBiology.content_07122011_k, Description = BlogPostsBiology.content_07122011_d, DateCreated = new DateTime(2011, 12, 7), PostID = 160, Title = "Starting with Cytoscape" },
                 new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_25122011_b, RestOfContent = BlogPostsBiology.content_25122011_r, Keywords = BlogPostsBiology.content_25122011_k, Description = BlogPostsBiology.content_25122011_d, DateCreated = new DateTime(2011, 12, 25), PostID = 161, Title = "Network Topology" },
@@ -189,9 +183,13 @@ namespace Recipes.SeedData
                 new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_01082012_b, RestOfContent = BlogPostsBiology.content_01082012_r, Keywords = BlogPostsBiology.content_01082012_k, Description = BlogPostsBiology.content_01082012_d, DateCreated = new DateTime(2011, 8, 1), PostID = 169, Title = "A Tutorial on Probability and Exponential Distribution" },
                 new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_04082012_b, RestOfContent = BlogPostsBiology.content_04082012_r, Keywords = BlogPostsBiology.content_04082012_k, Description = BlogPostsBiology.content_04082012_d, DateCreated = new DateTime(2011, 11, 27), PostID = 170, Title = "Statistical Inference" },
                 new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_13092012_b, RestOfContent = BlogPostsBiology.content_13092012_r, Keywords = BlogPostsBiology.content_13092012_k, Description = BlogPostsBiology.content_13092012_d, DateCreated = new DateTime(2012, 9, 13), PostID = 171, Title = "Markov Chains Monte Carlo Bayesian Inference" },
+
+                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_27022013_b, RestOfContent = BlogPostsProgramming.content_27022013_r, Keywords = BlogPostsProgramming.content_27022013_k, Description = BlogPostsProgramming.content_27022013_d, DateCreated = new DateTime(2013, 02, 27), PostID = 172, Title = "On PostgreSQL Inverse mode and database audit table triggers" },
+
+
             };
 
-            posts2.ForEach(p => context.Posts.Add(p));
+            posts.ForEach(p => context.Posts.Add(p));
             context.SaveChanges();
         }
     }

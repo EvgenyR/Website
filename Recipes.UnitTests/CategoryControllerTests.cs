@@ -33,7 +33,10 @@ namespace Recipes.UnitTests
             string actualName = string.Empty;
 
             //Act
-            ActionResult actual = target.Create(category);
+            using (RecipesEntities db = new RecipesEntities())
+            {
+                ActionResult actual = target.Create(category);
+            }
             int id = category.CategoryID;
 
             using (RecipesEntities db = new RecipesEntities())
@@ -73,7 +76,7 @@ namespace Recipes.UnitTests
             }
 
             //Act
-            ActionResult actual = target.Edit(category);
+            target.Edit(category);
 
             using (RecipesEntities db = new RecipesEntities())
             {
