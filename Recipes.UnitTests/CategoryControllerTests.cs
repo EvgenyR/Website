@@ -33,10 +33,7 @@ namespace Recipes.UnitTests
             string actualName = string.Empty;
 
             //Act
-            using (RecipesEntities db = new RecipesEntities())
-            {
-                ActionResult actual = target.Create(category);
-            }
+            ActionResult actual = target.Create(category);
             int id = category.CategoryID;
 
             using (RecipesEntities db = new RecipesEntities())
@@ -123,7 +120,7 @@ namespace Recipes.UnitTests
         /// Can not delete a category if there are recipes that belong to it
         /// </summary>
         [Test]
-        public void CanNotDeleteUsedTest()
+        public void CanNotDeleteUsedRecipeCategory()
         {
             Category category;
             Category deletedCategory = null;
@@ -131,7 +128,7 @@ namespace Recipes.UnitTests
 
             using (RecipesEntities db = new RecipesEntities())
             {
-                category = db.Categories.Where(c => c.CategoryName == "Main Dishes").FirstOrDefault();
+                category = db.Categories.Where(c => c.CategoryName.Contains("Main Dishes")).FirstOrDefault();
                 id = category.CategoryID;
             }
 
@@ -173,7 +170,7 @@ namespace Recipes.UnitTests
         /// Verifies that a correct validation error is returned if a category name is too long
         /// </summary>
         [Test]
-        public void NameTooLongTest()
+        public void VerifiesCategoryNameTooLong()
         {
             //Arrange
             Category category = GetNewTestCategory();
@@ -191,7 +188,7 @@ namespace Recipes.UnitTests
         /// Verifies that a correct validation error is returned if a category description is too short
         /// </summary>
         [Test]
-        public void DescriptionTooShortTest()
+        public void VerifiesDescriptionTooShort()
         {
             //Arrange
             Category category = GetNewTestCategory();
@@ -209,7 +206,7 @@ namespace Recipes.UnitTests
         /// Verifies that a correct validation error is returned if a category description is too long
         /// </summary>
         [Test]
-        public void DescriptionTooLongTest()
+        public void VerifiesDescriptionTooLong()
         {
             //Arrange
             Category category = GetNewTestCategory();

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NUnit.Framework;
 using Recipes.Controllers;
 using Recipes.Models;
@@ -56,15 +53,12 @@ namespace Recipes.UnitTests
         /// Verifies a new ingredient can be created
         /// </summary>
         [Test]
-        public void CreateTest()
+        public void CreatesNewRecipeIngredient()
         {
             //Arrange
             IngredientController target = new IngredientController();
             Ingredient newIngredient = null;
-            Ingredient ingredient = new Ingredient()
-            {
-                IngredientName = "test"
-            };
+            Ingredient ingredient = GetNewTestIngredient();
 
             ActionResult actual = target.Create(ingredient);
 
@@ -82,7 +76,7 @@ namespace Recipes.UnitTests
         /// Verifies an existing Ingredient can be modified
         /// </summary>
         [Test]
-        public void CanEdit()
+        public void EditsExistingRecipeIngredient()
         {
             //Arrange
             IngredientController target = new IngredientController();
@@ -93,7 +87,7 @@ namespace Recipes.UnitTests
             int id;
             using (RecipesEntities db = new RecipesEntities())
             {
-                ingredient = db.Ingredients.Where(i => i.IngredientName == "Meat").FirstOrDefault();
+                ingredient = db.Ingredients.Where(i => i.IngredientName.Contains("Ham")).FirstOrDefault();
                 id = ingredient.IngredientID;
                 editedName = ingredient.IngredientName + "Edited";
                 ingredient.IngredientName = editedName;
@@ -116,15 +110,12 @@ namespace Recipes.UnitTests
         /// Verifies an Ingredient can be deleted under normal conditions
         /// </summary>
         [Test]
-        public void CanDeleteUnusedIngredient()
+        public void DeletesUnusedRecipeIngredient()
         {
             //Arrange
             IngredientController target = new IngredientController();
             Ingredient deletedIngredient = new Ingredient();
-            Ingredient ingredient = new Ingredient()
-            {
-                IngredientName = "test"
-            };
+            Ingredient ingredient = GetNewTestIngredient();
 
             target.Create(ingredient);
             int id = ingredient.IngredientID;
@@ -146,7 +137,7 @@ namespace Recipes.UnitTests
         /// Verifies an ingredient can not be deleted if used in the recipe
         /// </summary>
         [Test]
-        public void CanNotDeleteUsedIngredient()
+        public void CanNotDeleteUsedRecipeIngredient()
         {
             //Arrange
             Ingredient ingredient;
@@ -155,7 +146,7 @@ namespace Recipes.UnitTests
 
             using (RecipesEntities db = new RecipesEntities())
             {
-                ingredient = db.Ingredients.Where(i => i.IngredientName == "Meat").FirstOrDefault();
+                ingredient = db.Ingredients.Where(i => i.IngredientName.Contains("Ham")).FirstOrDefault();
                 id = ingredient.IngredientID;
             }
             IngredientController target = new IngredientController();
@@ -172,6 +163,19 @@ namespace Recipes.UnitTests
             Assert.IsNotNull(ingredient);
             Assert.AreEqual(Common.GetFirstErrorMessage(actual).Substring(0, 10), "Cannot del");
             Assert.IsNotNull(deletedIngredient);
+        }
+
+        /// <summary>
+        /// Helper method
+        /// </summary>
+        /// <returns>Test ingredient</returns>
+        public static Ingredient GetNewTestIngredient()
+        {
+            return new Ingredient()
+            {
+                IngredientName = "test",
+                Measure = new Measure { MeasureID = 0 }
+            };
         }
     }
 }

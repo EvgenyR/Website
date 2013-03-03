@@ -11,6 +11,8 @@ namespace Recipes.Controllers
     public class IngredientController : BaseController
     {
         RecipesEntities db = new RecipesEntities();
+        Logging.Log4NetLogger logger = new Logging.Log4NetLogger();
+
         //
         // GET: /Ingredient/
         [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
@@ -69,9 +71,10 @@ namespace Recipes.Controllers
                     }
                 }
             }
-            catch(DataException)
+            catch(DataException e)
             {
                 ModelState.AddModelError(string.Empty, Constants.Constants.DataExceptionMessage );
+                logger.Error(e);
             }
             return View(new IngredientViewModel(ingredient, db.Measures.ToList()));
         }
@@ -162,12 +165,10 @@ namespace Recipes.Controllers
 
                 if (usage.Length > 0)
                 {
-                    string msg = "Cannot delete ingredient. It is used in the following recipe";
-                    if (count > 1)
-                    {
-                        msg = msg + "s";
-                    }
-                    usage = msg + ": " + usage;
+                    string msg = count > 1 ? Constants.Constants.CanNotDeleteIngredientWithRecipes
+                                                   : Constants.Constants.CanNotDeleteIngredientWithRecipe;
+                    
+                    usage = msg + usage;
                 }
 
                 ModelState.AddModelError(string.Empty, usage);

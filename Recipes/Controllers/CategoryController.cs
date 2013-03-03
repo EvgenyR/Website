@@ -215,12 +215,10 @@ namespace Recipes.Controllers
 
                 if (usage.Length > 0)
                 {
-                    string msg = "Cannot delete category. It has the following SubCategorie";
-                    if (count > 1)
-                    {
-                        msg = msg + "s";
-                    }
-                    usage = msg + ": " + usage;
+                    string msg = count > 1 ? Constants.Constants.CanNotDeleteCategoryWithSubs
+                                           : Constants.Constants.CanNotDeleteCategoryWithSub;
+
+                    usage = msg + usage;
                     ModelState.AddModelError(string.Empty, usage);
                 }
             }
@@ -243,12 +241,10 @@ namespace Recipes.Controllers
                         }
                         if (usage.Length > 0)
                         {
-                            string msg = "Cannot delete category. It has the following recipe";
-                            if (count > 1)
-                            {
-                                msg = msg + "s";
-                            }
-                            usage = msg + ": " + usage;
+                            string msg = count > 1 ? Constants.Constants.CanNotDeleteCategoryWithRecipes
+                                                   : Constants.Constants.CanNotDeleteCategoryWithRecipe;
+
+                            usage = msg + usage;
                             ModelState.AddModelError(string.Empty, usage);
                         }
                     }

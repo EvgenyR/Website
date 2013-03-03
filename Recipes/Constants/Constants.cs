@@ -19,6 +19,13 @@ namespace Constants
         public static string RecipeHasNoCategory = "The recipe needs to belong to a category, please choose one!";
         public static string RecipeHasNoSubCategory = "The recipe needs to belong to a subcategory, please choose one!";
 
+        public static string CanNotDeleteCategoryWithSub = "Cannot delete category. It has the following SubCategory: ";
+        public static string CanNotDeleteCategoryWithSubs = "Cannot delete category. It has the following SubCategories: ";
+        public static string CanNotDeleteCategoryWithRecipe = "Cannot delete category. It has the following recipe: ";
+        public static string CanNotDeleteCategoryWithRecipes = "Cannot delete category. It has the following recipes: ";
+        public static string CanNotDeleteIngredientWithRecipe = "Cannot delete ingredient. It is used in the following recipe: ";
+        public static string CanNotDeleteIngredientWithRecipes = "Cannot delete ingredient. It is used in the following recipes: ";
+
         public static decimal FatCalPerGram = 9;
         public static decimal ProtCalPerGram = 4;
         public static decimal CarbCalPerGram = 4;
