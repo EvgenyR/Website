@@ -23,5 +23,8 @@ namespace Recipes.Models
 
         public DbSet<YahooSymbol> YahooSymbols { get; set; }
         public DbSet<YahooData> YahooData { get; set; }
+
+        public DbSet<LogType> LogTypes { get; set; }
+        public DbSet<LogEntry> LogEntries { get; set; }
     }
 }

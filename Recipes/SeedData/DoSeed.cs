@@ -29,6 +29,10 @@ namespace Recipes.SeedData
 
                 AddYahoo.AddSymbols(context);
 
+                //logging
+
+                AddLogRelevantData.Execute(context);
+
             }
             catch (DbEntityValidationException vex)
             {

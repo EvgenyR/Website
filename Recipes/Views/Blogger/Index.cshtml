@@ -2,7 +2,8 @@
 @{
     ViewBag.Title = "Bloggers - MVC Blog Engine Example";
 }
-<form>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "styledForm" }))
+{
 <fieldset>
     <div class="buttonlink">@Html.ActionLink("Create New", "Create")</div>
     <div class="buttonlink" style="width:150px">@Html.ActionLink("Blog Engine Home", "../Blog/Index")</div>
@@ -21,4 +22,4 @@
         </li>
     </ol>
 }
-</form>
+}

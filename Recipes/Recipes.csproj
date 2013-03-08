@@ -142,38 +142,52 @@
     <Compile Include="Controllers\IngredientController.cs" />
     <Compile Include="Controllers\JQGameController.cs" />
     <Compile Include="Controllers\LeftMenuController.cs" />
+    <Compile Include="Controllers\LoggingController.cs" />
     <Compile Include="Controllers\MetaDescriptionAttribute.cs" />
     <Compile Include="Controllers\MetaKeywordsAttribute.cs" />
     <Compile Include="Controllers\PhotoboxController.cs" />
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\RecipeController.cs" />
+    <Compile Include="Controllers\ResumeController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\StoneController.cs" />
     <Compile Include="Controllers\SubCategoryController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\YahooController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="HtmlHelpers\DateTimeExtensionMethods.cs" />
+    <Compile Include="HtmlHelpers\DateTimeHelper.cs" />
+    <Compile Include="HtmlHelpers\FormsHelper.cs" />
     <Compile Include="HtmlHelpers\GameOfLifeHelpers.cs" />
     <Compile Include="HtmlHelpers\Helpers.cs" />
     <Compile Include="HtmlHelpers\HtmlPrefixScopeExtensions.cs" />
+    <Compile Include="HtmlHelpers\PagerHelpers.cs" />
     <Compile Include="HtmlHelpers\SearchHelpers.cs" />
     <Compile Include="HtmlHelpers\SteppingStoneHelpers.cs" />
+    <Compile Include="HtmlHelpers\StringExtensionMethods.cs" />
     <Compile Include="HtmlHelpers\TextHelpers.cs" />
+    <Compile Include="HtmlHelpers\TimePeriodHelper.cs" />
     <Compile Include="HtmlHelpers\TreeNode.cs" />
     <Compile Include="HtmlHelpers\WebGrid.cs" />
     <Compile Include="HtmlHelpers\WebGridExtensions.cs" />
-    <Compile Include="Logging\ILogger.cs" />
-    <Compile Include="Logging\Log4NetLogger.cs" />
-    <Compile Include="Logging\LogUtility.cs" />
+    <Compile Include="LogHelpers\Logger.cs" />
+    <Compile Include="LogHelpers\LogUtility.cs" />
     <Compile Include="Models\Blog.cs" />
     <Compile Include="Models\Blogger.cs" />
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\LogEntry.cs" />
+    <Compile Include="Paging\IPagedList.cs" />
+    <Compile Include="Paging\PagedList.cs" />
+    <Compile Include="Paging\Pager.cs" />
+    <Compile Include="Repository\LoggingRepository.cs" />
     <Compile Include="SeedData\AddBasicRecipeData.cs" />
     <Compile Include="SeedData\AddBlogEngineBlogData.cs" />
     <Compile Include="SeedData\AddBlogEngineBloggerData.cs" />
     <Compile Include="SeedData\AddDetailedRecipeData.cs" />
     <Compile Include="SeedData\AddBlogPostData.cs" />
+    <Compile Include="SeedData\AddLogRelevantData.cs" />
     <Compile Include="SeedData\AddYahoo.cs" />
     <Compile Include="SeedData\BlogPostsBiology.cs" />
     <Compile Include="SeedData\BlogPostsProgramming.cs" />
@@ -192,6 +206,7 @@
     <Compile Include="Models\Recipe.cs" />
     <Compile Include="Models\RecipeIngredient.cs" />
     <Compile Include="Models\RecipesEntities.cs" />
+    <Compile Include="ViewModels\LoggingIndexModel.cs" />
     <Compile Include="ViewModels\PostViewModel.cs" />
     <Compile Include="ViewModels\RecipeListViewModel.cs" />
     <Compile Include="ViewModels\RecipeViewModel.cs" />
@@ -607,6 +622,7 @@
     <Content Include="Content\images\topbg.gif" />
     <Content Include="Content\jsgame.css" />
     <Content Include="Content\leftmenu.css" />
+    <Content Include="Content\logging.css" />
     <Content Include="Content\photobox\P1.JPG" />
     <Content Include="Content\photobox\P10.JPG" />
     <Content Include="Content\photobox\P10_small.jpg" />
@@ -726,6 +742,10 @@
     <Content Include="Views\Shared\_PhotoboxNav.cshtml" />
     <Content Include="Views\JQGame\Theory.cshtml" />
     <Content Include="Views\Shared\_JQGameNav.cshtml" />
+    <Content Include="Views\Resume\Index.cshtml" />
+    <Content Include="Views\Logging\Index.cshtml" />
+    <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\Logging\Details.cshtml" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\README_ENU.txt" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\msvcr90.dll" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest" />
@@ -765,7 +785,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Resume.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Error.cshtml" />

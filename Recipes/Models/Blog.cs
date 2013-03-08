@@ -2,6 +2,9 @@
 
 namespace Recipes.Models
 {
+    /// <summary>
+    /// A class that stores a Blog entity, including posts and blogger details
+    /// </summary>
     public class Blog
     {
         public int BlogID { get; set; }

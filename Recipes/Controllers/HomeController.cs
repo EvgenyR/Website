@@ -10,14 +10,12 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.MainMetaDescription)]
         public ActionResult Index()
         {
+            //Exception ex = new Exception("test");
+            //Logger.WriteEntry(ex);
+
             return View();
         }
-        [MetaKeywords(Constants.Constants.MainMetaKeywords)]
-        [MetaDescription(Constants.Constants.MainMetaDescription)]
-        public ActionResult Resume()
-        {
-            return View();
-        }
+
         [MetaKeywords(Constants.Constants.MainMetaKeywords)]
         [MetaDescription(Constants.Constants.MainMetaDescription)]
         public ActionResult Todo()

@@ -14,6 +14,10 @@ namespace Recipes.Controllers
         RecipesEntities db = new RecipesEntities();
         //
         // GET: /Recipe/
+        /// <summary>
+        /// Displays the index of Recipes
+        /// </summary>
+        /// <returns></returns>
         [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ViewResult Index()
@@ -30,6 +34,11 @@ namespace Recipes.Controllers
 
         //
         // GET: /Recipe/Details/5
+        /// <summary>
+        /// Displays the Recipe Details view
+        /// </summary>
+        /// <param name="id">RecipeId in the database</param>
+        /// <returns>View, given a valid RecipeViewModel</returns>
         [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Details(int id)
@@ -40,6 +49,10 @@ namespace Recipes.Controllers
 
         //
         // GET: /Recipe/Create
+        /// <summary>
+        /// Displays a Recipe Create view
+        /// </summary>
+        /// <returns>A filled in Create Recipe view</returns>
         [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Create()
@@ -51,6 +64,11 @@ namespace Recipes.Controllers
 
         //
         // POST: /Recipe/Create
+        /// <summary>
+        /// Submits a Recipe Create view. The ViewModel is validated and, if successful, saved in the database. Otherwise the summary of exceptions is displayed
+        /// </summary>
+        /// <param name="viewModel">a RecipeViewModel</param>
+        /// <returns>Redirects to the Recipe index</returns>
         [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         [HttpPost]
@@ -71,11 +89,12 @@ namespace Recipes.Controllers
                 }
                 catch (DbEntityValidationException vex)
                 {
+                    //if the ModelState is valid, DbEntityValidationException can still occur when saving the data. The errors have to be logged and presented to the user.
                     foreach (var err in vex.EntityValidationErrors)
                     {
-                        foreach (var err2 in err.ValidationErrors)
+                        foreach (var innerError in err.ValidationErrors)
                         {
-                            ModelState.AddModelError(string.Empty, err2.ErrorMessage);
+                            ModelState.AddModelError(string.Empty, innerError.ErrorMessage);
                         }
                     }
                 }
@@ -86,14 +105,13 @@ namespace Recipes.Controllers
 
                 return RedirectToAction("Index");
             }
-            else
+            
+            //Log errors to the database
+            foreach (ModelState modelState in ViewData.ModelState.Values)
             {
-                foreach (ModelState modelState in ViewData.ModelState.Values)
+                foreach (ModelError error in modelState.Errors)
                 {
-                    foreach (ModelError error in modelState.Errors)
-                    {
-                        string s = error.ErrorMessage;
-                    }
+                    string s = error.ErrorMessage;
                 }
             }
             return View(new RecipeViewModel(recipe, db.Categories.ToList(),
@@ -102,6 +120,11 @@ namespace Recipes.Controllers
 
         //
         // GET: /Recipe/Edit/5
+        /// <summary>
+        /// Edits the selected Recipe
+        /// </summary>
+        /// <param name="id">Recipe Id in the database</param>
+        /// <returns>Edited recipe view</returns>
         [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Edit(int id)
@@ -120,6 +143,11 @@ namespace Recipes.Controllers
             return View(new RecipeViewModel(recipe, categories, subCategories, recipe.Category.CategoryID, recipe.SubCategoryID));
         }
 
+        /// <summary>
+        /// Selects a category
+        /// </summary>
+        /// <param name="categoryid">category Id</param>
+        /// <returns>Json result</returns>
         public ActionResult SelectCategory(int categoryid)
         {
             var subs = db.SubCategories
@@ -133,6 +161,11 @@ namespace Recipes.Controllers
             return Json(subs, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// Updates a partial view of selected recipes
+        /// </summary>
+        /// <param name="subcatid">SubCategory id</param>
+        /// <returns>Partial view</returns>
         public ActionResult UpdateSelected(int subcatid)
         {
             List<Recipe> recipes = db.Recipes.Where(r => r.SubCategoryID == subcatid).ToList();
@@ -148,6 +181,11 @@ namespace Recipes.Controllers
 
         //
         // POST: /Recipe/Edit/5
+        /// <summary>
+        /// Submits the edited Recipe
+        /// </summary>
+        /// <param name="model">RecipeViewModel entity</param>
+        /// <returns></returns>
         [MetaKeywords(Constants.Constants.RecipeMetaKeywords)]
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         [HttpPost]
@@ -180,14 +218,12 @@ namespace Recipes.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            else
+            
+            foreach (ModelState modelState in ViewData.ModelState.Values)
             {
-                foreach (ModelState modelState in ViewData.ModelState.Values)
+                foreach (ModelError error in modelState.Errors)
                 {
-                    foreach (ModelError error in modelState.Errors)
-                    {
-                        string s = error.ErrorMessage;
-                    }
+                    string s = error.ErrorMessage;
                 }
             }
 
@@ -255,6 +291,11 @@ namespace Recipes.Controllers
             }
         }
 
+        /// <summary>
+        /// Returns a recipe entity from the database, populating the calculated fields
+        /// </summary>
+        /// <param name="id">Recipe database ID</param>
+        /// <returns></returns>
         public Recipe GetRecipeByID(int id)
         {
             var recipe = db.Recipes.Include(r => r.SubCategory).Single(r => r.RecipeID == id);

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Recipes.Logging
+namespace Recipes.LogHelpers
 {
     public class LogUtility
     {

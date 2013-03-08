@@ -3,7 +3,8 @@
 @{
     ViewBag.Title = "Blogger Details - MVC Blog Engine Example";
 }
-<form>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "styledForm" }))
+{
 <fieldset>
     <legend>Blogger</legend>
 
@@ -36,4 +37,4 @@
     <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.Blogger.BloggerID, seofriendly = Model.Blogger.BloggerName.ToSeoUrl() })</div>
     <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
 </fieldset>
-</form>
+}

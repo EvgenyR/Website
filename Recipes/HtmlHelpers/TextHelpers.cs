@@ -362,7 +362,7 @@ namespace HtmlHelpers
 &lt;/div&gt;</pre>";
 
             const string partialViewCode = "<pre class=\"brush: xml\">@model Recipes.ViewModels.YahooViewModel" + 
-                                           @"@{ var grid = new WebGrid&lt;Recipes.Models.Yahoo.YahooData&gt;(null, rowsPerPage: 5, defaultSort: 'YahooSymbolName', ajaxUpdateContainerId: 'wbgrid');
+                                           @"@{ var grid = new WebGrid&lt;Recipes.SeedData.YahooData&gt;(null, rowsPerPage: 5, defaultSort: 'YahooSymbolName', ajaxUpdateContainerId: 'wbgrid');
 grid.Bind(Model.Datas, rowCount: Model.TotalRows, autoSortAndPage: false);
 }
 

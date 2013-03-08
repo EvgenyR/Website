@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Blog List - MVC Blog Engine Example";
 }
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "styledForm" }))
 {
     <fieldset>
         <div class="buttonlink">@Html.ActionLink("Create New", "Create")</div>

@@ -11,7 +11,6 @@ namespace Recipes.Controllers
     public class IngredientController : BaseController
     {
         RecipesEntities db = new RecipesEntities();
-        Logging.Log4NetLogger logger = new Logging.Log4NetLogger();
 
         //
         // GET: /Ingredient/
@@ -74,7 +73,6 @@ namespace Recipes.Controllers
             catch(DataException e)
             {
                 ModelState.AddModelError(string.Empty, Constants.Constants.DataExceptionMessage );
-                logger.Error(e);
             }
             return View(new IngredientViewModel(ingredient, db.Measures.ToList()));
         }

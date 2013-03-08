@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
+﻿using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -20,17 +16,19 @@ namespace Recipes
                 defaults: new { id = RouteParameter.Optional }
             );
 
+            /*
+            routes.MapRoute(
+            name: "LoggingDefaults",
+            url: "Logging/{Period}/{PageSize}/{page}",
+            defaults: new { controller = "Logging", action = "Index", Period = UrlParameter.Optional, PageSize = UrlParameter.Optional, page = UrlParameter.Optional }
+                );
+             */
+
             routes.MapRoute(
             name: "Display",
             url: "Post/{id}/{seofriendly}",
             defaults: new { controller = "Post", action = "Display", id = UrlParameter.Optional, seofriendly = ""}
                 );
-
-            routes.MapRoute(
-            name: "Resume",
-            url: "Resume/{id}",
-            defaults: new { controller = "Home", action = "Resume", id = UrlParameter.Optional, seofriendly = "" }
-            );
 
             routes.MapRoute(
                 name: "SEOFriendly",
