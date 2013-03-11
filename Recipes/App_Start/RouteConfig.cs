@@ -16,14 +16,6 @@ namespace Recipes
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            /*
-            routes.MapRoute(
-            name: "LoggingDefaults",
-            url: "Logging/{Period}/{PageSize}/{page}",
-            defaults: new { controller = "Logging", action = "Index", Period = UrlParameter.Optional, PageSize = UrlParameter.Optional, page = UrlParameter.Optional }
-                );
-             */
-
             routes.MapRoute(
             name: "Display",
             url: "Post/{id}/{seofriendly}",

@@ -1,19 +1,20 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using Recipes.ViewModels;
-using Recipes.Models;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity.Validation;
-using Recipes.LogHelpers;
-using System;
+using System.Linq;
 using System.Reflection;
+using System.Web.Mvc;
+using Recipes.LogHelpers;
+using Recipes.Models;
+using Recipes.Repository;
+using Recipes.ViewModels;
 
 namespace Recipes.Controllers
 {
     public class BlogController : BaseController
     {
-        readonly RecipesEntities _db = new RecipesEntities();
+        IBlogRepository repository;
         private const string InfoLogMessage = "Blog Controller method {0} accessed";
         private const string InfoLogMessageWithParam = InfoLogMessage + " with a parameter {1}={2}";
 
@@ -21,6 +22,17 @@ namespace Recipes.Controllers
         private static readonly string className = GetClassName();
 
         private int _postsDisplayed;
+
+        //constructor chaining
+        //avoid "no parameterless constructor defined for this object"
+        public BlogController()
+            : this(new BlogRepository())
+        { }
+
+        public BlogController(IBlogRepository repository)
+        {
+            this.repository = repository;
+        }
 
         //
         // GET: /Blog/
@@ -68,7 +80,7 @@ namespace Recipes.Controllers
             methodName = MethodBase.GetCurrentMethod().Name;
             _postsDisplayed = 10;
             WriteLog(string.Format(InfoLogMessage, methodName), (int)LogTypeNames.Info);            
-            return View(_db.Blogs.ToList());
+            return View(repository.GetAllBlogs());
         }
 
         //
@@ -85,13 +97,13 @@ namespace Recipes.Controllers
         public ActionResult Details(int id = 0)
         {
             methodName = MethodBase.GetCurrentMethod().Name;
-            Blog blog = _db.Blogs.Find(id);
+            Blog blog = repository.GetBlogByID(id);
             if (blog == null)
             {
                 Logger.WriteEntry(string.Format("Blog with id={0} not found by {1} method.", id, methodName), GetType().FullName, (int)LogTypeNames.Warn);            
                 return HttpNotFound();
             }
-            blog.Blogger = _db.Bloggers.Where(b => b.BloggerID == blog.BloggerID).FirstOrDefault();
+            blog.Blogger = repository.GetBloggerByID(blog.BloggerID);
 
             BlogViewModel viewModel = new BlogViewModel(blog, null, null, null, _postsDisplayed);
             WriteLog(string.Format(InfoLogMessageWithParam, methodName, "id", id), (int)LogTypeNames.Info);            
@@ -109,9 +121,9 @@ namespace Recipes.Controllers
         public ActionResult Create()
         {
             methodName = MethodBase.GetCurrentMethod().Name;
-            Blog blog = new Blog {Blogger = _db.Bloggers.FirstOrDefault()};
+            Blog blog = new Blog {Blogger = repository.GetFirstBlogger()};
             blog.BloggerID = blog.Blogger.BloggerID;
-            BlogViewModel viewModel = new BlogViewModel(blog, new List<Post>(), _db.Blogs.ToList(), _db.Bloggers.ToList(), _postsDisplayed);
+            BlogViewModel viewModel = new BlogViewModel(blog, new List<Post>(), repository.GetAllBlogs(), repository.GetAllBloggers(), _postsDisplayed);
             WriteLog(string.Format(InfoLogMessage, methodName), (int)LogTypeNames.Info);            
             return View(viewModel);
          }
@@ -132,14 +144,13 @@ namespace Recipes.Controllers
         {
             methodName = MethodBase.GetCurrentMethod().Name;
             Blog blog = viewModel.Blog;
-            blog.Blogger = _db.Bloggers.Where(b => b.BloggerID == viewModel.Blog.BloggerID).FirstOrDefault();
+            blog.Blogger = repository.GetBloggerByID(viewModel.Blog.BloggerID);
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _db.Blogs.Add(blog);
-                    _db.SaveChanges();
+                    repository.AddNewBlog(blog);
                 }
                 catch (DbEntityValidationException vex)
                 {
@@ -169,7 +180,7 @@ namespace Recipes.Controllers
                 }
             }
             WriteLog(String.Format("Created Blog with id={0} by {1}", blog.BlogID, methodName), (int)LogTypeNames.Info);
-            return View(new BlogViewModel(blog, null, _db.Blogs.ToList(), null, _postsDisplayed));
+            return View(new BlogViewModel(blog, null, repository.GetAllBlogs(), null, _postsDisplayed));
         }
 
         //
@@ -186,10 +197,10 @@ namespace Recipes.Controllers
         public ActionResult Edit(int id = 0)
         {
             methodName = MethodBase.GetCurrentMethod().Name;
-            Blog blog = _db.Blogs.Find(id);
-            blog.Blogger = _db.Bloggers.Single(b => b.BloggerID == blog.BloggerID);
+            Blog blog = repository.GetBlogByID(id);
+            blog.Blogger = repository.GetBloggerByID(blog.BloggerID);
             WriteLog(string.Format(InfoLogMessageWithParam, methodName, "id", id), (int)LogTypeNames.Info);            
-            return View(new BlogViewModel(blog, null, null, _db.Bloggers.ToList(), _postsDisplayed));
+            return View(new BlogViewModel(blog, null, null, repository.GetAllBloggers(), _postsDisplayed));
         }
 
         //
@@ -209,12 +220,11 @@ namespace Recipes.Controllers
             methodName = MethodBase.GetCurrentMethod().Name;
             Blog blog = viewModel.Blog;
             blog.BloggerID = viewModel.Blog.Blogger.BloggerID;
-            blog.Blogger = _db.Bloggers.Find(blog.BloggerID);
+            blog.Blogger = repository.GetBloggerByID(blog.BloggerID);
 
             if (ModelState.IsValid)
             {
-                _db.Entry(blog).State = EntityState.Modified;
-                _db.SaveChanges();
+                repository.EditExistingBlog(blog);
                 WriteLog(String.Format("Edited Blog with id={0} by {1}", blog.BlogID, methodName), (int)LogTypeNames.Info);
                 return RedirectToAction("../Blog/List");
             }
@@ -236,8 +246,8 @@ namespace Recipes.Controllers
         public ActionResult Delete(int id = 0)
         {
             methodName = MethodBase.GetCurrentMethod().Name;
-            Blog blog = _db.Blogs.Find(id);          
-            blog.Blogger = _db.Bloggers.Find(blog.BloggerID);
+            Blog blog = repository.GetBlogByID(id);          
+            blog.Blogger = repository.GetBloggerByID(blog.BloggerID);
             WriteLog(string.Format(InfoLogMessage, methodName), (int)LogTypeNames.Info);            
             return View(blog);
         }
@@ -257,29 +267,10 @@ namespace Recipes.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             methodName = MethodBase.GetCurrentMethod().Name;
-            Blog blog = _db.Blogs.Find(id);
-
-            //if posts exist, delete posts
-            List<Post> posts = _db.Posts.Where(p => p.BlogID == blog.BlogID).ToList();
-            if (posts.Count > 0)
-            {
-                foreach(Post post in posts)
-                {
-                    _db.Posts.Remove(post);
-                }
-            }
-            //then delete blog
-
-            _db.Blogs.Remove(blog);
-            _db.SaveChanges();
+            repository.DeleteExistingBlog(id);
+            Blog blog = repository.GetBlogByID(id);
             WriteLog(String.Format("Deleted Blog with id={0} by {1}", id, methodName), (int)LogTypeNames.Info);
             return RedirectToAction("../Blog/List");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            _db.Dispose();
-            base.Dispose(disposing);
         }
 
         /// <summary> 
@@ -340,10 +331,10 @@ namespace Recipes.Controllers
         public BlogViewModel ViewModelFromBlogID(int id)
         {
             methodName = MethodBase.GetCurrentMethod().Name;
-            Blog blog = _db.Blogs.Where(b => b.BlogID == id).FirstOrDefault();
-            List<Post> posts = _db.Posts.Where(p => p.BlogID == id).OrderByDescending(p => p.DateCreated).ToList();
-            List<Blog> blogs = _db.Blogs.ToList();
-            List<Blogger> bloggers = _db.Bloggers.ToList();
+            Blog blog = repository.GetBlogByID(id);
+            List<Post> posts = repository.GetPostsByBlogID(id).OrderByDescending(p => p.DateCreated).ToList();
+            List<Blog> blogs = repository.GetAllBlogs();
+            List<Blogger> bloggers = repository.GetAllBloggers();
 
             BlogViewModel model = new BlogViewModel(blog, posts, blogs, bloggers, _postsDisplayed);
 
@@ -362,7 +353,12 @@ namespace Recipes.Controllers
 
         private static string GetClassName()
         {
-            return new BlogController().GetType().Name;
+            return new BlogController(new BlogRepository()).GetType().Name;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
         }
     }
 }

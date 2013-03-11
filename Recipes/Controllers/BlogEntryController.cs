@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using HtmlHelpers;
 using Recipes.Models;
 using Recipes.ViewModels;
-using System;
-using System.Collections;
 
 namespace Recipes.Controllers
 {

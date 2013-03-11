@@ -276,6 +276,441 @@ namespace HtmlHelpers
             return new HtmlString(contents1 + scripts + contents2 + gallery + contents3 + setup + contents4 + border);
         }
 
+        public static IHtmlString LoggingTheory(this HtmlHelper helper)
+        {
+            const string content = @"<p><b>High-level requirements:</b></p><ul><li>Create logging engine that can log exceptions and other messages and store them in the database</li><li>Display a filterable grid of all messages</li></ul><p><b>Logging engine:</b></p><ul><li>Should allow logging of exceptions, including handled and unhandled</li><li>Should allow logging of custom messages</li></ul>
+<p><b>Filterable grid:</b></p><ul><li>Should allow paged display of all exceptions and log messages in the database</li><li>Should allow the option to filter messages based on the date logged and severity</li></ul>
+
+<p>These are simple classes that will allow handling of messages and exception.</p>" + "<pre class=\"brush:csharp\">" + @"public class LogEntry
+{
+	public int Id { get; set; }
+	public DateTime TimeStamp { get; set; }
+	public string Path { get; set; }
+	public string RawUrl { get; set; }
+	public string Source { get; set; }
+	public string Message { get; set; }
+	public string StackTrace { get; set; }
+	public string TargetSite { get; set; }
+
+	public int TypeId { get; set; }
+	public virtual LogType LogType { get; set; }
+}
+
+public class LogType
+{
+	public int LogTypeId { get; set; }
+	public string Type { get; set; }
+}
+
+public enum LogTypeNames
+{
+	All = 0,
+	Info = 1,
+	Warn = 2,
+	Debug = 3,
+	Error = 4,
+	Fatal = 5,
+	Exception = 6
+}" + "</pre><p>These will be reflected in two database table - the main table for saving all log messages, and a helper table to keep names of message severity levels.</p><pre class=\"brush:csharp\">" + @"public DbSet&lt;LogType&gt; LogTypes { get; set; }
+public DbSet&lt;LogEntry&gt; LogEntries { get; set; }" + "</pre><p>Next, it is time to mention logging of handled and unhandled exceptions.</p><p><u>Develop mechanism for logging exceptions</u></p><p><u>Log unhandled exceptions</u></p><p>Unhandled exceptions are, well, exceptions that are not handled in the source code. First, the site <b>web.config</b> must be modified to add a line in the <system.web> section</p><p>Here's how it works: a method is called in <b>Global.asax</b> file:</p><pre class=\"brush:csharp\">" + @"public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+{
+    filters.Add(new HandleErrorAttribute());
+}" + "</pre><p>It registers the <b>HandleErrorAttribute</b> as global action filter. The <b>HandleErrorAttribute</b> checks the customErrors mode, and if it is off, shows the \"yellow screen of death\". If it is on, the <b>Error</b> view is rendered and a <b>Model</b> is passed to it containing exceptions stack trace. Therefore, an <b>Error.cshtml</b> should be added under Views/Shared, and in its simplest form may look as follows</p><pre class=\"brush:xml\">" + @"@using Recipes.Logging
+@using Recipes.Models
+@{
+    Layout = null;
+    ViewBag.Title = ""Error"";
+    Logger.WriteEntry(Model.Exception);
+}
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Error&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;
+        Sorry, an error occurred while processing your request. The details of the error were logged.
+    &lt;/h2&gt;
+&lt;/body&gt;
+&lt;/html&gt;" + "</pre><p>For simplicity, all log messages - exceptions, handled and unhandled, and all other custom messages - will be saved in a single database table.</p><p><u>Log handled exceptions</u></p><p>The handled exceptions are caught by code and handled directly.</p><pre class=\"brush:csharp\">" + @"public static class Logger
+{
+	public static void WriteEntry(Exception ex)
+	{
+		LogEntry entry = BuildExceptionLogEntry(ex);
+		SaveLogEntry(entry);        
+	}
+
+	public static void WriteEntry(string mesage, string source, int logType)
+	{
+		LogEntry entry = BuildLogEntry(mesage, source, logType);
+		SaveLogEntry(entry);
+	}
+
+	private static void SaveLogEntry(LogEntry entry)
+	{
+		using (RecipesEntities context = new RecipesEntities())
+		{
+			context.LogEntries.Add(entry);
+			context.SaveChanges();
+		}
+	}
+
+	private static LogEntry BuildLogEntry(string message, string source, int logType)
+	{
+		LogEntry entry = BuildLogEntryTemplate();
+
+		entry.Message = message;
+		entry.Source = source;
+		entry.LogType = GetLogEntryType((LogTypeNames)logType);
+		entry.TypeId = logType;
+
+		return entry;
+	}
+
+	private static LogEntry BuildExceptionLogEntry(Exception x)
+	{
+		Exception logException = GetInnerExceptionIfExists(x);
+		LogEntry entry = BuildLogEntryTemplate();
+
+		entry.Message = logException.Message;
+		entry.Source = logException.Source ?? string.Empty;
+		entry.StackTrace = logException.StackTrace ?? string.Empty;
+		entry.TargetSite = logException.TargetSite == null ? string.Empty : logException.TargetSite.ToString();
+		entry.LogType = GetLogEntryType(LogTypeNames.Exception);
+		entry.TypeId = (int) LogTypeNames.Exception;
+
+		return entry;
+	}
+
+	private static LogEntry BuildLogEntryTemplate()
+	{
+		return new LogEntry
+				   {
+					   Path = HttpContext.Current.Request.Path,
+					   RawUrl = HttpContext.Current.Request.RawUrl,
+					   TimeStamp = DateTime.Now,
+				   };
+	}
+
+	public static string BuildExceptionMessage(Exception x)
+	{
+		Exception logException = GetInnerExceptionIfExists(x);
+
+		string strErrorMsg = Environment.NewLine + ""Error in Path :"" + HttpContext.Current.Request.Path;
+		// Get the QueryString along with the Virtual Path
+		strErrorMsg += Environment.NewLine + ""Raw Url :"" + HttpContext.Current.Request.RawUrl;
+		// Get the error message
+		strErrorMsg += Environment.NewLine + ""Message :"" + logException.Message;
+		// Source of the message
+		strErrorMsg += Environment.NewLine + ""Source :"" + logException.Source;
+		// Stack Trace of the error
+		strErrorMsg += Environment.NewLine + ""Stack Trace :"" + logException.StackTrace;
+		// Method where the error occurred
+		strErrorMsg += Environment.NewLine + ""TargetSite :"" + logException.TargetSite;
+		return strErrorMsg;
+	}
+
+	private static LogType GetLogEntryType(LogTypeNames name)
+	{
+		return new LogType{LogTypeId = (int)name, Type = name.ToString()};
+	}
+
+	private static Exception GetInnerExceptionIfExists(Exception x)
+	{
+		if (x.InnerException != null)
+			return x.InnerException;
+		return x;
+	}
+}" + "</pre><p>With this basic structure in place, I can start adding user interface for displaying the log.</p><p><b><u>Index view.</u></b></p><p>The view will have several parts, wrapped in a form.</p><pre class=\"brush:csharp\">" + @"@using (Html.BeginForm(""Index"", ""Logging"", new { CurrentPageIndex = 1 }, FormMethod.Get, new { id = ""myform"" }))
+{
+
+}" + "</pre><p>First is the div that shows the number of records found and gives an option to choose how many records per page will be displayed.</p><pre class=\"brush:xml\">" + @"&lt;div class=""grid-header""&gt;
+    &lt;div class=""grid-results""&gt;
+        &lt;div class=""inner""&gt;
+            &lt;span style=""float: left""&gt;
+                @string.Format(""{0} records found. Page {1} of {2}"", Model.LogEvents.TotalItemCount, Model.LogEvents.PageNumber, Model.LogEvents.PageCount)
+            &lt;/span&gt;
+
+            &lt;span style=""float: right""&gt;
+                Show @Html.DropDownListFor(model =&gt; model.PageSize, new SelectList(FormsHelper.PagingPageSizes, ""Value"", ""Text"", Model.PageSize), new { onchange = ""document.getElementById('myform').submit()"" }) results per page
+            &lt;/span&gt;
+            
+            &lt;div style=""clear: both""&gt;&lt;/div&gt;
+        &lt;/div&gt; &lt;!-- inner --&gt;
+    &lt;/div&gt;  &lt;!-- grid-results --&gt;
+ &lt;/div&gt;  &lt;!-- grid-header --&gt;" + "</pre><p>The second allows to filter records by date logged and severity</p><pre class=\"brush:xml\">" + @" &lt;div class=""grid-filter""&gt;        
+    &lt;div class=""inner""&gt;
+        Level : @Html.DropDownList(""LogLevel"", new SelectList(FormsHelper.LogLevels, ""Value"", ""Text""))
+
+        For : @Html.DropDownList(""Period"", new SelectList(FormsHelper.CommonTimePeriods, ""Value"", ""Text""))
+        
+        &lt;input id=""btnGo"" name=""btnGo"" type=""submit"" value=""Apply Filter"" /&gt;                      
+    &lt;/div&gt;
+ &lt;/div&gt;  " + "</pre><p> Next is the \"pager\" div, which allows navigation if multiple pages are reqiured</p><pre class=\"brush:xml\">" + @"  &lt;div class=""paging""&gt;
+    &lt;div class=""pager""&gt;
+        @Html.Pager(ViewData.Model.LogEvents.PageSize, ViewData.Model.LogEvents.PageNumber, ViewData.Model.LogEvents.TotalItemCount, new { LogType = ViewData[""LogType""], Period = ViewData[""Period""], PageSize = ViewData[""PageSize""] })
+    &lt;/div&gt;
+ &lt;/div&gt;" + "</pre><p> Finally, the main part is the actual grid which displays the messages.</p><pre class=\"brush:xml\">" + @"@if (Model.LogEvents.Count() == 0)
+ {
+ &lt;p&gt;No results found&lt;/p&gt;
+ }
+ else
+ {
+ &lt;div class=""grid-container""&gt;
+ &lt;table class=""grid""&gt;
+    &lt;tr&gt;
+        &lt;th&gt;&lt;/th&gt;
+        &lt;th&gt;#&lt;/th&gt;
+        &lt;th&gt;Source&lt;/th&gt;
+        &lt;th&gt;Date&lt;/th&gt;
+        &lt;th style='white-space: nowrap;'&gt;Time ago&lt;/th&gt;
+        &lt;th&gt;Message&lt;/th&gt;
+        &lt;th&gt;Type&lt;/th&gt;
+    &lt;/tr&gt;
+
+ @{int i = 0;}
+     @foreach (var item in Model.LogEvents)
+     {
+     &lt;tr class=""@(i++ % 2 == 1 ? ""alt"" : """")""&gt;
+     &lt;td&gt;
+        @Html.ActionLink(""Details"", ""Details"", new { id = item.Id.ToString(), loggerProviderName = ""Go To Details"" /*item.LoggerProviderName*/ })
+     &lt;/td&gt;
+     &lt;td&gt;
+        @i.ToString()
+     &lt;/td&gt;
+     &lt;td&gt;
+        @item.Source
+     &lt;/td&gt;
+     &lt;td style='white-space: nowrap;'&gt;
+        @String.Format(""{0:g}"", item.TimeStamp.ToLocalTime())
+     &lt;/td&gt;
+     &lt;td style='white-space: nowrap;'&gt;
+        @item.TimeStamp.ToLocalTime().TimeAgoString()
+     &lt;/td&gt;
+     &lt;td&gt;
+        &lt;pre&gt;@item.Message.WordWrap(80)&lt;/pre&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+        @item.LogType.Type
+     &lt;/td&gt;
+     &lt;/tr&gt;
+     }
+
+ &lt;/table&gt;
+ &lt;/div&gt; &lt;!-- grid-container --&gt;
+}" + "</pre><p>A few points of interest:</p><p><b>Paging</b> control uses the <b>PagedList</b> class.</p><p>Interface:</p><pre class=\"brush:csharp\">" + @"public interface IPagedList&lt;T&gt; : IList&lt;T&gt;
+{
+	int PageCount { get; }
+	int TotalItemCount { get; }
+	int PageIndex { get; }
+	int PageNumber { get; }
+	int PageSize { get; }
+
+	bool HasPreviousPage { get; }
+	bool HasNextPage { get; }
+	bool IsFirstPage { get; }
+	bool IsLastPage { get; }
+}" + "</pre><p>PagedList class:</p><pre class=\"brush:csharp\">" + @"public class PagedList&lt;T&gt; : List&lt;T&gt;, IPagedList&lt;T&gt;
+{
+	public PagedList(IEnumerable&lt;T&gt; source, int index, int pageSize)
+		: this(source, index, pageSize, null)
+	{
+	}
+
+	public PagedList(IEnumerable&lt;T&gt; source, int index, int pageSize, int? totalCount)
+	{
+		Initialize(source.AsQueryable(), index, pageSize, totalCount);
+	}
+
+	public PagedList(IQueryable&lt;T&gt; source, int index, int pageSize)
+		: this(source, index, pageSize, null)
+	{
+	}
+
+	public PagedList(IQueryable&lt;T&gt; source, int index, int pageSize, int? totalCount)
+	{
+		Initialize(source, index, pageSize, totalCount);
+	}
+
+	#region IPagedList Members
+
+	public int PageCount { get; private set; }
+	public int TotalItemCount { get; private set; }
+	public int PageIndex { get; private set; }
+	public int PageNumber { get { return PageIndex + 1; } }
+	public int PageSize { get; private set; }
+	public bool HasPreviousPage { get; private set; }
+	public bool HasNextPage { get; private set; }
+	public bool IsFirstPage { get; private set; }
+	public bool IsLastPage { get; private set; }
+
+	#endregion
+
+	protected void Initialize(IQueryable&lt;T&gt; source, int index, int pageSize, int? totalCount)
+	{
+		//### argument checking
+		if (index &lt; 0)
+		{
+			throw new ArgumentOutOfRangeException(""PageIndex cannot be below 0."");
+		}
+		if (pageSize &lt; 1)
+		{
+			throw new ArgumentOutOfRangeException(""PageSize cannot be less than 1."");
+		}
+
+		//### set source to blank list if source is null to prevent exceptions
+		if (source == null)
+		{
+			source = new List&lt;T&gt;().AsQueryable();
+		}
+
+		//### set properties
+		if (!totalCount.HasValue)
+		{
+			TotalItemCount = source.Count();
+		}
+		PageSize = pageSize;
+		PageIndex = index;
+		if (TotalItemCount &gt; 0)
+		{
+			PageCount = (int)Math.Ceiling(TotalItemCount / (double)PageSize);
+		}
+		else
+		{
+			PageCount = 0;
+		}
+		HasPreviousPage = (PageIndex &gt; 0);
+		HasNextPage = (PageIndex &lt; (PageCount - 1));
+		IsFirstPage = (PageIndex &lt;= 0);
+		IsLastPage = (PageIndex &gt;= (PageCount - 1));
+
+		//### add items to internal list
+		if (TotalItemCount &gt; 0)
+		{
+			AddRange(source.Skip((index) * pageSize).Take(pageSize).ToList());
+		}
+	}
+}" + "</pre><p>Pager class renders the HTML for the pager control:</p><pre class=\"brush:csharp\">" + @"public class Pager
+{
+	private readonly ViewContext viewContext;
+	private readonly int pageSize;
+	private readonly int currentPage;
+	private readonly int totalItemCount;
+	private readonly RouteValueDictionary linkWithoutPageValuesDictionary;
+
+	public Pager(ViewContext viewContext, int pageSize, int currentPage, int totalItemCount, RouteValueDictionary valuesDictionary)
+	{
+		this.viewContext = viewContext;
+		this.pageSize = pageSize;
+		this.currentPage = currentPage;
+		this.totalItemCount = totalItemCount;
+		linkWithoutPageValuesDictionary = valuesDictionary;
+	}
+
+	/// &lt;summary&gt;
+	/// Rendes HTML to display a ""pager"" control (used at the top and bottom of the list of logged messages)
+	/// &lt;/summary&gt;
+	/// &lt;returns&gt;String of HTML&lt;/returns&gt;
+	public string RenderHtml()
+	{
+		int pageCount = (int)Math.Ceiling(totalItemCount / (double)pageSize);
+		const int nrOfPagesToDisplay = 10;
+
+		var sb = new StringBuilder();
+
+		// Previous
+		if (currentPage &gt; 1)
+		{
+			sb.Append(GeneratePageLink(""&lt;"", this.currentPage - 1));
+		}
+		else
+		{
+			sb.Append(""&lt;span class=\""disabled\""&gt;&lt;&lt;/span&gt;"");
+		}
+
+		int start = 1;
+		int end = pageCount;
+
+		if (pageCount &gt; nrOfPagesToDisplay)
+		{
+			int middle = (int)Math.Ceiling(nrOfPagesToDisplay / 2d) - 1;
+			int below = (currentPage - middle);
+			int above = (currentPage + middle);
+
+			if (below &lt; 4)
+			{
+				above = nrOfPagesToDisplay;
+				below = 1;
+			}
+			else if (above &gt; (pageCount - 4))
+			{
+				above = pageCount;
+				below = (pageCount - nrOfPagesToDisplay);
+			}
+
+			start = below;
+			end = above;
+		}
+
+		if (start &gt; 3)
+		{
+			sb.Append(GeneratePageLink(""1"", 1));
+			sb.Append(GeneratePageLink(""2"", 2));
+			sb.Append(""..."");
+		}
+		for (int i = start; i &lt;= end; i++)
+		{
+			if (i == currentPage)
+			{
+				sb.AppendFormat(""&lt;span class=\""current\""&gt;{0}&lt;/span&gt;"", i);
+			}
+			else
+			{
+				sb.Append(GeneratePageLink(i.ToString(), i));
+			}
+		}
+		if (end &lt; (pageCount - 3))
+		{
+			sb.Append(""..."");
+			sb.Append(GeneratePageLink((pageCount - 1).ToString(), pageCount - 1));
+			sb.Append(GeneratePageLink(pageCount.ToString(), pageCount));
+		}
+
+		// Next
+		if (currentPage &lt; pageCount)
+		{
+			sb.Append(GeneratePageLink(""&gt;"", (currentPage + 1)));
+		}
+		else
+		{
+			sb.Append(""&lt;span class=\""disabled\""&gt;&gt;&lt;/span&gt;"");
+		}
+		return sb.ToString();
+	}
+
+	/// &lt;summary&gt;
+	/// Generates a link to a page
+	/// &lt;/summary&gt;
+	/// &lt;param name=""linkText""&gt;Text displayed on the page&lt;/param&gt;
+	/// &lt;param name=""pageNumber""&gt;Number of the page the link leads to&lt;/param&gt;
+	/// &lt;returns&gt;&lt;/returns&gt;
+	private string GeneratePageLink(string linkText, int pageNumber)
+	{
+		var pageLinkValueDictionary = new RouteValueDictionary(linkWithoutPageValuesDictionary) {{""page"", pageNumber}};
+		var virtualPathData = RouteTable.Routes.GetVirtualPath(this.viewContext.RequestContext, pageLinkValueDictionary);
+
+		if (virtualPathData != null)
+		{
+			const string linkFormat = ""&lt;a href=\""{0}\""&gt;{1}&lt;/a&gt;"";
+			return String.Format(linkFormat, virtualPathData.VirtualPath, linkText);
+		}
+		return null;
+	}
+}" + "</pre>";
+            return new HtmlString(content);
+        }
+
         public static IHtmlString YahooTheory(this HtmlHelper helper)
         {
             const string contents1 = "<p><strong>WebGrid</strong> is an HTML helper provided as part of the MVC framework to simplify rendering tabular data.</p><p>When I learned how to use <strong>WebGrid</strong> I found a very good article with code samples here:</p><p><a href=\"http://msdn.microsoft.com/en-us/magazine/hh288075.aspx\">Get the Most out of WebGrid in ASP.NET MVC</a></p><p>My application of these ideas I described on my blog:</p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/starting-with-webgrid.html\">Starting with WebGrid</a></p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/webgrid-stronly-typed-with-server-paging.html\">WebGrid: Stronly Typed with Server Paging</a></p><p><a href=\"http://justmycode.blogspot.com.au/2012/11/webgrid-ajax-updates-server-sorting.html\">WebGrid: AJAX Updates, Server Sorting</a></p><p>Here is most of the <strong></strong>View that displays my <strong>WebGrid</strong>:</p>";

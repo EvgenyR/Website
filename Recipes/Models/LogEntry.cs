@@ -3,7 +3,7 @@
 namespace Recipes.Models
 {
     /// <summary>
-    /// An Entity to save an exception logged using NLog
+    /// An Entity to save an exception or custom message
     /// </summary>
     public class LogEntry
     {

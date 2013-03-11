@@ -7,6 +7,7 @@ namespace Recipes.Repository
 {
     public class LoggingRepository
     {
+        RecipesEntities db = new RecipesEntities();
         /// <summary>
         /// Gets a filtered list of log events
         /// </summary>
@@ -18,21 +19,20 @@ namespace Recipes.Repository
         /// <returns>A filtered list of log events</returns>
         public IPagedList<LogEntry> GetByDateRangeAndType(int pageIndex, int pageSize, DateTime start, DateTime end, string logLevel)
         {
-            RecipesEntities db = new RecipesEntities();
+            IQueryable<LogEntry> list;
+            IPagedList<LogEntry> pagedList;
 
-            IQueryable<LogEntry> list =
-                db.LogEntries.Where(
-                    e =>
+            list = db.LogEntries.Where(e =>
                     (e.TimeStamp >= start && e.TimeStamp <= end));
 
-            if(logLevel != LogTypeNames.All.ToString())
+            if (logLevel != LogTypeNames.All.ToString())
             {
                 list = list.Where(e => e.LogType.Type.ToLower() == logLevel.ToLower());
             }
 
             list = list.OrderByDescending(e => e.TimeStamp);
-
-            return new PagedList<LogEntry>(list, pageIndex, pageSize);
+            pagedList = new PagedList<LogEntry>(list, pageIndex, pageSize);
+            return pagedList;
         }
 
         /// <summary>

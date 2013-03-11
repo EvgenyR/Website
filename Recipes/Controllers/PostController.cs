@@ -1,16 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Web.Mvc;
 using Recipes.Models;
+using Recipes.Repository;
 using Recipes.ViewModels;
 
 namespace Recipes.Controllers
 {
     public class PostController : BaseController
     {
-        private RecipesEntities db = new RecipesEntities();
+        IBlogRepository repository;
+
+        public PostController()
+            : this(new BlogRepository())
+        { }
+
+        public PostController(IBlogRepository repository)
+        {
+            this.repository = repository;
+        }
 
         //
         // GET: /Post/
@@ -23,10 +31,9 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Index(int id)
         {
-            Blog blog = db.Blogs.Find(id);
-            Blogger blogger = db.Bloggers.Where(b => b.BloggerID == blog.BloggerID).FirstOrDefault();
-            List<Post> posts = db.Posts.Where(p => p.BlogID == id).ToList();
-            //BlogViewModel viewModel = new BlogViewModel(blog, posts, null, blog.BloggerID, null);
+            List<Post> posts = repository.GetPostsByBlogID(id);
+            Blog blog = repository.GetBlogByID(id);
+            Blogger blogger = repository.GetBloggerByID(blog.BloggerID);
             PostViewModel viewModel = new PostViewModel(blog, blogger, null, posts);
             return View(viewModel);
         }
@@ -37,7 +44,7 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Details(int id = 0)
         {
-            Post post = db.Posts.Find(id);
+            Post post = repository.GetPostByID(id);
             if (post == null)
             {
                 return HttpNotFound();
@@ -50,7 +57,7 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Display(int id = 0)
         {
-            Post post = db.Posts.Find(id);
+            Post post = repository.GetPostByID(id);
             if (post == null)
             {
                 return HttpNotFound();
@@ -65,9 +72,9 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Create(int id)
         {
-            Blog blog = db.Blogs.Find(id);
-            List<Post> posts = db.Posts.Where(p => p.BlogID == id).ToList();
-            Blogger blogger = db.Bloggers.Where(b => b.BloggerID == blog.BloggerID).FirstOrDefault();
+            Blog blog = repository.GetBlogByID(id);
+            List<Post> posts = repository.GetPostsByBlogID(id);
+            Blogger blogger = repository.GetBloggerByID(blog.BloggerID);
 
             Post newPost = new Post();
             newPost.BlogID = blog.BlogID;
@@ -86,8 +93,7 @@ namespace Recipes.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Posts.Add(viewModel.Post);
-                db.SaveChanges();
+                repository.AddNewPost(viewModel.Post);
                 string action = "../Post/Index/" + viewModel.Post.BlogID.ToString();
                 return RedirectToAction(action);
             }
@@ -101,7 +107,7 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Edit(int id = 0)
         {
-            Post post = db.Posts.Find(id);
+            Post post = repository.GetPostByID(id);
             if (post == null)
             {
                 return HttpNotFound();
@@ -118,8 +124,7 @@ namespace Recipes.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(post).State = EntityState.Modified;
-                db.SaveChanges();
+                repository.EditExistingPost(post);
                 string action = "../Post/Index/" + post.BlogID.ToString();
                 return RedirectToAction(action);
             }
@@ -132,7 +137,7 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Delete(int id = 0)
         {
-            Post post = db.Posts.Find(id);
+            Post post = repository.GetPostByID(id);
             if (post == null)
             {
                 return HttpNotFound();
@@ -148,17 +153,15 @@ namespace Recipes.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
 
-            Post post = db.Posts.Find(id);
+            Post post = repository.GetPostByID(id);
             int blogID = post.BlogID;
-            db.Posts.Remove(post);
-            db.SaveChanges();
+            repository.DeleteExistingPost(post);
             string action = "../Post/Index/" + post.BlogID.ToString();
             return RedirectToAction(action);
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
             base.Dispose(disposing);
         }
     }

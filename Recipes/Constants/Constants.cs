@@ -56,5 +56,8 @@ namespace Constants
 
         public const string JQGameMetaKeywords = "jQuery, MVC, Game of Life, HTML, CSS";
         public const string JQGameMetaDescription = "jQuery Implementation of Conway's Game of Life";
+
+        public const string LoggingMetaKeywords = "Logging, exception, message, MVC 4, pager, C#";
+        public const string LoggingMetaDescription = "A logging engine for MVC application that allows saving and viewing of handled and unhandled exceptions and custom messages";
     }
 }

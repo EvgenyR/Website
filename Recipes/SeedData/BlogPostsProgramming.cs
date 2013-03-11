@@ -3946,5 +3946,58 @@ $emp_audit$ LANGUAGE plpgsql;" + "</pre><p>Looks like a dirty hack, which falls 
         public const string content_27022013_d = "Understanding PostgreSQL entity to data mapping, inverse mode and audit tables";
         public const string content_27022013_k = "PostgreSQL, audit table, trigger, cache, entity, mapping, inverse";
 
+
+        //Fixing PostgreSQL index bloating with scheduled REINDEX via pgAgent
+        public const string content_11032013_b = "<p>There is a problem generally called <i>index bloating</i> that occurs in <b>PostgreSQL</b> certain circumstances when there are continuous inserts and deletes happening in a table. It is described as follows \"B-tree index pages that have become completely empty are reclaimed for re-use. However, there is still a possibility of inefficient use of space: if all but a few index keys on a page have been deleted, the page remains allocated. Therefore, a usage pattern in which most, but not all, keys in each range are eventually deleted will see poor use of space. For such usage patterns, periodic reindexing is recommended\".</p><p>This looks exactly like the problem I came across, when a table with ~2K rows had an index of over 120MB and another table with ~80K rows had 4 indexes on it, with total size approaching 3GB. The <b>AUTOVACUUM</b> was running as configured by default but apparently not enough to prevent index bloating.</p><p>Eventually, I decided configuring a <b>REINDEX</b> to run monthly on said tables. <b>pgAgent</b> is the job scheduler to use with PostgreSQL, but with PostgreSQL 9.1 I could install it following the documentation - the tables were created and the service was running, but I could not find any UI for it. So here's an example script that I used to create a scheduled job.</p>";
+        public const string content_11032013_r = "<pre class=\"brush:sql\">" + @"SET search_path = pgagent;
+
+INSERT INTO pga_jobclass VALUES (6, 'Scheduled Tasks');
+
+INSERT INTO pga_job VALUES (5, 6, 'TableReindex', 'Reindex tables', '', true, 
+	'2013-03-27 10:00:00.000+11', --date created
+	'2013-03-07 10:00:00.000+11', --date changed
+	NULL, NULL, NULL);
+
+INSERT INTO pga_schedule VALUES (3, 5, 'TableReindexSchedule', 'Reindex tables', 
+	true, --enabled
+	'2013-03-27 10:00:00.000+11', --start date
+	NULL, --end (never)
+	'{t,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f}', --minutes: 't' for run on the first minute of an hour
+	'{t,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f}', --hours: 't' to run at 3 AM
+	'{t,t,t,t,t,t,t}', -- weekdays: don't care, all false
+	'{t,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f}', -- monthdays: 't' to run on the first day
+	'{t,t,t,t,t,t,t,t,t,t,t,t}'); -- months: all true to run on the first day on each month
+
+INSERT INTO pga_jobstep VALUES (5, 5, 'TableReindexInfo', '', true, 's', 'REINDEX TABLE mytable1;REINDEX TABLE mytable2;', '', '@@DATABASE_NAME@@', 'f', NULL);" + "</pre><p>To verify, I checked the pga_job table and found '2013-04-01 03:00:00+11' in jobnextrun column - that's when I want to run it, at 3 AM on the first of next month.</p><p>I still have a question though - I tried using the </p><pre class=\"brush:sql\">" + @"'{f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t}', -- monthdays: 't' " + "</pre><p>to run on the first day pattern, because the last value is supposedly used for setting the \"last day\" - run on the last day of the month.</p><p>This, however, returns me quite a bunch of errors which suggest that PostgreSQL has some troubles calculating the next time the job will run.</p><pre class=\"brush:sql\">" + @"ERROR:  value ""32768"" is out of range for type smallint
+CONTEXT:  PL/pgSQL function ""pga_next_schedule"" line 1254 at assignment
+SQL statement ""SELECT                                                    MIN(pgagent.pga_next_schedule(jscid, jscstart, jscend, jscminutes, jschours, jscweekdays, jscmonthdays, jscmonths))
+               FROM pgagent.pga_schedule
+              WHERE jscenabled AND jscjobid=OLD.jobid""
+PL/pgSQL function ""pga_job_trigger"" line 24 at SQL statement
+SQL statement ""UPDATE pgagent.pga_job
+           SET jobnextrun = NULL
+         WHERE jobenabled AND jobid=NEW.jscjobid""
+PL/pgSQL function ""pga_schedule_trigger"" line 60 at SQL statement
+
+********** Error **********
+
+ERROR: value ""32768"" is out of range for type smallint
+SQL state: 22003
+Context: PL/pgSQL function ""pga_next_schedule"" line 1254 at assignment
+SQL statement ""SELECT                                                    MIN(pgagent.pga_next_schedule(jscid, jscstart, jscend, jscminutes, jschours, jscweekdays, jscmonthdays, jscmonths))
+               FROM pgagent.pga_schedule
+              WHERE jscenabled AND jscjobid=OLD.jobid""
+PL/pgSQL function ""pga_job_trigger"" line 24 at SQL statement
+SQL statement ""UPDATE pgagent.pga_job
+           SET jobnextrun = NULL
+         WHERE jobenabled AND jobid=NEW.jscjobid""
+PL/pgSQL function ""pga_schedule_trigger"" line 60 at SQL statement" + "</pre><p>The simplest way to reproduce it is to run an UPDATE similar to the following</p><pre class=\"brush:sql\">" + @"UPDATE pgagent.pga_schedule
+SET
+jscmonthdays = '{f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,t}'
+WHERE jscid = 3" + "</pre><p>Since I don't really care about running it on a first or last day, I won't dig deep into it. Could be a bug in PostgreSQL for all I know.</p><p><b>References:</b></p><a href=\"http://www.postgresql.org/docs/9.1/static/routine-reindex.html\">23.2. Routine Reindexing</a><br/><a href=\"http://www.mkyong.com/database/how-to-install-pgagent-on-windows-postgresql-job-scheduler/\">How To Install PgAgent On Windows (PostgreSQL Job Scheduler)</a><br/><a href=\"http://www.postgresonline.com/journal/archives/19-Setting-up-PgAgent-and-Doing-Scheduled-Backups.html\">Setting up PgAgent and Doing Scheduled Backups</a><br/><a href=\"http://wiki.postgresql.org/wiki/Automated_Backup_on_Windows\">Automated Backup on Windows</a><br/>" +
+            
+            "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_11032013_d = "Fix the index bloating in PostgreSQL by running a scheduled reindex. Schedule reindex by using the pgAgent. Configure the scheduled job in pgAgent by running a database query directly.";
+        public const string content_11032013_k = "PostgreSQL 9.1. index bloating reindex autovacuum pgagent pga_job pga_schedule pga_jobstep";
     }
 }

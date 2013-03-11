@@ -173,7 +173,6 @@
     <Compile Include="HtmlHelpers\WebGrid.cs" />
     <Compile Include="HtmlHelpers\WebGridExtensions.cs" />
     <Compile Include="LogHelpers\Logger.cs" />
-    <Compile Include="LogHelpers\LogUtility.cs" />
     <Compile Include="Models\Blog.cs" />
     <Compile Include="Models\Blogger.cs" />
     <Compile Include="Models\Category.cs" />
@@ -181,7 +180,10 @@
     <Compile Include="Paging\IPagedList.cs" />
     <Compile Include="Paging\PagedList.cs" />
     <Compile Include="Paging\Pager.cs" />
+    <Compile Include="Repository\BlogRepository.cs" />
+    <Compile Include="Repository\IBlogRepository.cs" />
     <Compile Include="Repository\LoggingRepository.cs" />
+    <Compile Include="Repository\YahooRepository.cs" />
     <Compile Include="SeedData\AddBasicRecipeData.cs" />
     <Compile Include="SeedData\AddBlogEngineBlogData.cs" />
     <Compile Include="SeedData\AddBlogEngineBloggerData.cs" />
@@ -746,6 +748,8 @@
     <Content Include="Views\Logging\Index.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\Logging\Details.cshtml" />
+    <Content Include="Views\Logging\Theory.cshtml" />
+    <Content Include="Views\Shared\_LoggingNav.cshtml" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\README_ENU.txt" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\msvcr90.dll" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest" />

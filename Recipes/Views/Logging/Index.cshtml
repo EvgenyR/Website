@@ -6,13 +6,10 @@
 
 <link href="@Url.Content("~/Content/logging.css")" rel="stylesheet" type="text/css" />
 
+@Html.Partial("_LoggingNav")
 <h2>Message Log</h2>
-
 @using (Html.BeginForm("Index", "Logging", new { CurrentPageIndex = 1 }, FormMethod.Get, new { id = "myform" }))
 {
-    <!--<input id="btnGo" name="btnGo" type="submit" value="Apply Filter" />-->
-
-
 <div class="grid-header">
     <div class="grid-results">
         <div class="inner">

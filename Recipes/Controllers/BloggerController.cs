@@ -4,12 +4,24 @@ using System.Web.Mvc;
 using Recipes.Models;
 using System.Collections.Generic;
 using Recipes.ViewModels;
+using Recipes.Repository;
 
 namespace Recipes.Controllers
 {
     public class BloggerController : BaseController
     {
-        private readonly RecipesEntities db = new RecipesEntities();
+        //private readonly RecipesEntities db = new RecipesEntities();
+
+        IBlogRepository repository;
+
+        public BloggerController()
+            : this(new BlogRepository())
+        { }
+
+        public BloggerController(IBlogRepository repository)
+        {
+            this.repository = repository;
+        }
 
         //
         // GET: /Blogger/
@@ -21,7 +33,7 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Index()
         {
-            return View(db.Bloggers.ToList());
+            return View(repository.GetAllBloggers());
         }
 
         //
@@ -35,13 +47,13 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Details(int id = 0)
         {
-            Blogger blogger = db.Bloggers.Find(id);
+            Blogger blogger = repository.GetBloggerByID(id);
             if (blogger == null)
             {
                 return HttpNotFound();
             }
 
-            List<Blog> blogs = db.Blogs.Where(b => b.BloggerID == blogger.BloggerID).ToList();
+            List<Blog> blogs = repository.GetBlogsByBloggerId(blogger.BloggerID);
             BloggerViewModel viewModel = new BloggerViewModel(blogger, blogs);
 
             return View(viewModel);
@@ -74,8 +86,7 @@ namespace Recipes.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Bloggers.Add(blogger);
-                db.SaveChanges();
+                repository.AddNewBlogger(blogger);
                 return RedirectToAction("Index");
             }
 
@@ -93,7 +104,7 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Edit(int id = 0)
         {
-            Blogger blogger = db.Bloggers.Find(id);
+            Blogger blogger = repository.GetBloggerByID(id);
             if (blogger == null)
             {
                 return HttpNotFound();
@@ -115,8 +126,7 @@ namespace Recipes.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(blogger).State = EntityState.Modified;
-                db.SaveChanges();
+                repository.EditExistingBlogger(blogger);
                 return RedirectToAction("Index");
             }
             return View(blogger);
@@ -133,7 +143,7 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         public ActionResult Delete(int id = 0)
         {
-            Blogger blogger = db.Bloggers.Find(id);
+            Blogger blogger = repository.GetBloggerByID(id);
             if (blogger == null)
             {
                 return HttpNotFound();
@@ -153,37 +163,12 @@ namespace Recipes.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Blogger blogger = db.Bloggers.Find(id);
-
-            //first check if the blogger has blogs
-            List<Blog> blogs = db.Blogs.Where(b => b.BloggerID == blogger.BloggerID).ToList();
-
-            //if there are blogs, for each blog start with deleting posts
-            if (blogs.Count > 0)
-            {
-                foreach (Blog blog in blogs)
-                {
-                    List<Post> posts = db.Posts.Where(p => p.BlogID == blog.BlogID).ToList();
-                    if (posts.Count > 0)
-                    {
-                        foreach (Post post in posts)
-                        {
-                            db.Posts.Remove(post);
-                        }
-                    }
-                    //then, delete all blogs which are now empty
-                    db.Blogs.Remove(blog);
-                }
-            }
-            //finally, delete the blogger
-            db.Bloggers.Remove(blogger);
-            db.SaveChanges();
+            repository.DeleteExistingBlogger(id);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
             base.Dispose(disposing);
         }
     }

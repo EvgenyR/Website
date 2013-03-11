@@ -1,20 +1,20 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Web.Mvc;
-using System;
-using System.IO;
-using Recipes.Models;
-using Recipes.ViewModels;
-using System.Collections.Generic;
-using System.Globalization;
+using Recipes.Repository;
 using Recipes.SeedData;
+using Recipes.ViewModels;
 
 namespace Recipes.Controllers
 {
     public class YahooController : BaseController
     {
-        RecipesEntities db = new RecipesEntities();
+        YahooRepository repository = new YahooRepository();
         //
         // GET: /Yahoo/
 
@@ -29,7 +29,7 @@ namespace Recipes.Controllers
 
         private YahooViewModel GetFullViewModel(List<YahooData> datas, int totalRecords)
         {
-            List<YahooSymbol> symbols = db.YahooSymbols.ToList();
+            List<YahooSymbol> symbols = repository.GetYahooSymbols();
             YahooSymbol symbol = symbols.First();
             int id = symbol.YahooSymbolID;
             return new YahooViewModel(id, symbol, symbols, datas, totalRecords);
@@ -72,7 +72,7 @@ namespace Recipes.Controllers
 
         public List<YahooData> GetData(out int totalRecords, int pageSize, int pageIndex, string sort = "YahooSymbolName", SortDirection sortOrder = SortDirection.Ascending )
         {
-            IQueryable<YahooData> data = db.YahooData;
+            IQueryable<YahooData> data = repository.GetYahooData();
             totalRecords = data.Count();
 
             Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>> applyOrdering = _dataOrderings[sort];
@@ -107,8 +107,7 @@ namespace Recipes.Controllers
         public ActionResult AddDataToDB()
         {
             List<YahooData> datas = GetSingleSet();
-            datas.ForEach(d => db.YahooData.Add(d));
-            db.SaveChanges();
+            repository.AddYahooData(datas);
 
             string s = "<table><thead><tr class=\"webgrid-header\"><th>Company</th><th>Time</th><th>LTP</th><th>Volume</th><th>Ask</th><th>Bid</th><th>High</th><th>Low</th></tr></thead><tbody>";
 
@@ -163,7 +162,7 @@ namespace Recipes.Controllers
                 string[] splitLine = line.Split(',');
                 datum = new YahooData()
                             {
-                                SymbolId = GetSymbol(splitLine[0].Replace("\"", "")),
+                                SymbolId = repository.GetYahooSymbolByName(splitLine[0].Replace("\"", "")),
                                 DataName = splitLine[1].Replace("\"", ""),
                                 Date =
                                     DateTime.ParseExact(splitLine[2].Replace("\"", ""), "MM/d/yyyy",
@@ -183,12 +182,6 @@ namespace Recipes.Controllers
                 //log.Fatal("Exception in GetDatum: ", ex);
             }
             return datum;
-        }
-
-        private int GetSymbol(string name)
-        {
-            YahooSymbol symbol = db.YahooSymbols.Where(s => s.YahooSymbolName == name).FirstOrDefault();
-            return symbol.YahooSymbolID;
         }
 
         public CookieContainer Authenticate()

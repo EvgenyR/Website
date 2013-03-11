@@ -185,7 +185,7 @@ namespace Recipes.SeedData
                 new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_13092012_b, RestOfContent = BlogPostsBiology.content_13092012_r, Keywords = BlogPostsBiology.content_13092012_k, Description = BlogPostsBiology.content_13092012_d, DateCreated = new DateTime(2012, 9, 13), PostID = 171, Title = "Markov Chains Monte Carlo Bayesian Inference" },
 
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_27022013_b, RestOfContent = BlogPostsProgramming.content_27022013_r, Keywords = BlogPostsProgramming.content_27022013_k, Description = BlogPostsProgramming.content_27022013_d, DateCreated = new DateTime(2013, 02, 27), PostID = 172, Title = "On PostgreSQL Inverse mode and database audit table triggers" },
-
+                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_11032013_b, RestOfContent = BlogPostsProgramming.content_11032013_r, Keywords = BlogPostsProgramming.content_11032013_k, Description = BlogPostsProgramming.content_11032013_d, DateCreated = new DateTime(2013, 03, 11), PostID = 173, Title = "Fixing PostgreSQL index bloating with scheduled REINDEX via pgAgent" },
 
             };
 

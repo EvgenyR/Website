@@ -11,7 +11,8 @@ namespace Recipes.Controllers
         private readonly LoggingRepository repository = new LoggingRepository();
         //
         // GET: /Logging/
-
+        [MetaKeywords(Constants.Constants.LoggingMetaKeywords)]
+        [MetaDescription(Constants.Constants.LoggingMetaDescription)]
         public ActionResult Index(string Period = null, int? PageSize = null, int? page = null, string LogLevel = null)
         {
             string defaultPeriod = Session["Period"] == null ? "All" : Session["Period"].ToString();
@@ -40,12 +41,20 @@ namespace Recipes.Controllers
 
         //
         // GET: /Logging/Details/5
-
+        [MetaKeywords(Constants.Constants.LoggingMetaKeywords)]
+        [MetaDescription(Constants.Constants.LoggingMetaDescription)]
         public ActionResult Details(string loggerProviderName, string id)
         {
             LogEntry logEvent = repository.GetById(id);
 
             return View(logEvent);
-        }   
+        }
+
+        [MetaKeywords(Constants.Constants.LoggingMetaKeywords)]
+        [MetaDescription(Constants.Constants.LoggingMetaDescription)]
+        public ActionResult Theory()
+        {
+            return View();
+        }
     }
 }

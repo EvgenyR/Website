@@ -118,19 +118,15 @@ function game() {
 }
 
 function stopGameOfLife() {
-    trace('stopping game of life');
     isGameRunning = false;
     clearInterval(interval);
 }
 
 function resetGameOfLife() {
     stopGameOfLife();
-    trace('reseting game of life');
     $('.cel').each(function () {
         unselectCel($(this));
     });
-
-    if (typeof window.console != 'undefined' && typeof window.console.log != 'undefined') console.clear();
 }
 
 //gol helpers
@@ -164,7 +160,6 @@ function createGrid(rows, cols) {
     $(holder).append(htmlStr);
 
     var nArr = getNeighboringCels('#r7c17');
-    console.log(nArr);
 }
 
 function getNeighboringCels(cel) {
@@ -240,13 +235,6 @@ function applyPreset(p) {
     }
 
 }
-
-//general helpers//
-function trace(val) {
-    if (typeof window.console != 'undefined' && typeof window.console.log != 'undefined') {
-        if (typeof val == 'string') console.log(val);
-        else console.log(val.toString());
-    }
 }
 
 Array.prototype.unique = function () {
