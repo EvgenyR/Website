@@ -37,6 +37,12 @@ namespace Recipes.Controllers
             return PartialView(model);
         }
 
+        public PartialViewResult BlogCategories()
+        {
+            BlogEntryViewModel model = new BlogEntryViewModel(GetBlogEntries(1));
+            return PartialView(model);
+        }
+
         /// <summary>
         /// Selects all posts that belong to a blog. Groups the posts to create a hierarchical structure by year and month of publication
         /// The structure is then used to generate html which will be rendered in the form of an expandable tree

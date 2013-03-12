@@ -14,7 +14,7 @@ namespace Recipes.Controllers
 {
     public class BlogController : BaseController
     {
-        IBlogRepository repository;
+        private readonly IBlogRepository repository;
         private const string InfoLogMessage = "Blog Controller method {0} accessed";
         private const string InfoLogMessageWithParam = InfoLogMessage + " with a parameter {1}={2}";
 

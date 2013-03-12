@@ -1,16 +1,27 @@
-﻿using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Recipes.Models;
 using System.Data;
 using System.Data.Entity.Validation;
 using System.Collections.Generic;
+using Recipes.Repository;
 using Recipes.ViewModels;
 
 namespace Recipes.Controllers
 {
     public class IngredientController : BaseController
     {
-        RecipesEntities db = new RecipesEntities();
+        private readonly IRecipesRepository repository;
+
+        //constructor chaining
+        //avoid "no parameterless constructor defined for this object"
+        public IngredientController()
+            : this(new RecipesRepository())
+        { }
+
+        public IngredientController(IRecipesRepository repository)
+        {
+            this.repository = repository;
+        }
 
         //
         // GET: /Ingredient/
@@ -18,7 +29,7 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Index()
         {
-            var ingredients = db.Ingredients.ToList();
+            var ingredients = repository.GetAllIngredients();
             return View(ingredients);
         }
 
@@ -29,9 +40,9 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Details(int id)
         {
-            var ingredient = db.Ingredients.Single(i => i.IngredientID == id);
-            ingredient.RecipeIngredients = db.RecipeIngredients.Where(ri => ri.IngredientID == ingredient.IngredientID).ToList();
-            return View(new IngredientViewModel(ingredient, db.Measures.ToList()));
+            var ingredient = repository.GetIngredientById(id);
+            ingredient.RecipeIngredients = repository.GetRecipeIngredientsByIngredientId(ingredient.IngredientID);
+            return View(new IngredientViewModel(ingredient, repository.GetAllMeasures()));
         }
 
         //
@@ -41,7 +52,7 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Create()
         {
-            return View(new IngredientViewModel(new Ingredient(), db.Measures.ToList()));
+            return View(new IngredientViewModel(new Ingredient(), repository.GetAllMeasures()));
         } 
 
         //
@@ -55,8 +66,7 @@ namespace Recipes.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Ingredients.Add(ingredient);
-                    db.SaveChanges();
+                    repository.AddNewIngredient(ingredient);
                     return RedirectToAction("Index");
                 }
             }
@@ -74,7 +84,7 @@ namespace Recipes.Controllers
             {
                 ModelState.AddModelError(string.Empty, Constants.Constants.DataExceptionMessage );
             }
-            return View(new IngredientViewModel(ingredient, db.Measures.ToList()));
+            return View(new IngredientViewModel(ingredient, repository.GetAllMeasures()));
         }
         
         //
@@ -83,8 +93,8 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Edit(int id)
         {
-            Ingredient ingredient = db.Ingredients.Single(i => i.IngredientID == id);
-            return View(new IngredientViewModel(ingredient, db.Measures.ToList()));
+            Ingredient ingredient = repository.GetIngredientById(id);
+            return View(new IngredientViewModel(ingredient, repository.GetAllMeasures()));
         }
 
         //
@@ -94,17 +104,13 @@ namespace Recipes.Controllers
         [HttpPost]
         public ActionResult Edit(Ingredient ingredient)
         {
-
             if(ModelState.IsValid)
             {
-                db.Entry(ingredient).State = EntityState.Modified;
-                db.SaveChanges();
+                repository.EditExistingIngredient(ingredient);
                 return RedirectToAction("Index");
             }
-            else
-            {
-                return View(new IngredientViewModel(ingredient, db.Measures.ToList()));
-            }
+            
+            return View(new IngredientViewModel(ingredient, repository.GetAllMeasures()));
         }
 
         //
@@ -113,8 +119,8 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Delete(int id)
         {
-            Ingredient ingredient = db.Ingredients.Find(id);
-            return View(new IngredientViewModel(ingredient, db.Measures.ToList()));
+            Ingredient ingredient = repository.GetIngredientById(id);
+            return View(new IngredientViewModel(ingredient, repository.GetAllMeasures()));
         }
 
         //
@@ -124,21 +130,18 @@ namespace Recipes.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Ingredient ingredient = db.Ingredients.Find(id);
+            Ingredient ingredient = repository.GetIngredientById(id);
             ValidateIngredientUsage(ingredient);
 
             if(ModelState.IsValid)
             {
-                db.Ingredients.Remove(ingredient);
-                db.SaveChanges();
+                repository.DeleteExistingIngredient(ingredient);
                 return RedirectToAction("Index");
             }
-            else
-            {
-                ingredient = db.Ingredients.Find(id);
-                ViewData.Model = ingredient;
-                return View(new IngredientViewModel(ingredient, db.Measures.ToList()));
-            }
+            
+            ingredient = repository.GetIngredientById(id);
+            ViewData.Model = ingredient;
+            return View(new IngredientViewModel(ingredient, repository.GetAllMeasures()));
         }
 
         private void ValidateIngredientUsage(Ingredient ingredient)
@@ -146,13 +149,13 @@ namespace Recipes.Controllers
             int count = 0;
             string usage = string.Empty;
 
-            List<RecipeIngredient> riList = db.RecipeIngredients.Where(ri => ri.IngredientID == ingredient.IngredientID).ToList();
+            List<RecipeIngredient> riList = repository.GetRecipeIngredientsByIngredientId(ingredient.IngredientID);
 
             if(riList.Count > 0)
             { 
                 foreach(var ri in riList)
                 {
-                    Recipe recipe = db.Recipes.Find(ri.RecipeID);
+                    Recipe recipe = repository.GetRecipeById(ri.RecipeID);
                     if (usage.Length > 0)
                         {
                             usage = usage + ", ";

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Recipes.Models;
-using HtmlHelpers;
 
 namespace Recipes.Repository
 {

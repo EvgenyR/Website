@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
-using HtmlHelpers;
 using Recipes.Models;
+using Recipes.Repository;
 using Recipes.ViewModels;
 
 namespace Recipes.Controllers
@@ -12,27 +11,37 @@ namespace Recipes.Controllers
         //
         // GET: /LeftMenu/
 
+        private readonly IRecipesRepository repository;
+
+        //constructor chaining
+        //avoid "no parameterless constructor defined for this object"
+        public LeftMenuController()
+            : this(new RecipesRepository())
+        { }
+
+        public LeftMenuController(IRecipesRepository repository)
+        {
+            this.repository = repository;
+        }
+
+
         public PartialViewResult MenuResult()
         {
             LeftMenuViewModel viewModel = new LeftMenuViewModel();
             viewModel.elements = new List<MenuElement>();
 
-            using (RecipesEntities db = new RecipesEntities())
+            List<Category> cats = repository.GetAllCategories();
+            foreach (var category in cats)
             {
-                List<Category> cats = db.Categories.ToList();
-                foreach (var category in cats)
+                MenuElement element = new MenuElement() {id = category.CategoryID, name = category.CategoryName, children = new List<MenuElement>()};
+
+                List<SubCategory> subcats = repository.GetSubCategoriesByCategoryId(category.CategoryID);
+
+                foreach (var subcat in subcats)
                 {
-                    MenuElement element = new MenuElement() {id = category.CategoryID, name = category.CategoryName, children = new List<MenuElement>()};
-
-                    List<SubCategory> subcats =
-                        db.SubCategories.Where(s => s.CategoryID == category.CategoryID).ToList();
-
-                    foreach (var subcat in subcats)
-                    {
-                        element.children.Add(new MenuElement(){id = subcat.SubCategoryID, name = subcat.SubCategoryName} );
-                    }
-                    viewModel.elements.Add(element);
+                    element.children.Add(new MenuElement(){id = subcat.SubCategoryID, name = subcat.SubCategoryName} );
                 }
+                viewModel.elements.Add(element);
             }
 
             return PartialView(viewModel);

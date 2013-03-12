@@ -7,7 +7,8 @@
 @Html.BodyTagUpdate("subcategory")
 @Html.Partial("_RecipeNav")
 
-<form>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "styledForm" }))
+{
 <fieldset>
     <legend>SubCategory</legend>
 
@@ -26,7 +27,7 @@
     </ol>
 </fieldset>
 
-@if(Model.SubCategory.Recipes != null && Model.SubCategory.Recipes.Count > 0)
+if (Model.SubCategory.Recipes != null && Model.SubCategory.Recipes.Count > 0)
 {
 <fieldset>
     <legend>These Recipes Belong to the SubCategory:</legend>
@@ -46,4 +47,4 @@
     <div class="buttonlink">@Html.ActionLink("Edit", "Edit", new { id = Model.SubCategory.SubCategoryID, seofriendly = Model.SubCategory.SubCategoryName.ToSeoUrl() })</div>
     <div class="buttonlink">@Html.ActionLink("Back to List", "Index")</div>
 </fieldset>
-</form>
+}

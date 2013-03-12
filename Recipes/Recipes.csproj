@@ -182,7 +182,9 @@
     <Compile Include="Paging\Pager.cs" />
     <Compile Include="Repository\BlogRepository.cs" />
     <Compile Include="Repository\IBlogRepository.cs" />
+    <Compile Include="Repository\IRecipesRepository.cs" />
     <Compile Include="Repository\LoggingRepository.cs" />
+    <Compile Include="Repository\RecipesRepository.cs" />
     <Compile Include="Repository\YahooRepository.cs" />
     <Compile Include="SeedData\AddBasicRecipeData.cs" />
     <Compile Include="SeedData\AddBlogEngineBlogData.cs" />
@@ -750,6 +752,7 @@
     <Content Include="Views\Logging\Details.cshtml" />
     <Content Include="Views\Logging\Theory.cshtml" />
     <Content Include="Views\Shared\_LoggingNav.cshtml" />
+    <Content Include="Views\Shared\BlogCategories.cshtml" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\README_ENU.txt" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\msvcr90.dll" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest" />
@@ -856,7 +859,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>56933</DevelopmentServerPort>
+          <DevelopmentServerPort>63181</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

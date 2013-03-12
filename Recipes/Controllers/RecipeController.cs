@@ -2,16 +2,28 @@
 using System.Linq;
 using System.Web.Mvc;
 using Recipes.Models;
-using System.Data.Entity;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using Recipes.Repository;
 using Recipes.ViewModels;
 
 namespace Recipes.Controllers
 {
     public class RecipeController : BaseController
     {
-        RecipesEntities db = new RecipesEntities();
+        private readonly IRecipesRepository repository;
+
+        //constructor chaining
+        //avoid "no parameterless constructor defined for this object"
+        public RecipeController()
+            : this(new RecipesRepository())
+        { }
+
+        public RecipeController(IRecipesRepository repository)
+        {
+            this.repository = repository;
+        }
+
         //
         // GET: /Recipe/
         /// <summary>
@@ -22,10 +34,10 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ViewResult Index()
         {
-            var recipes = db.Recipes.Include(r => r.SubCategory).OrderBy(r => r.SubCategory.SubCategoryID);
-            var recipesList = db.Recipes.Where(r => r.SubCategoryID == 1).ToList();
-            var categories = db.Categories.ToList();
-            var subcategories = db.SubCategories.Where(s => s.CategoryID == 1).ToList();
+            var recipes = repository.GetAllRecipesWithSubCategory().OrderBy(r => r.SubCategory.SubCategoryID);
+            var recipesList = repository.GetRecipesBySubCategoryId(1);
+            var categories = repository.GetAllCategories();
+            var subcategories = repository.GetSubCategoriesByCategoryId(1);
 
             RecipeListViewModel viewModel = new RecipeListViewModel(recipes.ToList(), recipesList, categories, subcategories, 1, 1);
 
@@ -57,9 +69,9 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Create()
         {
-            Category selectedCategory = db.Categories.First();
+            Category selectedCategory = repository.GetAllCategories().First();
             Recipe recipe = new Recipe();
-            return View(new RecipeViewModel(recipe, db.Categories.ToList(), db.SubCategories.Where(s => s.CategoryID == selectedCategory.CategoryID).ToList(), selectedCategory.CategoryID, 0));
+            return View(new RecipeViewModel(recipe, repository.GetAllCategories(), repository.GetSubCategoriesByCategoryId(selectedCategory.CategoryID), selectedCategory.CategoryID, 0));
         }
 
         //
@@ -75,7 +87,7 @@ namespace Recipes.Controllers
         public ActionResult Create(RecipeViewModel viewModel)
         {
             Recipe recipe = viewModel.Recipe;
-            recipe.Category = db.Categories.Where(c => c.CategoryID == viewModel.CategoryID).FirstOrDefault();
+            recipe.Category = repository.GetCategoryById(viewModel.CategoryID);
             recipe.SubCategoryID = viewModel.SubCategoryID;
 
             ValidateRecipeModel(recipe);
@@ -84,8 +96,7 @@ namespace Recipes.Controllers
             {
                 try
                 {
-                    db.Recipes.Add(recipe);
-                    db.SaveChanges();
+                    repository.AddNewRecipe(recipe);
                 }
                 catch (DbEntityValidationException vex)
                 {
@@ -114,8 +125,8 @@ namespace Recipes.Controllers
                     string s = error.ErrorMessage;
                 }
             }
-            return View(new RecipeViewModel(recipe, db.Categories.ToList(),
-                db.SubCategories.Where(s => s.CategoryID == recipe.Category.CategoryID).ToList(), recipe.Category.CategoryID, recipe.SubCategoryID));
+            return View(new RecipeViewModel(recipe, repository.GetAllCategories(),
+                repository.GetSubCategoriesByCategoryId(recipe.Category.CategoryID), recipe.Category.CategoryID, recipe.SubCategoryID));
         }
 
         //
@@ -129,11 +140,11 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Edit(int id)
         {
-            Recipe recipe = db.Recipes.Include(r => r.SubCategory).Single(r => r.RecipeID == id);
-            recipe.Category = db.Categories.Single(r => r.CategoryID == recipe.SubCategory.CategoryID);
-            var allIngredients = db.Ingredients.ToList();
-            var categories = db.Categories.ToList();
-            var subCategories = db.SubCategories.Where(sc => sc.CategoryID == recipe.SubCategory.CategoryID).ToList();
+            Recipe recipe = repository.GetRecipeByIdWithSubCategory(id);
+            recipe.Category = repository.GetCategoryById(recipe.SubCategory.CategoryID);
+            var allIngredients = repository.GetAllIngredients();
+            var categories = repository.GetAllCategories();
+            var subCategories = repository.GetSubCategoriesByCategoryId(recipe.SubCategory.CategoryID);
 
             foreach (RecipeIngredient ri in recipe.RecipeIngredients)
             {
@@ -150,14 +161,12 @@ namespace Recipes.Controllers
         /// <returns>Json result</returns>
         public ActionResult SelectCategory(int categoryid)
         {
-            var subs = db.SubCategories
-                .Where(s => s.CategoryID == categoryid)
-                .ToList()
-                .Select(x => new SubCategoryViewModel
-                {
-                    SubCategoryID = x.SubCategoryID,
-                    SubCategoryName = x.SubCategoryName
-                });
+            var subs = repository.GetSubCategoriesByCategoryId(categoryid)
+            .Select(x => new SubCategoryViewModel
+            {
+                SubCategoryID = x.SubCategoryID,
+                SubCategoryName = x.SubCategoryName
+            });
             return Json(subs, JsonRequestBehavior.AllowGet);
         }
 
@@ -168,7 +177,7 @@ namespace Recipes.Controllers
         /// <returns>Partial view</returns>
         public ActionResult UpdateSelected(int subcatid)
         {
-            List<Recipe> recipes = db.Recipes.Where(r => r.SubCategoryID == subcatid).ToList();
+            List<Recipe> recipes = repository.GetRecipesBySubCategoryId(subcatid);
             RecipeListViewModel viewModel = new RecipeListViewModel(null, recipes, null, null, 1, 1);
             return PartialView("_SelectedRecipes", viewModel);
         }
@@ -196,26 +205,12 @@ namespace Recipes.Controllers
 
             ValidateRecipeModel(recipe);
 
-            var currentRecipe = db.Recipes.Single(r => r.RecipeID == recipe.RecipeID);
-            db.Entry(currentRecipe).CurrentValues.SetValues(recipe);
+            var currentRecipe = repository.GetRecipeById(recipe.RecipeID);
+            repository.SetEditedValues(currentRecipe, recipe);
 
             if (ModelState.IsValid)
             {
-                IEnumerable<int> riToRemove = originalRecipe.RecipeIngredients.Select(ri => ri.RecipeIngredientID).Distinct().ToList();
-
-                foreach (int rid in riToRemove)
-                {
-                    RecipeIngredient ri = db.RecipeIngredients.Find(rid);
-                    db.RecipeIngredients.Remove(ri);
-                }
-
-                foreach (RecipeIngredient ri in recipe.RecipeIngredients)
-                {
-                    ri.RecipeID = recipe.RecipeID;
-                    db.RecipeIngredients.Add(ri);
-                }
-
-                db.SaveChanges();
+                repository.EditExistingRecipe(originalRecipe, recipe);
                 return RedirectToAction("Index");
             }
             
@@ -236,13 +231,13 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Delete(int id)
         {
-            Recipe recipe = db.Recipes.Find(id);
+            Recipe recipe = repository.GetRecipeById(id);
             return View(recipe);
         }
 
         public ViewResult Add()
         {
-            var allIngredients = db.Ingredients.ToList();
+            var allIngredients = repository.GetAllIngredients();
             return View("_RIEditor", new RecipeIngredient() { AllIngredients = allIngredients });
         }
 
@@ -253,22 +248,7 @@ namespace Recipes.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Recipe recipe = db.Recipes.Find(id);
-
-            List<RecipeIngredient> riToRemove = new List<RecipeIngredient>();
-
-            foreach (var ri in recipe.RecipeIngredients)
-            {
-                riToRemove.Add(db.RecipeIngredients.Where(r => r.RecipeID == ri.RecipeID && r.IngredientID == ri.IngredientID).Single());
-            }
-
-            foreach (var recipeIngredient in riToRemove)
-            {
-                db.RecipeIngredients.Remove(recipeIngredient);
-            }
-
-            db.Recipes.Remove(recipe);
-            db.SaveChanges();
+            repository.DeleteExistingRecipe(id);
             return RedirectToAction("Index");
         }
 
@@ -277,7 +257,7 @@ namespace Recipes.Controllers
             if (recipe.Category == null || recipe.Category.CategoryID <= 0)
             {
                 ModelState.AddModelError(string.Empty, Constants.Constants.RecipeHasNoCategory);
-                recipe.Category = db.Categories.OrderBy(c => c.CategoryID).FirstOrDefault();
+                recipe.Category = repository.GetAllCategories().OrderBy(c => c.CategoryID).FirstOrDefault();
             }
 
             if (recipe.SubCategoryID <= 0)
@@ -298,11 +278,11 @@ namespace Recipes.Controllers
         /// <returns></returns>
         public Recipe GetRecipeByID(int id)
         {
-            var recipe = db.Recipes.Include(r => r.SubCategory).Single(r => r.RecipeID == id);
-            recipe.Category = db.Categories.Single(c => c.CategoryID == recipe.SubCategory.CategoryID);
+            var recipe = repository.GetRecipeByIdWithSubCategory(id);
+            recipe.Category = repository.GetCategoryById(recipe.SubCategory.CategoryID);
             foreach (RecipeIngredient ri in recipe.RecipeIngredients)
             {
-                ri.Ingredient = db.Ingredients.Find(ri.IngredientID);
+                ri.Ingredient = repository.GetIngredientById(ri.IngredientID);
 
                 recipe.TotalFatCalories = recipe.TotalFatCalories + ri.Quantity * ri.Ingredient.FatCaloriesPerMeasure();
                 recipe.TotalCarbCalories = recipe.TotalCarbCalories + ri.Quantity * ri.Ingredient.CarbCaloriesPerMeasure();

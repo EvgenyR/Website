@@ -4,13 +4,25 @@ using System.Linq;
 using System.Web.Mvc;
 using Recipes.Models;
 using System.Data.Entity.Validation;
+using Recipes.Repository;
 using Recipes.ViewModels;
 
 namespace Recipes.Controllers
 { 
     public class CategoryController : BaseController
     {
-        private RecipesEntities db = new RecipesEntities();
+        private readonly IRecipesRepository repository;
+
+        //constructor chaining
+        //avoid "no parameterless constructor defined for this object"
+        public CategoryController()
+            : this(new RecipesRepository())
+        { }
+
+        public CategoryController(IRecipesRepository repository)
+        {
+            this.repository = repository;
+        }
 
         //
         // GET: /Category/
@@ -19,7 +31,7 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ViewResult Index()
         {
-            return View(db.Categories.ToList());
+            return View(repository.GetAllCategories());
         }
 
         //
@@ -29,8 +41,7 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ViewResult Details(int id)
         {
-            var category = db.Categories.Single(c => c.CategoryID == id);
-            category.Recipes = CategoryRecipes(id);
+            var category = repository.GetCategoryById(id);
             return View(new CategoryViewModel(category));
         }
 
@@ -58,8 +69,7 @@ namespace Recipes.Controllers
             {
                 try
                 {
-                    db.Categories.Add(category);
-                    db.SaveChanges();
+                    repository.AddNewCategory(category);
                     return RedirectToAction("Index");
                 }
                 catch(DbEntityValidationException vex)
@@ -87,7 +97,7 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Edit(int id)
         {
-            Category category = db.Categories.Find(id);
+            Category category = repository.GetCategoryById(id);
             return View(new CategoryViewModel(category));
         }
 
@@ -103,8 +113,7 @@ namespace Recipes.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Entry(category).State = EntityState.Modified;
-                db.SaveChanges();
+                repository.EditExistingCategory(category);
                 return RedirectToAction("Index");
             }
             return View(new CategoryViewModel(category));
@@ -116,7 +125,7 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Delete(int id)
         {
-            Category category = db.Categories.Find(id);
+            Category category = repository.GetCategoryById(id);
             return View(new CategoryViewModel(category));
         }
 
@@ -127,15 +136,14 @@ namespace Recipes.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            Category category = db.Categories.Find(id);
+            Category category = repository.GetCategoryById(id);
             ValidateCategoryUsage(category);
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    db.Categories.Remove(category);
-                    db.SaveChanges();
+                    repository.DeleteExistingCategory(category);
                 }
                 catch (DbEntityValidationException vex)
                 {
@@ -153,23 +161,10 @@ namespace Recipes.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            else
-            {
-                category = db.Categories.Find(id);
-                ViewData.Model = category;
-                return View(new CategoryViewModel(category));
-            }
-        }
 
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
-        }
-
-        private List<Recipe> CategoryRecipes(int id)
-        {
-            return db.Recipes.Where(r => r.SubCategory.CategoryID == id).ToList();
+            category = repository.GetCategoryById(id);
+            ViewData.Model = category;
+            return View(new CategoryViewModel(category));
         }
 
         private void ValidateCategory(Category category)
@@ -198,7 +193,7 @@ namespace Recipes.Controllers
             int count = 0;
             string usage = string.Empty;
 
-            List<SubCategory> subcats = db.SubCategories.Where(s => s.CategoryID == category.CategoryID).ToList();
+            List<SubCategory> subcats = repository.GetSubCategoriesByCategoryId(category.CategoryID);
 
             if (subcats.Count > 0)
             {
@@ -227,7 +222,7 @@ namespace Recipes.Controllers
                 List<int> subcatIDs = subcats.Select(s => s.SubCategoryID).ToList();
                 if(subcatIDs.Count > 0)
                 {
-                    List<Recipe> recipes = db.Recipes.Where(r => subcatIDs.Contains(r.SubCategoryID)).ToList();
+                    List<Recipe> recipes = repository.GetRecipesWhereSubCategoryIdInList(subcatIDs);
                     if(recipes.Count > 0)
                     {
                         foreach (var recipe in recipes)

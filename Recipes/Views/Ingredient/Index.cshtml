@@ -7,13 +7,14 @@
 @Html.BodyTagUpdate("ingredient")
 @Html.Partial("_RecipeNav")
 
-<form>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "styledForm" }))
+{
     <fieldset>
         <div class="buttonlink">@Html.ActionLink("Create New", "Create")</div>
     </fieldset>
 
 
-@foreach (var item in Model) 
+foreach (var item in Model)
 {
     <ol>
         <li class="styled">
@@ -24,4 +25,4 @@
         </li>
     </ol>
 }
-</form>
+}

@@ -5,7 +5,8 @@
 @Html.BodyTagUpdate("ingredient")
 @Html.Partial("_RecipeNav")
 @Html.IngredientCaloricContent()
-<form>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "styledForm" }))
+{
 <fieldset>
     <legend>Ingredient</legend>
     <ol>
@@ -36,7 +37,7 @@
         </li>
     </ol>
 </fieldset>
-@if (Model.Ingredient.RecipeIngredients != null && Model.Ingredient.RecipeIngredients.Count > 0)
+if (Model.Ingredient.RecipeIngredients != null && Model.Ingredient.RecipeIngredients.Count > 0)
 {
     <fieldset>
         <legend>Is used in the following recipes</legend>
@@ -61,4 +62,4 @@
     <div id="chart_div" style="width: 400px; height: 200px;">
     </div>
 </fieldset>
-</form>
+}

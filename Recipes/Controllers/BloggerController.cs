@@ -12,7 +12,7 @@ namespace Recipes.Controllers
     {
         //private readonly RecipesEntities db = new RecipesEntities();
 
-        IBlogRepository repository;
+        private readonly IBlogRepository repository;
 
         public BloggerController()
             : this(new BlogRepository())

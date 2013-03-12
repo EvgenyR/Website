@@ -3,6 +3,10 @@
     ViewBag.Title = "Main Page - MVC Blog Engine Example";
 }
 
+@section mySection {
+    @Html.Action("BlogCategories", "BlogEntry")
+}
+
 <script type="text/javascript">
 <!--
     function Display() {

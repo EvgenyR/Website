@@ -58,6 +58,7 @@
                     @Html.Action("MenuResult", "LeftMenu")
                     @Html.Action("ProgBlogResult", "BlogEntry")
                     @Html.Action("BioBlogResult", "BlogEntry")
+                    @RenderSection("mySection", false)
                 </div>
                 <div id="main-content">
                     @RenderBody()

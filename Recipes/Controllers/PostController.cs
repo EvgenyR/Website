@@ -9,7 +9,7 @@ namespace Recipes.Controllers
 {
     public class PostController : BaseController
     {
-        IBlogRepository repository;
+        private readonly IBlogRepository repository;
 
         public PostController()
             : this(new BlogRepository())
