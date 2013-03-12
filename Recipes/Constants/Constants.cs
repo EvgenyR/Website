@@ -3,6 +3,7 @@ namespace Constants
 {
     public static class Constants
     {
+        public static int BlogPageSize = 10;
         public static string DataExceptionMessage = "Unable to save changes - data exception";
 
         public static string IngredientNameTooShort = "Ingredient Name has to be at least 3 characters long!";

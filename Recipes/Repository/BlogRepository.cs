@@ -197,6 +197,22 @@ namespace Recipes.Repository
             }
         }
 
+        public List<Post> GetPostPage(int pageNo, int pageSize, int blogId)
+        {
+            using (RecipesEntities db = new RecipesEntities())
+            {
+                return GetPostsByBlogID(blogId).OrderByDescending(p => p.DateCreated).Skip(pageNo * pageSize).Take(pageSize).ToList();
+            }
+        }
+
+        public int TotalPosts(int blogId)
+        {
+            using (RecipesEntities db = new RecipesEntities())
+            {
+                return GetPostsByBlogID(blogId).Count();
+            }
+        }
+
         #endregion
     }
 }

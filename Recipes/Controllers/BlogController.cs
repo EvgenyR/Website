@@ -43,12 +43,29 @@ namespace Recipes.Controllers
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         [HttpGet]
-        public ActionResult Index()
+        public ActionResult Index(int blogId = 1, int p = 1)
         {
+            var posts = repository.GetPostPage(p - 1, 10, blogId);
+            var totalPosts = repository.TotalPosts(blogId);
+
+            BlogViewModel model = new BlogViewModel();
+
+
+            /*
             methodName = MethodBase.GetCurrentMethod().Name;
             _postsDisplayed = 10;
             WriteLog(string.Format(InfoLogMessage, methodName), (int)LogTypeNames.Info);            
             return View(ViewModelFromBlogID(1));
+            */
+
+            model.Blog = repository.GetBlogByID(blogId);
+            model.Posts = posts;
+            model.Blogs = repository.GetAllBlogs();
+            model.Bloggers = repository.GetAllBloggers();
+            //model.PostsDisplayed = 10;
+            model.TotalPosts = totalPosts;
+
+            return View(model);
         }
 
         /// <summary> 
@@ -58,16 +75,16 @@ namespace Recipes.Controllers
         /// Id of the Blog to display
         /// </param>
         /// <returns>Index view</returns>
-        [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
-        [MetaDescription(Constants.Constants.BlogMetaDescription)]
-        [HttpPost]
-        public ActionResult Index(int id)
-        {
-            methodName = MethodBase.GetCurrentMethod().Name;
-            _postsDisplayed = 10;
-            WriteLog(string.Format(InfoLogMessageWithParam, methodName, "id", id), (int)LogTypeNames.Info);            
-            return View(ViewModelFromBlogID(id));
-        }
+        //[MetaKeywords(Constants.Constants.BlogMetaKeywords)]
+        //[MetaDescription(Constants.Constants.BlogMetaDescription)]
+        //[HttpPost]
+        //public ActionResult Index(int id)
+        //{
+        //    methodName = MethodBase.GetCurrentMethod().Name;
+        //    _postsDisplayed = 10;
+        //    WriteLog(string.Format(InfoLogMessageWithParam, methodName, "id", id), (int)LogTypeNames.Info);            
+        //    return View(ViewModelFromBlogID(id));
+        //}
 
         /// <summary> 
         /// Displays the List of all blogs
@@ -301,7 +318,7 @@ namespace Recipes.Controllers
         {
             methodName = MethodBase.GetCurrentMethod().Name;
             BlogViewModel model = ViewModelFromBlogID(id);
-            model.PostsDisplayed = postsDisplayed;
+            //model.PostsDisplayed = postsDisplayed;
             return PartialView("_BlogContent", model);
         }
 
@@ -319,7 +336,7 @@ namespace Recipes.Controllers
         {
             methodName = MethodBase.GetCurrentMethod().Name;
             BlogViewModel model = ViewModelFromBlogID(id);
-            model.PostsDisplayed = postsDisplayed;
+            //model.PostsDisplayed = postsDisplayed;
             return PartialView("_BlogContent", model);
         }
 

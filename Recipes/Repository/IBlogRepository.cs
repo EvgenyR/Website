@@ -35,6 +35,9 @@ namespace Recipes.Repository
         void EditExistingPost(Post post);
         void DeleteExistingPost(Post post);
 
+        List<Post> GetPostPage(int pageNo, int pageSize, int blogId);
+        int TotalPosts(int blogId);
+
         #endregion
     }
 }
