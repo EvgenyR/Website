@@ -1,0 +1,194 @@
+﻿body, div, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, img, form, fieldset, blockquote {
+	margin: 0; padding: 0; border: 0;
+}
+
+body {
+	background: #f6f5ee url(images/blogdesign/bg.png);
+	font: 14px/22px Helvetica, Sans-Serif;
+}
+
+@font-face {
+	font-family:'Tallys';
+	src: url('images/blogdesign/Tallys.otf') format('opentype');
+}
+
+#container {
+	background: url(images/blogdesign/top-bar.png) top repeat-x;
+	background: url(images/blogdesign/top-bar.png) top repeat-x, url(images/blogdesign/footer-top.png) bottom repeat-x;
+	padding: 0 0 31px 0;
+}
+
+#container-header {
+	width: 961px; margin: 0 auto; position: relative;
+	overflow: hidden;
+}
+	
+	#container-header ul#nav {
+		float: left; margin: 22px 0 0 24px; list-style: none;
+	}
+		#container-header ul#nav li {
+			float: left; margin: 0 0 0 45px;
+		}
+			#container-header ul#nav li:first-child {
+				margin: 0;
+			}
+				#container-header ul#nav li a {
+					display: block; font: 13px Georgia, Serif; letter-spacing: 2px; color: #eeede6;
+					text-decoration: none;
+				}
+				#container-header ul#nav li label {
+    				display: block; font: 13px Georgia, Serif; letter-spacing: 2px; color: #eeede6;
+					text-decoration: none;
+				}
+				#container-header ul#nav li select {
+    				display: block; font: 13px Georgia, Serif; letter-spacing: 2px; color: black;
+					text-decoration: none;
+				}
+					#container-header ul#nav li a:hover {
+						color: #d0cfc8;
+					}
+#content {
+	width: 917px; 
+	margin: -240px auto 0 auto;
+	padding: 280px 22px 0 22px;
+	background: url(images/blogdesign/container-lines.png) repeat-y;
+}	
+
+/* Overflow hidden breaks about image, switch to clearfix */
+	#content:after {
+		content: "";
+		display: block;
+		clear: both;
+	}
+
+	#content h2 {
+		font: 34px Tallys, Georgia, Serif; letter-spacing: 3px; color: #6c695e; 
+		text-shadow: 0px 1px 0px #fff; margin: 0 0 30px 0;
+	}
+
+	#content h3 {
+		font: 28px Tallys, Georgia, Serif; letter-spacing: 3px; color: #6c695e; 
+		text-shadow: 0px 1px 0px #fff; margin: 0 0 15px 0;
+	}
+
+	#content h4 {
+		font: 22px Tallys, Georgia, Serif; letter-spacing: 3px; color: #6c695e; 
+		text-shadow: 0px 1px 0px #fff; margin: 0 0 15px 0;
+	}
+
+	#content p {
+		color: #474747; margin: 0 0 30px 0;
+	}
+
+	#content a {
+		color: #88344b; text-decoration: none; text-shadow: 0px 1px 0px #fff;
+	}
+		#content a:hover {
+			color: #5c1629;
+		}
+
+	#content ul, #content ol {
+		margin: 0 0 30px 0; color: #474747; list-style-position: inside;
+	}
+
+	#content .video {
+		background: url(images/blogdesign/lines.png); width: 648px; padding: 20px 18px; text-align: center;
+		margin: 0 auto 30px auto;
+	}
+		 #content #main .post-wrap img {
+		 	display: block; background: url(images/blogdesign/lines.png); padding: 20px 18px; text-align: center;
+		 	margin: 0 auto;
+		 }
+
+	#content blockquote {
+		background: url(images/blogdesign/lines.png); padding: 20px 18px 0 20px;
+		overflow: hidden; margin: 0 0 30px 0;
+	}
+	
+
+	#content #main {
+		width: 684px; float: left; 
+	}	
+		#content #main .post-wrap {
+			position: relative; margin: 0 0 20px 0; padding: 0 0 26px 0; overflow: hidden;
+			background: url(images/blogdesign/underline.png) bottom repeat-x;
+		}
+			#content #main .post-wrap h2 {
+				float: left; margin: 0 0 10px 75px;
+				font: 24px Lucida Grande, Lucida Sans Unicode, Helvetica, Sans-Serif; letter-spacing: normal;
+			}
+			#content #main .post-wrap p.date {
+				position: absolute; left: 0; top: 0; padding: 4px 7px 4px 7px; 
+				background: url(images/blogdesign/lines.png);
+				font: bold 40px Helvetica, Sans-Serif; color: #b6b6b1; text-align: center;
+			} 
+				#content #main .post-wrap p.date span {
+					font: normal 20px Helvetica, Sans-Serif;
+					display: block; margin: -5px 0 0 0; 
+				}
+			#content #main .post-wrap ul.meta {
+				float: left; list-style: none; margin: 0 0 30px 75px; overflow: hidden;
+				font: 16px Helvetica, Sans-Serif; color: #b6b6b1;
+			}
+				#content #main .post-wrap ul.meta li {
+					float: left; margin: 0 20px 0 0;
+				}
+					#content #main .post-wrap ul.meta li.comments {
+						padding: 0 0 0 32px; background: url(images/blogdesign/star.png) left center no-repeat;
+					}
+			#content #main .post-wrap .post-content {
+				clear: both;
+			}	
+	
+		
+			#content #main .pagination {
+				margin: 0 0 60px 0; overflow: hidden;
+			} 
+				#content #main .pagination p {
+					margin: 0;
+				}
+	
+			#content #main .pagination p a {
+				display: block; width: 102px; height: 33px; overflow: hidden;
+				background: url(images/blogdesign/pagination-bg.png); font-size: 16px;
+			}
+				#content #main .pagination p.prev a {
+					float: left; padding: 14px 0 0 46px;
+				}
+				#content #main .pagination p.next a {
+					float: right; text-align: right; padding: 14px 46px 0 0;
+					background-position: 0 -47px;
+				}
+			
+			#content #main #share, #content #main #similar {
+				background: url(images/blogdesign/lines.png); padding: 20px 18px;
+				margin: 0 0 30px 0;
+			}	
+				
+				#content #main #similar ul li {
+					font-size: 16px; list-style: none; margin: 0 0 10px 0;
+				}
+	
+	#content #side {
+		width: 196px; float: left; margin: 0 0 0 37px;
+	}
+	
+		#content #side h3 {
+			font: 22px Tallys, Georgia, Serif; letter-spacing: 4px; color: #afada2; text-align: center; text-shadow: 0px 1px 0px #fff;
+			background: url(images/blogdesign/underline.png) bottom repeat-x; padding: 0 0 15px 0; margin: 0 0 20px 0;
+		}
+	
+		#content #side #categories {
+			margin: 0 0 66px 0;
+		}
+			#content #side #categories ul {
+				list-style: none;
+			}
+				#content #side #categories ul li {
+					position: relative; width: 156px; height: 29px; padding: 11px 20px 0 20px; margin: 0 0 10px 0;
+					background: url(images/blogdesign/category-bg.png); font-size: 16px; text-align: right;
+					color: #afada2; text-shadow: 0px 1px 0px #fff;
+				}
+				#content #side #categories ul li a {
+					float: left; background: url(images/blogdesign/category-fill.png); padding: 0 10px 0 0; 
+				}

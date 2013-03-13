@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity.Validation;
-using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
 using Recipes.LogHelpers;
@@ -37,54 +36,20 @@ namespace Recipes.Controllers
         //
         // GET: /Blog/
         /// <summary> 
-        /// Displays the Index of a default blog
+        /// Displays the Index of a specified blog
         /// </summary> 
         /// <returns>Index view</returns>
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         [HttpGet]
-        public ActionResult Index(int blogId = 1, int p = 1)
+        public ActionResult Index(int BlogId = 1, int p = 1)
         {
-            var posts = repository.GetPostPage(p - 1, 10, blogId);
-            var totalPosts = repository.TotalPosts(blogId);
-
-            BlogViewModel model = new BlogViewModel();
-
-
-            /*
             methodName = MethodBase.GetCurrentMethod().Name;
-            _postsDisplayed = 10;
-            WriteLog(string.Format(InfoLogMessage, methodName), (int)LogTypeNames.Info);            
-            return View(ViewModelFromBlogID(1));
-            */
 
-            model.Blog = repository.GetBlogByID(blogId);
-            model.Posts = posts;
-            model.Blogs = repository.GetAllBlogs();
-            model.Bloggers = repository.GetAllBloggers();
-            //model.PostsDisplayed = 10;
-            model.TotalPosts = totalPosts;
+            WriteLog(string.Format(InfoLogMessage, methodName), (int)LogTypeNames.Info);
 
-            return View(model);
+            return View(ViewModelFromBlogID(p, BlogId));
         }
-
-        /// <summary> 
-        /// Displays the Index of a specified blog
-        /// </summary> 
-        /// <param name="id">
-        /// Id of the Blog to display
-        /// </param>
-        /// <returns>Index view</returns>
-        //[MetaKeywords(Constants.Constants.BlogMetaKeywords)]
-        //[MetaDescription(Constants.Constants.BlogMetaDescription)]
-        //[HttpPost]
-        //public ActionResult Index(int id)
-        //{
-        //    methodName = MethodBase.GetCurrentMethod().Name;
-        //    _postsDisplayed = 10;
-        //    WriteLog(string.Format(InfoLogMessageWithParam, methodName, "id", id), (int)LogTypeNames.Info);            
-        //    return View(ViewModelFromBlogID(id));
-        //}
 
         /// <summary> 
         /// Displays the List of all blogs
@@ -285,7 +250,6 @@ namespace Recipes.Controllers
         {
             methodName = MethodBase.GetCurrentMethod().Name;
             repository.DeleteExistingBlog(id);
-            Blog blog = repository.GetBlogByID(id);
             WriteLog(String.Format("Deleted Blog with id={0} by {1}", id, methodName), (int)LogTypeNames.Info);
             return RedirectToAction("../Blog/List");
         }
@@ -300,43 +264,7 @@ namespace Recipes.Controllers
         public ActionResult Update(int id)
         {
             methodName = MethodBase.GetCurrentMethod().Name;
-            BlogViewModel model = ViewModelFromBlogID(id);
-            return PartialView("_BlogContent", model);
-        }
-
-        /// <summary> 
-        /// Display one additional post
-        /// </summary> 
-        /// <param name="id">
-        /// id of the blog
-        /// </param>
-        /// <param name="postsDisplayed">
-        /// number of posts to display
-        /// </param>
-        /// <returns>Partial view with updated blog contents</returns>
-        public ActionResult MorePosts(int id, int postsDisplayed)
-        {
-            methodName = MethodBase.GetCurrentMethod().Name;
-            BlogViewModel model = ViewModelFromBlogID(id);
-            //model.PostsDisplayed = postsDisplayed;
-            return PartialView("_BlogContent", model);
-        }
-
-        /// <summary> 
-        /// Display one less post
-        /// </summary> 
-        /// <param name="id">
-        /// id of the blog
-        /// </param>
-        /// <param name="postsDisplayed">
-        /// number of posts to display
-        /// </param>
-        /// <returns>Partial view with updated blog contents</returns>
-        public ActionResult LessPosts(int id, int postsDisplayed)
-        {
-            methodName = MethodBase.GetCurrentMethod().Name;
-            BlogViewModel model = ViewModelFromBlogID(id);
-            //model.PostsDisplayed = postsDisplayed;
+            BlogViewModel model = ViewModelFromBlogID(0, id);
             return PartialView("_BlogContent", model);
         }
 
@@ -345,15 +273,21 @@ namespace Recipes.Controllers
         /// </summary>
         /// <param name="id">Id of a blog</param>
         /// <returns>ViewModel contains data about Blog, Posts, all blogs, all bloggers and number of posts to display by default</returns>
-        public BlogViewModel ViewModelFromBlogID(int id)
+        public BlogViewModel ViewModelFromBlogID(int p, int blogId)
         {
             methodName = MethodBase.GetCurrentMethod().Name;
-            Blog blog = repository.GetBlogByID(id);
-            List<Post> posts = repository.GetPostsByBlogID(id).OrderByDescending(p => p.DateCreated).ToList();
-            List<Blog> blogs = repository.GetAllBlogs();
-            List<Blogger> bloggers = repository.GetAllBloggers();
+            var posts = repository.GetPostPage(p - 1, 10, blogId);
+            var totalPosts = repository.TotalPosts(blogId);
 
-            BlogViewModel model = new BlogViewModel(blog, posts, blogs, bloggers, _postsDisplayed);
+            BlogViewModel model = new BlogViewModel
+            {
+                BlogId = blogId,
+                Blog = repository.GetBlogByID(blogId),
+                Posts = posts,
+                Blogs = repository.GetAllBlogs(),
+                Bloggers = repository.GetAllBloggers(),
+                TotalPosts = totalPosts
+            };
 
             return model;
         }
@@ -371,11 +305,6 @@ namespace Recipes.Controllers
         private static string GetClassName()
         {
             return new BlogController(new BlogRepository()).GetType().Name;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
         }
     }
 }

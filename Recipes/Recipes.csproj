@@ -225,6 +225,18 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Content Include="Content\blog.css" />
     <Content Include="Content\blogentry.css" />
+    <Content Include="Content\BlogNew.css" />
+    <Content Include="Content\images\blogdesign\bg.png" />
+    <Content Include="Content\images\blogdesign\category-bg.png" />
+    <Content Include="Content\images\blogdesign\category-fill.png" />
+    <Content Include="Content\images\blogdesign\container-lines.png" />
+    <Content Include="Content\images\blogdesign\footer-top.png" />
+    <Content Include="Content\images\blogdesign\lines.png" />
+    <Content Include="Content\images\blogdesign\pagination-bg.png" />
+    <Content Include="Content\images\blogdesign\star.png" />
+    <Content Include="Content\images\blogdesign\top-bar.png" />
+    <Content Include="Content\images\blogdesign\top-divider.png" />
+    <Content Include="Content\images\blogdesign\underline.png" />
     <Content Include="Content\images\blog\db\2011\07122011_Cytoscape_All_Edges_From_Selected_Nodes.png" />
     <Content Include="Content\images\blog\db\2011\07122011_Cytoscape_Child_Subnetwork.png" />
     <Content Include="Content\images\blog\db\2011\07122011_Cytoscape_Data_Panel.png" />
@@ -753,6 +765,7 @@
     <Content Include="Views\Logging\Theory.cshtml" />
     <Content Include="Views\Shared\_LoggingNav.cshtml" />
     <Content Include="Views\Shared\BlogCategories.cshtml" />
+    <None Include="Content\images\blogdesign\Tallys.otf" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\README_ENU.txt" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\msvcr90.dll" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\Microsoft.VC90.CRT.manifest" />

@@ -18,10 +18,12 @@
   var p = string.Format("p={0}", currentPage - 1);
   var n = string.Format("p={0}", currentPage + 1);
  
-  @* If the view is rendered for "search" action append the pagination value with "&" *@
-   
   p = String.Concat("?", p);
   n = String.Concat("?", n);
+    
+  var b = string.Format("&blogId={0}", Model.Blog.BlogID);
+  p = String.Concat(p, b);
+  n = String.Concat(n, b);
    
   <!--pagination links-->
   <div class="pager">
