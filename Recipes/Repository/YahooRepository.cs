@@ -15,14 +15,6 @@ namespace Recipes.Repository
             }
         }
 
-        public IQueryable<YahooData> GetYahooData()
-        {
-            using (RecipesEntities db = new RecipesEntities())
-            {
-                return db.YahooData;
-            }
-        }
-
         public void AddYahooData(List<YahooData> datas)
         {
             using (RecipesEntities db = new RecipesEntities())

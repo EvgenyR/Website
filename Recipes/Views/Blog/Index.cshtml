@@ -9,18 +9,18 @@
 
 <link href="@Url.Content("~/Content/BlogNew.css")" rel="stylesheet" type="text/css" />
 
-<script type="text/javascript">
-    function Display() {
-        $('#update').load("/Blog/Update", { id: $("#Blog_BlogID").val() });
-    };
-</script>
-
 @{
   var currentPage = ViewContext.RequestContext.HttpContext.Request["p"] != null 
     ? int.Parse(ViewContext.RequestContext.HttpContext.Request["p"]) 
     : 1;
      
-  var totalPages = Math.Ceiling((double)Model.TotalPosts / 10);  
+  var totalPages = Math.Ceiling((double)Model.TotalPosts / 10);
+
+  var label = ViewContext.RequestContext.HttpContext.Request["label"] != null
+      ? ViewContext.RequestContext.HttpContext.Request["label"].ToString()
+      : string.Empty;
+
+  var home = "?p=1&blogId=" + Model.BlogId;
 }
 
 @using (Html.BeginForm(null, null, FormMethod.Get, new { id = "myform" }))
@@ -32,6 +32,7 @@
             <li><label>Select blog: </label>@Html.DropDownListFor(model => model.BlogId, new SelectList(Model.Blogs, "BlogId", "Title", Model.BlogId), new { onChange = "document.getElementById('myform').submit()" })</li>
             <li>@Html.ActionLink("Manage Blogs", "List")</li>
             <li>@Html.ActionLink("Manage Bloggers", "../Blogger/Index")</li>
+            <li><a href="@home">This Blog Home</a></li>
 		</ul>
 	</div>
 
@@ -45,12 +46,19 @@
 				<h2>@Html.ActionLink(post.Title, "../Post/Display", new { id = post.PostID, seofriendly = post.Title.ToSeoUrl() })</h2>
 				<p class="date">@post.DateCreated.Day.ToString()<span>@post.DateCreated.ToString("MMM")</span></p>
 				<ul class="meta">
-					<li>Posted in <a href="#">Vlog</a></li>
-					<li class="comments"><a href="#">5 Comments</a></li>
+					<li>Posted in 
+                    @foreach (Recipes.Models.PostLabel pLabel in post.PostLabels)
+                    {
+                        var link = "?p=" + currentPage + "&blogId=" + Model.Blog.BlogID + "&label=" + pLabel.Label.Name;
+                        <a href="@link">@pLabel.Label.Name &nbsp;</a>
+                    }
+                    </li>
+					<li class="comments"><a href="#">0 Comments</a></li>
 				</ul>
 				<div class="post-content">  
                     @MvcHtmlString.Create(post.BriefContent)                    
 				</div><!-- post-content-->
+                <li class="comments">@Html.ActionLink("Read more", "../Post/Display", new { id = post.PostID, seofriendly = post.Title.ToSeoUrl() })</li>
 			</div><!-- post-wrap -->
         }
 			
@@ -66,6 +74,13 @@
                 p = String.Concat(p, b);
                 n = String.Concat(n, b);
 
+                if (label != string.Empty)
+                {
+                    string lbl = "&label=" + label;
+                    p = String.Concat(p, lbl);
+                    n = String.Concat(n, lbl);
+                }
+
 			<div class="pagination">
 				<p class="prev" style="visibility:@(currentPage > 1 ? "visible" : "collapse")"><a href="@p">Newer posts</a></p>
 				<p class="next" style="visibility:@(currentPage < totalPages ? "visible" : "collapse")"><a href="@n">Older posts</a></p>
@@ -77,12 +92,11 @@
 			<div id="categories">
 				<h3>Categories</h3>
 				<ul>
-					<li><a href="#">Apple</a> 4</li>
-					<li><a href="#">Design</a> 3</li>
-					<li><a href="#">Events</a> 2</li>
-					<li><a href="#">Giveaways</a> 5</li>
-					<li><a href="#">Vlog</a> 48</li>
-					<li><a href="#">Website News</a> 2</li>
+                    @foreach (Recipes.Models.Label pLabel in Model.Labels)
+                    {
+                        var link = "?p=" + currentPage + "&blogId=" + Model.Blog.BlogID + "&label=" + pLabel.Name;
+					    <li><a href="@link">@pLabel.Name</a> @pLabel.PostLabels.Count().ToString()</li>
+                    }
 				</ul>
 			</div>
 		</div>

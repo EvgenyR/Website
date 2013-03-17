@@ -27,6 +27,9 @@ namespace Recipes.Controllers
 
         public PartialViewResult MenuResult()
         {
+            BlogRepository blogRepository = new BlogRepository();
+            List<Post> menuPosts = blogRepository.GetPostPage(0, 5, 1);
+
             LeftMenuViewModel viewModel = new LeftMenuViewModel();
             viewModel.elements = new List<MenuElement>();
 
@@ -43,6 +46,8 @@ namespace Recipes.Controllers
                 }
                 viewModel.elements.Add(element);
             }
+
+            viewModel.posts = menuPosts;
 
             return PartialView(viewModel);
         }

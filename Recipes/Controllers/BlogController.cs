@@ -42,13 +42,21 @@ namespace Recipes.Controllers
         [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
         [MetaDescription(Constants.Constants.BlogMetaDescription)]
         [HttpGet]
-        public ActionResult Index(int BlogId = 1, int p = 1)
+        public ActionResult Index(int BlogId = 1, int p = 1, string label = "")
         {
             methodName = MethodBase.GetCurrentMethod().Name;
 
             WriteLog(string.Format(InfoLogMessage, methodName), (int)LogTypeNames.Info);
 
-            return View(ViewModelFromBlogID(p, BlogId));
+            return View(ViewModelFromBlogID(p, BlogId, label));
+        }
+
+        [MetaKeywords(Constants.Constants.BlogMetaKeywords)]
+        [MetaDescription(Constants.Constants.BlogMetaDescription)]
+        [HttpGet]
+        public ActionResult Label(int BlogId = 1, int p = 1, string label = "")
+        {
+            return View(ViewModelFromBlogID(p, BlogId, label));
         }
 
         /// <summary> 
@@ -254,30 +262,26 @@ namespace Recipes.Controllers
             return RedirectToAction("../Blog/List");
         }
 
-        /// <summary> 
-        /// Update blog details
-        /// </summary> 
-        /// <param name="id">
-        /// id of the blog to update
-        /// </param>
-        /// <returns>Partial view with updated blog contents</returns>
-        public ActionResult Update(int id)
-        {
-            methodName = MethodBase.GetCurrentMethod().Name;
-            BlogViewModel model = ViewModelFromBlogID(0, id);
-            return PartialView("_BlogContent", model);
-        }
-
         /// <summary>
         /// Creates a ViewModel given a blog id
         /// </summary>
         /// <param name="id">Id of a blog</param>
         /// <returns>ViewModel contains data about Blog, Posts, all blogs, all bloggers and number of posts to display by default</returns>
-        public BlogViewModel ViewModelFromBlogID(int p, int blogId)
+        public BlogViewModel ViewModelFromBlogID(int p, int blogId, string label)
         {
             methodName = MethodBase.GetCurrentMethod().Name;
-            var posts = repository.GetPostPage(p - 1, 10, blogId);
-            var totalPosts = repository.TotalPosts(blogId);
+            List<Post> posts;
+            int totalPosts;
+            if (label == string.Empty)
+            { 
+                posts = repository.GetPostPage(p - 1, 10, blogId); 
+                totalPosts = repository.TotalPosts(blogId);
+            }
+            else
+            {
+                posts = repository.GetPostPageForLabel(p - 1, 10, blogId, label);
+                totalPosts = repository.TotalPostsForLabel(blogId, label);
+            }
 
             BlogViewModel model = new BlogViewModel
             {
@@ -286,7 +290,9 @@ namespace Recipes.Controllers
                 Posts = posts,
                 Blogs = repository.GetAllBlogs(),
                 Bloggers = repository.GetAllBloggers(),
-                TotalPosts = totalPosts
+                TotalPosts = totalPosts,
+                //Labels = repository.GetAllLabels()
+                Labels = repository.GetLabelsByBlogId(blogId)
             };
 
             return model;

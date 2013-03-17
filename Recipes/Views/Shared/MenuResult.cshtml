@@ -45,11 +45,10 @@
                 </li>
                 <li><a href="#">Latest Blog Posts</a>
                     <ul>
-                        <li><a href="http://justmycode.blogspot.com.au/2012/08/learning-mvc-display-custom-error-page.html">Learning MVC: Display a Custom Error Page, Log Error and Send Email</a></li>
-                        <li><a href="http://justmycode.blogspot.com.au/2012/08/learning-mvc-game-of-life-in-mvc.html">Learning MVC: Game of Life in MVC </a></li>
-                        <li><a href="http://justmycode.blogspot.com.au/2012/08/the-case-of-strangely-coloured.html">The Case of a Strangely Coloured ProgressBar</a></li>
-                        <li><a href="http://justmycode.blogspot.com.au/2012/08/installing-windows-updates-via-shell.html">Installing Windows Updates via Shell Script</a></li>
-                        <li><a href="http://justmycode.blogspot.com.au/2012/07/game-of-life-exercise-and-extension.html">Game of Life Exercise and Extension Methods</a></li>
+                    @foreach(Recipes.Models.Post post in Model.posts)
+                    {
+                        <li><a href=@post.BloggerUrl>@post.Title</a></li>
+                    }
                     </ul>
                 </li>
                 <li>@Html.ActionLink("TODO List", "../Home/Todo")</li>

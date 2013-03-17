@@ -9,6 +9,8 @@ using System.Web.Mvc;
 using Recipes.Repository;
 using Recipes.SeedData;
 using Recipes.ViewModels;
+using Recipes.Models;
+using Recipes.LogHelpers;
 
 namespace Recipes.Controllers
 {
@@ -72,18 +74,22 @@ namespace Recipes.Controllers
 
         public List<YahooData> GetData(out int totalRecords, int pageSize, int pageIndex, string sort = "YahooSymbolName", SortDirection sortOrder = SortDirection.Ascending )
         {
-            IQueryable<YahooData> data = repository.GetYahooData();
-            totalRecords = data.Count();
-
-            Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>> applyOrdering = _dataOrderings[sort];
-            data = applyOrdering(data, sortOrder == SortDirection.Ascending);
-
-            List<YahooData> result = data.ToList();
-            if(pageSize > 0 && pageIndex >=0)
+            using (RecipesEntities db = new RecipesEntities())
             {
-                result = result.Skip(pageIndex*pageSize).Take(pageSize).ToList();
+                IQueryable<YahooData> data = db.YahooData;
+                totalRecords = data.Count();
+
+                Func<IQueryable<YahooData>, bool, IOrderedQueryable<YahooData>> applyOrdering = _dataOrderings[sort];
+                data = applyOrdering(data, sortOrder == SortDirection.Ascending);
+
+                List<YahooData> result = data.ToList();
+                if (pageSize > 0 && pageIndex >= 0)
+                {
+                    result = result.Skip(pageIndex * pageSize).Take(pageSize).ToList();
+                }
+
+                return result;
             }
-            return result;
         }
 
         public List<YahooData> GetSingleSet()
@@ -160,26 +166,36 @@ namespace Recipes.Controllers
             try
             {
                 string[] splitLine = line.Split(',');
+
+                string dateString = splitLine[2].Replace("\"", "");
+                string timeString = splitLine[4].Replace("\"", "");
+                DateTime date = DateTime.ParseExact(dateString, "M/d/yyyy",
+                                                        CultureInfo.InvariantCulture);
+                DateTime dateTime = DateTime.ParseExact(dateString + " " + timeString, "M/d/yyyy h:mmtt", CultureInfo.InvariantCulture);
+
+                decimal high = 0;
+                decimal.TryParse(splitLine[8], out high);
+                decimal low = 0;
+                decimal.TryParse(splitLine[9], out low);
+
                 datum = new YahooData()
-                            {
-                                SymbolId = repository.GetYahooSymbolByName(splitLine[0].Replace("\"", "")),
-                                DataName = splitLine[1].Replace("\"", ""),
-                                Date =
-                                    DateTime.ParseExact(splitLine[2].Replace("\"", ""), "MM/d/yyyy",
-                                                        CultureInfo.InvariantCulture),
-                                LTP = decimal.Parse(splitLine[3]),
-                                Time = DateTime.Parse(splitLine[4].Replace("\"", "")),
-                                Volume = decimal.Parse(splitLine[5]),
-                                Ask = decimal.Parse(splitLine[6]),
-                                Bid = decimal.Parse(splitLine[7]),
-                                High = decimal.Parse(splitLine[8]),
-                                Low = decimal.Parse(splitLine[9]),
-                                DateTime = DateTime.ParseExact(splitLine[2].Replace("\"", "") + " " + splitLine[4].Replace("\"", ""), "MM/d/yyyy h:mmtt", CultureInfo.InvariantCulture)
+                {
+                    SymbolId = repository.GetYahooSymbolByName(splitLine[0].Replace("\"", "")),
+                    DataName = splitLine[1].Replace("\"", ""),
+                    Date = date,
+                    LTP = decimal.Parse(splitLine[3]),
+                    Time = DateTime.Parse(splitLine[4].Replace("\"", "")),
+                    Volume = decimal.Parse(splitLine[5]),
+                    Ask = decimal.Parse(splitLine[6]),
+                    Bid = decimal.Parse(splitLine[7]),
+                    High = high,
+                    Low = low,
+                    DateTime = dateTime
                 };
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //log.Fatal("Exception in GetDatum: ", ex);
+                Logger.WriteEntry(ex);
             }
             return datum;
         }

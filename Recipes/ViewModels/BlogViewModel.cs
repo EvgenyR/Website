@@ -11,6 +11,7 @@ namespace Recipes.ViewModels
         public List<Blog> Blogs{get;set;}
         public List<Blogger> Bloggers{get;set;}
         public int TotalPosts { get; set; }
+        public List<Label> Labels { get; set; }
 
         public BlogViewModel(Blog blog, List<Post> posts, List<Blog> blogs, List<Blogger> bloggers, int totalPosts)
         {

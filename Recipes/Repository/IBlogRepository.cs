@@ -38,6 +38,22 @@ namespace Recipes.Repository
         List<Post> GetPostPage(int pageNo, int pageSize, int blogId);
         int TotalPosts(int blogId);
 
+        List<Post> GetPostPageForLabel(int pageNo, int pageSize, int blogId, string label);
+        int TotalPostsForLabel(int blogId, string label);
+
+        #endregion
+
+        #region LabelOperations
+
+        List<Label> GetAllLabels();
+        List<Label> GetLabelsByBlogId(int blogId);
+
+        #endregion
+
+        #region PostLabelOperations
+
+        List<PostLabel> GetAllPostLabels();
+
         #endregion
     }
 }

@@ -175,8 +175,10 @@
     <Compile Include="LogHelpers\Logger.cs" />
     <Compile Include="Models\Blog.cs" />
     <Compile Include="Models\Blogger.cs" />
+    <Compile Include="Models\Label.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\LogEntry.cs" />
+    <Compile Include="Models\PostLabel.cs" />
     <Compile Include="Paging\IPagedList.cs" />
     <Compile Include="Paging\PagedList.cs" />
     <Compile Include="Paging\Pager.cs" />
@@ -223,7 +225,6 @@
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Content Include="Content\blog.css" />
     <Content Include="Content\blogentry.css" />
     <Content Include="Content\BlogNew.css" />
     <Content Include="Content\images\blogdesign\bg.png" />
@@ -719,7 +720,6 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\Blog\Index.cshtml" />
-    <Content Include="Views\Blog\_BlogContent.cshtml" />
     <Content Include="Views\Blog\List.cshtml" />
     <Content Include="Views\Blog\Details.cshtml" />
     <Content Include="Views\Blog\Create.cshtml" />

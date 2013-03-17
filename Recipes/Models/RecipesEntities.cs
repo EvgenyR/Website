@@ -20,6 +20,8 @@ namespace Recipes.Models
         public DbSet<Blogger> Bloggers { get; set; }
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Label> Labels { get; set; }
+        public DbSet<PostLabel> PostLabels { get; set; }
 
         public DbSet<YahooSymbol> YahooSymbols { get; set; }
         public DbSet<YahooData> YahooData { get; set; }

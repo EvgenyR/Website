@@ -2,6 +2,7 @@
 using System.Data;
 using System.Linq;
 using Recipes.Models;
+using System.Data.Entity;
 
 namespace Recipes.Repository
 {
@@ -156,9 +157,18 @@ namespace Recipes.Repository
 
         public List<Post> GetPostsByBlogID(int id)
         {
+            List<Post> posts;
             using (RecipesEntities db = new RecipesEntities())
             {
-                return db.Posts.Where(p => p.BlogID == id).ToList();
+                posts = db.Posts.Where(p => p.BlogID == id).Include(p => p.PostLabels).ToList();
+                foreach (Post post in posts)
+                {
+                    foreach (PostLabel pl in post.PostLabels)
+                    {
+                        pl.Label.Name = db.Labels.Single(p => p.LabelID == pl.LabelID).Name;
+                    }
+                }
+                return posts;
             }
         }
 
@@ -201,7 +211,10 @@ namespace Recipes.Repository
         {
             using (RecipesEntities db = new RecipesEntities())
             {
-                return GetPostsByBlogID(blogId).OrderByDescending(p => p.DateCreated).Skip(pageNo * pageSize).Take(pageSize).ToList();
+                return GetPostsByBlogID(blogId)
+                    .OrderByDescending(p => p.DateCreated)
+                    .Skip(pageNo * pageSize)
+                    .Take(pageSize).ToList();
             }
         }
 
@@ -210,6 +223,75 @@ namespace Recipes.Repository
             using (RecipesEntities db = new RecipesEntities())
             {
                 return GetPostsByBlogID(blogId).Count();
+            }
+        }
+
+        public List<Post> GetPostPageForLabel(int pageNo, int pageSize, int blogId, string label)
+        {
+            using (RecipesEntities db = new RecipesEntities())
+            {
+                Label lbl = db.Labels.Single(l => l.Name == label);
+                List<int> postIds = db.PostLabels
+                    .Where(pl => pl.LabelID == lbl.LabelID)
+                    .Select(p => p.PostID).ToList();
+
+                return GetPostsByBlogID(blogId)
+                    .Where(p => postIds.Contains(p.PostID))
+                    .OrderByDescending(p => p.DateCreated)
+                    .Skip(pageNo * pageSize)
+                    .Take(pageSize).ToList();            
+            }
+        }
+
+        public int TotalPostsForLabel(int blogId, string label)
+        {
+            using (RecipesEntities db = new RecipesEntities())
+            {
+                Label lbl = db.Labels.Single(l => l.Name == label);
+                List<int> postIds = db.PostLabels
+                    .Where(pl => pl.LabelID == lbl.LabelID)
+                    .Select(p => p.PostID).ToList();
+
+                return GetPostsByBlogID(blogId)
+                    .Where(p => postIds.Contains(p.PostID)).Count();
+            }
+        }
+
+        #endregion
+
+        #region LabelOperations
+
+        public List<Label> GetAllLabels()
+        {
+            using (RecipesEntities db = new RecipesEntities())
+            {
+                return db.Labels.Include(p => p.PostLabels).ToList();
+            }
+        }
+
+        public List<Label> GetLabelsByBlogId(int blogId)
+        {
+            using (RecipesEntities db = new RecipesEntities())
+            {
+                List<Post> posts = GetPostsByBlogID(blogId);
+
+                List<int> postIds = db.Posts.Where(p => p.BlogID == blogId).Select(p => p.PostID).ToList();
+
+                List<int> postLabelIds = db.PostLabels.Where(p => postIds.Contains(p.PostID)).Select(p => p.LabelID).Distinct().ToList();
+
+                return db.Labels.Where(p => postLabelIds.Contains(p.LabelID)).Include(p => p.PostLabels).ToList();
+            }
+        }
+
+        #endregion
+
+        #region PostLabelOperations
+
+        public List<PostLabel> GetAllPostLabels()
+        {
+            using (RecipesEntities db = new RecipesEntities())
+            {
+                return db.PostLabels.ToList();
             }
         }
 
