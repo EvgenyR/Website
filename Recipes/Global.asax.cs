@@ -13,7 +13,6 @@ namespace Recipes
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            log4net.Config.XmlConfigurator.Configure();
         }
     }
 }

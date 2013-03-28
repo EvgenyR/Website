@@ -2,23 +2,24 @@
 @{
     ViewBag.Title = "Bloggers - MVC Blog Engine Example";
 }
-<form>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "styledForm" }))
+{
 <fieldset>
     <div class="buttonlink">@Html.ActionLink("Create New", "Create")</div>
     <div class="buttonlink" style="width:150px">@Html.ActionLink("Blog Engine Home", "../Blog/Index")</div>
 </fieldset>
-@foreach (var item in Model)
-{
-    <ol>
-        <li class="styled">
-            <div class="display-button">@Html.ActionLink("Edit", "Edit", new { id = item.BloggerID, seofriendly = item.BloggerName.ToSeoUrl() })
-            </div>
-            <div class="display-button">@Html.ActionLink("Details", "Details", new { id = item.BloggerID, seofriendly = item.BloggerName.ToSeoUrl() })
-            </div>
-            <div class="display-button">@Html.ActionLink("Delete", "Delete", new { id = item.BloggerID, seofriendly = item.BloggerName.ToSeoUrl() })
-            </div>
-            <div class="display-info">@item.BloggerName</div>
-        </li>
-    </ol>
+    foreach (var item in Model)
+    {
+        <ol>
+            <li class="styled">
+                <div class="display-button">@Html.ActionLink("Edit", "Edit", new { id = item.BloggerID, seofriendly = item.BloggerName.ToSeoUrl() })
+                </div>
+                <div class="display-button">@Html.ActionLink("Details", "Details", new { id = item.BloggerID, seofriendly = item.BloggerName.ToSeoUrl() })
+                </div>
+                <div class="display-button">@Html.ActionLink("Delete", "Delete", new { id = item.BloggerID, seofriendly = item.BloggerName.ToSeoUrl() })
+                </div>
+                <div class="display-info">@item.BloggerName</div>
+            </li>
+        </ol>
+    }
 }
-</form>

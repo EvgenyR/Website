@@ -1,99 +1,38 @@
-﻿@{
+﻿@model Recipes.ViewModels.BlogViewModel
+@{
     ViewBag.Title = "Evgeny - A Software Developer. C# ASP.NET MVC SQL Server jQuery";
 }
-<script type="text/javascript">
-    d = document.getElementById('main-content');
-    d.style.height = "1200px";
-</script>
-<link href="@Url.Content("~/Content/blog.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/BlogNew.css")" rel="stylesheet" type="text/css" />
 <div id="middlecolumn">
-    <h3 class="headers">
-        <span>Recent Blog Posts</span></h3>
-    <div class="blogcontainer">
-        <h3 class="title">
-            <a href="http://justmycode.blogspot.com.au/2012/08/securing-access-to-windows-7-folder.html">
-                Securing Access to Windows 7 Folder from Everyone but a Single User</a></h3>
-        <div class="info">
-            <span class="submitted">Submitted on Sun, 08/12/2012</span>
-        </div>
-        Today I had to perform a fairly specific task: restrict access to a Windows 7 folder
-        to a single user. I think I found the way to do it properly, and it is not a straightforward
-        task. Before I forget, I might keep a record of all actions required because I did
-        not find a clear sequence anywhere on the net. It will only take 10 easy steps.
-        Let's assume there is a folder called <strong>Bob's Documents</strong> where only Bob, and
-        not even the <strong>Admin</strong>, should have access.
-        <h4 class="title">
-            <a href="http://justmycode.blogspot.com.au/2012/08/securing-access-to-windows-7-folder.html">
-                Read More</a></h4>
-    </div>
-    <br />
-    <div class="blogcontainer">
-        <h3 class="title">
-            <a href="http://justmycode.blogspot.com.au/2012/08/learning-mvc-display-custom-error-page.html">
-                Learning MVC: Display a Custom Error Page, Log Error and Send Email</a></h3>
-        <div class="info">
-            <span class="submitted">Submitted on Thu, 09/08/2012</span>
-        </div>
-        Step one - create my own controller class. Simple, just add a <strong>BaseController</strong>
-        to the <strong>Controllers</strong> folder
-        <pre class="brush: csharp">public abstract class BaseController : Controller
+	<div id="content">
+        <h2>Recent Blog Posts</h2>   
+		<div id="main">
+
+        @foreach (Recipes.Models.Post post in Model.Posts)
         {
-        }</pre>
-        and then modify all existing contollers to inherit from <strong>BaseController</strong> rather
-        than from <strong>System.Web.Mvc.Controller</strong>.
-        <h4 class="title">
-            <a href="http://justmycode.blogspot.com.au/2012/08/learning-mvc-display-custom-error-page.html">
-                Read More</a></h4>
-    </div>
-    <br/>
-    <div class="blogcontainer">
-        <h3 class="title">
-            <a href="http://justmycode.blogspot.com.au/2012/08/learning-mvc-game-of-life-in-mvc.html">Learning MVC: Game of Life in MVC
-            </a>
-        </h3>
-        <div class="info">
-            <span class="submitted">Submitted on Monday, August 6, 2012</span>
-        </div>
-        I wrote some code and made a quick WPF application that implemented Conway's Game
-        of Life earlier ( <a href="http://justmycode.blogspot.com/2012/07/game-of-life-exercise-and-extension.html">
-            Game of Life Exercise and Extension Methods</a>).<br />
-        Next, I wanted to see how the game could be run on the MVC platform. The solution
-        in short: use javaScript <strong>setInterval</strong> function to load the partial view into
-        the div. Use a method in the controller to generate the partial view.<br />
-        Here is how my solution looked:
-        <h4 class="title">
-            <a href="http://justmycode.blogspot.com.au/2012/08/learning-mvc-game-of-life-in-mvc.html">
-                Read More</a></h4>
-    </div>
-    <br />
-    	    <div class="blogcontainer">
-        <h3 class="title">
-            <a href="http://justmycode.blogspot.com.au/2012/08/the-case-of-strangely-coloured.html">The Case of a Strangely Coloured ProgressBar 
-                </a></h3>
-        <div class="info">
-            <span class="submitted">Submitted on Sunday, August 5, 2012</span>
-        </div>
-        
-		At first this bug report puzzled me a bit. Essentially it said "Progress bar fills with blue rectangles, status text nearly impossible to read". That was a case of "works on my machine" because all I could see was that:
-	
-        <h4 class="title">
-            <a href="http://justmycode.blogspot.com.au/2012/08/the-case-of-strangely-coloured.html">
-                Read More</a></h4>
-    </div>
-    <br />
-        <div class="blogcontainer">
-        <h3 class="title">
-            <a href="http://justmycode.blogspot.com.au/2012/08/installing-windows-updates-via-shell.html">Installing Windows Updates via Shell Script </a></h3>
-        <div class="info">
-            <span class="submitted">Submitted on Saturday, August 4, 2012</span>
-        </div>
-        
-I had to dive into the world of shell scripting and do some work there. One of the tasks I had was to automatically install a bunch of Windows Updates on a server. The server could not be connected to the Internet so the updates were provided as separate files. The updates could be a mix of regular executables or Microsoft Update Standalone Packages (.msu). The script gets the name of the folder it runs from and then iterates over the files in this folder. It checks the file extension and runs appropriate command depending on the file being EXE or MSU. It also checks the return value and keeps a counter on the number of updates that reported successful and unsuccessful result, and writes the result of each install into a log file. At the end it displays a message that informs a user about the number of successfully installed and failed updates.
-	
-        <h4 class="title">
-            <a href="http://justmycode.blogspot.com.au/2012/08/installing-windows-updates-via-shell.html">
-                Read More</a></h4>
-    </div>
-    <br />
+
+			<div class="post-wrap">
+				<h2>@Html.ActionLink(post.Title, "../Post/Display", new { id = post.PostID, seofriendly = post.Title.ToSeoUrl() })</h2>
+				<p class="date">@post.DateCreated.Day.ToString()<span>@post.DateCreated.ToString("MMM")</span></p>
+				<ul class="meta">
+					<li>Posted in 
+                    @foreach (Recipes.Models.PostLabel label in post.PostLabels)
+                    {
+                        var link = "Blog/Index?p=0&blogId=" + Model.BlogId + "&label=" + label.Label.Name;
+                        <a href="@link">@label.Label.Name &nbsp;</a>
+                    }
+                    </li>
+					<li class="comments"><a href="#">0 Comments</a></li>
+				</ul>
+				<div class="post-content">  
+                    @MvcHtmlString.Create(post.BriefContent)                    
+				</div><!-- post-content-->
+                <li class="comments">@Html.ActionLink("Read more", "../Post/Display", new { id = post.PostID, seofriendly = post.Title.ToSeoUrl() })</li>
+			</div><!-- post-wrap -->
+        }
+
+		</div> <!-- main -->
+	</div> <!-- content -->
+
 </div>
 @Html.HighLightSyntax()

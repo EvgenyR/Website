@@ -12,8 +12,14 @@
 	        <h2>@Model.Title</h2>
 	        <p class="date">@Model.DateCreated.Day.ToString()<span>@Model.DateCreated.ToString("MMM")</span></p>
 	        <ul class="meta">
-		        <li>Posted in <a href="#">Vlog</a></li>
-		        <li class="comments"><a href="#">5 Comments</a></li>
+                <li>Posted in 
+                @foreach (Recipes.Models.PostLabel pLabel in Model.PostLabels)
+                {
+                    var link = "../../../Blog/Index?p=0&blogId=" + Model.BlogID + "&label=" + pLabel.Label.Name;
+                    <a href="@link">@pLabel.Label.Name &nbsp;</a>
+                }
+                </li>
+		        <li class="comments"><a href="#">0 Comments</a></li>
 	        </ul>
 	        <div class="post-content">  
                 @MvcHtmlString.Create(Model.BriefContent)    

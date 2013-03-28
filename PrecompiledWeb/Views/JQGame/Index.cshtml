@@ -63,7 +63,6 @@
     function startGameOfLife() {
         //check if some cels are selected
         if ($('.cel').length && !isGameRunning) {
-            console.log('starting game of life!');
             isGameRunning = true;
             interval = setInterval(game, speed);
         }
@@ -83,7 +82,6 @@
     }
 
     function game() {
-        console.log('...');
         //collect cells which will live and the ones which will die
         cLiveArr = [];
         cDieArr = [];
@@ -123,14 +121,12 @@
     }
 
     function stopGameOfLife() {
-        console.log('stopping game of life');
         isGameRunning = false;
         clearInterval(interval);
     }
 
     function resetGameOfLife() {
         stopGameOfLife();
-        console.log('reseting game of life');
         $('.cel').each(function () {
             unselectCel($(this));
         });
@@ -227,7 +223,8 @@
 <div id="page" style="min-width:500px">
     @Html.Partial("_JQGameNav")
     <div id='wrapper'>
-        <table style='width: 82%;'>
+        <div id='buttons' style='border:1px solid;'>
+        <table style='width: 82%'>
             <tr>
 	            <td>
 		        <strong>Actions:</strong> 
@@ -245,6 +242,7 @@
 	            </td>
 	        </tr>
         </table>
+        </div>
         <div id='gamecontainer'></div>
     </div>
 </div>

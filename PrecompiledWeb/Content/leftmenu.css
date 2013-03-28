@@ -11,6 +11,7 @@ div.menu ul {
     list-style: none;
     margin: 0;
     padding: 0;
+    z-index: 1;
 }
 
 div.menu a, div.menu h2 {

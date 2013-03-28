@@ -7,12 +7,14 @@
 @Html.BodyTagUpdate("subcategory")
 @Html.Partial("_RecipeNav")
 
-<form>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "styledForm" }))
+{
     <fieldset>
         <div class="buttonlink">@Html.ActionLink("Create New", "Create")</div>
     </fieldset>
 
-@foreach (var item in Model){
+    foreach (var item in Model)
+    {
     <ol>
         <li class="styled">
             <div class="display-button">@Html.ActionLink("Edit", "Edit", new { id = item.SubCategoryID, seofriendly = item.SubCategoryName.ToSeoUrl() })</div>
@@ -22,6 +24,5 @@
             <div class="display-info">@Html.DisplayFor(modelItem => item.Description)</div>
         </li>
     </ol>
+    }
 }
-
-</form>

@@ -3999,5 +3999,622 @@ WHERE jscid = 3" + "</pre><p>Since I don't really care about running it on a fir
             "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
         public const string content_11032013_d = "Fix the index bloating in PostgreSQL by running a scheduled reindex. Schedule reindex by using the pgAgent. Configure the scheduled job in pgAgent by running a database query directly.";
         public const string content_11032013_k = "PostgreSQL 9.1. index bloating reindex autovacuum pgagent pga_job pga_schedule pga_jobstep";
+
+        //Improving a PostgreSQL report performance: Part 1 - RETURN QUERY EXECUTE
+        public const string content_21032013_b = "<p>I was working on optimising a report which had a very poor performance. The \"heart\" of the report was a fairly complex query which I will briefly refer to as follows</p>";
+        public const string content_21032013_r = "<pre class=\"brush:sql\">" + @"select Column1 as Name1, Column2 as Name2
+from sometable tbl
+inner join ...
+where ...
+and ...
+and $1 &lt;= somedate
+and $2 &gt;= somedate
+group by ...
+order by ...;" + "</pre><p>In fact, the query joined seven tables and several <b>WHERE</b> conditions, grouping on four fields and finally sorting the results. I went through the usual stuff with analyzing the query plan, verifying that all required indexes were in place (a couple of joins on particularly large tables, unfortunately, were on the 'varchar' fields, but modifying the database at this stage is out of the question so I had to do what I could). Eventually what limited amount of tricks I had at my disposal was depleted, and the performance only slightly improved. However, when I measured the performance of the report when called from the application and compared it to running the query directly against the database, there was a significant overhead in case of the report. When the report was ran from code, it sent the following query to the database:</p><pre class=\"brush:sql\">" + @"select * from myreportsubfunction ('2013-03-13', '2013-03-20');" + "</pre><p>And the <b>myreportsubfunction</b> was declared similar to the following:</p><pre class=\"brush:sql\">" + @"CREATE OR REPLACE FUNCTION myreportsubfunction(IN from timestamp without time zone, IN to timestamp without time zone)
+  RETURNS TABLE(Name1 character varying, Name2 character varying) AS
+$BODY$
+select Column1 as Name1, Column2 as Name2
+from sometable tbl
+inner join ...
+where ...
+and ...
+and $1 &lt;= somedate
+and $2 &gt;= somedate
+group by ...
+order by ...;
+$BODY$
+  LANGUAGE sql VOLATILE" + "</pre><p>So - what's the trick here? The function seems to return the result of the query, but takes way much longer to execute compared to the raw query. And here is the reason: when the database prepares a query plan for the function, it does not know anything about the parameters. The result is likely to be a bad query plan, especially if the query is complex. The solution is to change <b>sql</b> language to <b>plpgsql</b> and make use of the <b>RETURN QUERY EXECUTE</b> command. Now the <b>myreportsubfunction</b> looks like the following:</p><pre class=\"brush:sql\">" + @"CREATE OR REPLACE FUNCTION myreportsubfunction(IN from timestamp without time zone, IN to timestamp without time zone)
+  RETURNS TABLE(Name1 character varying, Name2 character varying) AS
+$BODY$
+BEGIN
+RETURN QUERY EXECUTE
+'select Column1 as Name1, Column2 as Name2
+from sometable tbl
+inner join ...
+where ...
+and ...
+and $1 &lt;= somedate
+and $2 &gt;= somedate
+group by ...
+order by ...;' USING $1, $2;
+END
+$BODY$
+  LANGUAGE plpgsql VOLATILE" + "</pre><p>The function now takes as much time to run as the \"raw\" query, significantly improving the performance.</p><p><b>References</b></p><a href=\"http://www.postgresql.org/docs/9.1/static/plpgsql-statements.html\">39.5. Basic Statements</a><br/><a href=\"http://stackoverflow.com/questions/3342587/postgresql-slow-on-custom-function-php-but-fast-if-directly-input-on-psql-using\">Postgresql Slow on custom function, php but fast if directly input on psql using text search with gin index</a><br/>"
+  + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_21032013_d = "Improving a performance of PostgreSQL function by utilizing the RETURN QUERY EXECUTE command";
+        public const string content_21032013_k = "PostgreSQL query function performance return execute plan database";
+
+
+        //Implementing a Simple Logging Engine with MVC 4
+        public const string content_25032013_b = "<p>I was investigating the simple logging mechanism for the MVC application. First I came up with some requirements for the logging engine:</p><p><u>High-level requirements:</u><ul><li>Create logging engine that can log exceptions and other messages and store them in the database</li><li>Display a filterable grid of all messages</li></ul></p><p><u>Logging engine</u><ul><li>Should allow logging of exceptions, including handled and unhandled</li><li>Should allow logging of custom messages</li></ul></p><p><u>Filterable grid</u><ul><li>Should allow paged display of all exceptions and log messages in the database</li><li>Should allow the option to filter messages based on the date logged and severity</li></ul></p><p>I started with these simple classes that will allow handling of messages and exception:</p>";
+        public const string content_25032013_r = "<pre class=\"brush:csharp\">" + @"//actual entry, each will correspond to a line in the grid
+public class LogEntry
+{
+	public int Id { get; set; }
+	public DateTime TimeStamp { get; set; }
+	public string Path { get; set; }
+	public string RawUrl { get; set; }
+	public string Source { get; set; }
+	public string Message { get; set; }
+	public string StackTrace { get; set; }
+	public string TargetSite { get; set; }
+
+	public int TypeId { get; set; }
+	public virtual LogType LogType { get; set; }
+}
+
+//a ""helper"" class for types like Warning, Information etc.
+public class LogType
+{
+	public int LogTypeId { get; set; }
+	public string Type { get; set; }
+}
+
+//finally, an enum of all supported log message types
+public enum LogTypeNames
+{
+	All = 0,
+	Info = 1,
+	Warn = 2,
+	Debug = 3,
+	Error = 4,
+	Fatal = 5,
+	Exception = 6
+}" + "</pre><p>These will be reflected in two database tables - the main table for saving all log messages, and a helper table to keep names of message severity levels.</p><pre class=\"brush:csharp\">" + @"public DbSet&lt;LogType&gt; LogTypes { get; set; }
+public DbSet&lt;LogEntry&gt; LogEntries { get; set; }" + "</pre><p>Next, it is time to mention logging of handled and unhandled exceptions, which can be divided into handled and unhandled exceptions.</p><p><b>Develop mechanism for logging exceptions:</b></p><p><u>1. Log unhandled exceptions</u></p><p>Unhandled exceptions are, well, exceptions that are not handled in the source code. First, the site web.config must be modified to add a line in the <system.web> section: <customErrors mode=\"On\"/></p><p>Here's how it works: a method is called in <b>Global.asax</b> file:</p><pre class=\"brush:csharp\">" + @"public static void RegisterGlobalFilters(GlobalFilterCollection filters)
+{
+    filters.Add(new HandleErrorAttribute());
+}" + "</pre><p>It registers the <b>HandleErrorAttribute</b> as global action filter. The HandleErrorAttribute checks the customErrors mode, and if it is off, shows the \"yellow screen of death\". If it is on, the <b></b>Error view is rendered and a <b>Model</b> is passed to it containing exceptions stack trace. Therefore, an <b>Error.cshtml</b> should be added under <b>Views/Shared</b>, and in its simplest form may look as follows</p><pre class=\"brush:xml\">" + @"@using Recipes.Logging
+@using Recipes.Models
+@{
+    Layout = null;
+    ViewBag.Title = ""Error"";
+    Logger.WriteEntry(Model.Exception);
+}
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Error&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h2&gt;
+        Sorry, an error occurred while processing your request. The details of the error were logged.
+    &lt;/h2&gt;
+&lt;/body&gt;
+&lt;/html&gt;" + "</pre><p>For simplicity, all log messages - exceptions, handled and unhandled, and all other custom messages - will be saved in a single database table.</p><p><u>2. Log handled exceptions</u></p><p>The handled exceptions are caught by code and handled directly. The following is the Logger class which handles exceptions and custom messages and saves them to the database:</p><pre class=\"brush:csharp\">" + @"public static class Logger
+{
+	public static void WriteEntry(Exception ex)
+	{
+		LogEntry entry = BuildExceptionLogEntry(ex);
+		SaveLogEntry(entry);        
+	}
+
+	public static void WriteEntry(string mesage, string source, int logType)
+	{
+		LogEntry entry = BuildLogEntry(mesage, source, logType);
+		SaveLogEntry(entry);
+	}
+
+	private static void SaveLogEntry(LogEntry entry)
+	{
+		using (RecipesEntities context = new RecipesEntities())
+		{
+			context.LogEntries.Add(entry);
+			context.SaveChanges();
+		}
+	}
+
+	private static LogEntry BuildLogEntry(string message, string source, int logType)
+	{
+		LogEntry entry = BuildLogEntryTemplate();
+
+		entry.Message = message;
+		entry.Source = source;
+		entry.LogType = GetLogEntryType((LogTypeNames)logType);
+		entry.TypeId = logType;
+
+		return entry;
+	}
+
+	private static LogEntry BuildExceptionLogEntry(Exception x)
+	{
+		Exception logException = GetInnerExceptionIfExists(x);
+		LogEntry entry = BuildLogEntryTemplate();
+
+		entry.Message = logException.Message;
+		entry.Source = logException.Source ?? string.Empty;
+		entry.StackTrace = logException.StackTrace ?? string.Empty;
+		entry.TargetSite = logException.TargetSite == null ? string.Empty : logException.TargetSite.ToString();
+		entry.LogType = GetLogEntryType(LogTypeNames.Exception);
+		entry.TypeId = (int) LogTypeNames.Exception;
+
+		return entry;
+	}
+
+	private static LogEntry BuildLogEntryTemplate()
+	{
+		return new LogEntry
+				   {
+					   Path = HttpContext.Current.Request.Path,
+					   RawUrl = HttpContext.Current.Request.RawUrl,
+					   TimeStamp = DateTime.Now,
+				   };
+	}
+
+	public static string BuildExceptionMessage(Exception x)
+	{
+		Exception logException = GetInnerExceptionIfExists(x);
+
+		string strErrorMsg = Environment.NewLine + ""Error in Path :"" + HttpContext.Current.Request.Path;
+		// Get the QueryString along with the Virtual Path
+		strErrorMsg += Environment.NewLine + ""Raw Url :"" + HttpContext.Current.Request.RawUrl;
+		// Get the error message
+		strErrorMsg += Environment.NewLine + ""Message :"" + logException.Message;
+		// Source of the message
+		strErrorMsg += Environment.NewLine + ""Source :"" + logException.Source;
+		// Stack Trace of the error
+		strErrorMsg += Environment.NewLine + ""Stack Trace :"" + logException.StackTrace;
+		// Method where the error occurred
+		strErrorMsg += Environment.NewLine + ""TargetSite :"" + logException.TargetSite;
+		return strErrorMsg;
+	}
+
+	private static LogType GetLogEntryType(LogTypeNames name)
+	{
+		return new LogType{LogTypeId = (int)name, Type = name.ToString()};
+	}
+
+	private static Exception GetInnerExceptionIfExists(Exception x)
+	{
+		if (x.InnerException != null)
+			return x.InnerException;
+		return x;
+	}
+}" + "</pre><p>With this basic structure in place, I can start adding user interface for displaying the log. I decided to only have two views, <b>Index</b> for the main grid which contains all log messages, and a <b>Details</b> for a detailed information about a single message. Details will be linked from the line in a grid that corresponds to a log message.</p><p><b>Index view.</b></p><p>The view will have several main parts, wrapped in a form.</p><pre class=\"brush:csharp\">" + @"@using (Html.BeginForm(""Index"", ""Logging"", new { CurrentPageIndex = 1 }, FormMethod.Get, new { id = ""myform"" }))
+{
+
+}" + "</pre><p>First is the div that shows the number of records found and gives an option to choose how many records per page will be displayed.</p><pre class=\"brush:xml\">" + @"&lt;div class=""grid-header""&gt;
+    &lt;div class=""grid-results""&gt;
+        &lt;div class=""inner""&gt;
+            &lt;span style=""float: left""&gt;
+                @string.Format(""{0} records found. Page {1} of {2}"", Model.LogEvents.TotalItemCount, Model.LogEvents.PageNumber, Model.LogEvents.PageCount)
+            &lt;/span&gt;
+
+            &lt;span style=""float: right""&gt;
+                Show @Html.DropDownListFor(model =&gt; model.PageSize, new SelectList(FormsHelper.PagingPageSizes, ""Value"", ""Text"", Model.PageSize), new { onchange = ""document.getElementById('myform').submit()"" }) results per page
+            &lt;/span&gt;
+            
+            &lt;div style=""clear: both""&gt;&lt;/div&gt;
+        &lt;/div&gt; &lt;!-- inner --&gt;
+    &lt;/div&gt;  &lt;!-- grid-results --&gt;
+ &lt;/div&gt;  &lt;!-- grid-header --&gt;" + "</pre><p>The second allows to filter records by date logged and severity</p><pre class=\"brush:xml\">" + @" &lt;div class=""grid-filter""&gt;        
+    &lt;div class=""inner""&gt;
+        Level : @Html.DropDownList(""LogLevel"", new SelectList(FormsHelper.LogLevels, ""Value"", ""Text""))
+
+        For : @Html.DropDownList(""Period"", new SelectList(FormsHelper.CommonTimePeriods, ""Value"", ""Text""))
+        
+        &lt;input id=""btnGo"" name=""btnGo"" type=""submit"" value=""Apply Filter"" /&gt;                      
+    &lt;/div&gt;
+ &lt;/div&gt;   " + "</pre><p>Next is the \"pager\" div, which allows navigation if multiple pages are reqiured</p><pre class=\"brush:xml\">" + @"  &lt;div class=""paging""&gt;
+    &lt;div class=""pager""&gt;
+        @Html.Pager(ViewData.Model.LogEvents.PageSize, ViewData.Model.LogEvents.PageNumber, ViewData.Model.LogEvents.TotalItemCount, new { LogType = ViewData[""LogType""], Period = ViewData[""Period""], PageSize = ViewData[""PageSize""] })
+    &lt;/div&gt;
+ &lt;/div&gt;" + "</pre><p>Finally, the main part is the actual grid which displays the messages.</p><pre class=\"brush:xml\">" + @" @if (Model.LogEvents.Count() == 0)
+ {
+ &lt;p&gt;No results found&lt;/p&gt;
+ }
+ else
+ {
+ &lt;div class=""grid-container""&gt;
+ &lt;table class=""grid""&gt;
+    &lt;tr&gt;
+        &lt;th&gt;&lt;/th&gt;
+        &lt;th&gt;#&lt;/th&gt;
+        &lt;th&gt;Source&lt;/th&gt;
+        &lt;th&gt;Date&lt;/th&gt;
+        &lt;th style='white-space: nowrap;'&gt;Time ago&lt;/th&gt;
+        &lt;th&gt;Message&lt;/th&gt;
+        &lt;th&gt;Type&lt;/th&gt;
+    &lt;/tr&gt;
+
+ @{int i = 0;}
+     @foreach (var item in Model.LogEvents)
+     {
+     &lt;tr class=""@(i++ % 2 == 1 ? ""alt"" : """")""&gt;
+     &lt;td&gt;
+        @Html.ActionLink(""Details"", ""Details"", new { id = item.Id.ToString(), loggerProviderName = ""Go To Details"" /*item.LoggerProviderName*/ })
+     &lt;/td&gt;
+     &lt;td&gt;
+        @i.ToString()
+     &lt;/td&gt;
+     &lt;td&gt;
+        @item.Source
+     &lt;/td&gt;
+     &lt;td style='white-space: nowrap;'&gt;
+        @String.Format(""{0:g}"", item.TimeStamp.ToLocalTime())
+     &lt;/td&gt;
+     &lt;td style='white-space: nowrap;'&gt;
+        @item.TimeStamp.ToLocalTime().TimeAgoString()
+     &lt;/td&gt;
+     &lt;td&gt;
+        &lt;pre&gt;@item.Message.WordWrap(80)&lt;/pre&gt;
+     &lt;/td&gt;
+     &lt;td&gt;
+        @item.LogType.Type
+     &lt;/td&gt;
+     &lt;/tr&gt;
+     }
+
+ &lt;/table&gt;
+ &lt;/div&gt; &lt;!-- grid-container --&gt;
+}" + "</pre><p>A few points of interest:</p><p>The <b>Index</b> method in the controller returns a <b>ViewModel</b>. By default, all configurable parameters (page size, time period, page number and log level) are not set, and all log messages are displayed with the default page size of 20 entries. When a value is set in the UI and the form is submitted, a corresponding parameter is passed to the controller.</p><pre class=\"brush:csharp\">" + @"public ActionResult Index(string Period = null, int? PageSize = null, int? page = null, string LogLevel = null)
+{
+	string defaultPeriod = Session[""Period""] == null ? ""All"" : Session[""Period""].ToString();
+	string defaultLogLevel = Session[""LogLevel""] == null ? ""All"" : Session[""LogLevel""].ToString();
+
+	LoggingIndexModel model = new LoggingIndexModel();
+
+	model.Period = Period ?? defaultPeriod;
+	model.LogLevel = LogLevel ?? defaultLogLevel;
+	model.CurrentPageIndex = page.HasValue ? page.Value - 1 : 0;
+	model.PageSize = PageSize.HasValue ? PageSize.Value : 20;
+
+	TimePeriod timePeriod = TimePeriodHelper.GetUtcTimePeriod(model.Period);
+
+	model.LogEvents = repository.GetByDateRangeAndType(model.CurrentPageIndex, model.PageSize, timePeriod.Start, timePeriod.End, model.LogLevel);
+
+	ViewData[""Period""] = model.Period;
+	ViewData[""LogLevel""] = model.LogLevel;
+	ViewData[""PageSize""] = model.PageSize;
+
+	Session[""Period""] = model.Period;
+	Session[""LogLevel""] = model.LogLevel;
+
+	return View(model);
+}" + "</pre><p><b>GetByDateRangeAndType</b> does the work for selecting appropriate set of log messages from the database.</p><pre class=\"brush:csharp\">" + @"public IPagedList&lt;LogEntry&gt; GetByDateRangeAndType(int pageIndex, int pageSize, DateTime start, DateTime end, string logLevel)
+{
+	IQueryable&lt;LogEntry&gt; list;
+	IPagedList&lt;LogEntry&gt; pagedList;
+
+	list = db.LogEntries.Where(e =&gt;
+			(e.TimeStamp &gt;= start && e.TimeStamp &lt;= end));
+
+	if (logLevel != LogTypeNames.All.ToString())
+	{
+		list = list.Where(e =&gt; e.LogType.Type.ToLower() == logLevel.ToLower());
+	}
+
+	list = list.OrderByDescending(e =&gt; e.TimeStamp);
+	pagedList = new PagedList&lt;LogEntry&gt;(list, pageIndex, pageSize);
+	return pagedList;
+}" + "</pre><p>The data is returned in the form of a <b>PagedList</b> which is implemented as follows:</p><pre class=\"brush:csharp\">" + @"public interface IPagedList&lt;T&gt; : IList&lt;T&gt;
+{
+	int PageCount { get; }
+	int TotalItemCount { get; }
+	int PageIndex { get; }
+	int PageNumber { get; }
+	int PageSize { get; }
+
+	bool HasPreviousPage { get; }
+	bool HasNextPage { get; }
+	bool IsFirstPage { get; }
+	bool IsLastPage { get; }
+}" + "</pre><p>Main part of the <b>PagedList</b> class:</p><pre class=\"brush:csharp\">" + @"public class PagedList&lt;T&gt; : List&lt;T&gt;, IPagedList&lt;T&gt;
+{
+	public PagedList(IEnumerable&lt;T&gt; source, int index, int pageSize)
+		: this(source, index, pageSize, null)
+	{
+	}
+
+	#region IPagedList Members
+
+	public int PageCount { get; private set; }
+	public int TotalItemCount { get; private set; }
+	public int PageIndex { get; private set; }
+	public int PageNumber { get { return PageIndex + 1; } }
+	public int PageSize { get; private set; }
+	public bool HasPreviousPage { get; private set; }
+	public bool HasNextPage { get; private set; }
+	public bool IsFirstPage { get; private set; }
+	public bool IsLastPage { get; private set; }
+
+	#endregion
+
+	protected void Initialize(IQueryable&lt;T&gt; source, int index, int pageSize, int? totalCount)
+	{
+		//### argument checking
+		if (index &lt; 0)
+		{
+			throw new ArgumentOutOfRangeException(""PageIndex cannot be below 0."");
+		}
+		if (pageSize &lt; 1)
+		{
+			throw new ArgumentOutOfRangeException(""PageSize cannot be less than 1."");
+		}
+
+		//### set source to blank list if source is null to prevent exceptions
+		if (source == null)
+		{
+			source = new List&lt;T&gt;().AsQueryable();
+		}
+
+		//### set properties
+		if (!totalCount.HasValue)
+		{
+			TotalItemCount = source.Count();
+		}
+		PageSize = pageSize;
+		PageIndex = index;
+		if (TotalItemCount &gt; 0)
+		{
+			PageCount = (int)Math.Ceiling(TotalItemCount / (double)PageSize);
+		}
+		else
+		{
+			PageCount = 0;
+		}
+		HasPreviousPage = (PageIndex &gt; 0);
+		HasNextPage = (PageIndex &lt; (PageCount - 1));
+		IsFirstPage = (PageIndex &lt;= 0);
+		IsLastPage = (PageIndex &gt;= (PageCount - 1));
+
+		//### add items to internal list
+		if (TotalItemCount &gt; 0)
+		{
+			AddRange(source.Skip((index) * pageSize).Take(pageSize).ToList());
+		}
+	}
+}" + "</pre><p><b>PagedList</b> uses some helper methods from the <b>Pager</b> class to render HTML and generate links to other pages of the log.</p><pre class=\"brush:csharp\">" + @"public class Pager
+{
+	.....
+
+	/// &lt;summary&gt;
+	/// Rendes HTML to display a ""pager"" control (used at the top and bottom of the list of logged messages)
+	/// &lt;/summary&gt;
+	/// &lt;returns&gt;String of HTML&lt;/returns&gt;
+	public string RenderHtml()
+	{
+		int pageCount = (int)Math.Ceiling(totalItemCount / (double)pageSize);
+		const int nrOfPagesToDisplay = 10;
+
+		var sb = new StringBuilder();
+
+		// Previous
+		if (currentPage &gt; 1)
+		{
+			sb.Append(GeneratePageLink(""&lt;"", this.currentPage - 1));
+		}
+		else
+		{
+			sb.Append(""&lt;span class=\""disabled\""&gt;&lt;&lt;/span&gt;"");
+		}
+
+		int start = 1;
+		int end = pageCount;
+
+		if (pageCount &gt; nrOfPagesToDisplay)
+		{
+			int middle = (int)Math.Ceiling(nrOfPagesToDisplay / 2d) - 1;
+			int below = (currentPage - middle);
+			int above = (currentPage + middle);
+
+			if (below &lt; 4)
+			{
+				above = nrOfPagesToDisplay;
+				below = 1;
+			}
+			else if (above &gt; (pageCount - 4))
+			{
+				above = pageCount;
+				below = (pageCount - nrOfPagesToDisplay);
+			}
+
+			start = below;
+			end = above;
+		}
+
+		if (start &gt; 3)
+		{
+			sb.Append(GeneratePageLink(""1"", 1));
+			sb.Append(GeneratePageLink(""2"", 2));
+			sb.Append(""..."");
+		}
+		for (int i = start; i &lt;= end; i++)
+		{
+			if (i == currentPage)
+			{
+				sb.AppendFormat(""&lt;span class=\""current\""&gt;{0}&lt;/span&gt;"", i);
+			}
+			else
+			{
+				sb.Append(GeneratePageLink(i.ToString(), i));
+			}
+		}
+		if (end &lt; (pageCount - 3))
+		{
+			sb.Append(""..."");
+			sb.Append(GeneratePageLink((pageCount - 1).ToString(), pageCount - 1));
+			sb.Append(GeneratePageLink(pageCount.ToString(), pageCount));
+		}
+
+		// Next
+		if (currentPage &lt; pageCount)
+		{
+			sb.Append(GeneratePageLink(""&gt;"", (currentPage + 1)));
+		}
+		else
+		{
+			sb.Append(""&lt;span class=\""disabled\""&gt;&gt;&lt;/span&gt;"");
+		}
+		return sb.ToString();
+	}
+
+	/// &lt;summary&gt;
+	/// Generates a link to a page
+	/// &lt;/summary&gt;
+	/// &lt;param name=""linkText""&gt;Text displayed on the page&lt;/param&gt;
+	/// &lt;param name=""pageNumber""&gt;Number of the page the link leads to&lt;/param&gt;
+	/// &lt;returns&gt;&lt;/returns&gt;
+	private string GeneratePageLink(string linkText, int pageNumber)
+	{
+		var pageLinkValueDictionary = new RouteValueDictionary(linkWithoutPageValuesDictionary) {{""page"", pageNumber}};
+		var virtualPathData = RouteTable.Routes.GetVirtualPath(this.viewContext.RequestContext, pageLinkValueDictionary);
+
+		if (virtualPathData != null)
+		{
+			const string linkFormat = ""&lt;a href=\""{0}\""&gt;{1}&lt;/a&gt;"";
+			return String.Format(linkFormat, virtualPathData.VirtualPath, linkText);
+		}
+		return null;
+	}
+}" + "</pre><p><b>Details view.</b></p><p>There is nothing special about the details view - it's a usual MVC view that displays entity data.</p><pre class=\"brush:xml\">" + @"@model Recipes.Models.LogEntry
+@{
+    ViewBag.Title = ""Details"";
+}
+
+&lt;link href=""@Url.Content(""~/Content/logging.css"")"" rel=""stylesheet"" type=""text/css"" /&gt;
+
+&lt;h2&gt;Details&lt;/h2&gt;
+
+&lt;p&gt;        
+    @Html.ActionLink(""Back to List"", ""Index"")
+&lt;/p&gt;
+
+&lt;fieldset&gt;
+    &lt;legend&gt;Fields&lt;/legend&gt;
+        
+    &lt;div class=""display-label""&gt;Id&lt;/div&gt;
+    &lt;div class=""display-field""&gt;@Model.Id&lt;/div&gt;
+        
+    &lt;div class=""display-label""&gt;LogDate&lt;/div&gt;
+    &lt;div class=""display-field""&gt;@String.Format(""{0:g}"", Model.TimeStamp)&lt;/div&gt;
+        
+    &lt;div class=""display-label""&gt;Source&lt;/div&gt;
+    &lt;div class=""display-field""&gt;@Model.Source&lt;/div&gt;
+        
+    &lt;div class=""display-label""&gt;Type&lt;/div&gt;
+    &lt;div class=""display-field""&gt;@Model.LogType.Type&lt;/div&gt;
+        
+    &lt;div class=""display-label""&gt;Message&lt;/div&gt;
+    &lt;div class=""display-field""&gt;
+        &lt;pre&gt;@Model.Message.WordWrap(80)&lt;/pre&gt;
+    &lt;/div&gt;
+        
+    &lt;div class=""display-label""&gt;StackTrace&lt;/div&gt;
+    &lt;div class=""display-field""&gt;@Model.StackTrace&lt;/div&gt;                      
+        
+&lt;/fieldset&gt;
+
+&lt;p&gt;        
+    @Html.ActionLink(""Back to List"", ""Index"")
+&lt;/p&gt;" + "</pre><p>Details Controller</p><pre class=\"brush:xml\">" + @"public ActionResult Details(string loggerProviderName, string id)
+{
+	LogEntry logEvent = repository.GetById(id);
+
+	return View(logEvent);
+}" + "</pre><p>The final result is represented in the image below:</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2013/25032013_MVC_logging_engine.png\" alt=\"MVC logging engine\" /></div><p align=\"center\">MVC logging engine</p><p><b>References</b></p><a href=\"http://www.asp.net/web-forms/tutorials/deployment/deploying-web-site-projects/processing-unhandled-exceptions-cs\">Processing Unhandled Exceptions (C#)</a><br/><a href=\"http://dotnetdarren.wordpress.com/2010/07/27/logging-on-mvc-part-1/\">Logging in MVC Part 1- Elmah (and other posts of the series)</a><br/><a href=\"http://www.codeproject.com/Articles/545026/MVC-Basic-Site-Step-2-Exceptions-Management\">MVC Basic Site: Step 2 - Exceptions Management</a><br/><a href=\"http://stackoverflow.com/questions/11851328/how-is-error-cshtml-called-in-asp-net-mvc\">How is Error.cshtml called in ASP.NET MVC?</a><br/>" +
+            "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_25032013_d = "Implementing a simple logging engine with MVC 4";
+        public const string content_25032013_k = "MVC logging C# exception message grid filter";
+
+        //Improving a PostgreSQL report performance: Part 2 - Temporary Table
+        public const string content_28032013_b =
+            "<p>The report I was working on still did not live up to expectations. There was something else going on. I had to dig a little deeper.</p><p>The report was generated by <a href=\"http://www.devexpress.com/Products/NET/Reporting/\">XTraReports</a> and I have no authority to edit it. The ReportDataSource contains functions for retrieving datasets for main report and subreport.</p>";
+        public const string content_28032013_r = "<pre class=\"brush:csharp\">" + @"public class ReportDataSource : BaseDataSource
+{
+	public DataSet GetPrimaryReportData(DateTime fromDate, DateTime toDate)
+	{
+		string commandText = ""select * from myreportfunction;"";
+		var reportDataSet = ExecuteQuery(""ReportDataSet"", commandText, new[] { ""MainDataSet"" });
+		return reportDataSet;
+	}
+
+	public DataSet GetSubReportData(DateTime fromDate, DateTime toDate)
+	{
+		string commandText = String.Format(""select * from myreportsubfunction"");
+		return ExecuteQuery(""SubReportDataSet"", commandText, new[] { ""SubDataSet"" });
+	}
+}" + "</pre><p>And here's how the PostgreSQL functions looked like.</p><p>The <b>myreportsubfunction</b> is the one I worked on already so now it looked like the following</p><pre class=\"brush:sql\">" + @"CREATE OR REPLACE FUNCTION myreportsubfunction(IN from timestamp without time zone, IN to timestamp without time zone)
+  RETURNS TABLE(Name1 character varying, Name2 character varying) AS
+$BODY$
+BEGIN
+RETURN QUERY EXECUTE
+'select Column1 as Name1, Column2 as Name2
+from sometable tbl
+inner join ...
+where ...
+and ...
+and $1 &lt;= somedate
+and $2 &gt;= somedate
+group by ...
+order by ...;' USING $1, $2;
+END
+$BODY$
+  LANGUAGE plpgsql VOLATILE" + "</pre><p>And there was the <b>myreportfunction</b></p><pre class=\"brush:sql\">" + @"CREATE FUNCTION myreportfunction ( FROMdate timestamp without time zone, todate timestamp without time zone )
+ RETURNS TABLE ( name character varying, somevalue1 integer, somevalue2 real ) AS $body$
+ SELECT
+    something,
+    sum(somevalue1)::int as somevalue1,
+    sum(somevalue2)::real as somevalue2
+ FROM myreportsubfunction($1, $2)      group by something;
+  $body$ LANGUAGE sql;" + "</pre><p>What's going on here? Well, looks like first the <b>myreportfunction</b> is called, it calls the <b>myreportsubfunction</b> and returns aggregated results. But then the <b>myreportsubfunction</b> is called separately and essentially executes the same huge query again! No wonder the performance is nowhere near acceptable. Anyway, to satisfy the report requirements, I need to have the aggregated data first, which means that I need to save the results of the huge complex query, aggregate the results and return them for the main report, and then return the saved results of the query as subreport, or \"detailed\" data. My approach is to use the temporary table.</p><p>Here is what the functions will do:</p><p><u>myreportfunction</u></p><p><ul><li>if a temptable exists, drop it</li><li>create a temptable</li><li>run a complex query and save results in the temptable</li><li>run a query that returns the aggregated data for the report</li></ul></p><p><u>myreportsubfunction</u></p><p><ul><li>if the temptable exists, return everything from the table, then drop the table</li></ul></p><p>And the resulting PostgreSQL code</p><p><u>myreportfunction</u></p><pre class=\"brush:sql\">" + @"CREATE OR REPLACE FUNCTION myreportfunction(IN fromdate timestamp without time zone, IN todate timestamp without time zone)
+  RETURNS TABLE(""name"" character varying, somevalue1 character varying, somevalue2 character varying) AS
+$BODY$
+BEGIN
+DROP TABLE IF EXISTS temptable;
+CREATE TEMPORARY TABLE temptable(""name"" character varying, somevalue1 character varying, somevalue2 character varying);
+DELETE FROM temptable;
+
+EXECUTE '
+insert into temptable(name, somevalue1, somevalue2)		
+select Column1 as Name1, Column2 as Name2
+from sometable tbl
+inner join ...
+where ...
+and ...
+and $1 &lt;= somedate
+and $2 &gt;= somedate
+group by ...
+order by ...;' USING $1, $2;
+
+RETURN QUERY EXECUTE 'SELECT name, somevalue1, somevalue2 FROM temptable group by name;';
+END
+$BODY$
+  LANGUAGE plpgsql VOLATILE" + "</pre><p><u>myreportsubfunction</u></p><pre class=\"brush:sql\">" + @"CREATE OR REPLACE FUNCTION myreportsubfunction(IN timestamp without time zone, IN timestamp without time zone)
+  RETURNS TABLE(name character varying, somevalue1 integer, somevalue2 real) AS
+$BODY$
+BEGIN
+IF EXISTS (SELECT 1 FROM temptable) THEN 
+	RETURN QUERY EXECUTE'select * from temptable';
+	DELETE FROM temptable;
+	DROP TABLE IF EXISTS temptable;
+END IF;
+END
+$BODY$
+  LANGUAGE plpgsql VOLATILE" + "</pre><p>Now hoping for the performance improvement by at least 50% ...</p><p><b>References</b></p><a href=\"http://www.postgresql.org/docs/9.2/static/sql-createtable.html\">CREATE TABLE</a><br/><a href=\"http://www.ynegve.info/Post/Display/174/improving-a-postgresql-report-performance-part-1-return-query-execute\">Improving a PostgreSQL report performance: Part 1 - RETURN QUERY EXECUTE</a><br/>" +
+            "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_28032013_d = "Improving a performance of PostgreSQL report by utilizing the temporary table";
+        public const string content_28032013_k = "PostgreSQL query function performance temporary table plan database";
     }
 }

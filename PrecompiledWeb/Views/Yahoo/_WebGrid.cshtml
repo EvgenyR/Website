@@ -1,7 +1,7 @@
 ﻿@model Recipes.ViewModels.YahooViewModel
 @using Recipes.HtmlHelpers;
 
-    @{ var grid = new WebGrid<Recipes.Models.Yahoo.YahooData>(null, rowsPerPage: 5, defaultSort: "YahooSymbolName", ajaxUpdateContainerId: "wbgrid");
+    @{ var grid = new WebGrid<Recipes.SeedData.YahooData>(null, rowsPerPage: 5, defaultSort: "YahooSymbolName", ajaxUpdateContainerId: "wbgrid");
     grid.Bind(Model.Datas, rowCount: Model.TotalRows, autoSortAndPage: false);
     }
 

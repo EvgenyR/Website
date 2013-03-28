@@ -1,0 +1,41 @@
+﻿@model Recipes.Models.LogEntry
+@{
+    ViewBag.Title = "Details";
+}
+
+<link href="@Url.Content("~/Content/logging.css")" rel="stylesheet" type="text/css" />
+
+<h2>Details</h2>
+
+<p>        
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+<fieldset>
+    <legend>Fields</legend>
+        
+    <div class="display-label">Id</div>
+    <div class="display-field">@Model.Id</div>
+        
+    <div class="display-label">LogDate</div>
+    <div class="display-field">@String.Format("{0:g}", Model.TimeStamp)</div>
+        
+    <div class="display-label">Source</div>
+    <div class="display-field">@Model.Source</div>
+        
+    <div class="display-label">Type</div>
+    <div class="display-field">@Model.LogType.Type</div>
+        
+    <div class="display-label">Message</div>
+    <div class="display-field">
+        <pre>@Model.Message.WordWrap(80)</pre>
+    </div>
+        
+    <div class="display-label">StackTrace</div>
+    <div class="display-field">@Model.StackTrace</div>                      
+        
+</fieldset>
+
+<p>        
+    @Html.ActionLink("Back to List", "Index")
+</p>

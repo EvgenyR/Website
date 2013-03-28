@@ -23,8 +23,13 @@ section {
 }
 
 body {
-	font-size: 62.5%;
 	background: url(images/stripe.png) repeat;
+}
+
+nav#topnavigation 
+{
+    font-size: 62.5%;
+    font-family: Georgia, "Times New Roman", Times, serif;
 }
 
 p, li {
@@ -129,11 +134,11 @@ html, body, h1, form, fieldset, legend, ol, li {
 body {
     background: #ffffff;
     color: #111111;
-    font-family: Georgia, "Times New Roman", Times, serif;
+    /*font-family: Georgia, "Times New Roman", Times, serif;*/
     padding: 20px;
 }
 
-form {
+form.styledForm {
     background: #9CAA9C; /*#9cbc2c;*/
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -142,7 +147,7 @@ form {
     /*width: 500px;*/
 }
 
-form a
+form.styledForm a
 {
     font-family: Georgia, "Times New Roman", Times, serif;
     /*font-family: Calibri;*/
@@ -152,16 +157,16 @@ form a
     text-decoration: none;
 }
 
-form fieldset {
+form.styledForm fieldset {
     border: none;
     margin-bottom: 10px;
 }
 
-form fieldset:last-of-type {
+form.styledForm fieldset:last-of-type {
     margin-bottom: 0;
 }
 
-form legend {
+form.styledForm legend {
     color: #ADFF2F; /* #384313;*/
     font-size: 18px;
     font-weight: bold;
@@ -186,14 +191,14 @@ ol.styled, li.styled {
     margin-bottom: 2px;
 }
 
-form div.display-label, label /* display label outside of table */
+form.styledForm div.display-label, label /* display label outside of table */
 { 
     float: left;
     font-size: 13px;
     width: 110px;
 }
 
-form div.display-warning
+form.styledForm div.display-warning
 {
     /*float: left;*/
     font-size: 16px;
@@ -202,7 +207,7 @@ form div.display-warning
     padding: 5px;
 }
 
-form div.display-label-nofloat
+form.styledForm div.display-label-nofloat
 {
     float:none;
     display: inline-block;
@@ -210,7 +215,7 @@ form div.display-label-nofloat
     vertical-align:bottom;
 }
 
-.displayBasic, form div.display-field, form input, form select, form div.editor-field, form div.display-info
+.displayBasic, form.styledForm div.display-field, form.styledForm input, form.styledForm select, form.styledForm div.editor-field, form.styledForm div.display-info
 {
     background: #ffffff;
     border: none;
@@ -224,7 +229,7 @@ form div.display-label-nofloat
     width: 200px;
 }
 
-form div.display-textarea{
+form.styledForm div.display-textarea{
     background: #ffffff;
     border: none;
     -moz-border-radius: 3px;
@@ -237,7 +242,7 @@ form div.display-textarea{
     max-width: 600px;
 }
 
-.buttonBasic, form div.display-button, form .buttonlink, form .buttonright
+.buttonBasic, form.styledForm div.display-button, form.styledForm .buttonlink, form.styledForm .buttonright
 {
     float: left;
     -moz-border-radius: 20px;
@@ -255,13 +260,13 @@ form div.display-textarea{
     width: 100px;
 }
 
-form .buttonright
+form.styledForm .buttonright
 {
     float: none;
     display: inline-block;
 }
 
-form div.display-field /*, form div.display-textarea*/ /*display data in a white div outside of table*/
+form.styledForm div.display-field /*, form div.display-textarea*/ /*display data in a white div outside of table*/
 {
     float:none;
     display: inline-block;
@@ -269,40 +274,40 @@ form div.display-field /*, form div.display-textarea*/ /*display data in a white
     left:0px;
 }
 
-form div.display-info /* to display text in the table */
+form.styledForm div.display-info /* to display text in the table */
 {
     display:inline-block;
     font: italic;
     width:auto;
 }
 
-form input {
+form.styledForm input {
     font: italic;
 }
 
-form select
+form.styledForm select
 {
     font: italic;
 }
 
-form div.editor-field {
+form.styledForm div.editor-field {
     font: italic;
 }
 
-form buttonlink:hover 
+form.styledForm buttonlink:hover 
 {
     background: #1e2506;
     cursor: pointer;
 }
 
-form div.display-button /*small button in the tables*/
+form.styledForm div.display-button /*small button in the tables*/
 {
     font-size: 13px;
     padding: 2px;
     margin: auto;
 }
 
-form .buttonlink /* a larger button outside of the form */
+form.styledForm .buttonlink /* a larger button outside of the form */
 {
     padding: 7px;
     margin: 5px;

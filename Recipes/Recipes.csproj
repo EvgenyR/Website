@@ -49,10 +49,6 @@
     <Reference Include="HtmlAgilityPack">
       <HintPath>C:\Evgeny\Development\EL\G\Google_Search_Tool\Google_Search_Tool\GoogleAutoSearch_src\GoogleAutoSearch\bin\Debug\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -618,6 +614,7 @@
     <Content Include="Content\images\blog\pr\2013\25022013_Insert_Only.png" />
     <Content Include="Content\images\blog\pr\2013\25022013_Insert_Then_Update.png" />
     <Content Include="Content\images\blog\pr\2013\25022013_Second_Level_Cache.png" />
+    <Content Include="Content\images\blog\pr\2013\25032013_MVC_logging_engine.png" />
     <Content Include="Content\images\dog.gif" />
     <Content Include="Content\images\dogs.gif" />
     <Content Include="Content\images\bg_blue.jpg" />
@@ -872,7 +869,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>63181</DevelopmentServerPort>
+          <DevelopmentServerPort>50760</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

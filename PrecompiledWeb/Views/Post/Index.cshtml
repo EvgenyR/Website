@@ -4,21 +4,22 @@
     ViewBag.Title = "Post List - MVC Blog Engine Example";
 }
 
-<form>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "styledForm" }))
+{
     <fieldset>
-        <div class="buttonlink">@Html.ActionLink("Create New", "Create", new {id=Model.Blog.BlogID})</div>
+        <div class="buttonlink">@Html.ActionLink("Create New", "Create", new { id = Model.Blog.BlogID })</div>
         <div class="buttonlink" style="width: 150px">@Html.ActionLink("Blog Engine Home", "../Blog/Index")</div>
     </fieldset>
 
 
-@foreach (var item in Model.Posts) 
+foreach (var item in Model.Posts)
 {
     var subContent = item.BriefContent;
     if (subContent.Length > 50) { subContent = subContent.Substring(0, 50) + "..."; }
     
     <ol>
         <li class="styled">
-            <div class="display-button">@Html.ActionLink("Edit", "Edit", new { id=item.PostID, seofriendly = item.Title.ToSeoUrl() }) </div>
+            <div class="display-button">@Html.ActionLink("Edit", "Edit", new { id = item.PostID, seofriendly = item.Title.ToSeoUrl() }) </div>
             <div class="display-button">@Html.ActionLink("Details", "Details", new { id = item.PostID, seofriendly = item.Title.ToSeoUrl() }) </div>
             <div class="display-button">@Html.ActionLink("Delete", "Delete", new { id = item.PostID, seofriendly = item.Title.ToSeoUrl() }) </div>
             <div class = "display-info">@item.Title</div>
@@ -26,4 +27,4 @@
         </li>
     </ol>
 }
-</form>
+}

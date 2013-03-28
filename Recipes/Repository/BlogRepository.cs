@@ -176,7 +176,13 @@ namespace Recipes.Repository
         {
             using (RecipesEntities db = new RecipesEntities())
             {
-                return db.Posts.Find(id);
+                Post post = db.Posts.Single(p => p.PostID == id);
+                post.PostLabels = db.PostLabels.Where(p => p.PostID == post.PostID).ToList();
+                foreach (var postLabel in post.PostLabels)
+                {
+                    postLabel.Label = db.Labels.Single(l => l.LabelID == postLabel.LabelID);
+                }
+                return post;
             }
         }
 

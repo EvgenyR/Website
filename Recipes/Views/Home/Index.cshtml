@@ -18,7 +18,8 @@
 					<li>Posted in 
                     @foreach (Recipes.Models.PostLabel label in post.PostLabels)
                     {
-                        <a href="#">@label.Label.Name &nbsp;</a>
+                        var link = "Blog/Index?p=0&blogId=" + Model.BlogId + "&label=" + label.Label.Name;
+                        <a href="@link">@label.Label.Name &nbsp;</a>
                     }
                     </li>
 					<li class="comments"><a href="#">0 Comments</a></li>

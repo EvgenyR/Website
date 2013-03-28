@@ -16,6 +16,9 @@
     <script src="@Url.Content("~/Scripts/shBrushXML.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/shBrushJScript.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/shBrushCss.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/shBrushCpp.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/shBrushVb.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/shBrushSql.js")" type="text/javascript"></script>
     <!-- Syntax Highlighter css -->
     <link href="@Url.Content("~/Content/shCore.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/shThemeDefault.css")" rel="stylesheet" type="text/css" />
@@ -49,12 +52,13 @@
         <div id="inside">
             <div id="topside">
                 <div id="header">
-                    <img src="../../Content/images/Laptop_saver_small.jpg" alt="Laptop photo in a page header"/>
+                    <img src="@Url.Content("~/Content/images/Laptop_saver_small.jpg")" alt="Laptop photo in a page header"/>
    			    </div><!--header-->
                 <div id="left-sidebar">
                     @Html.Action("MenuResult", "LeftMenu")
                     @Html.Action("ProgBlogResult", "BlogEntry")
                     @Html.Action("BioBlogResult", "BlogEntry")
+                    @RenderSection("mySection", false)
                 </div>
                 <div id="main-content">
                     @RenderBody()

@@ -46,7 +46,7 @@
     });
 -->
 </script>
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "styledForm" }))
 {
     <br />
     <fieldset>

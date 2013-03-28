@@ -3,44 +3,105 @@
     ViewBag.Title = "Main Page - MVC Blog Engine Example";
 }
 
-<script type="text/javascript">
-<!--
-    function Display() {
-        $('#update').load("/Blog/Update", { id: $("#Blog_BlogID").val() });
-    };
+@section mySection {
+    @Html.Action("BlogCategories", "BlogEntry")
+}
 
-    function MorePosts() {
-        var newValue = parseInt($("#hiddenPosts").val()) + 1;
-        $('#hiddenPosts').val(newValue);
-        $('#update').load("/Blog/MorePosts", { id: $("#Blog_BlogID").val(), postsDisplayed: newValue });
-    };
+<link href="@Url.Content("~/Content/BlogNew.css")" rel="stylesheet" type="text/css" />
 
-    function LessPosts() {
-        var newValue = $("#hiddenPosts").val() - 1;
-        $('#hiddenPosts').val(newValue);
-        $('#update').load("/Blog/LessPosts", { id: $("#Blog_BlogID").val(), postsDisplayed: newValue});
-    };
--->
-</script>
-@using (Html.BeginForm())
+@{
+  var currentPage = ViewContext.RequestContext.HttpContext.Request["p"] != null 
+    ? int.Parse(ViewContext.RequestContext.HttpContext.Request["p"]) 
+    : 1;
+     
+  var totalPages = Math.Ceiling((double)Model.TotalPosts / 10);
+
+  var label = ViewContext.RequestContext.HttpContext.Request["label"] != null
+      ? ViewContext.RequestContext.HttpContext.Request["label"].ToString()
+      : string.Empty;
+
+  var home = "?p=1&blogId=" + Model.BlogId;
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Get, new { id = "myform" }))
 {
-    <div id="editorRows">
-        <ol>
-            <li class="styled">
-                @Html.ValidationMessageFor(model => model.Blog.BlogID)
-                <div class="display-label" style="width: 200px">
-                    Select a Blog to Display:
-                </div>@Html.DropDownListFor(model => model.Blog.BlogID, new SelectList(Model.Blogs, "BlogID", "Title", Model.Blog.BlogID))
-                <input class="buttonright" id="display" type="button" onclick="Display();" value="Display" />
-                <div class="buttonright" style="float: right">@Html.ActionLink("Manage Blogs", "List")</div>
-                <div class="buttonright" style="float: right">@Html.ActionLink("Manage Bloggers", "../Blogger/Index")</div>
-            </li>
-        </ol>
-    </div>
-    
-    <div id="update">
-        @Html.Partial("_BlogContent", Model)
-    </div>
+<div id="container">
+
+	<div id="container-header">
+		<ul id="nav">
+            <li><label>Select blog: </label>@Html.DropDownListFor(model => model.BlogId, new SelectList(Model.Blogs, "BlogId", "Title", Model.BlogId), new { onChange = "document.getElementById('myform').submit()" })</li>
+            <li>@Html.ActionLink("Manage Blogs", "List")</li>
+            <li>@Html.ActionLink("Manage Bloggers", "../Blogger/Index")</li>
+            <li><a href="@home">This Blog Home</a></li>
+		</ul>
+	</div>
+
+	<div id="content">
+		<div id="main">
+
+        @foreach (Recipes.Models.Post post in Model.Posts)
+        {
+
+			<div class="post-wrap">
+				<h2>@Html.ActionLink(post.Title, "../Post/Display", new { id = post.PostID, seofriendly = post.Title.ToSeoUrl() })</h2>
+				<p class="date">@post.DateCreated.Day.ToString()<span>@post.DateCreated.ToString("MMM")</span></p>
+				<ul class="meta">
+					<li>Posted in 
+                    @foreach (Recipes.Models.PostLabel pLabel in post.PostLabels)
+                    {
+                        var link = "?p=" + currentPage + "&blogId=" + Model.Blog.BlogID + "&label=" + pLabel.Label.Name;
+                        <a href="@link">@pLabel.Label.Name &nbsp;</a>
+                    }
+                    </li>
+					<li class="comments"><a href="#">0 Comments</a></li>
+				</ul>
+				<div class="post-content">  
+                    @MvcHtmlString.Create(post.BriefContent)                    
+				</div><!-- post-content-->
+                <li class="comments">@Html.ActionLink("Read more", "../Post/Display", new { id = post.PostID, seofriendly = post.Title.ToSeoUrl() })</li>
+			</div><!-- post-wrap -->
+        }
+			
+            @if (currentPage > 1 || currentPage < totalPages)
+            {
+                var p = string.Format("p={0}", currentPage - 1);
+                var n = string.Format("p={0}", currentPage + 1);
+
+                p = String.Concat("?", p);
+                n = String.Concat("?", n);
+
+                var b = string.Format("&blogId={0}", Model.Blog.BlogID);
+                p = String.Concat(p, b);
+                n = String.Concat(n, b);
+
+                if (label != string.Empty)
+                {
+                    string lbl = "&label=" + label;
+                    p = String.Concat(p, lbl);
+                    n = String.Concat(n, lbl);
+                }
+
+			<div class="pagination">
+				<p class="prev" style="visibility:@(currentPage > 1 ? "visible" : "collapse")"><a href="@p">Newer posts</a></p>
+				<p class="next" style="visibility:@(currentPage < totalPages ? "visible" : "collapse")"><a href="@n">Older posts</a></p>
+			</div>
+            }
+		</div> <!-- main -->
+		
+		<div id="side">
+			<div id="categories">
+				<h3>Categories</h3>
+				<ul>
+                    @foreach (Recipes.Models.Label pLabel in Model.Labels)
+                    {
+                        var link = "?p=" + currentPage + "&blogId=" + Model.Blog.BlogID + "&label=" + pLabel.Name;
+					    <li><a href="@link">@pLabel.Name</a> @pLabel.PostLabels.Count().ToString()</li>
+                    }
+				</ul>
+			</div>
+		</div>
+	</div> <!-- content -->
+</div> <!-- container -->
 }
 
 @Html.HighLightSyntax()

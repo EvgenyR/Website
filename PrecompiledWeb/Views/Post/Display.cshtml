@@ -1,36 +1,32 @@
 ﻿@model Recipes.Models.Post
-<link href="@Url.Content("~/Content/blog.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/BlogNew.css")" rel="stylesheet" type="text/css" />
 @{
     ViewBag.MetaDescription = Model.Description;
     ViewBag.MetaKeywords = Model.Keywords;
     ViewBag.Title = Model.Title;
-
-    string divID = "hide";
-    string btnID = "btn";
 }
 
-@using (Html.BeginForm())
-{
-<div id="middlecolumn">
-    <div class="blogcontainer">
-        <h3 class="title">@Model.Title</h3>
-        <div class="info"><span class="submitted">Submitted on @Model.DateCreated</span></div>
-        @MvcHtmlString.Create(Model.BriefContent)
-        <div class="buttonlink"><a id=@btnID href="javascript:toggleDiv('@divID', '@btnID');">Show more</a></div>
-        <div id=@divID  style="display:none">@MvcHtmlString.Create(Model.RestOfContent)</div>
+<div id="content">
+    <div id="main">
+        <div class="post-wrap">
+	        <h2>@Model.Title</h2>
+	        <p class="date">@Model.DateCreated.Day.ToString()<span>@Model.DateCreated.ToString("MMM")</span></p>
+	        <ul class="meta">
+                <li>Posted in 
+                @foreach (Recipes.Models.PostLabel pLabel in Model.PostLabels)
+                {
+                    var link = "../../../Blog/Index?p=0&blogId=" + Model.BlogID + "&label=" + pLabel.Label.Name;
+                    <a href="@link">@pLabel.Label.Name &nbsp;</a>
+                }
+                </li>
+		        <li class="comments"><a href="#">0 Comments</a></li>
+	        </ul>
+	        <div class="post-content">  
+                @MvcHtmlString.Create(Model.BriefContent)    
+                @MvcHtmlString.Create(Model.RestOfContent)                
+	        </div><!-- post-content-->
+        </div><!-- post-wrap -->
     </div>
 </div>
-}
-<script type="text/javascript">
-<!--
-    function toggleDiv(divId, btnId) {
-        $("#" + divId).toggle();
-        if ($("#" + divId).css('display') == 'none')
-        { $("#" + btnId).html('Show more'); }
-        else
-        { $("#" + btnId).html('Show less'); }
-    }
--->
-</script>
 
 @Html.HighLightSyntax()

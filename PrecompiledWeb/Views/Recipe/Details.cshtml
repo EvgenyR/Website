@@ -8,7 +8,8 @@
 @Html.Partial("_RecipeNav")
 @Html.RecipeCaloricContent()
 
-<form>
+@using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "styledForm" }))
+{
 <fieldset>
     <legend>Recipe</legend>
 
@@ -47,7 +48,6 @@
             <div class="display-field">@ingredient.Quantity</div>
             </div>
         </li> 
-
     }
     </ol>
 </fieldset>
@@ -102,4 +102,4 @@
     <div id="chart_div" style="width: 400px; height: 200px;"></div>
 </fieldset>
 
-</form>
+}
