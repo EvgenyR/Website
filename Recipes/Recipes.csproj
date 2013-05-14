@@ -610,6 +610,8 @@
     <Content Include="Content\images\blog\pr\2012\27092012_results.png" />
     <Content Include="Content\images\blog\pr\2012\29032012_Practical_CPP.png" />
     <Content Include="Content\images\blog\pr\2012\31072012_Game_of_life.png" />
+    <Content Include="Content\images\blog\pr\2013\06042013_Google_Webmaster_Tools.png" />
+    <Content Include="Content\images\blog\pr\2013\06042013_Website_Crawl_Errors.png" />
     <Content Include="Content\images\blog\pr\2013\25022013_Duplicates_History_Table.png" />
     <Content Include="Content\images\blog\pr\2013\25022013_Insert_Only.png" />
     <Content Include="Content\images\blog\pr\2013\25022013_Insert_Then_Update.png" />

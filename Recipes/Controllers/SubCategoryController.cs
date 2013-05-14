@@ -94,7 +94,7 @@ namespace Recipes.Controllers
         public ActionResult Delete(int id)
         {
             SubCategory subcategory = db.SubCategories.Find(id);
-            return View(subcategory);
+            return View(new SubCategoryViewModel(subcategory, db.Categories.ToList()));
         }
 
         //

@@ -3,23 +3,30 @@ using System.Data;
 using System.Linq;
 using Recipes.Models;
 using System.Data.Entity;
+using Recipes.LogHelpers;
+using System.Reflection;
 
 namespace Recipes.Repository
 {
     public class BlogRepository : IBlogRepository
     {
+        private string methodName;
+
         #region BlogOperations
 
         public Blog GetBlogByID(int id)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
+                Logger.WriteEntry(string.Format("Blog with id={0} returned by method {1}.", id, methodName), GetType().FullName, (int)LogTypeNames.Info);
                 return db.Blogs.Find(id);
             }
         }
 
         public List<Blog> GetAllBlogs()
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 return db.Blogs.ToList();
@@ -28,6 +35,7 @@ namespace Recipes.Repository
 
         public List<Blog> GetBlogsByBloggerId(int id)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 return db.Blogs.Where(b => b.BloggerID == id).ToList();
@@ -36,6 +44,7 @@ namespace Recipes.Repository
 
         public void AddNewBlog(Blog blog)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 db.Blogs.Add(blog);
@@ -45,6 +54,7 @@ namespace Recipes.Repository
 
         public void EditExistingBlog(Blog blog)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 db.Entry(blog).State = EntityState.Modified;
@@ -54,6 +64,7 @@ namespace Recipes.Repository
 
         public void DeleteExistingBlog(int id)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 Blog blog = GetBlogByID(id);
@@ -79,6 +90,7 @@ namespace Recipes.Repository
 
         public Blogger GetBloggerByID(int id)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 return db.Bloggers.Single(b => b.BloggerID == id);
@@ -87,6 +99,7 @@ namespace Recipes.Repository
 
         public Blogger GetFirstBlogger()
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 return db.Bloggers.FirstOrDefault();
@@ -95,6 +108,7 @@ namespace Recipes.Repository
 
         public List<Blogger> GetAllBloggers()
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 return db.Bloggers.ToList();
@@ -103,6 +117,7 @@ namespace Recipes.Repository
 
         public void AddNewBlogger(Blogger blogger)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 db.Bloggers.Add(blogger);
@@ -112,6 +127,7 @@ namespace Recipes.Repository
 
         public void EditExistingBlogger(Blogger blogger)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 db.Entry(blogger).State = EntityState.Modified;
@@ -121,6 +137,7 @@ namespace Recipes.Repository
 
         public void DeleteExistingBlogger(int id)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 Blogger blogger = GetBloggerByID(id);
@@ -157,6 +174,7 @@ namespace Recipes.Repository
 
         public List<Post> GetPostsByBlogID(int id)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             List<Post> posts;
             using (RecipesEntities db = new RecipesEntities())
             {
@@ -174,6 +192,7 @@ namespace Recipes.Repository
 
         public Post GetPostByID(int id)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 Post post = db.Posts.Single(p => p.PostID == id);
@@ -188,6 +207,7 @@ namespace Recipes.Repository
 
         public void AddNewPost(Post post)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 db.Posts.Add(post);
@@ -197,6 +217,7 @@ namespace Recipes.Repository
 
         public void EditExistingPost(Post post)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 db.Entry(post).State = EntityState.Modified;
@@ -206,6 +227,7 @@ namespace Recipes.Repository
 
         public void DeleteExistingPost(Post post)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 db.Posts.Remove(post);
@@ -215,6 +237,7 @@ namespace Recipes.Repository
 
         public List<Post> GetPostPage(int pageNo, int pageSize, int blogId)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 return GetPostsByBlogID(blogId)
@@ -226,6 +249,7 @@ namespace Recipes.Repository
 
         public int TotalPosts(int blogId)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 return GetPostsByBlogID(blogId).Count();
@@ -234,6 +258,7 @@ namespace Recipes.Repository
 
         public List<Post> GetPostPageForLabel(int pageNo, int pageSize, int blogId, string label)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 Label lbl = db.Labels.Single(l => l.Name == label);
@@ -251,6 +276,7 @@ namespace Recipes.Repository
 
         public int TotalPostsForLabel(int blogId, string label)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 Label lbl = db.Labels.Single(l => l.Name == label);
@@ -269,6 +295,7 @@ namespace Recipes.Repository
 
         public List<Label> GetAllLabels()
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 return db.Labels.Include(p => p.PostLabels).ToList();
@@ -277,6 +304,7 @@ namespace Recipes.Repository
 
         public List<Label> GetLabelsByBlogId(int blogId)
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 List<Post> posts = GetPostsByBlogID(blogId);
@@ -295,6 +323,7 @@ namespace Recipes.Repository
 
         public List<PostLabel> GetAllPostLabels()
         {
+            methodName = MethodBase.GetCurrentMethod().Name;
             using (RecipesEntities db = new RecipesEntities())
             {
                 return db.PostLabels.ToList();

@@ -608,5 +608,84 @@ namespace Recipes.SeedData
         public const string content_20122012_d = "Stoichiometry matrix";
         public const string content_20122012_k = "Stoichiometry matrix bioinformatics digital biology";
 
+        //Project ROSALIND: Finding a Protein Motif
+        public const string content_30042013_b = "<p>The following piece of code is an attempt to solve the \"Finding a Protein Motif\" puzzle from the <a href=\"http://rosalind.info/problems/mprt/\">Project Rosalind</a>.</p><p>The input is a list of <b>UniProt</b> Protein Database access IDs. For each ID, the code reads the protein aminoacid sequence from the url in the form of <a href=\"http://www.uniprot.org/uniprot/B5ZC00.fasta\">http://www.uniprot.org/uniprot/uniprot_id.fasta</a>. Then, for each protein, it searches for the N-glycosylation motif (a motif is a significant amino acid pattern), which is written as <b>N{P}[ST]{P}</b>. In this format, <b>[X]</b> means any aminoacid, and <b>{X}</b> means any amino acid except X.</p><p>The code properly handles overlaps, i.e. in the <b>NMSNSSS</b> string there are two overlapping substrings that satisfy the motif: <b>NMSN</b> and <b>NSSS</b>. The overlaps are not handled properly by the <b>Regex.Matches</b> method (some matches are missed), so some additional string manipulations were required.</p><p>The url <a href=\"http://prosite.expasy.org/scanprosite/\">http://prosite.expasy.org/scanprosite/</a> can be used to verify the output.</p>";
+        public const string content_30042013_r = "<pre class=\"brush:csharp\">" + @"List&lt;string&gt; proteins = new List&lt;string&gt;();
+
+string line;
+using (StreamReader reader = new StreamReader(""input.txt""))
+{
+	while ((line = reader.ReadLine()) != null)
+	{
+		proteins.Add(line);
+	}
+}
+
+WebClient client = new WebClient();
+Dictionary&lt;string, string&gt; proteinsDict = new Dictionary&lt;string, string&gt;();
+foreach (string id in proteins)
+{
+	Stream stream = client.OpenRead(""http://www.uniprot.org/uniprot/"" + id + "".fasta"");
+
+	if (stream != null)
+		using (StreamReader reader = new StreamReader(stream))
+		{
+			string protein = string.Empty;
+			while ((line = reader.ReadLine()) != null)
+			{
+				if (!line.StartsWith(""&gt;""))
+				{
+					protein += line;
+				}
+			}
+
+			proteinsDict.Add(id, protein);
+		}
+}
+
+const string pattern = @""N[^P][ST][^P]"";
+
+using (StreamWriter writer = new StreamWriter(""output.txt""))
+{
+	foreach (KeyValuePair&lt;string, string&gt; kvp in proteinsDict)
+	{
+		string val = kvp.Value;
+		List&lt;int&gt; matches = new List&lt;int&gt;();
+		int removed = 0;
+		bool done = false;
+		while (done == false)
+		{
+			Match match = Regex.Match(val, pattern);
+			if(match.Success)
+			{
+				int index = val.IndexOf(match.Value);
+				matches.Add(index + removed + 1);
+				removed += index + 1;
+				val = val.Substring(index + 1, val.Length - (index + 1));
+			}
+			else
+			{
+				done = true;
+			}
+		}
+
+		if(matches.Count &gt; 0)
+		{
+			string indices = string.Empty;
+			writer.WriteLine(kvp.Key);
+			indices = matches.Aggregate(indices, (current, index) =&gt; current + index + "" "");
+			writer.WriteLine(indices);
+		}
+	}
+}" + "</pre><p><b>References</b></p><a href=\"http://rosalind.info/problems/mprt/\">Finding a Protein Motif</a><br/><a href=\"http://rosalind.info/users/Evgeny_Rokhlin/\">My Profile at Project ROSALIND</a><br/>" +
+   "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_30042013_d = "Solving the Finding a Protein Motif problem from Project ROSALIND";
+        public const string content_30042013_k = "Project ROSALIND Protein Motif C# bioinformatics";
+
+        //Metabolic Control Analysis and Enzyme Kinetics
+        public const string content_14052013_b = "<p><b>1.	Drawbacks of rate-limiting step concept</b></p>";
+        public const string content_14052013_r = "<p>At a steady state, the flux through each pathway in a biochemical network is a function of the individual enzyme kinetic properties. The activities of the enzyme affect the concentration of its reactants and products and influence the flux through pathways. Metabolic control analysis (<b>MCA</b>) provides a mathematical framework to study the distribution of metabolic fluxes and concentrations among the pathways that comprise the model. It replaces the principle of the rate-limiting step, which proved to be ineffective in practice. The control of the system as a whole is much more distributed than it was appreciated, making rate-limited step not very useful.</p><p><b>2.	Purpose of MCA</b></p><p>The purpose of the MCA is to identify the steps which have the strongest effect on the levels of metabolites and fluxes. Its basis is the overall steady state flux with respect to the individual enzyme activities.</p><p><b>3.	MCA coefficients</b></p><p>The challenge in analysing a metabolic network is determination of flux control coefficients (<b>FCC</b>). The FCC is a measure of how the flux changes in response to small perturbations in the activity or concentration of the enzyme. The value of the FCC is a measure of how important a particular enzyme is in the determination of the steady state flux. Another set of variables are elasticity coefficients. They quantify the influence of the pool levels on the individual pathway reactions.</p><p><b>4.	MCA theorems</b></p><p>MCA uses two theorems. First is the summation theorem, which states that the sum of all FCC related to a particular pathway equal to 1. A more important theorem is the connectivity theorem; as it provides understanding of the way enzyme kinetics affect the values of FCC. It states that the sum of the products of the FCC of all steps that are affected by <i>X</i> and their elasticity coefficients towards <i>X</i>, is zero</p><p><b>5.	Estimating FCC</b></p><p>There are several ways of estimating FCC, which can be roughly divided into experimental estimation and modelling.</p><p><b>5.1	Experimental estimation</b></p><p><ul><li>Changes can be introduced into enzyme activities and changes in flux measured.</li><li>Elasticity coefficients can be calculated if the kinetics of each step of the pathway are known, then FCC can be calculated from elasticity coefficients</li><li>In-vitro titration of enzyme activities</li></ul></p><p><b>5.2	Estimation through modelling</b></p><p><ul><li>From their definition by small change in reaction rate and calculation of the resulting change in flux or concentration</li><li>From matrix methods that use summation and connectivity theorems. The first approach is based on two matrices, one containing elasticity coefficients and another containing FCC. This approach works but is hard to implement in software. Alternative approach, developed by Reder, requires only knowledge of stoichiometry matrix and elasticity coefficients. This method is best for software calculation of FCC from elasticity coefficients.</li></ul></p>" + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_14052013_d = "Metabolic Control Analysis and Enzyme Kinetics";
+        public const string content_14052013_k = "metabolic control analysis enzyme kinetics flux bioinformatics digital biology";
     }
 }

@@ -15,16 +15,15 @@ namespace Recipes.Repository
         {
             using (RecipesEntities db = new RecipesEntities())
             {
-                return db.Ingredients.ToList();
+                return db.Ingredients.Include(r => r.Measure).Include(r => r.RecipeIngredients).ToList();
             }
         }
-
-
+        
         public Ingredient GetIngredientById(int id)
         {
             using (RecipesEntities db = new RecipesEntities())
             {
-                return db.Ingredients.Single(i => i.IngredientID == id);
+                return db.Ingredients.Include(r => r.Measure).Single(i => i.IngredientID == id);
             }
         }
 
@@ -63,7 +62,9 @@ namespace Recipes.Repository
         {
             using (RecipesEntities db = new RecipesEntities())
             {
-                return db.Recipes.Find(id);
+                Recipe recipe = db.Recipes.Include(r => r.SubCategory).Single(r => r.RecipeID == id);
+                recipe.Category = GetCategoryById(recipe.SubCategory.CategoryID);
+                return recipe;
             }
         }
 
@@ -71,7 +72,7 @@ namespace Recipes.Repository
         {
             using (RecipesEntities db = new RecipesEntities())
             {
-                return db.Recipes.Include(r => r.SubCategory).Single(r => r.RecipeID == id);
+                return db.Recipes.Include(r => r.SubCategory).Include(r => r.RecipeIngredients).Single(r => r.RecipeID == id);
             }
         }
 

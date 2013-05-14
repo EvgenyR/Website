@@ -16,7 +16,7 @@ namespace Recipes.SeedData
             context.SaveChanges();
 
             var labels = new List<Label> {
-                new Label { LabelID = 1, Name = "C#", Description = "C# programming language" },
+                new Label { LabelID = 1, Name = "CSharp", Description = "C# programming language" },
                 new Label { LabelID = 2, Name = "myWork", Description = "Things I do at work" },
                 new Label { LabelID = 3, Name = "programming", Description = "Same as software development" },
                 new Label { LabelID = 4, Name = "PostgreSQL", Description = "PostgreSQL database management system" },
@@ -61,6 +61,8 @@ namespace Recipes.SeedData
                 new Label { LabelID = 41, Name = "embedded", Description = "embedded"},
                 new Label { LabelID = 42, Name = "jobSearch", Description = "Searching for a job"},
                 new Label { LabelID = 43, Name = "reading", Description = "books and articles"},
+                new Label { LabelID = 44, Name = "ROSALIND", Description = "Project ROSALIND"},
+                new Label { LabelID = 45, Name = "PowerShell", Description = "PowerShell Scripting"},
             };
 
             labels.ForEach(b => context.Labels.Add(b));

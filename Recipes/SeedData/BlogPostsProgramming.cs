@@ -4616,5 +4616,133 @@ $BODY$
             "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
         public const string content_28032013_d = "Improving a performance of PostgreSQL report by utilizing the temporary table";
         public const string content_28032013_k = "PostgreSQL query function performance temporary table plan database";
+
+
+        //Project ROSALIND: Rabbits and Recurrence Relations
+        public const string content_06042013_b = "<p>I came across the project <a href=\"http://rosalind.info\">ROSALIND</a> which is described as learning bioinformatics through problem solving. It is intriguing and well-designed, so I started with solving some introductory ones.</p><p>The first interesting problem was modified <a href=\"http://rosalind.info/problems/fib/\">Fibonacchi sequence</a>.  Actually, I did not know that the background of the Fibonacci sequence was modelling of rabbit reproduction. It assumed that rabbits reach reproductive age after one month, and that every mature pair of rabbits produced a pair of newborn rabbits each month. A modified problem, however, suggested that every mature pair of rabbits produced <i>k</i> pairs of newborn rabbits each month. The task is to calculate a total number of rabbit pairs after <i>n</i> months, assuming we have one pair of newborn rabbits at the start.</p><p>While the problem could be solved by recursion, the cost of calculation would be high. Every successive month the program would re-calculate the full solution for each previous month. A better approach is dynamic programming (which, in essence, is just remembering and reusing the already calculated values). Here is the modified solution in C#.</p>";
+        
+        public const string content_06042013_r = "<pre class=\"brush:csharp\">" + @"/// &lt;summary&gt;
+/// Modified Fibonacchi problem: each rabbit pair matures in 1 month and produces ""pairs"" of newborn rabbit pairs each month
+/// &lt;/summary&gt;
+/// &lt;param name=""pairs""&gt;Number of newborn rabbit pairs produced by a mature pair each month&lt;/param&gt;
+/// &lt;param name=""to""&gt;Number of months&lt;/param&gt;
+/// &lt;returns&gt;Total number of rabbit pairs after ""to"" months&lt;/returns&gt;
+static Int64 Fibonacci(int pairs, int to)
+{
+	if (to == 0)
+	{
+		return 0;
+	}
+
+	Int64 mature = 0;
+	Int64 young = 1;
+
+	Int64 next_mature;
+	Int64 next_young;
+	Int64 result = 0;
+	for (int i = 0; i &lt; to; i++)
+	{
+		result = mature + young;
+
+		next_mature = mature + young;
+		next_young = mature * pairs;
+
+		mature = next_mature;
+		young = next_young;
+	}
+	return result;
+}" + "</pre><p>Note: the result grows fast! When trying to use the default Int32 (32 bit, or up to ~2 billion) and calculate the result for 4 pairs and 32 months, the value overflowed at around month 23.</p><p>The next problem was another variation on the rabbit simulation. In this case, the rabbits are mortal and die after <i>k</i> months. My solution was to have a counter for rabbits of each age at each step. I keep the counters in the dictionary, where the key is the age of a rabbit pair and the value is the number of rabbit pairs of that age on that step.</p><pre class=\"brush:csharp\">" + @"/// &lt;summary&gt;
+/// Mortal Rabbits Fibonacci sequence variation
+/// &lt;/summary&gt;
+/// &lt;param name=""months""&gt;How many months does the simulation run for&lt;/param&gt;
+/// &lt;param name=""lifespan""&gt;Rabbit lifespan&lt;/param&gt;
+/// &lt;returns&gt;A count of rabbit pairs alive at the end&lt;/returns&gt;
+static UInt64 MortalRabbits(int months, int lifespan)
+{
+	Dictionary&lt;int, UInt64&gt; dRabbits = GetEmptyDictionary(lifespan);
+	dRabbits[0]++;
+
+	for (int i = 0; i &lt; months - 1; i++)
+	{
+		Dictionary&lt;int, UInt64&gt; newRabbits = GetEmptyDictionary(lifespan);
+		foreach (KeyValuePair&lt;int, UInt64&gt; pair in dRabbits)
+		{
+			int age = pair.Key;
+
+			if (age == 0)
+			{
+				newRabbits[1] = newRabbits[1] + dRabbits[age];
+			}
+			else if (age &gt; 0 && age &lt; lifespan - 1)
+			{
+				newRabbits[age + 1] = newRabbits[age + 1] + dRabbits[age];
+				newRabbits[0] = newRabbits[0] + dRabbits[age];
+			}
+			else if (age == lifespan - 1)
+			{
+				newRabbits[0] = newRabbits[0] + dRabbits[age];
+			}
+		}
+		dRabbits = newRabbits;
+	}
+
+	UInt64 count = 0;
+	foreach (KeyValuePair&lt;int, UInt64&gt; pair in dRabbits)
+	{
+		count = count + pair.Value;
+	}
+
+	return count;
+}
+
+/// &lt;summary&gt;
+/// Creates an dictionary where keys are integers from 0 to lifespan - 1, and all values are zeros
+/// &lt;/summary&gt;
+/// &lt;param name=""lifespan""&gt;&lt;/param&gt;
+/// &lt;returns&gt;An empty dictionary&lt;/returns&gt;
+static Dictionary&lt;int, UInt64&gt; GetEmptyDictionary(int lifespan)
+{
+	Dictionary&lt;int, UInt64&gt; dRabbits = new Dictionary&lt;int, UInt64&gt;();
+
+	for (int i = 0; i &lt; lifespan; i++)
+	{
+		dRabbits.Add(i, 0);
+	}
+	return dRabbits;
+}" + "</pre><p><b>References</b></p><a href=\"http://rosalind.info/\">Project ROSALIND</a><br/><a href=\"http://rosalind.info/problems/fib/\">Modified Fibonacci Problem</a><br/><a href=\"http://rosalind.info/problems/fibd/\">Mortal Fibonacci Rabbits</a><br/><a href=\"http://en.algoritmy.net/article/45658/Fibonacci-series\">Fibonacci Series</a><br/>" +
+   "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_06042013_d = "Solving some of the problems presented on the project ROSALIND website";
+        public const string content_06042013_k = "ROSALIND, bioinformatics, fibonacci, problem, solve, c#, code";
+
+        //Google as my automated testing tool
+        public const string content_07042013_b = "<p>It is probably a well-known fact, but Google webmaster tools record errors when they crawl the website. Of course, first of all the website has to be submittet to Google. After that, the crawl errors can be accessed by selecting the website of interest and clicking <b>Health</b>. On the left side, <b>Crawl Errors</b> will be available.</p><p>I did not even know that this was available until I received an email from Google which informed me that there was an increase in server errors and provided me a link to review those errors.</p>";
+        public const string content_07042013_r = "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2013/06042013_Google_Webmaster_Tools.png\" alt=\"Google Webmaster Tools\" /></div><p align=\"center\">Google Webmaster Tools</p><p>Looks like the website was generating about ~70 errors when crawled, and I did not know. When the number of errors increased to ~90, I got an email. The errors are listed and can be marked as fixed as I deal with the root cause.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2013/06042013_Website_Crawl_Errors.png\" alt=\"Website Crawl Errors\" /></div><p align=\"center\">Website Crawl Errors</p><p>Most errors were caused by my refactoring where I replaced direct access to the database with using the repository pattern, and did it carelessly.</p><p>Another reason was that I used a tool I found on the web to generate my website map and did not review it before uploading on the website. The map contained some links that were not supposed to be accessed directly. It is probably a good idea to review those links to verify they are really needed or can be replaced and if they are needed, remove them from the site map. I'll be tracking the errors from now on.</p><p><b>References</b></p><a href=\"https://www.google.com/webmasters/tools/home?hl=en\">Webmaster tools</a><br/><a href=\"http://support.google.com/webmasters/bin/answer.py?hl=en&answer=35120\">Crawl errors</a><br/><a href=\"http://www.xml-sitemaps.com/\">Sitemap Generator</a><br/>" + 
+            "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_07042013_d = "using google webmaster tools to identify server errors";
+        public const string content_07042013_k = "google webmaster tool server error crawl website";
+
+        //Customising Windows Installation
+        public const string content_14052013_b = "<p>In some cases - for example, where the only purpose of the PC is to run a specific software package - certain Windows features are customised with the provider's brand. Such features may include logon screen background, individual desktop backgrounds for each user and user account logon pictures (tile images). Therefore it may be useful to know where those are stored and how to update them. The following description is for <b>Windows 7</b> and <b>Windows Server 2008</b>.</p>";
+        public const string content_14052013_r = "<p><b>1. Windows logon screen background.</b></p><p>This is the easiest one. It should be copied to the following location: <b>C:\\Windows\\system32\\oobe\\info\\backgrounds\\backgroundDefault.jpg</b>. A registry key <b>HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Authentication\\LogonUI\\Background\\OEMBackground</b> should exist with a dword value of 00000001.</p><p><b>2. Desktop backgrounds (wallpaper) for each user</b></p><p>Check the following registry key: <b>HKEY_CURRENT_USER\\Control Panel\\Desktop\\Wallpaper</b>. What I found was the following: <b>C:\\Users\\Account_Name\\AppData\\Roaming\\Microsoft\\Windows\\Themes\\TranscodedWallpaper.jpg</b></p><p>Therefore, for each Account_Name the image has to be replaced with the desired one.</p><p><b>3. User Account logon pictures</b></p><p>This turned out to be trickier. There is a description on MSDN on how to do it manually [1]. Automating the task is not so obvious. Turns out, there is a function in the <b>shell32.dll</b> that sets a user login picture. It can be called easily from C# code by P/Invoke. In fact, the following is the full code of a console application that will update the user login picture.</p><pre class=\"brush:csharp\">" + @"using System;
+        using System.Runtime.InteropServices;
+
+        namespace UserPictureUpdater
+        {
+            class Program
+            {
+                [DllImport(""shell32.dll"", EntryPoint = ""#262"", CharSet = CharSet.Unicode, PreserveSig = false)]
+                public static extern void SetUserTile(string username, int notneeded, string picturefilename);
+                [STAThread]
+                static void Main(string[] args)
+                {
+                    if (args.Length == 2)
+                    {
+                        SetUserTile(args[0], 0, args[1]);
+                    }
+                }
+            }
+        }" + "</pre><p>The application can run from command line</p><p><b>UserPictureUpdater Administrator adminnew.png</b></p><p>Or, in my case, I'm running it from <b>PowerShell</b> script the following way</p><p><b>Start-Process $command $params</b></p><p>Where <b>$command</b> is the full path, i.e. \"C:\\Folder\\UserPictureUpdater.exe\", and <b>$params</b> is the command line parameters, i.e. \"Administrator adminnew.png\".</p><p>Also, turns out someone figured out the way to do the whole thing in PowerShell [2]. But I was done with my approach by the time I found out.</p><p><b>References</b></p><a href=\"http://msdn.microsoft.com/en-us/library/bb776892.aspx\">About User Profiles</a><br/><a href=\"http://iammarkharrison.wordpress.com/2012/01/14/setting-the-user-tile-image-in-windows-7-and-server-2008-r2/\">Setting the user tile image in Windows 7 and Server 2008 R2</a><br/>" + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_14052013_d = "Customising Windows Installation - Logon Screen, Desktop Backgrounds, User account pictures icons";
+        public const string content_14052013_k = "Windows PowerShell Login Registry Tile Desktop Background User Picture Icon Tile Account";
     }
 }

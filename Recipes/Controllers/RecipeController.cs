@@ -7,6 +7,8 @@ using System.Data.Entity.Validation;
 using Recipes.Repository;
 using Recipes.ViewModels;
 
+using System.Data.Entity;
+
 namespace Recipes.Controllers
 {
     public class RecipeController : BaseController
@@ -140,11 +142,13 @@ namespace Recipes.Controllers
         [MetaDescription(Constants.Constants.RecipeMetaDescription)]
         public ActionResult Edit(int id)
         {
-            Recipe recipe = repository.GetRecipeByIdWithSubCategory(id);
-            recipe.Category = repository.GetCategoryById(recipe.SubCategory.CategoryID);
-            var allIngredients = repository.GetAllIngredients();
-            var categories = repository.GetAllCategories();
-            var subCategories = repository.GetSubCategoriesByCategoryId(recipe.SubCategory.CategoryID);
+            RecipesEntities db = new RecipesEntities();
+
+            Recipe recipe = db.Recipes.Include(r => r.SubCategory).Single(r => r.RecipeID == id);
+            recipe.Category = db.Categories.Single(r => r.CategoryID == recipe.SubCategory.CategoryID);
+            var allIngredients = db.Ingredients.ToList();
+            var categories = db.Categories.ToList();
+            var subCategories = db.SubCategories.Where(sc => sc.CategoryID == recipe.SubCategory.CategoryID).ToList();
 
             foreach (RecipeIngredient ri in recipe.RecipeIngredients)
             {
@@ -152,6 +156,27 @@ namespace Recipes.Controllers
             }
 
             return View(new RecipeViewModel(recipe, categories, subCategories, recipe.Category.CategoryID, recipe.SubCategoryID));
+
+            /*
+
+            Recipe recipe = repository.GetRecipeByIdWithSubCategory(id);
+            recipe.Category = repository.GetCategoryById(recipe.SubCategory.CategoryID);
+            var categories = repository.GetAllCategories();
+            var subCategories = repository.GetSubCategoriesByCategoryId(recipe.SubCategory.CategoryID);
+            List<Ingredient> allIngredients = repository.GetAllIngredients();
+
+            List<Ingredient> clone =
+                new List<Ingredient>(allIngredients.Count);
+            allIngredients.ForEach((item) => clone.Add(new Ingredient(item)));
+
+            foreach (RecipeIngredient ri in recipe.RecipeIngredients)
+            {
+                //ri.Ingredient = repository.GetIngredientById(ri.IngredientID);
+                ri.AllIngredients = clone;
+            }
+
+            return View(new RecipeViewModel(recipe, categories, subCategories, recipe.Category.CategoryID, recipe.SubCategoryID));
+            */
         }
 
         /// <summary>
