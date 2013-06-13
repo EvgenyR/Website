@@ -687,5 +687,227 @@ using (StreamWriter writer = new StreamWriter(""output.txt""))
         public const string content_14052013_r = "<p>At a steady state, the flux through each pathway in a biochemical network is a function of the individual enzyme kinetic properties. The activities of the enzyme affect the concentration of its reactants and products and influence the flux through pathways. Metabolic control analysis (<b>MCA</b>) provides a mathematical framework to study the distribution of metabolic fluxes and concentrations among the pathways that comprise the model. It replaces the principle of the rate-limiting step, which proved to be ineffective in practice. The control of the system as a whole is much more distributed than it was appreciated, making rate-limited step not very useful.</p><p><b>2.	Purpose of MCA</b></p><p>The purpose of the MCA is to identify the steps which have the strongest effect on the levels of metabolites and fluxes. Its basis is the overall steady state flux with respect to the individual enzyme activities.</p><p><b>3.	MCA coefficients</b></p><p>The challenge in analysing a metabolic network is determination of flux control coefficients (<b>FCC</b>). The FCC is a measure of how the flux changes in response to small perturbations in the activity or concentration of the enzyme. The value of the FCC is a measure of how important a particular enzyme is in the determination of the steady state flux. Another set of variables are elasticity coefficients. They quantify the influence of the pool levels on the individual pathway reactions.</p><p><b>4.	MCA theorems</b></p><p>MCA uses two theorems. First is the summation theorem, which states that the sum of all FCC related to a particular pathway equal to 1. A more important theorem is the connectivity theorem; as it provides understanding of the way enzyme kinetics affect the values of FCC. It states that the sum of the products of the FCC of all steps that are affected by <i>X</i> and their elasticity coefficients towards <i>X</i>, is zero</p><p><b>5.	Estimating FCC</b></p><p>There are several ways of estimating FCC, which can be roughly divided into experimental estimation and modelling.</p><p><b>5.1	Experimental estimation</b></p><p><ul><li>Changes can be introduced into enzyme activities and changes in flux measured.</li><li>Elasticity coefficients can be calculated if the kinetics of each step of the pathway are known, then FCC can be calculated from elasticity coefficients</li><li>In-vitro titration of enzyme activities</li></ul></p><p><b>5.2	Estimation through modelling</b></p><p><ul><li>From their definition by small change in reaction rate and calculation of the resulting change in flux or concentration</li><li>From matrix methods that use summation and connectivity theorems. The first approach is based on two matrices, one containing elasticity coefficients and another containing FCC. This approach works but is hard to implement in software. Alternative approach, developed by Reder, requires only knowledge of stoichiometry matrix and elasticity coefficients. This method is best for software calculation of FCC from elasticity coefficients.</li></ul></p>" + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
         public const string content_14052013_d = "Metabolic Control Analysis and Enzyme Kinetics";
         public const string content_14052013_k = "metabolic control analysis enzyme kinetics flux bioinformatics digital biology";
+
+        //Some string manipulations for future use.
+        public const string content_01062013_b = "<p><u>1. Using an array of characters, return all possible permutations of this array (without repetitions).</u></p>";
+public const string content_01062013_r = "<pre class=\"brush:csharp\">" + @"public static List&lt;string&gt; StringPermutations(char[] list)
+{
+	List&lt;string&gt; result = new List&lt;string&gt;();
+	int x=list.Length-1;
+	go(list,0,x, result);
+	return result;
+}
+
+private static void go (char[] list, int k, int m, List&lt;string&gt; result)
+{
+	int i;
+	if (k == m)
+	{
+		result.Add(new string(list));
+	}
+	else
+	for (i = k; i &lt;= m; i++)
+	{
+		swap (ref list[k],ref list[i]);
+		go (list, k+1, m, result);
+		swap (ref list[k],ref list[i]);
+	}
+}
+
+private static void swap(ref char a, ref char b)
+{
+	if (a == b) return;
+	a ^= b;
+	b ^= a;
+	a ^= b;
+}" + "</pre><p>Sample usage</p><pre class=\"brush:csharp\">" + @"List&lt;string&gt; permutations = Helper.StringPermutations(new char[] {'D', 'N', 'A'});" + @"</pre><p>Sample output</p><blockquote>DNA<br>
+DAN<br>
+NDA<br>
+NAD<br>
+AND<br>
+ADN</blockquote>" + "<p><u>2. Using an array of characters (\"alphabet\"), return all possible words generated from this alphabet of a specified length</u></p><pre class=\"brush:csharp\">" + @"public static IEnumerable&lt;String&gt; GetWordsWithRepetition(Int32 length, char[] alphabet)
+{
+	if (length &lt;= 0)
+		yield break;
+
+	for(int i = 0; i &lt; alphabet.Length; i++) 
+	{
+		char c = alphabet[i];
+		if (length &gt; 1)
+		{
+			foreach (String restWord in GetWordsWithRepetition(length - 1, alphabet))
+				yield return c + restWord;
+		}
+		else
+			yield return """" + c;
+	}
+}" + "</pre><p><u>3. Further can be used to get full \"dictionary\" with all possible words up to a specified length</u></p><pre class=\"brush:csharp\">" + @"public static string ALPHABET = ""D N A"";
+
+public static List&lt;string&gt; Dictionary(int length)
+{
+	char[] alphabet = Helper.AlphabetFromString(ALPHABET);
+
+	List&lt;string&gt; final = new List&lt;string&gt;();
+
+	for (int i = 1; i &lt;= length; i++)
+	{
+		List&lt;string&gt; result = Helper.GetWordsWithRepetition(i, alphabet).ToList();
+		final.AddRange(result);
+	}
+	return final;
+}
+
+public static char[] AlphabetFromString(string input)
+{
+	string[] split = input.Split(' ');
+	char[] alphabet = new char[split.Count()];
+	for (int i = 0; i &lt; alphabet.Length; i++)
+	{
+		alphabet[i] = split[i][0];
+	}
+	return alphabet;
+}" + "</pre><p><u>4. Further can be used to sort the words of the dictionary according to the alphabet provided using a comparer</u></p><pre class=\"brush:csharp\">" + @"public static int WordComparer(string one, string two)
+{
+	char[] alphabet = AlphabetFromString(ALPHABET);
+
+	int len = Math.Min(one.Length, two.Length);
+	for (int i = 0; i &lt; len; i++)
+	{ 
+		int posOne = Array.IndexOf(alphabet, one[i]);
+		int posTwo = Array.IndexOf(alphabet, two[i]);
+		if (posOne == posTwo)
+		{
+			continue;
+		}
+		else if(posTwo &gt; posOne)
+		{
+			return -1;
+		}
+		return 1;
+	}
+	return two.Length &gt; one.Length ? -1 : 1;
+}" + "</pre><p>Sample usage</p><pre class=\"brush:csharp\">" + @"List&lt;string&gt; final = Dictionary(3).Sort(WordComparer);" + @"</pre><p>Sample output</p><blockquote>D<br>
+DD<br>
+DDD<br>
+DDN<br>
+DDA<br>
+DN<br>
+DND<br>
+DNN<br>
+DNA<br>
+DA<br>
+DAD<br>
+DAN<br>
+DAA<br>
+N<br>
+ND<br>
+NDD<br>
+NDN<br>
+NDA<br>
+NN<br>
+NND<br>
+NNN<br>
+NNA<br>
+NA<br>
+NAD<br>
+NAN<br>
+NAA<br>
+A<br>
+AD<br>
+ADD<br>
+ADN<br>
+ADA<br>
+AN<br>
+AND<br>
+ANN<br>
+ANA<br>
+AA<br>
+AAD<br>
+AAN<br>
+AAA</blockquote>" + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+public const string content_01062013_d = "String functions to construct words and dictionaries";
+public const string content_01062013_k = "C# bioinformatics string function set permutation dictionary sorting";
+
+//Project ROSALIND: Finding a shortest superstring
+public const string content_10062013_b = "<p>For a collection of strings, a larger string containing every one of the smaller strings as a substring is called a superstring. This may be useful, for example, if we have a large number of pieces of a DNA and want to figure out how the full DNA could look like.</p>";
+public const string content_10062013_r = "<p>For example, for the following strings</p><blockquote>ATTAGACCTG<br>CCTGCCGGAA<br>AGACCTGCCG<br>GCCGGAATAC<br></blockquote><p>The shortest superstring will be</p><blockquote>ATTAGACCTGCCGGAATAC</blockquote><p>The following code is a naive approach to solve the problem. The logic is as follows: Sort the list of strings by length. Take the longest one and call it a superstring. Next, iterate through the list to find the string that has the longest intersection with the superstring. Remove that string from the list and attach to the superstring. Continue until the list is empty, the resulting superstring should be the shortest possible.</p><pre class=\"brush:csharp\">" + @"public static string ShortestSuperstring(List&lt;string&gt; input)
+{
+	input = input.OrderByDescending(x =&gt; x.Length).ToList();
+
+	string superstring = input[0];
+	input.RemoveAt(0);
+	int counter = input.Count;
+	for (int i = 0; i &lt; counter; i++)
+	{
+		List&lt;IntBoolString&gt; items = new List&lt;IntBoolString&gt;();
+
+		for (int j = 0; j &lt; input.Count; j++)
+		{
+			items.Add(GetIntersection(superstring, input[j]));
+		}
+
+		IntBoolString chosen = items.OrderByDescending(x =&gt; x.intValue).First();
+
+		superstring = CombineIntoSuper(superstring, chosen);
+		input.Remove(chosen.stringValue);
+	}
+
+	return superstring;
+}
+
+private static IntBoolString GetIntersection(string super, string candidate)
+{
+	IntBoolString result = new IntBoolString();
+	result.stringValue = candidate;
+
+	int i = 0;
+
+	while (candidate.Length &gt; i)
+	{
+		int testlen = candidate.Length - i;
+		string leftcan = candidate.Substring(0, testlen);
+		string rightcan = candidate.Substring(i, testlen);
+		string leftsuper = super.Substring(0, testlen);
+		string rightsuper = super.Substring(super.Length - testlen, testlen);
+
+		if (leftcan == rightsuper || rightcan == leftsuper)
+		{
+			result.boolValue = (leftcan == rightsuper) ? true : false;
+			result.intValue = testlen;
+			return result;
+		}
+
+		i++;
+	}
+
+	return result;
+}
+
+private static string CombineIntoSuper(string superstring, IntBoolString chosen)
+{
+	string toAppend = string.Empty;
+	int lenToAppend = chosen.stringValue.Length - chosen.intValue;
+
+	toAppend = (chosen.boolValue == true) ?
+		chosen.stringValue.Substring(chosen.stringValue.Length - lenToAppend, lenToAppend) :
+		chosen.stringValue.Substring(0, lenToAppend);
+
+	superstring = (chosen.boolValue == true) ?
+		superstring + toAppend :
+		toAppend + superstring;
+
+	return superstring;
+}
+
+public struct IntBoolString
+{
+	public string stringValue;
+	public int intValue;
+	public bool boolValue;
+}" + "</pre>" + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+public const string content_10062013_d = "An ineffective algorithm to find a shortest superstring for a set of strings";
+public const string content_10062013_k = "ROSALIND bioinformatics shortest superstring algorithm programming C#";
+
+
     }
 }

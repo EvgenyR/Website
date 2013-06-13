@@ -195,6 +195,8 @@ namespace Recipes.SeedData
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_07042013_b, RestOfContent = BlogPostsProgramming.content_07042013_r, Keywords = BlogPostsProgramming.content_07042013_k, Description = BlogPostsProgramming.content_07042013_d, DateCreated = new DateTime(2013, 04, 07), PostID = 179, Title = "Google as my automated testing tool", BloggerUrl = "http://justmycode.blogspot.com.au/2013/04/google-as-my-automated-testing-tool.html" },
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_14052013_b, RestOfContent = BlogPostsProgramming.content_14052013_r, Keywords = BlogPostsProgramming.content_14052013_k, Description = BlogPostsProgramming.content_14052013_d, DateCreated = new DateTime(2013, 05, 14), PostID = 181, Title = "Customising Windows Installation", BloggerUrl = "http://justmycode.blogspot.com.au/2013/05/customising-windows-installation.html" },
                 new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_14052013_b, RestOfContent = BlogPostsBiology.content_14052013_r, Keywords = BlogPostsBiology.content_14052013_k, Description = BlogPostsBiology.content_14052013_d, DateCreated = new DateTime(2013, 05, 14), PostID = 182, Title = "Metabolic Control Analysis and Enzyme Kinetics", BloggerUrl = "http://southernblot.blogspot.com.au/2013/05/metabolic-control-analysis-and-enzyme.html" },
+                new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_01062013_b, RestOfContent = BlogPostsBiology.content_01062013_r, Keywords = BlogPostsBiology.content_01062013_k, Description = BlogPostsBiology.content_01062013_d, DateCreated = new DateTime(2013, 06, 01), PostID = 183, Title = "Some string manipulations for future use.", BloggerUrl = "http://southernblot.blogspot.com.au/2013/06/some-string-manipulations-for-future-use.html" },
+                new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_10062013_b, RestOfContent = BlogPostsBiology.content_10062013_r, Keywords = BlogPostsBiology.content_10062013_k, Description = BlogPostsBiology.content_10062013_d, DateCreated = new DateTime(2013, 06, 10), PostID = 184, Title = "Project ROSALIND: Finding a shortest superstring", BloggerUrl = "http://southernblot.blogspot.com.au/2013/06/project-rosalind-finding-shortest.html" },
             };
 
             posts.ForEach(p => context.Posts.Add(p));
@@ -858,6 +860,13 @@ namespace Recipes.SeedData
             context.PostLabels.Add(new PostLabel { PostLabelID = 475, PostID = 182, LabelID = 11 });
             context.PostLabels.Add(new PostLabel { PostLabelID = 476, PostID = 182, LabelID = 12 });
             context.PostLabels.Add(new PostLabel { PostLabelID = 477, PostID = 182, LabelID = 18 });
+
+            context.PostLabels.Add(new PostLabel { PostLabelID = 478, PostID = 183, LabelID = 44 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 479, PostID = 183, LabelID = 12 });
+
+            context.PostLabels.Add(new PostLabel { PostLabelID = 480, PostID = 184, LabelID = 3 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 481, PostID = 184, LabelID = 12 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 482, PostID = 184, LabelID = 44 });
 
             context.SaveChanges();
         }
