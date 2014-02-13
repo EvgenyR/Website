@@ -197,6 +197,13 @@ namespace Recipes.SeedData
                 new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_14052013_b, RestOfContent = BlogPostsBiology.content_14052013_r, Keywords = BlogPostsBiology.content_14052013_k, Description = BlogPostsBiology.content_14052013_d, DateCreated = new DateTime(2013, 05, 14), PostID = 182, Title = "Metabolic Control Analysis and Enzyme Kinetics", BloggerUrl = "http://southernblot.blogspot.com.au/2013/05/metabolic-control-analysis-and-enzyme.html" },
                 new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_01062013_b, RestOfContent = BlogPostsBiology.content_01062013_r, Keywords = BlogPostsBiology.content_01062013_k, Description = BlogPostsBiology.content_01062013_d, DateCreated = new DateTime(2013, 06, 01), PostID = 183, Title = "Some string manipulations for future use.", BloggerUrl = "http://southernblot.blogspot.com.au/2013/06/some-string-manipulations-for-future-use.html" },
                 new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_10062013_b, RestOfContent = BlogPostsBiology.content_10062013_r, Keywords = BlogPostsBiology.content_10062013_k, Description = BlogPostsBiology.content_10062013_d, DateCreated = new DateTime(2013, 06, 10), PostID = 184, Title = "Project ROSALIND: Finding a shortest superstring", BloggerUrl = "http://southernblot.blogspot.com.au/2013/06/project-rosalind-finding-shortest.html" },
+                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_25062013_b, RestOfContent = BlogPostsProgramming.content_25062013_r, Keywords = BlogPostsProgramming.content_25062013_k, Description = BlogPostsProgramming.content_25062013_d, DateCreated = new DateTime(2013, 06, 25), PostID = 185, Title = "Optimising Windows Updates Installation", BloggerUrl = "http://justmycode.blogspot.com.au/2013/06/optimising-windows-updates-installation.html" },
+                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_29062013_b, RestOfContent = BlogPostsProgramming.content_29062013_r, Keywords = BlogPostsProgramming.content_29062013_k, Description = BlogPostsProgramming.content_29062013_d, DateCreated = new DateTime(2013, 06, 29), PostID = 186, Title = "Final Hurdles While Installing Windows Updates", BloggerUrl = "http://justmycode.blogspot.com.au/2013/06/final-hurdles-while-installing-windows.html" },
+                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_09072013_b, RestOfContent = BlogPostsProgramming.content_09072013_r, Keywords = BlogPostsProgramming.content_09072013_k, Description = BlogPostsProgramming.content_09072013_d, DateCreated = new DateTime(2013, 07, 09), PostID = 187, Title = "In SQL Query, Only Return Every n-th Record", BloggerUrl = "http://justmycode.blogspot.com.au/2013/07/in-sql-query-only-return-every-n-th.html" },
+                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_14072013_b, RestOfContent = BlogPostsProgramming.content_14072013_r, Keywords = BlogPostsProgramming.content_14072013_k, Description = BlogPostsProgramming.content_14072013_d, DateCreated = new DateTime(2013, 07, 14), PostID = 188, Title = "A Little Strangeness in the Way A Script is Run by Registry", BloggerUrl = "http://justmycode.blogspot.com.au/2013/07/a-little-strangeness-in-way-script-is.html" },
+                new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_13072013_b, RestOfContent = BlogPostsBiology.content_13072013_r, Keywords = BlogPostsBiology.content_13072013_k, Description = BlogPostsBiology.content_13072013_d, DateCreated = new DateTime(2013, 07, 13), PostID = 189, Title = "Stochastic and deterministic modelling.", BloggerUrl = "http://southernblot.blogspot.com.au/2013/07/stochastic-and-deterministic-modelling.html" },
+                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_12082013_b, RestOfContent = BlogPostsProgramming.content_12082013_r, Keywords = BlogPostsProgramming.content_12082013_k, Description = BlogPostsProgramming.content_12082013_d, DateCreated = new DateTime(2013, 08, 12), PostID = 190, Title = "Using Active Setup to Update Anything in HKEY_CURRENT_USER", BloggerUrl = "http://justmycode.blogspot.dk/2013/08/using-active-setup-to-update-anything.html" },
+                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_26122013_b, RestOfContent = BlogPostsProgramming.content_26122013_r, Keywords = BlogPostsProgramming.content_26122013_k, Description = BlogPostsProgramming.content_26122013_d, DateCreated = new DateTime(2013, 12, 26), PostID = 191, Title = "Minimal Change Problem", BloggerUrl = "http://justmycode.blogspot.dk/2013/12/minimal-change-problem.html" },
             };
 
             posts.ForEach(p => context.Posts.Add(p));
@@ -867,6 +874,34 @@ namespace Recipes.SeedData
             context.PostLabels.Add(new PostLabel { PostLabelID = 480, PostID = 184, LabelID = 3 });
             context.PostLabels.Add(new PostLabel { PostLabelID = 481, PostID = 184, LabelID = 12 });
             context.PostLabels.Add(new PostLabel { PostLabelID = 482, PostID = 184, LabelID = 44 });
+
+            context.PostLabels.Add(new PostLabel { PostLabelID = 483, PostID = 185, LabelID = 3 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 484, PostID = 185, LabelID = 2 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 485, PostID = 185, LabelID = 45 });
+
+            context.PostLabels.Add(new PostLabel { PostLabelID = 486, PostID = 186, LabelID = 3 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 487, PostID = 186, LabelID = 2 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 488, PostID = 186, LabelID = 45 });
+
+            context.PostLabels.Add(new PostLabel { PostLabelID = 489, PostID = 187, LabelID = 3 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 490, PostID = 187, LabelID = 2 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 491, PostID = 187, LabelID = 31 });
+
+            context.PostLabels.Add(new PostLabel { PostLabelID = 492, PostID = 188, LabelID = 3 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 493, PostID = 188, LabelID = 2 });
+
+            context.PostLabels.Add(new PostLabel { PostLabelID = 494, PostID = 189, LabelID = 11 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 495, PostID = 189, LabelID = 13 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 496, PostID = 189, LabelID = 14 });
+
+            context.PostLabels.Add(new PostLabel { PostLabelID = 497, PostID = 190, LabelID = 11 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 498, PostID = 190, LabelID = 13 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 499, PostID = 190, LabelID = 14 });
+
+            context.PostLabels.Add(new PostLabel { PostLabelID = 500, PostID = 191, LabelID = 1 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 501, PostID = 191, LabelID = 3 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 502, PostID = 191, LabelID = 12 }); 
+            context.PostLabels.Add(new PostLabel { PostLabelID = 503, PostID = 191, LabelID = 46 });
 
             context.SaveChanges();
         }

@@ -4744,5 +4744,172 @@ static Dictionary&lt;int, UInt64&gt; GetEmptyDictionary(int lifespan)
         }" + "</pre><p>The application can run from command line</p><p><b>UserPictureUpdater Administrator adminnew.png</b></p><p>Or, in my case, I'm running it from <b>PowerShell</b> script the following way</p><p><b>Start-Process $command $params</b></p><p>Where <b>$command</b> is the full path, i.e. \"C:\\Folder\\UserPictureUpdater.exe\", and <b>$params</b> is the command line parameters, i.e. \"Administrator adminnew.png\".</p><p>Also, turns out someone figured out the way to do the whole thing in PowerShell [2]. But I was done with my approach by the time I found out.</p><p><b>References</b></p><a href=\"http://msdn.microsoft.com/en-us/library/bb776892.aspx\">About User Profiles</a><br/><a href=\"http://iammarkharrison.wordpress.com/2012/01/14/setting-the-user-tile-image-in-windows-7-and-server-2008-r2/\">Setting the user tile image in Windows 7 and Server 2008 R2</a><br/>" + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
         public const string content_14052013_d = "Customising Windows Installation - Logon Screen, Desktop Backgrounds, User account pictures icons";
         public const string content_14052013_k = "Windows PowerShell Login Registry Tile Desktop Background User Picture Icon Tile Account";
+
+        //Optimising Windows Updates Installation
+        public const string content_25062013_b = "<p>It's a good thing that I wrote about <a href=\"http://justmycode.blogspot.com.au/2012/08/installing-windows-updates-via-shell.html\">Installing Windows Updates via Shell Script</a> some time ago because today I needed to reuse that bit of a script and could not find it anywhere on my PC or our corporate network.</p><p>This time I'm reusing most of the functionality, but additionally do the following:</p><p><ul><li>Make sure that the Windows Update service is started</li><li>Run a PowerShell script that passes a folder where the Windows update files are stored to the VbScript file</li><li>Execute VbScript to install all updates in a folder</li><li>Repeat. (I want to keep my \"required\" and \"optional\" updates separate</li></ul></p>" ;
+        public const string content_25062013_r = "<p>I was caught for a while trying to use PowerShell <b>Set-Service</b> and <b>Start-Service</b> commands and getting permission errors. I did not quite solve it, but found a simple workaround by utilising a command line:</p><pre class=\"brush:sql\">" + @"@ECHO OFF
+
+sc config wuauserv start= auto
+net start wuauserv" + "</pre><p>Next, the PowerShell script is used to pass parameters to VbScript:</p><pre class=\"brush:sql\">" + @"cscript .\Common\InstallUpdates.vbs $updatesFolder" + "</pre><p>Finally, the VbScript is almost the same as in the previous version, but note how the argument passed by PowerShell is parsed. The argument is the name of the folder where I placed the updates downloaded from <a href=\"http://catalog.update.microsoft.com/v7/site/DownloadInformation.aspx\">Microsoft Update Catalog</a></p><pre class=\"brush:csharp\">" + @"Set args = WScript.Arguments
+sfolder = args.Item(0)
+
+Dim objfso, objShell
+Dim iSuccess, iFail
+Dim files, folderidx, Iretval, return
+Dim fullFileName
+
+Set objfso = CreateObject(""Scripting.FileSystemObject"")
+Set folder = objfso.GetFolder(sfolder)
+Set objShell = CreateObject(""Wscript.Shell"")
+
+With (objfso)
+	If .FileExists(""C:\log.txt"") Then
+		Set logFile = objfso.OpenTextFile(""C:\log.txt"", 8, TRUE)
+	Else
+		Set logFile = objfso.CreateTextFile(""C:\log.txt"", TRUE)
+	End If
+End With
+
+Set files = folder.Files
+iSuccess = 0
+iFail = 0
+
+For each folderIdx In files
+
+fullFileName = sfolder & ""\"" & folderidx.name
+
+ If Ucase(Right(folderIdx.name,3)) = ""MSU"" then
+  logFile.WriteLine(""Installing "" & folderidx.name & ""..."")
+  iretval=objShell.Run (""wusa.exe "" & fullFileName & "" /quiet /norestart"", 1, True)
+  If (iRetVal = 0) or (iRetVal = 3010) then
+   logFile.WriteLine(""Success."")
+   iSuccess = iSuccess + 1
+  Else
+   logFile.WriteLine(""Failed."")
+   iFail = iFail + 1
+  End If
+ ElseIf Ucase(Right(folderIdx.name,3)) = ""EXE"" Then
+  logFile.WriteLine(""Installing "" & folderidx.name & ""..."")
+  iretval = objShell.Run(fullFileName & "" /q /norestart"", 1, True)
+  If (iRetVal = 0) or (iRetVal = 3010) then
+   logFile.WriteLine(""Success."")
+   iSuccess = iSuccess + 1
+  Else
+   logFile.WriteLine(""Failed."")
+   iFail = iFail + 1
+  End If
+ End If
+Next
+ 
+wscript.echo iSuccess & "" update(s) installed successfully and "" & iFail & "" update(s) failed. See C:\log.txt for details.""" + "</pre><p>Disable the Windows Update service again if necessary</p><pre class=\"brush:sql\">" + @"net stop wuauserv
+sc config wuauserv start= disabled" + "</pre><p><b>References:</b></p><a href=\"http://www.jasonn.com/enable_windows_services_command_line\">Managing Windows Services from the command line</a><br/><a href=\"http://technet.microsoft.com/en-us/library/ee156618.aspx\">Working with Command-Line Arguments</a><br/><a href=\"http://stackoverflow.com/questions/13859858/how-do-you-pass-a-variable-to-vbs-script-in-a-powershell-command\">How do you pass a variable to VBS script in a powershell command?</a><br/><a href=\"http://support.risualblogs.com/blog/2011/06/13/enabledisable-a-service-via-powershell/\">Enable/Disable a Service via PowerShell</a><br/><a href=\"http://gallery.technet.microsoft.com/scriptcenter/PowerShell-queryService-94ecfac6\">PowerShell queryService – Wait for a Dependency Starting Service</a><br/>" + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_25062013_d = "Automatic installation of windows updates with the help of PowerShell and a VbScript";
+        public const string content_25062013_k = "Windows Updates PowerShell VbScript autmated script";
+
+        //Final Hurdles While Installing Windows Updates
+        public const string content_29062013_b = "<p>There are three different PC models here, all configured in the same way, all have to have Windows Updates installed on them automatically. However, while two of the models were happily updated, the third decided it does not like some of the updates and presented me with the screen similar to the following:</p>";
+        public const string content_29062013_r = "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2013/29062013_Windows_Updates_errors_80073712_643.png\" alt=\"Windows Updates errors 80073712 643\" /></div><p align=\"center\">Windows Updates errors 80073712 643</p><p>Turns out these two error codes are quite known problems.</p><p>The first one is solved, among some other options, by downloading and installing a specific update: , which is over 300MB in size. So in my case I had to do a check for the PC model by reading it via PowerShell</p><pre class=\"brush:csharp\">" + @"$strModel = (Get-WmiObject Win32_ComputerSystem).Model.Trim()" + "</pre><p>and if the model was the \"weird\" one, install this update.</p><p>The second one is solved by repairing the .NET Framework 4 installation. Fortunately, this can be done either silently or with unattended option. All in all, the fix for my two problems was applied as the following addition to the script and, fortunately, no additional restarts were required and after running this bit I could proceed to install updates as per my previous post.</p><pre class=\"brush:csharp\">" + @"if($strModel -Like ""*WeirdModel*"")
+{
+	Write-Host ""Verifying .NET Framework 4 ...""
+	Start-Process ""C:\Windows\Microsoft.NET\Framework64\v4.0.30319\SetupCache\Client\setup.exe"" ""/repair /x86 /x64 /ia64 /parameterfolder Client /passive /norestart"" -Wait
+	Write-Host ""Done.""
+	Write-Host ""Installing System Update Readiness Tool ...""
+	$readinessTool = Join-Path $win7Folder ""Windows6.1-KB947821-v27-x64.msu""
+	$toolCommand = $readinessTool + "" /quiet /norestart""
+	Write-Host $toolCommand
+	Start-Process ""wusa.exe"" $toolCommand -Wait
+	Write-Host ""Done.""
+}" + "</pre><p><b>References:</b></p><a href=\"http://support.microsoft.com/kb/957310?wa=wsignin1.0\">Error Code 0x80073712 occurs in Windows Update or Microsoft Update</a><br/><a href=\"http://www.microsoft.com/en-au/download/details.aspx?id=3132\">System Update Readiness Tool for Windows 7 (KB947821) [May 2013] </a><br/><a href=\"http://support.microsoft.com/kb/976982\">Error codes “0x80070643” or “0x643” occur when you install the .NET Framework updates</a><br/><a href=\"http://blogs.msdn.com/b/astebner/archive/2009/04/16/9553804.aspx\">Silent install, repair and uninstall command lines for each version of the .NET Framework</a><br/>" + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_29062013_d = "Fixing some windows updates issues";
+        public const string content_29062013_k = "Windows updates powershell system update readiness tool";
+
+        //In SQL Query, Only Return Every n-th Record
+        public const string content_09072013_b = "<p>A little SQL trick that helps in some cases. In my case, I wanted to select some data that is logged into the table every several seconds, and then quickly plot it in Excel, but over a date range of a few months. So, I run a query</p>";
+        public const string content_09072013_r = "<pre class=\"brush:sql\">" + @"SELECT ""timestamp"", valueiwant
+FROM mytable
+order by timestamp" + "</pre><p>And that potentially leaves me with thousands or hundreds of thousands of rows. However, to visualise a trend over time, I don't need to plot each and every value on the graph. I'll be happy with 1/10 or even 1/100 of records. Here is how I can use <b>ROW_NUMBER</b> to achieve that.</p><pre class=\"brush:sql\">" + @"SELECT * FROM
+(
+	SELECT ""timestamp"", instrumenttimestamp, ROW_NUMBER() OVER (order by timestamp) AS rownum
+    FROM mytable
+	order by timestamp
+) AS t
+WHERE t.rownum % 25 = 0" + "</pre><p>Row number returns the sequential number of a row in the result set. The <b>WHERE</b> clause then checks if the number is a multiple of 25, therefore only rows 25, 50, 75, 100 etc. will be returned by the outer query.</p><p><b>References</b></p><a href=\"http://msdn.microsoft.com/en-us/library/ms186734.aspx\">ROW_NUMBER (Transact-SQL)</a><br/><a href=\"http://stackoverflow.com/questions/4799816/return-row-of-every-nth-record\">Return row of every n'th record</a><br/>" + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_09072013_d = "How to select every nth record from SQL result set";
+        public const string content_09072013_k = "SQL SELECT every nth record ROW_NUMBER";
+
+        //A Little Strangeness in the Way A Script is Run by Registry
+        public const string content_14072013_b = "<p>An observation from today.</p><p>Currently <b>net.exe</b> is executed when the user logs in and maps a network drive (may also use credentials based on the user, etc.). This is achieved as follows:</p>";
+        public const string content_14072013_r = "<p><b>Scenario 1. Normal conditions</b></p><p>Under the registry key <b>HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run</b>. Create a string value name <b>MountDrive</b> and data <b>net.exe use b: /persistent:no \\\\localhost\\mydrive</b></p><p>Behaviour: Command runs, drive is mapped.</p><p>Now suppose command fails occasionally. To understand why, I would like to redirect the output of <b></b>net.exe into the text file. That should be easy to do.</p><p><b>Scenario 2. Modified Value in Registry</b></p><p>I modified the registry entry to</p><p><b>net.exe use b: /persistent:no \\\\localhost\\mydrive >>C:\\netlog.txt</b></p><p>Behaviour: Command runs, drive is mapped, but no output file. If I run the same command from command line, the drive is mapped <b>and</b> output file is created (as expected).</p><p>Next, I came up with a workaround</p><p><b>Scenario 3. Run a cmd file from Registry.</b></p><p><ul><li>create <b>map.cmd</b> with the contents <b>net.exe use b: /persistent:no \\\\localhost\\mydrive >>C:\\netlog.txt</b></li><li>place it on <b>C:</b> drive</li><li>modify the registry entry to <b>C:\\map.cmd</b></li></ul></p><p>Behaviour: Command runs, drive is mapped, output file is created with the contents <b>The command completed successfully</b>. Why does it behave like that - I don't know.</p>" + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_14072013_d = "running net.exe from the registry key and redirecting output to a text file";
+        public const string content_14072013_k = "net.exe registry regedit32 script text file log";
+
+        //Using Active Setup to Update Anything in HKEY_CURRENT_USER
+public const string content_12082013_b = "<p>Following my last post, I had next to make sure that every user's entry in the registry was updated, and that change had to be scripted. This turned out to be a non-trivial task and took some research. First of all, the entry is located in <b>HKEY_CURRENT_USER</b> registy hive. Therefore, being logged in as Admin I cannot directly set an entry for Bob because Bob is not the current user at the moment. Then what can I do? The <b>HKEY_CURRENT_USER</b> is a kind of shortcut to <b>HKEY_USERS</b>. Under <b>HKEY_USERS</b> I can see the following structure</p>";
+public const string content_12082013_r = "<pre class=\"brush:sql\">" + @"HKEY_USERS\.DEFAULT
+HKEY_USERS\S-1-5-18
+HKEY_USERS\S-1-5-19
+HKEY_USERS\S-1-5-20
+HKEY_USERS\S-1-5-21-0123456789-012345678-0123456789-1004
+HKEY_USERS\S-1-5-21-0123456789-012345678-0123456789-1004_Classes" + "</pre><p>The first 4 entries correspond to built-in system accounts, and the rest are real user accounts on a PC. So, one way to make the change I need is to loop through all users and make the changes as requested. Someone even <a href=\"http://micksmix.wordpress.com/2012/01/13/update-a-registry-key-for-all-users-on-a-system/\">wrote a VB script which does exactly that</a>. My case is a bit different, though. I only have a small handful of users, but the change I'm making in the registry key depends on the user. So, maybe I can map a username to the registry key.</p><p>If I run the following from the command line <b>wmic useraccount get name,sid</b>, I will see a table similar to the following</p><pre class=\"brush:sql\">" + @"Name            SID
+Administrator   S-1-5-21-1180699209-877415012-3182924384-500
+Guest           S-1-5-21-1180699209-877415012-3182924384-501
+Tim             S-1-5-21-1180699209-877415012-3182924384-1004" + "</pre><p>Great. Now I can script my change and run it. However - it does not work. It appears that user hives are usually only loaded for currently logged in users. That complicates things.</p><p>Fortunately, I came across the alternative solution - use <b>Active Setup</b>. It's original use is, likely, to check if a specific version of the software is installed to help installers to install, uninstall and repair software. It can, however, be used to write pretty much anything in the HKCU of the user who logs on. Here's how it works:</p><p>When the user logs on, the following registry key is checked: <b>HKCU\\Software\\Microsoft\\Active Setup\\Installed Components\\<UID></b></p><p>If the HKCU key is not found in the registry then the contents of the string value <b>StubPath</b> is executed. This is essentially all that's important, so here is my example.</p><pre class=\"brush:sql\">" + @"reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Active Setup\Installed Components\MountDrive"" /v ""Version"" /d ""1"" /t REG_SZ /f
+
+reg add ""HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Active Setup\Installed Components\MountDrive"" /v ""StubPath"" /d ""reg add HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run /v ""MountDrive"" /d ""C:\map.cmd"" /t REG_SZ /f"" /f" + "</pre><p>Or, translating the <b>reg add</b> commands into PowerShell script</p><pre class=\"brush:sql\">" + @"$mapcmd = ""C:\map.cmd""
+$regKey = ""HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\MountDrive""
+New-Item -path $regKey | Out-Null
+$regKey = ""HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\MountDrive""
+$regName = ""Version""
+$value = ""1""
+New-ItemProperty -path $regKey -name $regName -value $value | Out-Null
+$regName = ""StubPath""
+$value =""reg add HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run /v MountDrive /d $mapcmd /f""
+New-ItemProperty -path $regKey -name $regName -value $value | Out-Null" + "</pre><p>Here's what happens when the user logs on:<br><ul><li>HKCU\\Software\\Microsoft\\Active Setup\\Installed Components\\MountDrive is checked. There is nothing there.</li><li>string value in StubPath is executed. The value is \"reg add\" command and it creates a MountDrive string under Run key, with a value \"C:\\map.cmd\". Therefore, this cmd script will run on user logon.</li><li>Also, a Version entry is created in HKCU\\Software\\Microsoft\\Active Setup\\Installed Components\\MountDrive with a value of 1.</li><li>Next time the user logs on, step 1 find the Version entry, thefore no actions will be performed.</li></ul></p><p>Seems a little complicated, but after running once and observing the changes as they are made in the registry, it becomes clear.</p><p><b>References:</b></p><a href=\"http://micksmix.wordpress.com/2012/01/13/update-a-registry-key-for-all-users-on-a-system/\">Update a registry key for ALL users on a system</a><br/><a href=\"http://pcsupport.about.com/od/termshm/g/hkey_users.htm\">HKEY_USERS</a><br/><a href=\"http://pcsupport.about.com/od/termss/g/security-identifier.htm\">Security Identifier</a><br/><a href=\"http://pcsupport.about.com/od/registry/ht/find-user-security-identifier.htm\">How To Find a User's Security Identifier (SID) in Windows</a><br/><a href=\"http://wpkg.org/Adding_Registry_Settings#Adding_entries_to_HKCU_for_all_users\">Adding Registry Settings</a><br/>" + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+public const string content_12082013_d = "A neat way to update, create or delete a registry key and value that is set in the HKEY_CURRENT_USER registry hive.";
+public const string content_12082013_k = "Windows registry HKEY_CURRENT_USER active setup key value create delete update";
+
+public const string content_26122013_b = "<p>A popular problem to introduce dynamic programming is the minimal change problem. Suppose a cashier needs to give me a certain amount of change and wants to do it with the minimal amount of coins possible. The input is a set of denominations and the amount, and the output is the set of coins.</p><p>For example, I may need to give 45 cents change and available coins are 1, 5 and 20. A solution intuitively is 20 + 20 + 5, but what is the best way to achieve it?</p><p>A recursive solution may be the first to try. A minimal collection of coins definitely belongs to the following set:</p><p><ul><li>minimal collection of coins totalling 44 cents, plus 1 cent coin</li><li>minimal collection of coins totalling 40 cents, plus 5 cent coin</li><li>minimal collection of coins totalling 25 cents, plus 20 cent coin</li></ul></p><p>So on the next step we will apply the same logic to our new change amounts: 44, 40 and 25. This looks like a classic recursion problem, which can be illustrated by the following image </p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2013/26122013_Solving_Minimum_Change_with_Recursion.png\" alt=\"Solving Minimum Change with Recursion\" /></div><p align=\"center\">Solving Minimum Change with Recursion</p><p>and described by the following algorithm / pseudocode (where |coins| is the number of denominations available)</p><pre class=\"brush:csharp\">" + @"RECURSIVECHANGE(money, coins)
+	if money = 0
+		return 0
+	MinNumCoins ← ∞
+	for i ← 1 to |coins|
+		if money ≥ coini
+			NumCoins ← RECURSIVECHANGE(money − coini, coins)
+			if NumCoins + 1 &lt; MinNumCoins
+				MinNumCoins** ← NumCoins + 1
+	 output MinNumCoins*" + "</pre><p>This should work, but is there something wrong with this approach? Well, one can see that the recursive algorithm will calculate the full solution for 19 cents 6 times on the third step only, and it will only get worse on the following steps. If the input value is large enough, the memory and time required to compute the solution will be huge. So, this is a classic example of the benefits of dynamic programming. I came across dynamic programming a few times before, but just couldn't properly figure it out.</p><p>Finally I found a good explanation. It came as a part of a free course in Bioinformatics Algorithms. Here's how it goes:</p>The key to dynamic programming is to take a step that may seem counterintuitive. Instead of computing <b>MinNumCoins</b>(m) for every value of m from 45 downward toward m = 1 via recursive calls, we will invert our thinking and compute <b>MinNumCoins</b>(m) from m = 1 upward toward 45, storing all these values in an array so that we only need to compute <b>MinNumCoins</b>(m) once for each value of m. <b>MinNumCoins</b>(m) is still computed via the same recurrence relation.</p><p><b>MinNumCoins</b>(m) = min{<b>MinNumCoins</b>(m − 20) + 1, <b>MinNumCoins</b>(m - 5) + 1, <b>MinNumCoins</b>(m - 1) + 1}</p><p>For example, assuming that we have already computed <b>MinNumCoins</b>(m) for m < 6, <b>MinNumCoins</b>(6) is equal to one more than the minimum of <b>MinNumCoins</b>(6 - 5) = 1 and <b>MinNumCoins</b>(6 - 1) = 5. Thus, <b>MinNumCoins</b>(6) is equal to 1 + 1 = 2.</p><p>This translates into the following algorithm / pseudocode</p><pre class=\"brush:csharp\">" + @"DPCHANGE(money, coins)
+ MinNumCoins(0) ← 0
+ for m ← 1 to money
+        MinNumCoins(m) ← ∞
+        for i ← 1 to |coins|
+            if m ≥ coini
+                if MinNumCoins(m - coini) + 1 &lt; MinNumCoins(m)
+                    MinNumCoins(m) ← MinNumCoins(m - coini) + 1
+    output MinNumCoins(money)" + "</pre><p>And a further C# implementation, which takes a comma-separated string of denominations available, and the target amount.</p><pre class=\"brush:csharp\">" + @"public static void DPCHANGE(int val, string denoms)
+{
+	int[] idenoms = Array.ConvertAll(denoms.Split(','), int.Parse);
+	Array.Sort(idenoms);
+	int[] minNumCoins = new int[val + 1];
+
+	minNumCoins[0] = 0;
+	for (int m = 1; m &lt;= val; m++)
+	{
+		minNumCoins[m] = Int32.MaxValue - 1;
+		for (int i = 1; i &lt;= idenoms.Count() - 1; i++)
+		{
+			if (m &gt;= idenoms[i])
+			{
+				if (minNumCoins[m - idenoms[i]] + 1 &lt; minNumCoins[m])
+				{
+					minNumCoins[m] = minNumCoins[m - idenoms[i]] + 1;
+				}
+			}
+		}
+	}
+}" + "</pre><p><b>References</b></p><a href=\"https://www.coursera.org/course/bioinformatics\">Bioinformatics Algorithms</a><br/><a href=\"https://beta.stepic.org/Bioinformatics-Algorithms-2/An-Introduction-to-Dynamic-Programming-The-Change-Problem-243/#step-6\">An Introduction to Dynamic Programming: The Change Problem</a><br/>";
+public const string content_26122013_r = "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+public const string content_26122013_d = "Understanding dynamic programming on the example of a minimal change problem. When can dynamic programming work better than recursion.";
+public const string content_26122013_k = "Dynamic programming minimal change algorithms c#";
+    
     }
 }
