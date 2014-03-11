@@ -4868,7 +4868,8 @@ New-ItemProperty -path $regKey -name $regName -value $value | Out-Null" + "</pre
 public const string content_12082013_d = "A neat way to update, create or delete a registry key and value that is set in the HKEY_CURRENT_USER registry hive.";
 public const string content_12082013_k = "Windows registry HKEY_CURRENT_USER active setup key value create delete update";
 
-public const string content_26122013_b = "<p>A popular problem to introduce dynamic programming is the minimal change problem. Suppose a cashier needs to give me a certain amount of change and wants to do it with the minimal amount of coins possible. The input is a set of denominations and the amount, and the output is the set of coins.</p><p>For example, I may need to give 45 cents change and available coins are 1, 5 and 20. A solution intuitively is 20 + 20 + 5, but what is the best way to achieve it?</p><p>A recursive solution may be the first to try. A minimal collection of coins definitely belongs to the following set:</p><p><ul><li>minimal collection of coins totalling 44 cents, plus 1 cent coin</li><li>minimal collection of coins totalling 40 cents, plus 5 cent coin</li><li>minimal collection of coins totalling 25 cents, plus 20 cent coin</li></ul></p><p>So on the next step we will apply the same logic to our new change amounts: 44, 40 and 25. This looks like a classic recursion problem, which can be illustrated by the following image </p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2013/26122013_Solving_Minimum_Change_with_Recursion.png\" alt=\"Solving Minimum Change with Recursion\" /></div><p align=\"center\">Solving Minimum Change with Recursion</p><p>and described by the following algorithm / pseudocode (where |coins| is the number of denominations available)</p><pre class=\"brush:csharp\">" + @"RECURSIVECHANGE(money, coins)
+public const string content_26122013_b = "<p>A popular problem to introduce dynamic programming is the minimal change problem. Suppose a cashier needs to give me a certain amount of change and wants to do it with the minimal amount of coins possible. The input is a set of denominations and the amount, and the output is the set of coins.</p><p>For example, I may need to give 45 cents change and available coins are 1, 5 and 20. A solution intuitively is 20 + 20 + 5, but what is the best way to achieve it?</p>";
+public const string content_26122013_r = "<p>A recursive solution may be the first to try. A minimal collection of coins definitely belongs to the following set:</p><p><ul><li>minimal collection of coins totalling 44 cents, plus 1 cent coin</li><li>minimal collection of coins totalling 40 cents, plus 5 cent coin</li><li>minimal collection of coins totalling 25 cents, plus 20 cent coin</li></ul></p><p>So on the next step we will apply the same logic to our new change amounts: 44, 40 and 25. This looks like a classic recursion problem, which can be illustrated by the following image </p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2013/26122013_Solving_Minimum_Change_with_Recursion.png\" alt=\"Solving Minimum Change with Recursion\" /></div><p align=\"center\">Solving Minimum Change with Recursion</p><p>and described by the following algorithm / pseudocode (where |coins| is the number of denominations available)</p><pre class=\"brush:csharp\">" + @"RECURSIVECHANGE(money, coins)
 	if money = 0
 		return 0
 	MinNumCoins ← ∞
@@ -4906,10 +4907,52 @@ public const string content_26122013_b = "<p>A popular problem to introduce dyna
 			}
 		}
 	}
-}" + "</pre><p><b>References</b></p><a href=\"https://www.coursera.org/course/bioinformatics\">Bioinformatics Algorithms</a><br/><a href=\"https://beta.stepic.org/Bioinformatics-Algorithms-2/An-Introduction-to-Dynamic-Programming-The-Change-Problem-243/#step-6\">An Introduction to Dynamic Programming: The Change Problem</a><br/>";
-public const string content_26122013_r = "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+}" + "</pre><p><b>References</b></p><a href=\"https://www.coursera.org/course/bioinformatics\">Bioinformatics Algorithms</a><br/><a href=\"https://beta.stepic.org/Bioinformatics-Algorithms-2/An-Introduction-to-Dynamic-Programming-The-Change-Problem-243/#step-6\">An Introduction to Dynamic Programming: The Change Problem</a><br/>" + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
 public const string content_26122013_d = "Understanding dynamic programming on the example of a minimal change problem. When can dynamic programming work better than recursion.";
 public const string content_26122013_k = "Dynamic programming minimal change algorithms c#";
-    
+
+//Manhattan Tourist problem
+public const string content_11032014_b = "<p>An introductory exercise to aligning amino acid sequences is the Manhattan tourist problem. Suppose a tourist starts his route in the top left corner of the map and wants to visit as many attractions on the way as possible, and finish in the down right corner. There is a restriction however - he can only move either to the right or down.</p>";
+public const string content_11032014_r = "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/11032014_A_Simplified_Map_of_Manhattan.png\" alt=\"A Simplified Map of Manhattan\" /></div><p align=\"center\">A Simplified Map of Manhattan</p><p>To describe the problem in numbers and data structures, the map is converted to the directed grid shown below. A tourist can move along the edges of the grid and the score of 1 is added if he passes an attraction, which are assigned to the bold edges. Of all possible paths we are interested in the one with the highest score.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/11032014_Map_of_Manhattan_as_a_Graph.png\" alt=\"Map of Manhattan as a Graph\" /></div><p align=\"center\">Map of Manhattan as a Graph</p><p>The solution to this problem is equivalent to a more general problem. This time every \"street\", or the edge of the graph, is assigned a score. The goal is to find a path which gains the highest score.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/11032014_Generic_Manhattan_Problem.png\" alt=\"Generic Manhattan Problem\" /></div><p align=\"center\">Generic Manhattan Problem</p><p>The problem can be brute forced, of course, by calculating the score for all possible paths. This is not practical for the larger graphs of course. A better approach is to calculate the highest possible score at every intersection, starting from the top left corner. Here is how the logic goes: If the tourist goes only towards the left in the grid, or only down, there are no choices for him. So it is easy to calculate the highest scores for the top and left row of intersections. Now we have these scores calculated:</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/11032014_Generic_Manhattan_Problem_-_First_Row_and_Column_Solved.png\" alt=\"Generic Manhattan Problem - First Row and Column Solved\" /></div><p align=\"center\">Generic Manhattan Problem - First Row and Column Solved</p><p>Now when that's done, we can proceed to the next row. How can the tourist get to intersection (1, 1)? He can either go to (0, 1) first, and gain 3 + 0 = 3 score, or go to (1, 0) and gain 1 + 3 = 4 score. Therefore, the maximum score he can gain at (1, 1) is 4. </p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/11032014_Generic_Manhattan_Problem_-_Cell_(1,1)_Solved.png\" alt=\"Generic Manhattan Problem - Cell (1,1) Solved\" /></div><p align=\"center\">Generic Manhattan Problem - Cell (1,1) Solved</p><p>The generic formula to use is quite intuitive: To reach an intersection, you have to arrive from one of two possible previous locations, and traverse a corresponding edge. You choose the path where the sum of the score of a previous location, plus the score of the edge, is higher.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/11032014_Generic_Manhattan_Formula.png\" alt=\"Generic Manhattan Formula\" /></div><p align=\"center\">Generic Manhattan Formula</p><p>We continue calculations along the column all the way down. After that, we can move on to the next row.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/11032014_Generic_Manhattan_Problem_-_Second_Column_Solved.png\" alt=\"Generic Manhattan Problem - Second Column Solved\" /></div><p align=\"center\">Generic Manhattan Problem - Second Column Solved</p><p>Following this logic, it is easy to compute the maximum score for each intersection and find out the maximum score that can be gained while traversing Manhattan. </p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/11032014_Generic_Manhattan_Problem_-_Fully_Solved.png\" alt=\"Generic Manhattan Problem - Fully Solved\" /></div><p align=\"center\">Generic Manhattan Problem - Fully Solved</p><p>Along the way the algorithm also becomes clear: the maximum score at any intersection is the maximum of the following two values:</p><pre class=\"brush:csharp\">" + @"MANHATTANTOURIST(n, m, down, right)
+	s0, 0 ← 0
+	for i ← 1 to n
+		si, 0 ← si-1, 0 + downi, 0
+	for j ← 1 to m
+		s0, j ← s0, j−1 + right0, j
+	for i ← 1 to n
+		for j ← 1 to m
+			si, j ← max{si - 1, j + downi, j, si, j - 1 + righti, j}
+	return sn, m" + "</pre><p>The following C# function implements the algorithm and returns the highest possible score, assuming we input all the scores for the edges towards the right and all the edges pointing down in the form of two-dimension arrays.</p><pre class=\"brush:csharp\">" + @"public static int ManhattanProblem(int[,] RightMatrix, int[,] DownMatrix)
+{
+	int n = RightMatrix.GetLength(0) + 1;
+	int m = DownMatrix.GetLength(1) + 1;
+	int[,] ManhattanMatrix = new int[n, m];
+
+	ManhattanMatrix[0, 0] = 0;
+
+	for (int i = 1; i &lt;= n; i++)
+	{
+		ManhattanMatrix[i, 0] = ManhattanMatrix[i - 1, 0] + DownMatrix[i - 1, 0];
+	}
+
+	for (int j = 1; j &lt;= m; j++)
+	{
+		ManhattanMatrix[0, j] = ManhattanMatrix[0, j - 1] + RightMatrix[0, j - 1];
+	}
+
+	for (int i = 1; i &lt;= n; i++)
+	{
+		for (int j = 1; j &lt;= m; j++)
+		{
+			ManhattanMatrix[i, j] =
+				Math.Max(ManhattanMatrix[i - 1, j] + DownMatrix[i - 1, j], 
+				ManhattanMatrix[i, j - 1] + RightMatrix[i, j - 1]);
+		}
+	}
+
+	return ManhattanMatrix.Cast&lt;int&gt;().Max();
+}" + "</pre><p>Understanding this problem turns out to be important to understanding sequence alignment in bioinformatics.</p>" + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+public const string content_11032014_d = "A manhattan tourist problem is a fun and easy introduction into sequence alignment";
+public const string content_11032014_k = "Bioinformatics sequence alignment manhattan tourist problem";    
     }
 }

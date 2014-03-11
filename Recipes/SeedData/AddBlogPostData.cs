@@ -204,6 +204,8 @@ namespace Recipes.SeedData
                 new Post { BlogID = 2, BriefContent = BlogPostsBiology.content_13072013_b, RestOfContent = BlogPostsBiology.content_13072013_r, Keywords = BlogPostsBiology.content_13072013_k, Description = BlogPostsBiology.content_13072013_d, DateCreated = new DateTime(2013, 07, 13), PostID = 189, Title = "Stochastic and deterministic modelling.", BloggerUrl = "http://southernblot.blogspot.com.au/2013/07/stochastic-and-deterministic-modelling.html" },
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_12082013_b, RestOfContent = BlogPostsProgramming.content_12082013_r, Keywords = BlogPostsProgramming.content_12082013_k, Description = BlogPostsProgramming.content_12082013_d, DateCreated = new DateTime(2013, 08, 12), PostID = 190, Title = "Using Active Setup to Update Anything in HKEY_CURRENT_USER", BloggerUrl = "http://justmycode.blogspot.dk/2013/08/using-active-setup-to-update-anything.html" },
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_26122013_b, RestOfContent = BlogPostsProgramming.content_26122013_r, Keywords = BlogPostsProgramming.content_26122013_k, Description = BlogPostsProgramming.content_26122013_d, DateCreated = new DateTime(2013, 12, 26), PostID = 191, Title = "Minimal Change Problem", BloggerUrl = "http://justmycode.blogspot.dk/2013/12/minimal-change-problem.html" },
+                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_11032014_b, RestOfContent = BlogPostsProgramming.content_11032014_r, Keywords = BlogPostsProgramming.content_11032014_k, Description = BlogPostsProgramming.content_11032014_d, DateCreated = new DateTime(2014, 03, 11), PostID = 192, Title = "Manhattan Tourist problem", BloggerUrl = "http://justmycode.blogspot.dk/2014/03/manhattan-tourist-problem.html" },
+                new Post { BlogID = 2, BriefContent = BlogPostsProgramming.content_11032014_b, RestOfContent = BlogPostsProgramming.content_11032014_r, Keywords = BlogPostsProgramming.content_11032014_k, Description = BlogPostsProgramming.content_11032014_d, DateCreated = new DateTime(2014, 03, 11), PostID = 193, Title = "Manhattan Tourist problem", BloggerUrl = "http://southernblot.blogspot.dk/2014/03/manhattan-tourist-problem.html" },
             };
 
             posts.ForEach(p => context.Posts.Add(p));
@@ -902,6 +904,14 @@ namespace Recipes.SeedData
             context.PostLabels.Add(new PostLabel { PostLabelID = 501, PostID = 191, LabelID = 3 });
             context.PostLabels.Add(new PostLabel { PostLabelID = 502, PostID = 191, LabelID = 12 }); 
             context.PostLabels.Add(new PostLabel { PostLabelID = 503, PostID = 191, LabelID = 46 });
+
+            context.PostLabels.Add(new PostLabel { PostLabelID = 504, PostID = 192, LabelID = 1 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 505, PostID = 192, LabelID = 3 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 506, PostID = 192, LabelID = 12 });
+
+            context.PostLabels.Add(new PostLabel { PostLabelID = 507, PostID = 193, LabelID = 1 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 508, PostID = 193, LabelID = 3 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 509, PostID = 193, LabelID = 12 }); 
 
             context.SaveChanges();
         }

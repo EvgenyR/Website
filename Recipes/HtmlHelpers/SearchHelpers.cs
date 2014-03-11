@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using Google.API.Search;
+//using Google.API.Search;
 
 namespace Recipes.HtmlHelpers
 {
@@ -46,22 +46,22 @@ namespace Recipes.HtmlHelpers
 
         public static List<String> GoogleAPIStringResultList(string terms, int number)
         {
-            IList<IWebResult> list;
-            GwebSearchClient client = new GwebSearchClient("");
+            //IList<IWebResult> list;
+            //GwebSearchClient client = new GwebSearchClient("");
             List<String> results = new List<string>();
 
-            try
-            {
-                list = client.Search(terms, number);
-                foreach (var result in list)
-                {
-                    results.Add(result.Url);
-                }
-            }
-            catch(Exception ex)
-            {
-                results.Add(ex.ToString());
-            }
+            //try
+            //{
+            //    list = client.Search(terms, number);
+            //    foreach (var result in list)
+            //    {
+            //        results.Add(result.Url);
+            //    }
+            //}
+            //catch(Exception ex)
+            //{
+            //    results.Add(ex.ToString());
+            //}
 
             return results;
         }
