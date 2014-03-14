@@ -1,7 +1,6 @@
-﻿
-namespace Recipes.SeedData
+﻿namespace Recipes.SeedData
 {
-    public static class BlogPostsProgramming
+    public static partial class BlogPostsProgramming
     {
         //"Playing with Google Search Results "
         public const string content_07092012_b = "<p>You will need:<ul><li><a href=\"http://htmlagilitypack.codeplex.com/\">HtmlAgilityPack</a> HTML Parser</li><li>Development environment</li><li>Internet connection</li></ul></p><p>Create a Visual Studio project, for example C# Windows Forms application. Drop a <strong>TextBox</strong>, a <strong>Button</strong> and a <strong>ListView</strong> on the form. Creat a class for the methods to be used, let's say <strong>Helper.cs</strong>. First, I'm using the <strong>System.Net.Webclient</strong> to call Google and get a page of search results.</p><pre class=\"brush: csharp\">" +

@@ -8,7 +8,7 @@
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{1C60D8CC-FDCE-4D50-B9E6-7428F085C9FF}</ProjectGuid>
-    <ProjectTypeGuids>{F85E285D-A4E0-4152-9332-AB1D724D3325};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Recipes</RootNamespace>
@@ -196,6 +196,7 @@
     <Compile Include="SeedData\AddYahoo.cs" />
     <Compile Include="SeedData\BlogPostsBiology.cs" />
     <Compile Include="SeedData\BlogPostsProgramming.cs" />
+    <Compile Include="SeedData\BlogPostsProgramming2.cs" />
     <Compile Include="SeedData\DoSeed.cs" />
     <Compile Include="SeedData\YahooData.cs" />
     <Compile Include="SeedData\YahooSymbol.cs" />
@@ -630,6 +631,8 @@
     <Content Include="Content\images\blog\pr\2014\11032014_Generic_Manhattan_Problem_-_Fully_Solved.png" />
     <Content Include="Content\images\blog\pr\2014\11032014_Generic_Manhattan_Problem_-_Second_Column_Solved.png" />
     <Content Include="Content\images\blog\pr\2014\11032014_Map_of_Manhattan_as_a_Graph.png" />
+    <Content Include="Content\images\blog\pr\2014\13032014_Alignment_graph_matches.png" />
+    <Content Include="Content\images\blog\pr\2014\13032014_Global_alignment_formula.png" />
     <Content Include="Content\images\dog.gif" />
     <Content Include="Content\images\dogs.gif" />
     <Content Include="Content\images\bg_blue.jpg" />
