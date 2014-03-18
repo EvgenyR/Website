@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Theory Behind The Bioinformatics - Global Alignment Example";
+}
+
+@Html.BodyTagUpdate("gamedesc")
+<div id="page">
+    @Html.Partial("_GlobalAlignNav")
+    <div class="generalText">
+    @Html.GlobalAlignmentTheory()    
+    </div>
+
+</div>
+@Html.HighLightSyntax()

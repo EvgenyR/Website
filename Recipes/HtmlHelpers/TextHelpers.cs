@@ -1235,5 +1235,12 @@ public enum SortDirection
             contents += t;
             return new HtmlString(contents);
         }
+
+        public static IHtmlString GlobalAlignmentTheory(this HtmlHelper helper)
+        {
+            const string contents = @"Global Alignment Theory Goes Here";
+
+            return new HtmlString(contents);
+        }
     }
 }
