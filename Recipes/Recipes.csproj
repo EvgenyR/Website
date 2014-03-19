@@ -128,6 +128,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Areas\Examples\Controllers\GlobalAlignmentController.cs" />
+    <Compile Include="Areas\Examples\Controllers\LocalAlignmentController.cs" />
+    <Compile Include="Areas\Examples\Controllers\SteppingStoneController.cs" />
+    <Compile Include="Areas\Examples\ExamplesAreaRegistration.cs" />
     <Compile Include="Constants\Constants.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BioInfController.cs" />
@@ -781,6 +785,13 @@
     <Content Include="Views\Logging\Theory.cshtml" />
     <Content Include="Views\Shared\_LoggingNav.cshtml" />
     <Content Include="Views\Shared\BlogCategories.cshtml" />
+    <Content Include="Areas\Examples\Views\Web.config" />
+    <Content Include="Areas\Examples\Views\BioInformatics\GlobalAlignment\Index.cshtml" />
+    <Content Include="Areas\Examples\Views\BioInformatics\LocalAlignment\Index.cshtml" />
+    <Content Include="Areas\Examples\Views\BioInformatics\LocalAlignment\Theory.cshtml" />
+    <Content Include="Areas\Examples\Views\BioInformatics\GlobalAlignment\Theory.cshtml" />
+    <Content Include="Areas\Examples\Views\SteppingStone\Index.cshtml" />
+    <Content Include="Areas\Examples\Views\SteppingStone\Theory.cshtml" />
     <None Include="Content\images\blogdesign\Tallys.otf" />
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
     <Content Include="Views\BioInf\GlobalIndex.cshtml" />
@@ -816,6 +827,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Examples\Models\" />
+    <Folder Include="Areas\Examples\Views\Shared\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
