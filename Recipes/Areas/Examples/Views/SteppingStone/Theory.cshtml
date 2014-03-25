@@ -1,5 +1,13 @@
 ﻿@{
-    ViewBag.Title = "Theory";
+    ViewBag.Title = "Theory Behind The Stepping Stone Markov Chain Algorithm - MVC Stepping Stone Example";
 }
 
-<h2>Stepping Stone Theory</h2>
+@Html.BodyTagUpdate("gamedesc")
+<div id="page">
+    @Html.Partial("_StoneNav")
+    <div class="generalText">
+    @Html.StoneTheory()    
+    </div>
+
+</div>
+@Html.HighLightSyntax()

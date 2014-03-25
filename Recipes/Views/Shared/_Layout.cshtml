@@ -55,9 +55,9 @@
                     <img src="@Url.Content("~/Content/images/Laptop_saver_small.jpg")" alt="Laptop photo in a page header"/>
    			    </div><!--header-->
                 <div id="left-sidebar">
-                    @Html.Action("MenuResult", "LeftMenu")
-                    @Html.Action("ProgBlogResult", "BlogEntry")
-                    @Html.Action("BioBlogResult", "BlogEntry")
+                    @Html.Action("MenuResult", "LeftMenu", new { area = "" })
+                    @Html.Action("ProgBlogResult", "BlogEntry", new { area = "" })
+                    @Html.Action("BioBlogResult", "BlogEntry", new { area = "" })
                     @RenderSection("mySection", false)
                 </div>
                 <div id="main-content">

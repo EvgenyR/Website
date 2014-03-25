@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.IO;
 using System.Web.Mvc;
 using Recipes.ViewModels;
-using System.Web.Mvc.Html;
 
 namespace HtmlHelpers
 {

@@ -15,9 +15,9 @@ namespace Recipes.Areas.Examples
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
-                "Examples_subfolder",
+                "Examples_bioinformatics",
                 "Examples/BioInformatics/{controller}/{action}/{id}",
-                new { action = "Areas/Examples/Views/BioInformatics/GlobalAlignment/Index", id = UrlParameter.Optional }
+                new { action = "Index", id = UrlParameter.Optional }
             );
 
             context.MapRoute(
