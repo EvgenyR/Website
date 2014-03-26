@@ -208,7 +208,7 @@ namespace Recipes.SeedData
                 new Post { BlogID = 2, BriefContent = BlogPostsProgramming.content_11032014_b, RestOfContent = BlogPostsProgramming.content_11032014_r, Keywords = BlogPostsProgramming.content_11032014_k, Description = BlogPostsProgramming.content_11032014_d, DateCreated = new DateTime(2014, 03, 11), PostID = 193, Title = "Manhattan Tourist problem", BloggerUrl = "http://southernblot.blogspot.dk/2014/03/manhattan-tourist-problem.html" },
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_13032014_b, RestOfContent = BlogPostsProgramming.content_13032014_r, Keywords = BlogPostsProgramming.content_13032014_k, Description = BlogPostsProgramming.content_13032014_d, DateCreated = new DateTime(2014, 03, 13), PostID = 194, Title = "Global alignment problem" },
                 new Post { BlogID = 2, BriefContent = BlogPostsProgramming.content_13032014_b, RestOfContent = BlogPostsProgramming.content_13032014_r, Keywords = BlogPostsProgramming.content_13032014_k, Description = BlogPostsProgramming.content_13032014_d, DateCreated = new DateTime(2014, 03, 13), PostID = 195, Title = "Global alignment problem" },
-
+                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_26032014_b, RestOfContent = BlogPostsProgramming.content_26032014_r, Keywords = BlogPostsProgramming.content_26032014_k, Description = BlogPostsProgramming.content_26032014_d, DateCreated = new DateTime(2014, 03, 26), PostID = 196, Title = "Adding Areas to the Existing ASP.NET MVC Project" },
             };
 
             posts.ForEach(p => context.Posts.Add(p));
@@ -922,7 +922,11 @@ namespace Recipes.SeedData
 
             context.PostLabels.Add(new PostLabel { PostLabelID = 513, PostID = 195, LabelID = 1 });
             context.PostLabels.Add(new PostLabel { PostLabelID = 514, PostID = 195, LabelID = 3 });
-            context.PostLabels.Add(new PostLabel { PostLabelID = 515, PostID = 195, LabelID = 12 }); 
+            context.PostLabels.Add(new PostLabel { PostLabelID = 515, PostID = 195, LabelID = 12 });
+
+            context.PostLabels.Add(new PostLabel { PostLabelID = 516, PostID = 196, LabelID = 1 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 517, PostID = 196, LabelID = 3 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 518, PostID = 196, LabelID = 7 }); 
 
             context.SaveChanges();
         }
