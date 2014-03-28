@@ -144,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Examples\Controllers\ExamplesHelpers.cs" />
     <Compile Include="Areas\Examples\Controllers\GlobalAlignmentController.cs" />
     <Compile Include="Areas\Examples\Controllers\LocalAlignmentController.cs" />
     <Compile Include="Areas\Examples\Controllers\SteppingStoneController.cs" />
@@ -809,11 +810,13 @@
     <Content Include="Areas\Examples\Views\BioInformatics\GlobalAlignment\Theory.cshtml" />
     <Content Include="Areas\Examples\Views\SteppingStone\Index.cshtml" />
     <Content Include="Areas\Examples\Views\SteppingStone\Theory.cshtml" />
-    <Content Include="Areas\Examples\Views\SteppingStone\_Table.cshtml" />
+    <Content Include="Areas\Examples\Views\Shared\_Table.cshtml" />
     <Content Include="Areas\Examples\Views\Shared\_StoneNav.cshtml" />
     <Content Include="Areas\Examples\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Examples\Views\Shared\_GlobalAlignNav.cshtml" />
     <Content Include="Areas\Examples\Views\Shared\_LocalAlignNav.cshtml" />
+    <Content Include="Areas\Examples\Views\Shared\_GlobalAlignment.cshtml" />
+    <Content Include="Areas\Examples\Views\Shared\_LocalAlignment.cshtml" />
     <None Include="Content\images\blogdesign\Tallys.otf" />
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
     <None Include="_bin_deployableAssemblies\amd64\Microsoft.VC90.CRT\README_ENU.txt" />

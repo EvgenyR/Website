@@ -30,12 +30,12 @@ namespace Recipes.Areas.Examples.Controllers
         [OutputCache(NoStore = true, Location = OutputCacheLocation.Client, Duration = 1)]
         public ActionResult Step()
         {
-            return PartialView("_Table", StepStone());
+            return PartialView("~/Areas/Examples/Views/Shared/_Table.cshtml", StepStone());
         }
 
         public ActionResult Reset()
         {
-            return PartialView("_Table", NewRandomTable());
+            return PartialView("~/Areas/Examples/Views/Shared/_Table.cshtml", NewRandomTable());
         }
 
         public HtmlString StepStone()

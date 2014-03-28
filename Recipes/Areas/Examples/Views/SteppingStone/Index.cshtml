@@ -3,7 +3,7 @@
     var timerID;
 
     function Start() {
-        timerID = setInterval("$('#update').load('/Stone/Step')", 1000);
+        timerID = setInterval("$('#update').load('/SteppingStone/Step')", 1000);
     }
 
     function Stop() {
@@ -12,13 +12,13 @@
 
     function ResetStone() {
         Stop();
-        $('#update').load("/Stone/Reset");
+        $('#update').load("/SteppingStone/Reset");
     }
 
     function Step() {
         v = document.getElementById('state').value;
         for (i = 0; i < v; i++) {
-            $('#update').load("/Stone/Step");
+            $('#update').load("/SteppingStone/Step");
         }
     }
 </script>

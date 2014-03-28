@@ -1,10 +1,27 @@
-﻿@{
+﻿<script type="text/javascript">
+
+    function Align() {
+        alert(document.getElementById("update").innerHTML);
+        $('#update').load("/GlobalAlignment/Align");
+        alert(document.getElementById("update").innerHTML);
+
+    }
+
+</script>
+@model HtmlString
+@{
     ViewBag.Title = "Global Alignment Index";
 }
 
 @Html.BodyTagUpdate("game")
 <div id="page" style="min-width:500px">
     @Html.Partial("_GlobalAlignNav")
-</div>
 
-<div>Global alignment - under construction</div>
+    <div id="update" style="float:left; min-width: 500px;">
+        @{Html.RenderPartial("_GlobalAlignment", Model);}
+    </div>
+
+    <div id="buttons" style="float:right; min-width:100px; padding:10px">
+        <input id="align" style="margin:3px" type="button" value="Align Sequences" onclick="Align();" /><br/>
+    </div>
+</div>
