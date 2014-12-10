@@ -154,5 +154,100 @@ http://localhost/Women/2013/Clothing/Index" + "</blockquote><p>I tried to solve 
         public const string content_26032014_d = "Challenges that may occur during adding areas to the existing ASP.NET MVC project.";
         public const string content_26032014_k = "ASP.NET MVC programming software development";
 
+
+        //My First Mobile Application.
+        public const string content_05122014_b = "<p>It is time to write my first mobile application. The inspiration comes from a <a href=\"http://www.itmasters.edu.au/free-short-course-cross-platform-mobile-app-development/\">free online course on cross platform mobile development</a>. The course uses <a href=\"http://phonegap.com/\">PhoneGap</a> for development. This post is about configuring the environment on Windows and creating an empty \"Hello World\" application.</p>";
+        public const string content_05122014_r = "<p>Step one was to gather and install the required software. The list includes</p><p><ul><li>AndroidSDK</li><li>ApacheAnt</li><li>Eclipse</li><li>JDK</li><li>NodeJS</li></ul></p><p>It is important to download the correct version of your operating system (Windows 64 or 32 bit in my case), and also where the software is copied to or installed to, because it will be necessary to add these locations to environment variables.</p><p><ul><li><a href=\"http://nodejs.org/download/\">NodeJs download link</a></li><li><a href=\"http://developer.android.com/sdk/index.html\">Eclipse download link, which fortunately includes Android SDK</a></li><li><a href=\"http://www.oracle.com/technetwork/java/javase/downloads/index.html\">JDK download link (not JRE!)</a></li><li><a href=\"http://ant.apache.org/bindownload.cgi\">ApacheAnt download link</a></li></ul></p><p>Now, the installation - Node.js and JDK are installed, and Eclipse and Ant are just extracted to your preferred location. I, personally, tried to make the path to this location as simple as I could, i.e. <b>C:\\Development\ant</b>.</p><p>Next, install PhoneGap. After you installed Node.js, you have <b>Node.js command prompt</b> in your Start menu. Run it and execute<br><b>npm install -g phonegap</b></p>" + 
+            "<p>Now some path modifications are required. Here are brief instructions to locate where it is done:</p><p><ul><li>Right-click <b></b>My Computer and click <b></b>Properties</li><li>Click <b></b>Advanced System Settings link in the left column</li><li>In the <b></b>System Properties window click the <b></b>Environment Variables button</li><li>Select the variable you want to edit (i.e. PATH)</li><li>Select the edit button.</li></ul></p><p>Here is what was necessary for me:<br>Create <b>ANT_HOME</b> (my value is <b>C:\\Development\ant</b>)</p>" + 
+            "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/05122014_Add_ANT_HOME.png\" alt=\"Add ANT_HOME\" /></div><p align=\"center\">Add ANT_HOME Environment Variable</p><p>Create <b>JAVA_HOME</b> (my value is <b>C:\\Program Files\\Java\\jdk1.8.0_25</b>)<br>Add the following to the PATH variable at the end:<br><b>;C:\\Development\\adt\\sdk\\platform-tools;C:\\Development\\adt\\sdk\\tools;%ANT_HOME%\bin;%JAVA_HOME%;%JAVA_HOME%\bin</b>.</p>" + 
+            "<div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/05122014_Add_ANT_HOME_to_PATH.png\" alt=\"Add ANT_HOME to PATH\" /></div><p align=\"center\">Add ANT_HOME to PATH</p><p align=\"center\">Add ANT_HOME to PATH</p><p>As you can see, that includes Java, Ant and ADT. And to check that everything is set up properly, you need to run the following commands one by one from the command prompt:</p><p><ul><li>java</li><li>javac</li><li>android</li><li>adb</li><li>ant</li></ul></p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/05122014_Java_Configuration_Check.png\" alt=\"Java Configuration Check\" /></div><p align=\"center\">Check if Java is Configured Properly</p><p>If any of those return the error <b>'<name>' is not recognized as an internal or external command, operable program or batch file</b>, there is probably an issue with the PATH - something is not included, or points to the wrong location.</p><p>Note: when you run \"ant\", you will likely get the following message:</p><p>Buildfile: build.xml does not exist!<br>Build failed</p><p>This is expected and no need to worry about.</p><p>Now the prerequisites are installed. Time to create the actual PhoneGap project. In Node.js command prompt, navigate to the place where you would like your project to be created and execute<br><b></b>phonegap create . \"com.yourname.app\" \"yourappname\"</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/05122014_App_Created.png\" alt=\"App Created\" /></div><p align=\"center\">App is Created</p><p>The project should be created. Just to make it a little different from the empty Hello World application, I went into the www folder and modified the text in the header in index.html. Index.html can be viewed in the browser at this point. </p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/05122014_App_In_Browser.png\" alt=\"App In Browser\" /></div><p align=\"center\">App is Viewed in Browser</p><p>Now the command to build the project.<br><b></b>phonegap install android<br>At this point I got the following error</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/05122014_Error_in_Build.png\" alt=\"Error in Build\" /></div><p align=\"center\">Error in Build</p><p>As you can see, the Android-19 target is missing. The solution is to launch Eclipse, start Android SDK manager, and, to put it simple, install everything that has 19 in it. In my case it looks like this:</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/05122014_Android_SDK_Manager.png\" alt=\"Android SDK Manager\" /></div><p align=\"center\">Android SDK Manager - what to Install?</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/05122014_Android_SDK_Manager_2.png\" alt=\"Android SDK Manager 2\" /></div><p align=\"center\">Android SDK Manager - what to Install?</p><p>This will take some time. When it is done, run the command again.<br><b>phonegap install android</b><br>And in my case I received the following error:<br><b>No emulator images (avds) found ...</b><br>I solved it by running<br><b></b>android avd<br>This started the visual wizard where I could choose the desired parameters for the Android emulator and create it.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/05122014_Create_AVD.png\" alt=\"Create AVD\" /></div><p align=\"center\">Create new AVD</p><p>And finally, again<br><b>phonegap install android</b><br>This time it started the emulator, on which the application ran.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/05122014_App_Runs_on_Emulator.png\" alt=\"App Runs on Emulator\" /></div><p align=\"center\">App Running on Emulator</p><p>So this sounds fairly straightforward at the moment, but I had instructions when I started and still I spent probably about 4-6 hours on two PCs over the course of two days to figure out how to get to this point of running an empty application. In my defence, I can say that I had exactly zero prior experience in mobile development.</p><br>by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_05122014_d = "Starting Mobile Application Development with PhoneGap";
+        public const string content_05122014_k = "Mobile Android iOS PhoneGap Software Development";
+
+        //My First Mobile Application - With More Functionality
+        public const string content_08122014_b = "<p>Next step in my fist mobile app was to actually add something meaningful to the empty application, for example the functionality to take a photo using camera or select a photo from the gallery. My goal was to add as little as possible to the app to be able to identify only the necessary steps, to create, so to speak, a \"minimal viable app\". Also I concentrated on the Android because I down't own an iOS device. But I show some iOS related code below in some cases anyway. There may be more needed to create a proper iOS app.</p>";
+        public const string content_08122014_r = "<p>First step - <a href=\"http://jquerymobile.com/download/\">download jQuery mobile</a>. Next, after unpacking, I copied the following files into my project structure, into App/www/js folder.</p><p><ul><li>jquery.1.11.1.min.js</li><li>jquery.mobile-1.4.5.js</li><li>jquery.mobile-1.4.5.min.js</li><li>jquery.mobile-1.4.5.min.map</li></ul></p><p>Next, changes to the application config.xml file.</p><p>Most important change is, probably, the addition of a camera feature.</p><pre class=\"brush:xml\">" + @"&lt;!-- Camera --&gt;
+&lt;feature name=""Camera""&gt;
+  &lt;param name=""android-package"" value=""org.apache.cordova.camera.CameraLauncher /&gt;
+&lt;/feature&gt;
+&lt;feature name=""Camera""&gt;
+	&lt;param name=""ios-package"" value=""CDVCamera"" /&gt;
+&lt;/feature&gt;" + "</pre><p>You may modify the apps details from the default ones</p><pre class=\"brush:xml\">" + @"&lt;name&gt;Camera app&lt;/name&gt;
+&lt;description&gt;
+	JQuery Mobile and Camera
+&lt;/description&gt;
+&lt;author email=""evgeny@example.com"" href=""http://ynegve.info""&gt;
+	Evgeny
+&lt;/author&gt;" + "</pre><p>If you use icons in your app (I guess there should be at least the one), they should be created for all screen resolutions. A good idea, of course, is to create a quality icon in high resolution and then scale it down, rather than vice versa.</p><pre class=\"brush:xml\">" + @"&lt;!-- Icons --&gt;
+&lt;icon gap:platform=""android"" gap:qualifier=""ldpi"" src=""www/res/icon/android/icon-36-ldpi.png"" /&gt;
+&lt;icon gap:platform=""android"" gap:qualifier=""mdpi"" src=""www/res/icon/android/icon-48-mdpi.png"" /&gt;
+&lt;icon gap:platform=""android"" gap:qualifier=""hdpi"" src=""www/res/icon/android/icon-72-hdpi.png"" /&gt;
+&lt;icon gap:platform=""android"" gap:qualifier=""xhdpi"" src=""www/res/icon/android/icon-96-xhdpi.png"" /&gt;
+&lt;icon gap:platform=""ios"" height=""57"" src=""www/res/icon/ios/icon-57.png"" width=""57"" /&gt;
+&lt;icon gap:platform=""ios"" height=""72"" src=""www/res/icon/ios/icon-72.png"" width=""72"" /&gt;
+&lt;icon gap:platform=""ios"" height=""114"" src=""www/res/icon/ios/icon-57-2x.png"" width=""114"" /&gt;
+&lt;icon gap:platform=""ios"" height=""144"" src=""www/res/icon/ios/icon-72-2x.png"" width=""144"" /&gt;" + "</pre><p>Same deal with the splash screen.</p><pre class=\"brush:xml\">" + @"&lt;gap:splash gap:platform=""android"" gap:qualifier=""port-ldpi"" src=""www/res/screen/android/screen-ldpi-portrait.png"" /&gt;
+&lt;gap:splash gap:platform=""android"" gap:qualifier=""port-mdpi"" src=""www/res/screen/android/screen-mdpi-portrait.png"" /&gt;
+&lt;gap:splash gap:platform=""android"" gap:qualifier=""port-hdpi"" src=""www/res/screen/android/screen-hdpi-portrait.png"" /&gt;
+&lt;gap:splash gap:platform=""android"" gap:qualifier=""port-xhdpi"" src=""www/res/screen/android/screen-xhdpi-portrait.png"" /&gt;
+&lt;gap:splash gap:platform=""ios"" height=""480"" src=""www/res/screen/ios/screen-iphone-portrait.png"" width=""320"" /&gt;
+&lt;gap:splash gap:platform=""ios"" height=""960"" src=""www/res/screen/ios/screen-iphone-portrait-2x.png"" width=""640"" /&gt;
+&lt;gap:splash gap:platform=""ios"" height=""1136"" src=""www/res/screen/ios/screen-iphone-portrait-568h-2x.png"" width=""640"" /&gt;
+&lt;gap:splash gap:platform=""ios"" height=""1024"" src=""www/res/screen/ios/screen-ipad-portrait.png"" width=""768"" /&gt;
+&lt;gap:splash gap:platform=""ios"" height=""768"" src=""www/res/screen/ios/screen-ipad-landscape.png"" width=""1024"" /&gt;" + "</pre><p>Now the actual functionality. I placed all of it into the index.html, but the javaScript could be placed in the separate file.</p><p>Reference the required javaScript files.</p><pre class=\"brush:jscript\">" + @"&lt;script src=""js/jquery.1.11.1.min.js""&gt;&lt;/script&gt;
+&lt;script src=""js/jquery.mobile-1.4.5.min.js""&gt;&lt;/script&gt;
+&lt;script src=""cordova.js""&gt;&lt;/script&gt;
+&lt;script src=""cordova_plugins.js""&gt;&lt;/script&gt;
+&lt;script src=""js/apiCalls.js""&gt;&lt;/script&gt;" + "</pre><p>Add a div with the buttons that will provide functionality.</p><pre class=\"brush:xml\">" + @"&lt;div id=""buttons""&gt;
+  &lt;button onclick=""TakePhotoUsingCamera();""&gt;Take Photo Using Camera&lt;/button&gt;
+  &lt;button onclick=""TakePhotoFromLibrary();""&gt;Take Photo From Library&lt;/button&gt;
+&lt;/div&gt;" + "</pre><p>Add a div to test that the image can be retrieved from the camera. Let's place the image into a div on the main page.</p><pre class=\"brush:xml\">" + @"&lt;div align=""center""&gt;
+Name: Evgeny&lt;br&gt;
+Job Title: Developer&lt;p&gt;
+&lt;img src = ""images/exampleimages/imgNobody.png"" width=""25%"" id = ""myImage""&gt;&lt;p&gt;
+&lt;/div&gt;" + "</pre><p>Add some javaScript. Call the onLoad from the body tag, for example. What we want is to make sure that PhoneGap is ready to handle native events. After the device is ready, we will take the photo using the camera. If that is successful, the photo should appear on the main screen of the app. If not, we should see the alert which explains the reason for failure.</p><pre class=\"brush:xml\">" + @"&lt;body onload=""onLoad()""&gt;
+
+...
+
+function onLoad(){
+  document.addEventListener(""deviceready"", onDeviceReady, false);
+}
+
+function onDeviceReady(){
+  console.log(navigator.camera);
+  alert('Device is ready');
+}
+
+And actual utilisation of the camera
+
+function TakePhotoUsingCamera(){
+  TakePhoto(Camera.PictureSourceType.CAMERA);
+}
+
+function TakePhotoFromLibrary(){
+  TakePhoto(Camera.PictureSourceType.PHOTOLIBRARY);
+}
+
+function onSuccess(imageData){
+  var image = document.getElementById('myImage');
+  image.src = ""data:image/jpeg;base64,"" + imageData;
+}
+
+function onFail(message){
+  alert('Failed because: ' + message);
+}
+
+function TakePhoto(sourceType){
+   var camOptions = {
+	 quality:50,
+	 destinationType: Camera.DestinationType.DATA_URL,
+	 sourceType: sourceType,
+	 correctOrientation: true
+   };
+ navigator.camera.getPicture(onSuccess, onFail, camOptions);
+}" + "</pre><p>This is probably all of the code that will be needed. Also, the API for the camera has to be added explicitly. Run the following command<br></p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/08122014_Add_Camera_to_Application.png\" alt=\"Add Camera to Application\" /></div><p align=\"center\">Add Camera to Application</p><p>You will notice that the new folder was added under plugins.</p><div class=\"separator\" style=\"clear: both; text-align: center;\"><img src=\"../../../Content/images/blog/pr/2014/08122014_Camera_Added.png\" alt=\"Camera Added\" /></div><p align=\"center\">Camera Added</p><p>Finally, as with the \"Hello world\" application, build it and then run on the emulator.</p><p><b>phonegap build android</b><br><b>phonegap install android</b><br></p><p>You won't be able to use the camera on the emulator, so to test it install the apk on the Android device.</p>" + "by <a title= \"Evgeny\" rel=\"author\" href=\"https://plus.google.com/112677661119561622427?rel=author\" alt=\"Google+\" title=\"Google+\">Evgeny</a>";
+        public const string content_08122014_d = "Adding functionality to a simple mobile application developed with PhoneGap";
+        public const string content_08122014_k = "Mobile software development Android iOS PhoneGap";
+
     }
 }

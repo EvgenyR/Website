@@ -64,6 +64,7 @@ namespace Recipes.SeedData
                 new Label { LabelID = 44, Name = "ROSALIND", Description = "Project ROSALIND"},
                 new Label { LabelID = 45, Name = "PowerShell", Description = "PowerShell Scripting"},
                 new Label { LabelID = 46, Name = "algorithms", Description = "Everything related to algorithms"},
+                new Label { LabelID = 47, Name = "Mobile", Description = "Mobile application development"}
             };
 
             labels.ForEach(b => context.Labels.Add(b));

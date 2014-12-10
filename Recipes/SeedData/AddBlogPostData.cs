@@ -206,9 +206,11 @@ namespace Recipes.SeedData
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_26122013_b, RestOfContent = BlogPostsProgramming.content_26122013_r, Keywords = BlogPostsProgramming.content_26122013_k, Description = BlogPostsProgramming.content_26122013_d, DateCreated = new DateTime(2013, 12, 26), PostID = 191, Title = "Minimal Change Problem", BloggerUrl = "http://justmycode.blogspot.dk/2013/12/minimal-change-problem.html" },
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_11032014_b, RestOfContent = BlogPostsProgramming.content_11032014_r, Keywords = BlogPostsProgramming.content_11032014_k, Description = BlogPostsProgramming.content_11032014_d, DateCreated = new DateTime(2014, 03, 11), PostID = 192, Title = "Manhattan Tourist problem", BloggerUrl = "http://justmycode.blogspot.dk/2014/03/manhattan-tourist-problem.html" },
                 new Post { BlogID = 2, BriefContent = BlogPostsProgramming.content_11032014_b, RestOfContent = BlogPostsProgramming.content_11032014_r, Keywords = BlogPostsProgramming.content_11032014_k, Description = BlogPostsProgramming.content_11032014_d, DateCreated = new DateTime(2014, 03, 11), PostID = 193, Title = "Manhattan Tourist problem", BloggerUrl = "http://southernblot.blogspot.dk/2014/03/manhattan-tourist-problem.html" },
-                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_13032014_b, RestOfContent = BlogPostsProgramming.content_13032014_r, Keywords = BlogPostsProgramming.content_13032014_k, Description = BlogPostsProgramming.content_13032014_d, DateCreated = new DateTime(2014, 03, 13), PostID = 194, Title = "Global alignment problem" },
-                new Post { BlogID = 2, BriefContent = BlogPostsProgramming.content_13032014_b, RestOfContent = BlogPostsProgramming.content_13032014_r, Keywords = BlogPostsProgramming.content_13032014_k, Description = BlogPostsProgramming.content_13032014_d, DateCreated = new DateTime(2014, 03, 13), PostID = 195, Title = "Global alignment problem" },
+                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_13032014_b, RestOfContent = BlogPostsProgramming.content_13032014_r, Keywords = BlogPostsProgramming.content_13032014_k, Description = BlogPostsProgramming.content_13032014_d, DateCreated = new DateTime(2014, 03, 13), PostID = 194, Title = "Global alignment problem", BloggerUrl = "http://justmycode.blogspot.dk/2014/03/global-alignment-problem.html" },
+                new Post { BlogID = 2, BriefContent = BlogPostsProgramming.content_13032014_b, RestOfContent = BlogPostsProgramming.content_13032014_r, Keywords = BlogPostsProgramming.content_13032014_k, Description = BlogPostsProgramming.content_13032014_d, DateCreated = new DateTime(2014, 03, 13), PostID = 195, Title = "Global alignment problem", BloggerUrl = "http://southernblot.blogspot.dk/2014/03/global-alignment-problem.html" },
                 new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_26032014_b, RestOfContent = BlogPostsProgramming.content_26032014_r, Keywords = BlogPostsProgramming.content_26032014_k, Description = BlogPostsProgramming.content_26032014_d, DateCreated = new DateTime(2014, 03, 26), PostID = 196, Title = "Adding Areas to the Existing ASP.NET MVC Project" },
+                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_05122014_b, RestOfContent = BlogPostsProgramming.content_05122014_r, Keywords = BlogPostsProgramming.content_05122014_k, Description = BlogPostsProgramming.content_05122014_d, DateCreated = new DateTime(2014, 12, 05), PostID = 197, Title = "My First Mobile Application.", BloggerUrl = "http://justmycode.blogspot.dk/2014/11/my-first-mobile-application.html" },
+                new Post { BlogID = 1, BriefContent = BlogPostsProgramming.content_08122014_b, RestOfContent = BlogPostsProgramming.content_08122014_r, Keywords = BlogPostsProgramming.content_08122014_k, Description = BlogPostsProgramming.content_08122014_d, DateCreated = new DateTime(2014, 12, 08), PostID = 198, Title = "My First Mobile Application - With More Functionality", BloggerUrl = "http://justmycode.blogspot.dk/2014/12/my-first-mobile-application-with-more.html" },
             };
 
             posts.ForEach(p => context.Posts.Add(p));
@@ -926,7 +928,13 @@ namespace Recipes.SeedData
 
             context.PostLabels.Add(new PostLabel { PostLabelID = 516, PostID = 196, LabelID = 1 });
             context.PostLabels.Add(new PostLabel { PostLabelID = 517, PostID = 196, LabelID = 3 });
-            context.PostLabels.Add(new PostLabel { PostLabelID = 518, PostID = 196, LabelID = 7 }); 
+            context.PostLabels.Add(new PostLabel { PostLabelID = 518, PostID = 196, LabelID = 7 });
+
+            context.PostLabels.Add(new PostLabel { PostLabelID = 519, PostID = 197, LabelID = 3 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 520, PostID = 197, LabelID = 47 });
+
+            context.PostLabels.Add(new PostLabel { PostLabelID = 521, PostID = 198, LabelID = 3 });
+            context.PostLabels.Add(new PostLabel { PostLabelID = 522, PostID = 198, LabelID = 47 });
 
             context.SaveChanges();
         }
